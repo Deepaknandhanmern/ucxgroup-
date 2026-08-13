@@ -1,0 +1,38 @@
+/* Shared UCX brand fonts, referenced under both naming conventions used
+   across the ported sections ('UCX Getho'/'UCX Atyp' in the navbar,
+   'Getho'/'Atyp Display' in the page sections) — same two files either way. */
+@font-face {
+  font-family: 'UCX Getho';
+  src: url('/brand/ucx-getho-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'UCX Atyp';
+  src: url('/brand/ucx-atyp-display-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Getho';
+  src: url('/brand/ucx-getho-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Getho Bold';
+  src: url('/brand/ucx-getho-bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Atyp Display';
+  src: url('/brand/ucx-atyp-display-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
