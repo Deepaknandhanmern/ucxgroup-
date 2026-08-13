@@ -1,0 +1,134 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+
+interface SupportLine {
+  href: string;
+  name: string;
+  copy: string;
+  icon: React.ReactNode;
+}
+
+const LINES: SupportLine[] = [
+  {
+    href: "#bim",
+    name: "BIM queries",
+    copy: "Model coordination, LOD, clash detection and file handover — answered by the modellers on your project.",
+    icon: (
+      <svg viewBox="0 0 48 48">
+        <path d="M24 6 41 15.5v19L24 44 7 34.5v-19L24 6Z" />
+        <path d="M7 15.5 24 25l17-9.5M24 25v19" />
+        <path d="M15.5 10.75 32.5 20.25v9.5" />
+      </svg>
+    ),
+  },
+  {
+    href: "#interior",
+    name: "Interiors",
+    copy: "Layouts, finishes, joinery detailing and site queries — straight through to the interiors desk.",
+    icon: (
+      <svg viewBox="0 0 48 48">
+        <path d="M6 40V17.5L24 6l18 11.5V40H6Z" />
+        <path d="M6 30h13V40M19 30h23" />
+        <path d="M28 30V19.5h9V30" />
+      </svg>
+    ),
+  },
+  {
+    href: "#academy",
+    name: "Training academy",
+    copy: "Course access, schedules, certification and team enrolment for everything we teach.",
+    icon: (
+      <svg viewBox="0 0 48 48">
+        <path d="M24 7 44 16 24 25 4 16 24 7Z" />
+        <path d="M12 20v11c0 3.9 5.4 7 12 7s12-3.1 12-7V20" />
+        <path d="M40 18v10" />
+      </svg>
+    ),
+  },
+];
+
+export default function Support() {
+  const sectRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const section = sectRef.current;
+    if (!section) return;
+
+    const targets = [
+      section.querySelector<HTMLElement>(".ucx-support__lead"),
+      ...Array.from(section.querySelectorAll<HTMLElement>(".ucx-line")),
+    ].filter((el): el is HTMLElement => el !== null);
+
+    targets.forEach((el, i) => {
+      el.setAttribute("data-reveal", "");
+      el.style.transitionDelay = `${i * 90}ms`;
+    });
+
+    if (!("IntersectionObserver" in window)) {
+      targets.forEach((el) => el.classList.add("is-in"));
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-in");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
+    );
+    targets.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <section className="ucx-support" ref={sectRef}>
+      <div className="ucx-bg-grid"></div>
+      <div className="ucx-bg-aurora">
+        <span className="b1"></span>
+        <span className="b2"></span>
+        <span className="b3"></span>
+      </div>
+      <div className="ucx-support__inner">
+        <div className="ucx-support__lead">
+          <span className="ucx-support__eyebrow">Support</span>
+          <h2 className="ucx-support__title">
+            Talk to the right
+            <br />
+            team, first time
+          </h2>
+          <p className="ucx-support__sub">Three direct lines, so your question lands with the people who actually work on it.</p>
+          <a className="ucx-support__cta" href="/contact">
+            <span>Book a call</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 12h15M13 6l6 6-6 6" />
+            </svg>
+          </a>
+        </div>
+
+        <div className="ucx-support__lines">
+          {LINES.map((line) => (
+            <a className="ucx-line" href={line.href} key={line.name}>
+              <span className="ucx-line__icon" aria-hidden="true">
+                {line.icon}
+              </span>
+              <span className="ucx-line__body">
+                <span className="ucx-line__head">
+                  <span className="ucx-line__name">{line.name}</span>
+                  <svg className="ucx-line__arrow" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 12h15M13 6l6 6-6 6" />
+                  </svg>
+                </span>
+                <span className="ucx-line__copy">{line.copy}</span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

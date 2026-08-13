@@ -10,6 +10,9 @@ import "@/components/sections/Founders.css";
 import "@/components/layout/Footer.css";
 import "@/components/sections/ContactForm.css";
 import "@/components/sections/FAQ.css";
+import "@/components/sections/OurServices.css";
+import "@/components/sections/CapabilitiesRail.css";
+import "@/components/sections/Support.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
