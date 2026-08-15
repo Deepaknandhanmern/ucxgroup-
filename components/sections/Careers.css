@@ -1,0 +1,182 @@
+.ucx-careers {
+  --bg: #00352D;
+  --bg-deep: #00211B;
+  --accent: #91F2B5;
+  --accent-dim: rgba(145,242,181,0.55);
+  --line: rgba(145,242,181,0.18);
+  --line-soft: rgba(145,242,181,0.035);
+  --line-glow: rgba(145,242,181,0.30);
+  --cream: #F3F1E6;
+  --ease: cubic-bezier(.16,.84,.36,1);
+
+  background: var(--bg) !important;
+  color: var(--accent);
+  font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding-bottom: 1px;
+}
+.ucx-careers * { box-sizing: border-box; margin: 0; padding: 0; }
+
+.ucx-careers .grid-overlay {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-soft) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 120px);
+  opacity: .4;
+}
+.ucx-careers .grid-glow {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-glow) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, var(--line-glow) 0 1px, transparent 1px 120px);
+  opacity: 0;
+  transition: opacity .5s var(--ease);
+  -webkit-mask-image: radial-gradient(240px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
+          mask-image: radial-gradient(240px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
+}
+.ucx-careers.is-hot .grid-glow { opacity: 1; }
+.ucx-careers .cursor-haze {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  opacity: 0; transition: opacity .6s var(--ease);
+  background: radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.07), transparent 70%);
+}
+.ucx-careers.is-hot .cursor-haze { opacity: 1; }
+
+.ucx-careers .wrapper {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto;
+  padding: clamp(90px,9vw,140px) clamp(20px,6vw,80px) clamp(70px,8vw,110px);
+}
+
+/* ---- hero ---- */
+.ucx-careers .head { max-width: 720px; margin-bottom: clamp(56px,7vw,88px); opacity: 0; animation: careersFadeUp .9s var(--ease) forwards; }
+.ucx-careers .eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--accent-dim); margin-bottom: 18px;
+}
+.ucx-careers .eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--accent-dim); }
+.ucx-careers .heading {
+  font-family: 'Getho','Atyp Display',sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: .94;
+  letter-spacing: -.01em;
+  font-size: clamp(38px,5.6vw,72px);
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+.ucx-careers .intro { max-width: 60ch; font-size: 16px; line-height: 1.75; color: var(--accent-dim); margin-bottom: 28px; }
+.ucx-careers .head-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Getho','Atyp Display',sans-serif;
+  font-weight: 700; font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--bg-deep); background: var(--accent);
+  padding: 15px 26px; border-radius: 999px; border: 1px solid var(--accent);
+  transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
+}
+.ucx-careers .head-cta:hover { background: transparent; color: var(--accent); transform: translateY(-2px); }
+
+/* ---- life at ucx ---- */
+.ucx-careers .life {
+  display: grid; grid-template-columns: .9fr 1.6fr; gap: clamp(32px,5vw,64px);
+  padding: clamp(36px,4vw,52px) 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(56px,7vw,88px);
+  opacity: 0; animation: careersFadeUp .9s var(--ease) forwards; animation-delay: .1s;
+}
+.ucx-careers .life h2 {
+  font-family: 'Getho','Atyp Display',sans-serif;
+  font-weight: 700; font-size: clamp(22px,2.6vw,30px);
+  color: var(--cream); line-height: 1.15;
+}
+.ucx-careers .life .body p { font-size: 15px; line-height: 1.75; color: var(--accent-dim); margin-bottom: 14px; }
+.ucx-careers .life .tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.ucx-careers .life .tags span {
+  font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase;
+  border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px; color: var(--accent-dim);
+}
+
+/* ---- open positions ---- */
+.ucx-careers .positions-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+.ucx-careers .positions-head h2 {
+  font-family: 'Getho','Atyp Display',sans-serif;
+  font-weight: 700; font-size: clamp(22px,2.6vw,30px); color: var(--accent);
+}
+.ucx-careers .positions-head .count { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-dim); }
+
+.ucx-careers .positions { display: flex; flex-direction: column; }
+.ucx-careers .position {
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 24px;
+  padding: 30px 4px; border-top: 1px solid var(--line);
+  opacity: 0; animation: careersFadeUp .9s var(--ease) forwards;
+  transition: background .35s var(--ease);
+}
+.ucx-careers .positions .position:last-child { border-bottom: 1px solid var(--line); }
+.ucx-careers .position:hover { background: rgba(145,242,181,.05); }
+.ucx-careers .position:nth-child(1) { animation-delay: .15s; }
+.ucx-careers .position:nth-child(2) { animation-delay: .25s; }
+.ucx-careers .position:nth-child(3) { animation-delay: .35s; }
+
+.ucx-careers .position .role-title {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: clamp(18px,2vw,22px); color: var(--cream); margin-bottom: 8px;
+}
+.ucx-careers .position .meta {
+  display: flex; flex-wrap: wrap; gap: 10px 16px;
+  font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent-dim);
+  margin-bottom: 10px;
+}
+.ucx-careers .position .meta span { display: inline-flex; align-items: center; gap: 6px; }
+.ucx-careers .position .meta span::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+.ucx-careers .position .desc { font-size: 14px; line-height: 1.65; color: var(--accent-dim); max-width: 62ch; }
+
+.ucx-careers .apply {
+  display: inline-flex; align-items: center; gap: 8px; flex: none;
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent); border: 1px solid var(--line); border-radius: 999px;
+  padding: 13px 22px;
+  transition: background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
+}
+.ucx-careers .apply svg { width: 13px; height: 13px; transition: transform .3s var(--ease); }
+.ucx-careers .apply:hover { background: var(--accent); color: var(--bg-deep); border-color: var(--accent); }
+.ucx-careers .apply:hover svg { transform: translateX(3px); }
+
+/* ---- closing note ---- */
+.ucx-careers .closing {
+  margin-top: clamp(56px,7vw,88px);
+  padding-top: clamp(36px,4vw,52px); border-top: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+}
+.ucx-careers .closing p { font-size: 15px; color: var(--accent-dim); max-width: 52ch; line-height: 1.6; }
+.ucx-careers .closing a {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent); white-space: nowrap;
+}
+
+@keyframes careersFadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ucx-careers *, .ucx-careers *::before, .ucx-careers *::after {
+    animation-duration: .001ms !important; transition-duration: .001ms !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .ucx-careers .life { grid-template-columns: 1fr; }
+  .ucx-careers .grid-glow, .ucx-careers .cursor-haze { display: none; }
+}
+@media (max-width: 640px) {
+  .ucx-careers .wrapper { padding: 70px 20px 60px; }
+  .ucx-careers .position { grid-template-columns: 1fr; }
+  .ucx-careers .apply { width: fit-content; }
+}

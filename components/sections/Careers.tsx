@@ -1,0 +1,155 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+
+interface Position {
+  title: string;
+  department: string;
+  location: string;
+  type: string;
+  desc: string;
+}
+
+const POSITIONS: Position[] = [
+  {
+    title: "BIM Coordinator",
+    department: "BIM & Digital Delivery",
+    location: "Coimbatore / Remote",
+    type: "Full-time",
+    desc: "Coordinate multidisciplinary BIM models, resolve clashes and support model-based documentation across live projects.",
+  },
+  {
+    title: "Interior Designer",
+    department: "Design & Interiors",
+    location: "Coimbatore / Remote",
+    type: "Full-time",
+    desc: "Develop interior design solutions from concept through construction documentation, working closely with our BIM-integrated workflow.",
+  },
+  {
+    title: "Digital Engineer",
+    department: "Digital Delivery",
+    location: "Coimbatore / Remote",
+    type: "Full-time",
+    desc: "Build automation, data and coordination workflows that connect design, BIM and project delivery.",
+  },
+];
+
+export default function Careers() {
+  const sectRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const sect = sectRef.current;
+    if (!sect) return;
+
+    let pending = false;
+    let px = 0;
+    let py = 0;
+
+    function onPointerMove(e: PointerEvent) {
+      const b = sect!.getBoundingClientRect();
+      px = e.clientX - b.left;
+      py = e.clientY - b.top;
+      if (!pending) {
+        pending = true;
+        requestAnimationFrame(() => {
+          sect!.style.setProperty("--mx", px + "px");
+          sect!.style.setProperty("--my", py + "px");
+          pending = false;
+        });
+      }
+    }
+    function onPointerEnter() {
+      sect!.classList.add("is-hot");
+    }
+    function onPointerLeave() {
+      sect!.classList.remove("is-hot");
+    }
+
+    sect.addEventListener("pointermove", onPointerMove, { passive: true });
+    sect.addEventListener("pointerenter", onPointerEnter);
+    sect.addEventListener("pointerleave", onPointerLeave);
+    return () => {
+      sect.removeEventListener("pointermove", onPointerMove);
+      sect.removeEventListener("pointerenter", onPointerEnter);
+      sect.removeEventListener("pointerleave", onPointerLeave);
+    };
+  }, []);
+
+  return (
+    <div className="ucx-careers" ref={sectRef}>
+      <div className="grid-overlay"></div>
+      <div className="grid-glow"></div>
+      <div className="cursor-haze"></div>
+
+      <div className="wrapper">
+        <div className="head">
+          <span className="eyebrow">Careers</span>
+          <h1 className="heading">Build What Comes Next.</h1>
+          <p className="intro">
+            Join a multidisciplinary team working across BIM, digital engineering, architecture, interiors and the
+            future of project delivery.
+          </p>
+          <a className="head-cta" href="#open-positions">
+            View Open Positions
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h13M13 6l6 6-6 6" />
+            </svg>
+          </a>
+        </div>
+
+        <div className="life">
+          <h2>Life at UCX</h2>
+          <div className="body">
+            <p>
+              UCX operates from an India-based collaborative workspace that supports focused project delivery, team
+              interaction and professional collaboration.
+            </p>
+            <p>
+              We work across disciplines rather than in silos &mdash; BIM, digital engineering, architecture and interiors
+              sit in one connected team, not separate departments.
+            </p>
+            <div className="tags">
+              <span>Project Delivery</span>
+              <span>Team Collaboration</span>
+              <span>Knowledge Sharing</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="open-positions">
+          <div className="positions-head">
+            <h2>Open Positions</h2>
+            <span className="count">{POSITIONS.length} roles open</span>
+          </div>
+
+          <div className="positions">
+            {POSITIONS.map((p) => (
+              <div className="position" key={p.title}>
+                <div>
+                  <div className="role-title">{p.title}</div>
+                  <div className="meta">
+                    <span>{p.department}</span>
+                    <span>{p.location}</span>
+                    <span>{p.type}</span>
+                  </div>
+                  <p className="desc">{p.desc}</p>
+                </div>
+                <a className="apply" href={`mailto:collaborate@ucx-group.com?subject=${encodeURIComponent("Application: " + p.title)}`}>
+                  Apply Now
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12h13M13 6l6 6-6 6" />
+                  </svg>
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="closing">
+          <p>Don&rsquo;t see a role that fits? We&rsquo;re always open to hearing from people who want to build something different.</p>
+          <a href="/contact">Get in touch &rarr;</a>
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -360,25 +360,29 @@ export default function Hero() {
             </span>
           </h1>
 
+          <span className="tagline">Integrated Design &middot; Digital Engineering &middot; Project Delivery</span>
+
           <p className="sub">
-            An architecture and interiors studio building for people who want something more considered than the
-            plot next door. Twelve years, four cities, one continuous line of thinking.
+            UCX is an India-based BIM and digital project delivery partner connecting design, information and
+            execution across the project lifecycle.
           </p>
 
           <div className="actions">
-            <a className="btn solid" href="#work">
-              <span>View our work</span>
+            <a className="btn solid" href="#capabilities">
+              <span>Explore Capabilities</span>
               <svg viewBox="0 0 24 24">
                 <path d="M5 12h13M13 6l6 6-6 6" />
               </svg>
             </a>
             <a className="btn ghost" href="/contact">
-              <span>Start a project</span>
+              <span>Start a Collaboration</span>
               <svg viewBox="0 0 24 24">
                 <path d="M5 12h13M13 6l6 6-6 6" />
               </svg>
             </a>
           </div>
+
+          <span className="badge-line">India-Based &middot; Global Delivery &middot; International Collaboration</span>
         </div>
 
         <div className="field" ref={radarWrapRef} aria-hidden="true">

@@ -13,6 +13,8 @@ import "@/components/sections/FAQ.css";
 import "@/components/sections/OurServices.css";
 import "@/components/sections/CapabilitiesRail.css";
 import "@/components/sections/Support.css";
+import "@/components/sections/CaseStudies.css";
+import "@/components/sections/Careers.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 

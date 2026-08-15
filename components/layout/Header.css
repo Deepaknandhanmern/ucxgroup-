@@ -235,10 +235,11 @@
   padding: clamp(28px,3.4vw,48px) clamp(16px,4vw,40px) clamp(32px,4vw,52px);
   display: grid;
   grid-template-columns: 1fr 300px;
+  align-items: start;
   gap: clamp(24px,3vw,48px);
 }
 
-.ucxnav__cols { display: grid; gap: clamp(20px,2.6vw,36px); }
+.ucxnav__cols { display: grid; align-items: start; gap: clamp(20px,2.6vw,36px); }
 .ucxnav__cols--4 { grid-template-columns: repeat(4,1fr); }
 .ucxnav__cols--3 { grid-template-columns: repeat(3,1fr); }
 

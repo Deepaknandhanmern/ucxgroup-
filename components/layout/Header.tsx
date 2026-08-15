@@ -111,8 +111,8 @@ const PANELS: Panel[] = [
           { href: "#link-capabilities-fm-models", label: "FM Models" },
           { href: "#link-capabilities-digital-handover-and-twin", label: "Digital Handover & Twin" },
         ],
-        ctaHref: "#link-capabilities-explore-asset-intelligence",
-        ctaLabel: "Explore Asset Intelligence",
+        ctaHref: "#link-capabilities-explore-asset-information",
+        ctaLabel: "Explore Asset Information",
       },
     ],
     side: [
@@ -186,8 +186,8 @@ const PANELS: Panel[] = [
         eyebrow: "Selected Experience",
         title: "Built Through Collaboration",
         desc: "Explore how UCX connects design, digital engineering and delivery across real-world projects.",
-        ctaHref: "#link-experience-explore-our-experience",
-        ctaLabel: "Explore our Experience",
+        ctaHref: "#link-experience-explore-our-selected-experience",
+        ctaLabel: "Explore our Selected Experience",
         feature: true,
       },
     ],
@@ -276,11 +276,11 @@ const PANELS: Panel[] = [
         title: "Project Knowledge",
         desc: "Lessons and outcomes from real project delivery.",
         links: [
-          { href: "#link-insights-case-studies", label: "Case Studies" },
+          { href: "/case-studies", label: "Case Studies" },
           { href: "#link-insights-project-lessons", label: "Project Lessons" },
           { href: "#link-insights-delivery-insights", label: "Delivery Insights" },
         ],
-        ctaHref: "#link-insights-explore-case-studies",
+        ctaHref: "/case-studies",
         ctaLabel: "Explore Case Studies",
       },
       {
@@ -343,10 +343,10 @@ const PANELS: Panel[] = [
         title: "Careers",
         desc: "Build your career with a collaborative digital delivery team.",
         links: [
-          { href: "#link-company-life-at-ucx", label: "Life at UCX" },
-          { href: "#link-company-open-positions", label: "Open Positions" },
+          { href: "/careers", label: "Life at UCX" },
+          { href: "/careers#open-positions", label: "Open Positions" },
         ],
-        ctaHref: "#link-company-explore-careers",
+        ctaHref: "/careers",
         ctaLabel: "Explore Careers",
       },
     ],
@@ -407,7 +407,7 @@ const MOBILE_ITEMS: MobileItem[] = [
     links: [
       { href: "#link-company-about-ucx", label: "About UCX" },
       { href: "#link-company-global-delivery", label: "Global Delivery" },
-      { href: "#link-company-careers", label: "Careers" },
+      { href: "/careers", label: "Careers" },
     ],
   },
 ];

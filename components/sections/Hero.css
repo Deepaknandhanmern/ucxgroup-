@@ -148,6 +148,25 @@
   white-space: nowrap; left: 0; top: 0;
 }
 
+.ucx-hero .tagline {
+  display: block;
+  margin-top: clamp(16px,2.2vw,22px);
+  font-family: 'Getho','Atyp Display',sans-serif;
+  font-weight: 700;
+  font-size: clamp(13px,1.15vw,15px);
+  letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0; animation: heroFade .9s var(--ease) .65s forwards;
+}
+
+.ucx-hero .badge-line {
+  display: block;
+  margin-top: clamp(16px,2.2vw,22px);
+  font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--accent-faint);
+  opacity: 0; animation: heroFade .9s var(--ease) .95s forwards;
+}
+
 .ucx-hero .sub {
   margin-top: clamp(20px,2.6vw,30px);
   max-width: 46ch;

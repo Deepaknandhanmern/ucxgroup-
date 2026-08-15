@@ -5,6 +5,7 @@
   --display: 'UCXGetho', Georgia, serif;
   --body: 'UCXAtyp', system-ui, -apple-system, sans-serif;
   --cardw: clamp(268px,26vw,372px);
+  scroll-margin-top: 76px;
   position: relative;
   background: #fff;
   color: var(--green);

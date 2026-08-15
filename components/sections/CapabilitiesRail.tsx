@@ -414,7 +414,7 @@ export default function CapabilitiesRail() {
   );
 
   return (
-    <section className="nx" ref={rootRef} aria-label="Capabilities">
+    <section className="nx" id="capabilities" ref={rootRef} aria-label="Capabilities">
       <div className="nx__head">
         <div>
           <p className="nx__eyebrow">What we do</p>
