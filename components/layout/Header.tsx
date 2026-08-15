@@ -80,11 +80,11 @@ const PANELS: Panel[] = [
         desc: "Integrated design and interior delivery.",
         theme: "interiors",
         links: [
-          { href: "#link-capabilities-architecture-and-planning", label: "Architecture & Planning" },
-          { href: "#link-capabilities-interior-solutions", label: "Interior Solutions" },
-          { href: "#link-capabilities-design-development", label: "Design Development" },
-          { href: "#link-capabilities-construction-documentation", label: "Construction Documentation" },
-          { href: "#link-capabilities-bim-integrated-interiors", label: "BIM-Integrated Interiors" },
+          { href: "/interiors#architecture-planning", label: "Architecture & Planning" },
+          { href: "/interiors#interior-solutions", label: "Interior Solutions" },
+          { href: "/interiors#design-development", label: "Design Development" },
+          { href: "/interiors#construction-documentation", label: "Construction Documentation" },
+          { href: "/interiors#bim-integrated-interiors", label: "BIM-Integrated Interiors" },
         ],
         ctaHref: "/interiors",
         ctaLabel: "Explore Design & Interiors",
@@ -161,11 +161,11 @@ const PANELS: Panel[] = [
         desc: "Design and delivery across diverse interior environments.",
         theme: "interiors",
         links: [
-          { href: "#link-experience-workplace-and-office", label: "Workplace & Office" },
-          { href: "#link-experience-hospitality-and-retail", label: "Hospitality & Retail" },
-          { href: "#link-experience-residential-interiors", label: "Residential Interiors" },
-          { href: "#link-experience-custom-furniture", label: "Custom Furniture" },
-          { href: "#link-experience-modular-interiors", label: "Modular Interiors" },
+          { href: "/interiors#workplace-office", label: "Workplace & Office" },
+          { href: "/interiors#hospitality-retail", label: "Hospitality & Retail" },
+          { href: "/interiors#residential-interiors", label: "Residential Interiors" },
+          { href: "/interiors#custom-furniture", label: "Custom Furniture" },
+          { href: "/interiors#modular-interiors", label: "Modular Interiors" },
         ],
         ctaHref: "/interiors",
         ctaLabel: "Explore Interior Projects",
@@ -554,22 +554,28 @@ export default function Header() {
       <div className="ucxnav__bar">
         <div className="ucxnav__inner">
           {/* ---------- Logo ---------- */}
-          <a href="/" className="ucxnav__logo" aria-label="UCX — Unconventional Collaboration, home">
-            <span className="ucxnav__logo-lockup" aria-hidden="true">
-              <span className="ucxnav__logo-word1">
-                <span className="ucxnav__logo-letter">U</span>
-                <span className="ucxnav__logo-rest">nconventional</span>
-              </span>
-              <span className="ucxnav__logo-word2">
-                <span className="ucxnav__logo-word2-text">
-                  <span className="ucxnav__logo-letter ucxnav__logo-letter--mint">C</span>
-                  <span className="ucxnav__logo-rest ucxnav__logo-rest--mint">ollaboration</span>
+          {isInteriors ? (
+            <a href="/interiors" className="ucxnav__logo" aria-label="SpayceX — Interiors by UCX, home">
+              <img className="ucxnav__logo-img" src="/brand/interiors/logo.png" alt="SpayceX" />
+            </a>
+          ) : (
+            <a href="/" className="ucxnav__logo" aria-label="UCX — Unconventional Collaboration, home">
+              <span className="ucxnav__logo-lockup" aria-hidden="true">
+                <span className="ucxnav__logo-word1">
+                  <span className="ucxnav__logo-letter">U</span>
+                  <span className="ucxnav__logo-rest">nconventional</span>
                 </span>
-                <span className="ucxnav__logo-xletter" aria-hidden="true">X</span>
+                <span className="ucxnav__logo-word2">
+                  <span className="ucxnav__logo-word2-text">
+                    <span className="ucxnav__logo-letter ucxnav__logo-letter--mint">C</span>
+                    <span className="ucxnav__logo-rest ucxnav__logo-rest--mint">ollaboration</span>
+                  </span>
+                  <span className="ucxnav__logo-xletter" aria-hidden="true">X</span>
+                </span>
               </span>
-            </span>
-            <span className="ucxnav__visually-hidden">UCX — Unconventional Collaboration</span>
-          </a>
+              <span className="ucxnav__visually-hidden">UCX — Unconventional Collaboration</span>
+            </a>
+          )}
 
           {/* ---------- Primary nav ---------- */}
           <nav className="ucxnav__nav" aria-label="Primary">

@@ -149,14 +149,23 @@ export default function Support() {
 
       <div className="ucx-final">
         <div className="ucx-final__copy">
-          <h3>Have a Project to Deliver?</h3>
-          <p>Tell us what you&rsquo;re working on and we&rsquo;ll route it to the right team.</p>
-          <a className="ucx-support__cta" href="/contact">
-            <span>Start a Project</span>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4 12h15M13 6l6 6-6 6" />
-            </svg>
-          </a>
+          <span className="ucx-final__eyebrow">Have a Project to Deliver?</span>
+          <h3>Let&rsquo;s Build a Better Way to Deliver It.</h3>
+          <p>Whether you need BIM expertise, additional delivery capacity, digital engineering support or a long-term project partner &mdash; let&rsquo;s collaborate.</p>
+          <div className="ucx-final__ctas">
+            <a className="ucx-final__cta-primary" href="/contact">
+              <span>Start a Collaboration</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 12h15M13 6l6 6-6 6" />
+              </svg>
+            </a>
+            <a className="ucx-final__cta-ghost" href="/capabilities">
+              <span>Explore Capabilities</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 12h15M13 6l6 6-6 6" />
+              </svg>
+            </a>
+          </div>
         </div>
 
         <form className="ucx-final__form" onSubmit={handleQuerySubmit}>

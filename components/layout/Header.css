@@ -54,6 +54,8 @@
 /* ---------- Logo ---------- */
 .ucxnav__logo { display: inline-flex; align-items: baseline; flex: none; }
 .ucxnav__logo-lockup { display: inline-flex; align-items: baseline; }
+.ucxnav__logo-img { display: block; height: 28px; width: auto; transition: height .3s var(--ucx-ease); }
+.ucxnav.is-scrolled .ucxnav__logo-img { height: 23px; }
 
 .ucxnav__logo-word1 {
   display: inline-flex; align-items: baseline; overflow: hidden;

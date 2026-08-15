@@ -68,6 +68,12 @@
   filter: drop-shadow(0 10px 22px rgba(0,0,0,0.45));
 }
 .ucx-footer .badge-wrap svg { width: 100%; height: 100%; display: block; }
+.ucx-footer .badge-wrap--plain {
+  width: auto;
+  height: auto;
+  filter: none;
+}
+.ucx-footer .footer-logo-plain { display: block; height: 54px; width: auto; }
 .ucx-footer .ring { transform-origin: 210px 210px; animation: ucxFooterSpin 26s linear infinite; }
 @keyframes ucxFooterSpin { to { transform: rotate(360deg); } }
 .ucx-footer .ring-label {

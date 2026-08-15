@@ -1,18 +1,33 @@
-/* Deliberately the calmest section on the page — light surface, no grid
-   texture, no cursor glow, minimal motion — a quiet beat between the more
-   maximalist scroll/carousel sections around it. */
+/* Deliberately the calmest section on the page — light surface, no cursor
+   glow, minimal motion — a quiet beat between the more maximalist
+   scroll/carousel sections around it. A faint grid texture ties it back
+   into the rest of the page's visual language. */
 .ucx-model {
   --dark: #00352D;
   --mint: #91F2B5;
   --line: rgba(0,53,45,.14);
+  --line-soft: rgba(0,53,45,.05);
   --muted: rgba(0,53,45,.58);
   --ease: cubic-bezier(.22,.61,.36,1);
 
   background: #FFFFFF !important;
   color: var(--dark);
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
 }
 .ucx-model * { box-sizing: border-box; margin: 0; padding: 0; }
+
+.ucx-model .grid-overlay {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-soft) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 120px);
+  opacity: .5;
+}
+
+.ucx-model .wrapper { position: relative; z-index: 1; }
 
 .ucx-model [data-reveal] {
   opacity: 0; transform: translateY(18px);

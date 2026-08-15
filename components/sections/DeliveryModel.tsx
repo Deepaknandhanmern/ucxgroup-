@@ -46,6 +46,7 @@ export default function DeliveryModel() {
 
   return (
     <div className="ucx-model" ref={sectRef}>
+      <div className="grid-overlay"></div>
       <div className="wrapper">
         <div className="head" data-reveal>
           <span className="eyebrow">How We Work</span>

@@ -202,56 +202,100 @@
   color: var(--ucx-muted);
 }
 
-/* ---- final CTA + queries form ---- */
+/* ---- final CTA + queries form — bold banner treatment ---- */
 .ucx-final {
+  position: relative;
   max-width: 1240px; margin: clamp(56px,6vw,88px) auto 0;
-  padding-top: clamp(40px,5vw,56px);
-  border-top: 1px solid var(--ucx-rule);
-  display: grid; grid-template-columns: 1fr .85fr;
+  padding: clamp(40px,5vw,60px) clamp(28px,4.5vw,56px);
+  border-radius: var(--ucx-radius-section);
+  background: linear-gradient(135deg, #00473B 0%, var(--ucx-dark) 55%, #001B15 100%);
+  overflow: hidden;
+  isolation: isolate;
+  display: grid; grid-template-columns: 1fr .8fr;
   gap: clamp(32px,5vw,56px); align-items: center;
 }
+.ucx-final::before {
+  content: '';
+  position: absolute; z-index: 0; pointer-events: none;
+  top: -35%; left: -8%; width: 480px; height: 480px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(145,242,181,.38), transparent 70%);
+  filter: blur(90px);
+}
+.ucx-final::after {
+  content: '';
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(145,242,181,.06) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, rgba(145,242,181,.06) 0 1px, transparent 1px 90px);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 25% 35%, #000 40%, transparent 100%);
+          mask-image: radial-gradient(ellipse 80% 80% at 25% 35%, #000 40%, transparent 100%);
+}
+.ucx-final__copy { position: relative; z-index: 1; }
+.ucx-final__eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--ucx-display); font-weight: 700;
+  font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--ucx-lite); margin-bottom: 16px;
+}
+.ucx-final__eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--ucx-lite); }
 .ucx-final__copy h3 {
   font-family: var(--ucx-display); font-weight: 700;
-  font-size: clamp(26px,3.4vw,42px); line-height: 1.08; letter-spacing: -.015em;
-  color: var(--ucx-text); margin: 0 0 12px;
+  font-size: clamp(28px,3.6vw,44px); line-height: 1.08; letter-spacing: -.015em;
+  color: #FFFFFF; margin: 0 0 14px;
 }
-.ucx-final__copy p { font-size: 15px; line-height: 1.6; color: var(--ucx-muted); max-width: 42ch; margin: 0 0 24px; }
+.ucx-final__copy p { font-size: 15px; line-height: 1.65; color: rgba(255,255,255,.68); max-width: 46ch; margin: 0 0 28px; }
+
+.ucx-final__ctas { display: flex; flex-wrap: wrap; gap: 14px; }
+.ucx-final__cta-primary, .ucx-final__cta-ghost {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--ucx-body); font-weight: 500;
+  font-size: 14px; padding: 14px 24px; border-radius: var(--ucx-radius-pill);
+  transition: background .25s ease, color .25s ease, border-color .25s ease, transform .25s ease;
+}
+.ucx-final__cta-primary svg, .ucx-final__cta-ghost svg { width: 16px; height: 16px; transition: transform .25s ease; }
+.ucx-final__cta-primary { background: var(--ucx-lite); color: var(--ucx-dark); border: 1px solid var(--ucx-lite); }
+.ucx-final__cta-primary:hover { transform: translateY(-2px); background: #FFFFFF; }
+.ucx-final__cta-ghost { background: transparent; color: #FFFFFF; border: 1px solid rgba(255,255,255,.3); }
+.ucx-final__cta-ghost:hover { border-color: #FFFFFF; background: rgba(255,255,255,.08); }
+.ucx-final__cta-primary:hover svg, .ucx-final__cta-ghost:hover svg { transform: translateX(3px); }
 
 .ucx-final__form {
+  position: relative; z-index: 1;
   display: flex; flex-direction: column; gap: 12px;
   padding: clamp(22px,2.6vw,28px);
-  border: 1px solid var(--ucx-rule); border-radius: var(--ucx-radius);
-  background: #FFFFFF;
-  box-shadow: 0 2px 10px rgba(0,53,45,.04);
+  border: 1px solid rgba(255,255,255,.14); border-radius: var(--ucx-radius);
+  background: rgba(255,255,255,.06);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 .ucx-final__label {
   font-family: var(--ucx-display); font-weight: 700;
-  font-size: 13px; letter-spacing: .02em; color: var(--ucx-text); margin-bottom: 4px;
+  font-size: 13px; letter-spacing: .02em; color: #FFFFFF; margin-bottom: 4px;
 }
 .ucx-final__form input, .ucx-final__form textarea {
-  font-family: var(--ucx-body); font-size: 14px; color: var(--ucx-text);
-  padding: 12px 14px; border: 1px solid var(--ucx-rule); border-radius: 11px;
-  background: #FBFEFC; outline: none;
+  font-family: var(--ucx-body); font-size: 14px; color: #FFFFFF;
+  padding: 12px 14px; border: 1px solid rgba(255,255,255,.16); border-radius: 11px;
+  background: rgba(255,255,255,.06); outline: none;
   transition: border-color .25s ease, box-shadow .25s ease;
 }
-.ucx-final__form input::placeholder, .ucx-final__form textarea::placeholder { color: rgba(0,53,45,.32); }
+.ucx-final__form input::placeholder, .ucx-final__form textarea::placeholder { color: rgba(255,255,255,.4); }
 .ucx-final__form input:focus, .ucx-final__form textarea:focus {
-  border-color: var(--ucx-dark); box-shadow: 0 0 0 3px rgba(145,242,181,.45);
+  border-color: var(--ucx-lite); box-shadow: 0 0 0 3px rgba(145,242,181,.25);
 }
 .ucx-final__form textarea { resize: vertical; min-height: 70px; }
 .ucx-final__form button {
   margin-top: 4px;
   font-family: var(--ucx-body); font-size: 14px; padding: 13px 22px;
   border-radius: var(--ucx-radius-pill); cursor: pointer;
-  background: var(--ucx-dark); color: #FFFFFF; border: 1px solid var(--ucx-dark);
+  background: var(--ucx-lite); color: var(--ucx-dark); border: 1px solid var(--ucx-lite);
   transition: background .25s ease, color .25s ease, opacity .25s ease;
 }
-.ucx-final__form button:hover { background: transparent; color: var(--ucx-dark); }
+.ucx-final__form button:hover { background: transparent; color: #FFFFFF; }
 .ucx-final__form button:disabled { opacity: .6; cursor: default; }
-.ucx-final__error { font-size: 12.5px; color: #b3261e; margin: 0; }
+.ucx-final__error { font-size: 12.5px; color: #ff9d8a; margin: 0; }
 .ucx-final__done {
   display: flex; align-items: center; gap: 12px;
-  font-size: 14px; line-height: 1.5; color: var(--ucx-text);
+  font-size: 14px; line-height: 1.5; color: #FFFFFF;
 }
 .ucx-final__done span:first-child {
   flex: none; width: 32px; height: 32px; border-radius: 50%;

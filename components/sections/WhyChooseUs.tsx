@@ -48,6 +48,22 @@ const REASONS: Reason[] = [
   },
 ];
 
+function signalStart(r: Reason): [number, number] {
+  const x = r.style.left ? parseFloat(r.style.left) : 100 - parseFloat(r.style.right ?? "0");
+  const y = parseFloat(r.style.top);
+  return [x, y];
+}
+
+// The image is the "body" — every reason radiates straight out from its
+// center like a spider's legs, so the diagram reads as one hub with 5 limbs.
+const CENTER: [number, number] = [50, 50];
+
+function radialPath(r: Reason): string {
+  const [sx, sy] = signalStart(r);
+  const [cx, cy] = CENTER;
+  return `M${cx},${cy} L${sx},${sy}`;
+}
+
 export default function WhyChooseUs() {
   const sectRef = useRef<HTMLDivElement>(null);
   const [imgOk, setImgOk] = useState(true);
@@ -154,6 +170,15 @@ export default function WhyChooseUs() {
               <span>Image placeholder &mdash; drop file at public/brand/why-ucx.png</span>
             </div>
           )}
+
+          <svg className="signals" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            {REASONS.map((r) => (
+              <path key={r.badge} className="leader" d={radialPath(r)} vectorEffect="non-scaling-stroke" fill="none" />
+            ))}
+            <circle className="spire-tip" cx={CENTER[0]} cy={CENTER[1]} r="1.6" vectorEffect="non-scaling-stroke" />
+            <circle className="beacon-ring" cx={CENTER[0]} cy={CENTER[1]} r="1.6" vectorEffect="non-scaling-stroke" />
+            <circle className="beacon-ring" cx={CENTER[0]} cy={CENTER[1]} r="1.6" style={{ animationDelay: "1.2s" }} vectorEffect="non-scaling-stroke" />
+          </svg>
 
           {REASONS.map((r) => (
             <div key={r.badge} className={`callout ${r.position}`} style={r.style}>

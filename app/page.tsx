@@ -6,7 +6,9 @@ import OurServices from "@/components/sections/OurServices";
 import SpecialistSolutions from "@/components/sections/SpecialistSolutions";
 import CapabilitiesRail from "@/components/sections/CapabilitiesRail";
 import Sectors from "@/components/sections/Sectors";
+import GalleryArc from "@/components/sections/GalleryArc";
 import DeliveryModel from "@/components/sections/DeliveryModel";
+import Testimonials from "@/components/sections/Testimonials";
 import LabPromo from "@/components/sections/LabPromo";
 import Support from "@/components/sections/Support";
 
@@ -21,7 +23,9 @@ export default function Home() {
       <SpecialistSolutions />
       <CapabilitiesRail />
       <Sectors />
+      <GalleryArc />
       <DeliveryModel />
+      <Testimonials />
       <LabPromo />
       <Support />
     </>

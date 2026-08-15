@@ -143,7 +143,7 @@
 .ucx-why2 .diagram {
   position: relative;
   width: 100%;
-  max-width: 980px;
+  max-width: 720px;
   aspect-ratio: 4 / 3;
   margin: 64px auto 0;
   opacity: 0;
@@ -174,6 +174,9 @@
 }
 .ucx-why2 .diagram-placeholder svg { width: 40px; height: 40px; opacity: .6; }
 .ucx-why2 .diagram-placeholder span { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; max-width: 40ch; }
+
+.ucx-why2 .signals { position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; pointer-events: none; }
+.ucx-why2 .signals .beacon-ring { transform-box: view-box; }
 .ucx-why2 .building rect { fill: rgba(145,242,181,.07); stroke: var(--accent-dim); stroke-width: 1.4; }
 .ucx-why2 .spire { stroke: var(--accent-dim); stroke-width: 1.4; }
 .ucx-why2 .spire-tip { fill: var(--accent); }
@@ -229,14 +232,24 @@
 
 .ucx-why2 .callout {
   position: absolute;
+  z-index: 3;
   display: flex;
   align-items: flex-start;
-  gap: 14px;
-  width: 230px;
+  gap: 12px;
+  width: 200px;
   transform: translateY(-50%);
   opacity: 0;
   animation: w2FadeUpCallout .9s var(--ease) forwards;
 }
+.ucx-why2 .callout-text {
+  background: rgba(0,33,27,.72);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+.ucx-why2 .callout.tr .callout-text,
+.ucx-why2 .callout.br .callout-text { text-align: right; }
 .ucx-why2 .callout.tl { animation-delay: .5s; }
 .ucx-why2 .callout.ml { animation-delay: .6s; }
 .ucx-why2 .callout.bl { animation-delay: .7s; }
@@ -283,12 +296,12 @@
 .ucx-why2 .callout-text h3 {
   font-family: 'Getho','Atyp Display',sans-serif;
   font-weight: 700;
-  font-size: 17px;
+  font-size: 15px;
   color: var(--cream);
-  margin-bottom: 6px;
+  margin-bottom: 5px;
   letter-spacing: -.01em;
 }
-.ucx-why2 .callout-text p { font-size: 13px; line-height: 1.65; color: var(--accent-dim); }
+.ucx-why2 .callout-text p { font-size: 12px; line-height: 1.55; color: var(--accent-dim); }
 
 /* ---- mobile fallback list ---- */
 .ucx-why2 .mobile-list { display: none; }
