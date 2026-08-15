@@ -1,0 +1,35 @@
+.ucx-backtotop {
+  position: fixed;
+  right: clamp(16px, 3vw, 32px);
+  bottom: clamp(16px, 3vw, 32px);
+  z-index: 500;
+  display: grid; place-items: center;
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(145,242,181,.3);
+  background: #00352D;
+  color: #91F2B5;
+  cursor: pointer;
+  padding: 0;
+  opacity: 0; visibility: hidden; transform: translateY(12px) scale(.9);
+  transition: opacity .3s cubic-bezier(.22,.61,.36,1), transform .3s cubic-bezier(.22,.61,.36,1),
+              visibility .3s, background .25s ease, color .25s ease, border-color .25s ease;
+  box-shadow: 0 12px 28px -10px rgba(0,0,0,.45);
+}
+.ucx-backtotop.is-visible { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+.ucx-backtotop:hover { background: #91F2B5; color: #00352D; transform: translateY(-3px) scale(1.05); }
+.ucx-backtotop:active { transform: translateY(-1px) scale(.97); }
+.ucx-backtotop svg { width: 18px; height: 18px; }
+
+.ucx-backtotop--interiors {
+  background: #04162C; color: #74C6A2; border-color: rgba(116,198,162,.3);
+}
+.ucx-backtotop--interiors:hover { background: #74C6A2; color: #04162C; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ucx-backtotop { transition: opacity .2s ease, visibility .2s ease; }
+}
+@media (max-width: 640px) {
+  .ucx-backtotop { width: 42px; height: 42px; }
+  .ucx-backtotop svg { width: 16px; height: 16px; }
+}

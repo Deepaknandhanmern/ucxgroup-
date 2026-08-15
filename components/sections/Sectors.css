@@ -73,14 +73,14 @@
   margin-bottom: 18px;
 }
 
-/* ---- flip cards ---- */
+/* ---- flip cards: premium tiles ---- */
 .ucx-sectors .flip-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
 }
 .ucx-sectors .flip-card {
-  height: 92px;
+  height: 138px;
   perspective: 1200px;
   cursor: default;
 }
@@ -99,21 +99,25 @@
   position: absolute; inset: 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  border-radius: 14px; border: 1px solid var(--line);
-  display: flex; align-items: center; justify-content: center; text-align: center;
-  padding: 10px;
+  border-radius: 18px; border: 1px solid var(--line);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center;
+  padding: 16px;
+  transition: border-color .35s var(--ease), box-shadow .35s var(--ease), background .35s var(--ease);
 }
 .ucx-sectors .flip-front {
-  background: rgba(145,242,181,.03);
+  background: linear-gradient(160deg, rgba(145,242,181,.07), rgba(145,242,181,.015) 70%);
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
-  font-size: 14px; color: var(--cream);
-  transition: border-color .3s var(--ease), background .3s var(--ease);
+  font-size: 13.5px; letter-spacing: -.005em; color: var(--cream);
 }
-.ucx-sectors .flip-card:hover .flip-front { border-color: var(--accent-dim); }
+.ucx-sectors .flip-front svg { width: 26px; height: 26px; color: var(--accent); opacity: .85; }
+.ucx-sectors .flip-card:hover .flip-front {
+  border-color: var(--accent);
+  box-shadow: 0 24px 44px -24px rgba(0,0,0,.6);
+}
 .ucx-sectors .flip-back {
   transform: rotateY(180deg);
-  background: var(--accent);
-  font-size: 12px; color: var(--bg-deep);
+  background: linear-gradient(160deg, var(--accent) 0%, #6fe3a0 130%);
+  font-size: 12.5px; line-height: 1.4; font-weight: 600; color: var(--bg-deep);
 }
 
 /* ---- closing ---- */
@@ -140,6 +144,7 @@
 }
 @media (max-width: 480px) {
   .ucx-sectors .flip-grid { grid-template-columns: repeat(2, 1fr); }
-  .ucx-sectors .flip-card { height: 82px; }
-  .ucx-sectors .flip-front { font-size: 12.5px; }
+  .ucx-sectors .flip-card { height: 118px; }
+  .ucx-sectors .flip-front { font-size: 12px; }
+  .ucx-sectors .flip-front svg { width: 22px; height: 22px; }
 }

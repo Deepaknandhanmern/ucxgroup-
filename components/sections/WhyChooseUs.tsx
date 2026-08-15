@@ -148,7 +148,7 @@ export default function WhyChooseUs() {
               </g>
               <circle className="compass-pivot" cx="100" cy="100" r="5" />
             </svg>
-            <span className="compass-caption">Est. 2010</span>
+            <span className="compass-caption">Global Delivery</span>
           </div>
         </div>
 

@@ -220,11 +220,11 @@ const PANELS: Panel[] = [
         title: "Collaboration Domains",
         desc: "Exploring innovation across the built environment.",
         links: [
-          { href: "#link-lab-digital-and-bim-innovation", label: "Digital & BIM Innovation" },
-          { href: "#link-lab-construction-and-prefabrication", label: "Construction & Prefabrication" },
-          { href: "#link-lab-ai-and-automation", label: "AI & Automation" },
-          { href: "#link-lab-smart-buildings-and-assets", label: "Smart Buildings & Assets" },
-          { href: "#link-lab-design-and-experience-innovation", label: "Design & Experience Innovation" },
+          { href: "/collaboration-lab#domains", label: "BIM & Digital Innovation" },
+          { href: "/collaboration-lab#domains", label: "Construction & Prefabrication" },
+          { href: "/collaboration-lab#domains", label: "AI & Automation" },
+          { href: "/collaboration-lab#domains", label: "Smart Assets" },
+          { href: "/collaboration-lab#domains", label: "Design & Sustainable Innovation" },
         ],
         ctaHref: "#link-lab-explore-collaboration-domains",
         ctaLabel: "Explore Collaboration Domains",
@@ -667,7 +667,7 @@ export default function Header() {
                     <p className="ucxnav__col-desc">{col.desc}</p>
                     <ul className="ucxnav__col-list">
                       {col.links.map((link) => (
-                        <li key={link.href}>
+                        <li key={link.label}>
                           <a href={link.href}>{link.label}</a>
                         </li>
                       ))}

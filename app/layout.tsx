@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "@/components/shared/fonts.css";
 import "@/components/layout/Header.css";
+import "@/components/layout/BackToTop.css";
 import "@/components/sections/Hero.css";
 import "@/components/sections/AboutUs.css";
 import "@/components/sections/Ecosystem.css";
@@ -25,6 +26,7 @@ import "@/components/sections/CaseStudies.css";
 import "@/components/sections/Careers.css";
 import "@/components/sections/GlobalDelivery.css";
 import "@/components/sections/Interiors.css";
+import "@/components/sections/LabExplore.css";
 import "@/components/sections/CollaborationLab.css";
 import "@/components/sections/Experience.css";
 import "@/components/sections/CapabilityPage.css";
@@ -33,6 +35,7 @@ import "@/components/ui/FileCard.css";
 import "@/components/sections/Resources.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import BackToTop from "@/components/layout/BackToTop";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -59,6 +62,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Header />
         {children}
         <Footer />
+        <BackToTop />
       </body>
     </html>
   );

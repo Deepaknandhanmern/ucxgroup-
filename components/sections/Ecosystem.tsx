@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 
 interface Pillar {
   index: string;
@@ -8,6 +9,7 @@ interface Pillar {
   subtitle: string;
   desc: string;
   tags: string[];
+  image: string;
 }
 
 const PILLARS: Pillar[] = [
@@ -17,6 +19,7 @@ const PILLARS: Pillar[] = [
     subtitle: "From vision to buildable design.",
     desc: "From concept to detailed documentation, we connect design thinking with delivery requirements.",
     tags: ["Architecture", "Interiors", "Design Development"],
+    image: "/brand/ecosystem/design-intelligence.jpg",
   },
   {
     index: "02",
@@ -24,6 +27,7 @@ const PILLARS: Pillar[] = [
     subtitle: "From design to intelligent information.",
     desc: "We transform project information into coordinated, data-rich digital environments for better decisions and delivery.",
     tags: ["BIM", "Digital Engineering", "Coordination", "Automation"],
+    image: "/brand/ecosystem/digital-intelligence.jpg",
   },
   {
     index: "03",
@@ -31,6 +35,7 @@ const PILLARS: Pillar[] = [
     subtitle: "From information to coordinated execution.",
     desc: "We support teams with coordinated documentation, project controls and execution-focused delivery support.",
     tags: ["Documentation", "QA/QC", "Project Controls", "Execution"],
+    image: "/brand/ecosystem/delivery-intelligence.jpg",
   },
   {
     index: "04",
@@ -38,16 +43,37 @@ const PILLARS: Pillar[] = [
     subtitle: "From handover to operational value.",
     desc: "We structure asset information for digital handover, facilities management and long-term operational performance.",
     tags: ["As-Built BIM", "COBie", "Asset Information", "Digital Handover"],
+    image: "/brand/ecosystem/asset-intelligence.jpg",
   },
 ];
 
 const PANEL_COUNT = PILLARS.length + 1; // intro panel + 4 pillars
 const DESKTOP_MIN = 900;
 
+function PillarVisual({ src, alt, index }: { src: string; alt: string; index: string }) {
+  const [ok, setOk] = useState(true);
+  if (ok) {
+    return <img className="pillar-photo" src={src} alt={alt} onError={() => setOk(false)} />;
+  }
+  return (
+    <>
+      <span className="pillar-ghost" aria-hidden="true">{index}</span>
+      <span className="pillar-image-pulse" aria-hidden="true"></span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <circle cx="8.5" cy="8.5" r="1.5" />
+        <path d="M21 15l-5-5L5 21" />
+      </svg>
+      <span>Image placeholder</span>
+    </>
+  );
+}
+
 export default function Ecosystem() {
   const outerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
+  const [activeFrac, setActiveFrac] = useState(0);
   const [pinned, setPinned] = useState(true);
 
   useEffect(() => {
@@ -75,7 +101,10 @@ export default function Ecosystem() {
 
       const maxShift = (PANEL_COUNT - 1) * vh;
       track!.style.transform = reduce ? "none" : `translateX(-${progress * maxShift}px)`;
-      setActive(Math.round(progress * (PANEL_COUNT - 1)));
+      outer!.style.setProperty("--progress", String(progress));
+      const raw = progress * (PANEL_COUNT - 1);
+      setActive(Math.round(raw));
+      setActiveFrac(raw);
     }
 
     function onScroll() {
@@ -92,6 +121,15 @@ export default function Ecosystem() {
     };
   }, []);
 
+  function focusStyle(panelIndex: number): CSSProperties {
+    if (!pinned) return {};
+    const dist = Math.min(1, Math.abs(activeFrac - panelIndex));
+    return {
+      transform: `scale(${1 - dist * 0.1})`,
+      opacity: 1 - dist * 0.55,
+    };
+  }
+
   return (
     <div className="ucx-ecosystem">
       <div
@@ -101,47 +139,55 @@ export default function Ecosystem() {
       >
         <div className="ucx-eco-sticky">
           <div className="grid-overlay"></div>
+          <div className="ucx-eco-glow" aria-hidden="true"></div>
 
           <div className="ucx-eco-track" ref={trackRef}>
             {/* ---------- intro panel ---------- */}
             <div className="ucx-eco-panel intro">
-              <span className="eyebrow">The UCX Ecosystem</span>
-              <h2 className="heading">One Connected Delivery Ecosystem</h2>
-              <p className="tagline">Four integrated intelligence pillars connecting projects from design through operations.</p>
-              <span className="scroll-hint">Scroll to explore &rarr;</span>
+              <div className="focus-inner" style={focusStyle(0)}>
+                <span className="eyebrow">The UCX Ecosystem</span>
+                <h2 className="heading">One Connected Delivery Ecosystem</h2>
+                <p className="tagline">Four integrated intelligence pillars connecting projects from design through operations.</p>
+                <span className="scroll-hint">Scroll to explore &rarr;</span>
+              </div>
             </div>
 
             {/* ---------- pillar panels ---------- */}
-            {PILLARS.map((p) => (
+            {PILLARS.map((p, i) => (
               <div className="ucx-eco-panel pillar" key={p.index}>
-                <div className="pillar-image">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2" />
-                    <circle cx="8.5" cy="8.5" r="1.5" />
-                    <path d="M21 15l-5-5L5 21" />
-                  </svg>
-                  <span>Image placeholder</span>
-                </div>
-                <div className="pillar-body">
-                  <span className="pillar-index">{p.index}</span>
-                  <span className="pillar-eyebrow">{p.eyebrow}</span>
-                  <h3 className="pillar-subtitle">{p.subtitle}</h3>
-                  <p className="pillar-desc">{p.desc}</p>
-                  <div className="pillar-tags">
-                    {p.tags.map((t) => (
-                      <span key={t}>{t}</span>
-                    ))}
+                <div className="focus-inner" style={focusStyle(i + 1)}>
+                  <div className="pillar-image">
+                    <PillarVisual src={p.image} alt={p.eyebrow} index={p.index} />
+                  </div>
+                  <div className="pillar-body">
+                    <span className="pillar-index">{p.index}</span>
+                    <span className="pillar-eyebrow">{p.eyebrow}</span>
+                    <h3 className="pillar-subtitle">{p.subtitle}</h3>
+                    <p className="pillar-desc">{p.desc}</p>
+                    <div className="pillar-tags">
+                      {p.tags.map((t) => (
+                        <span key={t}>{t}</span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* ---------- progress dots ---------- */}
+          {/* ---------- progress rail ---------- */}
           <div className="ucx-eco-progress">
-            {Array.from({ length: PANEL_COUNT }).map((_, i) => (
-              <span key={i} className={i === active ? "is-active" : ""}></span>
-            ))}
+            <div className="ucx-eco-progress-track">
+              <div className="ucx-eco-progress-fill"></div>
+            </div>
+            <div className="ucx-eco-progress-labels">
+              <span className={active === 0 ? "is-active" : ""}>Overview</span>
+              {PILLARS.map((p, i) => (
+                <span key={p.index} className={active === i + 1 ? "is-active" : ""}>
+                  {p.eyebrow.replace(" Intelligence", "")}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
