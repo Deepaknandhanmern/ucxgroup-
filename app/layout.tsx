@@ -20,6 +20,10 @@ import "@/components/sections/GlobalDelivery.css";
 import "@/components/sections/Interiors.css";
 import "@/components/sections/CollaborationLab.css";
 import "@/components/sections/Experience.css";
+import "@/components/sections/CapabilityPage.css";
+import "@/components/sections/Capabilities.css";
+import "@/components/ui/FileCard.css";
+import "@/components/sections/Resources.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 

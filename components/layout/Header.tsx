@@ -71,7 +71,7 @@ const PANELS: Panel[] = [
           { href: "#link-capabilities-digital-construction", label: "Digital Construction" },
           { href: "#link-capabilities-automation-and-4d-5d", label: "Automation & 4D/5D" },
         ],
-        ctaHref: "#link-capabilities-explore-bim-and-digital-delivery",
+        ctaHref: "/bim-digital-delivery",
         ctaLabel: "Explore BIM & Digital Delivery",
       },
       {
@@ -100,7 +100,7 @@ const PANELS: Panel[] = [
           { href: "#link-capabilities-qa-qc", label: "QA/QC" },
           { href: "#link-capabilities-execution-support", label: "Execution Support" },
         ],
-        ctaHref: "#link-capabilities-explore-project-support",
+        ctaHref: "/project-construction-support",
         ctaLabel: "Explore Project Support",
       },
       {
@@ -114,7 +114,7 @@ const PANELS: Panel[] = [
           { href: "#link-capabilities-fm-models", label: "FM Models" },
           { href: "#link-capabilities-digital-handover-and-twin", label: "Digital Handover & Twin" },
         ],
-        ctaHref: "#link-capabilities-explore-asset-information",
+        ctaHref: "/asset-digital-information",
         ctaLabel: "Explore Asset Information",
       },
     ],
@@ -296,7 +296,7 @@ const PANELS: Panel[] = [
           { href: "#link-insights-templates", label: "Templates" },
           { href: "#link-insights-reports", label: "Reports" },
         ],
-        ctaHref: "#link-insights-explore-resources",
+        ctaHref: "/resources",
         ctaLabel: "Explore Resources",
       },
     ],
@@ -371,10 +371,10 @@ const MOBILE_ITEMS: MobileItem[] = [
     key: "capabilities",
     label: "Capabilities",
     links: [
-      { href: "#link-capabilities-bim-and-digital-delivery", label: "BIM & Digital Delivery" },
+      { href: "/bim-digital-delivery", label: "BIM & Digital Delivery" },
       { href: "/interiors", label: "Design & Interiors" },
-      { href: "#link-capabilities-project-and-construction-support", label: "Project & Construction Support" },
-      { href: "#link-capabilities-asset-and-digital-information", label: "Asset & Digital Information" },
+      { href: "/project-construction-support", label: "Project & Construction Support" },
+      { href: "/asset-digital-information", label: "Asset & Digital Information" },
     ],
   },
   {
@@ -402,7 +402,7 @@ const MOBILE_ITEMS: MobileItem[] = [
     links: [
       { href: "#link-insights-insights", label: "Insights" },
       { href: "#link-insights-project-knowledge", label: "Project Knowledge" },
-      { href: "#link-insights-resources", label: "Resources" },
+      { href: "/resources", label: "Resources" },
     ],
   },
   {

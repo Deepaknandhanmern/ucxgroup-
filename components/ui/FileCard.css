@@ -1,0 +1,91 @@
+/* Small file-type preview chip — self-contained (white card + colored format
+   banner) so it reads correctly whether it sits on a light or dark section. */
+.ucx-filecard { position: relative; width: fit-content; }
+.ucx-filecard * { box-sizing: border-box; }
+
+.ucx-filecard .fc-body {
+  position: relative; z-index: 1;
+  width: 56px; height: 72px;
+  background: #fff; border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0,0,0,.06), inset 0 0 0 1px rgba(0,0,0,.07);
+  padding: 8px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+
+.ucx-filecard .fc-banner {
+  position: absolute; right: -6px; bottom: 6px; z-index: 2;
+  border-radius: 4px; padding: 2px 6px;
+  font-size: 8px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase;
+  color: #fff;
+}
+.banner-blue { background: #3b82f6; }
+.banner-red { background: #ef4444; }
+.banner-slate { background: #525252; }
+.banner-gray { background: #6b7280; }
+.banner-teal { background: #0f766e; }
+.banner-green { background: #059669; }
+.banner-orange { background: #f97316; }
+.banner-purple { background: #a855f7; }
+.banner-amber { background: #b45309; }
+.banner-pink { background: #ec4899; }
+
+/* default line-preview */
+.ucx-filecard .fc-lines { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+.ucx-filecard .fc-row { display: flex; gap: 4px; }
+.ucx-filecard .fc-row span { display: block; height: 2px; border-radius: 999px; background: rgba(0,0,0,.08); }
+.ucx-filecard .fc-row .w16 { width: 16%; }
+.ucx-filecard .fc-row .w20 { width: 20%; }
+.ucx-filecard .fc-row .w24 { width: 24px; }
+.ucx-filecard .fc-row .w28 { width: 28%; }
+.ucx-filecard .fc-row .w33 { width: 33%; }
+.ucx-filecard .fc-row .w50 { width: 50%; background: rgba(0,0,0,.16); }
+.ucx-filecard .fc-row.center { justify-content: center; }
+.ucx-filecard .fc-hash { font-size: 8px; font-weight: 700; color: rgba(0,0,0,.25); }
+
+/* xls/xlsx sheet grid */
+.ucx-filecard .fc-sheet { display: flex; flex-direction: column; gap: 2px; width: 100%; }
+.ucx-filecard .fc-sheet-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
+.ucx-filecard .fc-sheet-row span { height: 7px; background: rgba(0,0,0,.05); }
+.ucx-filecard .fc-sheet-row.header span { background: rgba(0,0,0,.18); }
+
+/* csv rows */
+.ucx-filecard .fc-csv { display: flex; flex-direction: column; gap: 5px; width: 100%; }
+.ucx-filecard .fc-csv-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
+.ucx-filecard .fc-csv-row span { height: 3px; border-radius: 999px; background: rgba(0,0,0,.05); }
+.ucx-filecard .fc-csv-row.header span { height: 5px; background: rgba(0,0,0,.18); }
+
+/* zip/rar/tar/gz teeth */
+.ucx-filecard .fc-zip { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 0; }
+.ucx-filecard .fc-zip-row { display: flex; }
+.ucx-filecard .fc-zip-row span { width: 6px; height: 6px; }
+.ucx-filecard .fc-zip-row span.on { background: rgba(0,0,0,.18); }
+.ucx-filecard .fc-zip-row span.off { background: rgba(0,0,0,.04); }
+
+/* thumbnail (ppt/img/video) */
+.ucx-filecard .fc-thumb {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: rgba(0,0,0,.035); border: 1px solid rgba(0,0,0,.06); border-radius: 5px;
+  padding: 6px 4px;
+}
+.ucx-filecard .fc-swatch { width: 13px; height: 13px; border-radius: 2px; }
+.ucx-filecard .fc-swatch.orange { background: rgba(251,146,60,.45); }
+.ucx-filecard .fc-swatch.yellow { background: rgba(250,204,21,.45); }
+.ucx-filecard .fc-play {
+  width: 0; height: 0; border-top: 5px solid transparent; border-bottom: 5px solid transparent;
+  border-left: 8px solid rgba(74,222,128,.6);
+}
+.ucx-filecard .fc-cap { width: 34px; height: 3px; border-radius: 999px; background: rgba(0,0,0,.14); }
+.ucx-filecard .fc-cap.short { width: 16px; }
+
+/* code / css / json */
+.ucx-filecard .fc-code { display: flex; flex-direction: column; gap: 5px; font-size: 0; }
+.ucx-filecard .fc-code > div { display: flex; align-items: center; gap: 3px; }
+.ucx-filecard .fc-code > div.indent { padding-left: 6px; }
+.ucx-filecard .fc-bracket { font-family: monospace; font-size: 6px; color: rgba(0,0,0,.3); }
+.ucx-filecard .fc-brace { font-family: monospace; font-size: 8px; font-weight: 700; color: rgba(0,0,0,.35); }
+.ucx-filecard .tag { display: inline-block; width: 14px; height: 3px; border-radius: 999px; background: rgba(56,189,248,.6); }
+.ucx-filecard .tag.wide { width: 18px; }
+.ucx-filecard .tag.short { width: 6px; }
+.ucx-filecard .tag.emerald { background: rgba(52,211,153,.65); }
+.ucx-filecard .tag.sky { background: rgba(56,189,248,.6); }
+.ucx-filecard .tag.dim { background: rgba(0,0,0,.12); }

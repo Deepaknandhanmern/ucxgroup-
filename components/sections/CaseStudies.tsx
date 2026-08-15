@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { submitToSplitForms } from "@/lib/splitforms";
+import FileCard from "@/components/ui/FileCard";
 
 interface CaseItem {
   cat: string;
@@ -187,6 +188,9 @@ export default function CaseStudies() {
                   <span className="ucxcs__ref">{c.ref}</span>
                   <span className="ucxcs__pages">{c.pages}</span>
                 </div>
+                <div className="ucxcs__filewrap">
+                  <FileCard format="pdf" />
+                </div>
                 <span className="ucxcs__cat">{c.label}</span>
               </div>
               <div className="ucxcs__body">
@@ -211,8 +215,11 @@ export default function CaseStudies() {
             &#10005;
           </button>
           <div className="ucxcs__side">
-            <span className="ucxcs__cat">{modalCase?.label}</span>
-            <h4>{modalCase?.title || "Case study title"}</h4>
+            <FileCard format="pdf" />
+            <div>
+              <span className="ucxcs__cat">{modalCase?.label}</span>
+              <h4>{modalCase?.title || "Case study title"}</h4>
+            </div>
           </div>
           <div className="ucxcs__form">
             <h2>Download this case study</h2>
