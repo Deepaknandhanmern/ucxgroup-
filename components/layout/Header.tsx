@@ -151,7 +151,7 @@ const PANELS: Panel[] = [
           { href: "#link-experience-infrastructure", label: "Infrastructure" },
           { href: "#link-experience-specialized-projects", label: "Specialized Projects" },
         ],
-        ctaHref: "#link-experience-explore-built-environment-projects",
+        ctaHref: "/experience#areas",
         ctaLabel: "Explore Built Environment Projects",
       },
       {
@@ -180,7 +180,7 @@ const PANELS: Panel[] = [
           { href: "#link-experience-digital-engineering", label: "Digital Engineering" },
           { href: "#link-experience-prefabrication", label: "Prefabrication" },
         ],
-        ctaHref: "#link-experience-explore-digital-projects",
+        ctaHref: "/experience#areas",
         ctaLabel: "Explore Digital Projects",
       },
     ],
@@ -189,7 +189,7 @@ const PANELS: Panel[] = [
         eyebrow: "Selected Experience",
         title: "Built Through Collaboration",
         desc: "Explore how UCX connects design, digital engineering and delivery across real-world projects.",
-        ctaHref: "#link-experience-explore-our-selected-experience",
+        ctaHref: "/experience",
         ctaLabel: "Explore our Selected Experience",
         feature: true,
       },
@@ -380,9 +380,9 @@ const MOBILE_ITEMS: MobileItem[] = [
     key: "experience",
     label: "Experience",
     links: [
-      { href: "#link-experience-built-environment", label: "Built Environment" },
+      { href: "/experience#areas", label: "Built Environment" },
       { href: "/interiors", label: "Interiors" },
-      { href: "#link-experience-digital-project-experience", label: "Digital Project Experience" },
+      { href: "/experience#areas", label: "Digital Project Experience" },
     ],
   },
   {
@@ -564,7 +564,7 @@ export default function Header() {
                   <span className="ucxnav__logo-letter ucxnav__logo-letter--mint">C</span>
                   <span className="ucxnav__logo-rest ucxnav__logo-rest--mint">ollaboration</span>
                 </span>
-                <img className="ucxnav__logo-xicon" src={XMARK_SRC} alt="" />
+                <span className="ucxnav__logo-xletter" aria-hidden="true">X</span>
               </span>
             </span>
             <span className="ucxnav__visually-hidden">UCX — Unconventional Collaboration</span>
@@ -666,7 +666,10 @@ export default function Header() {
                       ))}
                     </ul>
                     <a href={col.ctaHref} className="ucxnav__col-cta">
-                      {col.ctaLabel}{" "}
+                      {col.ctaLabel}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M5 12h13M13 6l6 6-6 6" />
+                      </svg>
                     </a>
                   </div>
                 ))}
@@ -726,7 +729,7 @@ export default function Header() {
                 </button>
                 <ul className="ucxnav__mobile-sub">
                   {item.links.map((link) => (
-                    <li key={link.href}>
+                    <li key={link.label}>
                       <a href={link.href}>{link.label}</a>
                     </li>
                   ))}

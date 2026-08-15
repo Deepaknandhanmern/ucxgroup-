@@ -19,6 +19,7 @@ import "@/components/sections/Careers.css";
 import "@/components/sections/GlobalDelivery.css";
 import "@/components/sections/Interiors.css";
 import "@/components/sections/CollaborationLab.css";
+import "@/components/sections/Experience.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 

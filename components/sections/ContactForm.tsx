@@ -100,8 +100,12 @@ export default function ContactForm() {
 
   return (
     <div className="ucx-contact" id="contact-form">
-      <div className="blob blob-1"></div>
-      <div className="blob blob-2"></div>
+      <div className="ucx-bg-grid"></div>
+      <div className="ucx-bg-aurora">
+        <span className="b1"></span>
+        <span className="b2"></span>
+        <span className="b3"></span>
+      </div>
 
       <div className="wrap">
         <span className="eyebrow">Support</span>
