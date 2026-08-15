@@ -13,6 +13,13 @@
 }
 .ucx-footer * { box-sizing: border-box; }
 
+/* Per-page theme override (Interiors sub-brand: navy/sage) */
+.ucx-footer.ucx-footer--interiors {
+  --primary: #04162C;
+  --primary-light: #0B2740;
+  --secondary: #74C6A2;
+}
+
 .ucx-footer .footer-top {
   display: grid;
   grid-template-columns: 0.8fr 1.1fr;

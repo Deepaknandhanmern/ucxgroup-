@@ -1,0 +1,207 @@
+.ucx-global {
+  --bg: #00352D;
+  --bg-deep: #00211B;
+  --accent: #91F2B5;
+  --accent-dim: rgba(145,242,181,0.55);
+  --line: rgba(145,242,181,0.18);
+  --line-soft: rgba(145,242,181,0.035);
+  --line-glow: rgba(145,242,181,0.30);
+  --cream: #F3F1E6;
+  --ease: cubic-bezier(.16,.84,.36,1);
+
+  background: var(--bg) !important;
+  color: var(--accent);
+  font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding-bottom: 1px;
+}
+.ucx-global * { box-sizing: border-box; margin: 0; padding: 0; }
+
+.ucx-global .grid-overlay {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-soft) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 120px);
+  opacity: .4;
+}
+.ucx-global .grid-glow {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-glow) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, var(--line-glow) 0 1px, transparent 1px 120px);
+  opacity: 0;
+  transition: opacity .5s var(--ease);
+  -webkit-mask-image: radial-gradient(240px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
+          mask-image: radial-gradient(240px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
+}
+.ucx-global.is-hot .grid-glow { opacity: 1; }
+.ucx-global .cursor-haze {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  opacity: 0; transition: opacity .6s var(--ease);
+  background: radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.07), transparent 70%);
+}
+.ucx-global.is-hot .cursor-haze { opacity: 1; }
+
+.ucx-global .wrapper {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto;
+  padding: clamp(90px,9vw,140px) clamp(20px,6vw,80px) clamp(70px,8vw,110px);
+}
+
+.ucx-global .head,
+.ucx-global .quality,
+.ucx-global .approach { scroll-margin-top: 96px; }
+
+/* ---- hero ---- */
+.ucx-global .head { max-width: 720px; margin-bottom: clamp(48px,6vw,72px); opacity: 0; animation: gdFadeUp .9s var(--ease) forwards; }
+.ucx-global .eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--accent-dim); margin-bottom: 18px;
+}
+.ucx-global .eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--accent-dim); }
+.ucx-global .heading {
+  font-family: 'Getho','Atyp Display',sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: .96;
+  letter-spacing: -.01em;
+  font-size: clamp(36px,5.4vw,68px);
+  color: var(--accent);
+  margin-bottom: 22px;
+}
+.ucx-global .intro { max-width: 62ch; font-size: 16px; line-height: 1.75; color: var(--accent-dim); margin-bottom: 26px; }
+.ucx-global .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+.ucx-global .tags span {
+  font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase;
+  border: 1px solid var(--line); border-radius: 999px; padding: 9px 18px; color: var(--accent-dim);
+}
+
+/* ---- connection map ---- */
+.ucx-global .map {
+  position: relative;
+  width: 100%; aspect-ratio: 1140 / 500;
+  margin-bottom: clamp(56px,7vw,88px);
+  opacity: 0; animation: gdFadeUp .9s var(--ease) forwards; animation-delay: .1s;
+}
+.ucx-global .map-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.ucx-global .world-dots circle { fill: var(--line); }
+
+.ucx-global .leader { fill: none; stroke: var(--line-glow); stroke-width: 1.4; stroke-dasharray: 3 6; }
+
+.ucx-global .pulse { fill: var(--accent); offset-rotate: 0deg; animation: gdTravel 3.6s var(--ease) infinite; }
+.ucx-global .pulse.p1 { offset-path: path('M715,208 Q672,140 630,175'); }
+.ucx-global .pulse.p2 { offset-path: path('M715,208 Q797,150 880,225'); animation-delay: .9s; }
+.ucx-global .pulse.p3 { offset-path: path('M715,208 Q450,40 185,115'); animation-delay: 1.8s; }
+@keyframes gdTravel {
+  0% { offset-distance: 0%; opacity: 0; }
+  12% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+.ucx-global .hub-ring { fill: none; stroke: var(--accent-dim); stroke-width: 1; }
+.ucx-global .hub-beacon { fill: var(--accent); }
+.ucx-global .hub-beacon-pulse {
+  fill: none; stroke: var(--accent); stroke-width: 1.4;
+  transform-origin: 715px 208px;
+  animation: gdBeacon 2.4s var(--ease) infinite;
+}
+@keyframes gdBeacon {
+  0% { r: 4.5; opacity: .9; }
+  100% { r: 26; opacity: 0; }
+}
+.ucx-global .hub-label {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; font-size: 15px;
+  letter-spacing: .06em; fill: var(--cream);
+}
+.ucx-global .hub-caption { font-size: 11px; letter-spacing: .04em; fill: var(--accent-dim); }
+
+.ucx-global .node-dot { fill: var(--accent); }
+.ucx-global .node-label {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; font-size: 15px;
+  fill: var(--cream);
+}
+.ucx-global .node-caption { font-size: 11px; fill: var(--accent-dim); }
+
+/* ---- quality & standards ---- */
+.ucx-global .quality {
+  padding: clamp(36px,4vw,52px) 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(56px,7vw,88px);
+  display: grid; grid-template-columns: .9fr 1.6fr; gap: clamp(24px,4vw,48px); align-items: baseline;
+  opacity: 0; animation: gdFadeUp .9s var(--ease) forwards; animation-delay: .15s;
+}
+.ucx-global .sub-eyebrow {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
+}
+.ucx-global .quality-body { font-size: 16px; line-height: 1.75; color: var(--accent-dim); max-width: 64ch; }
+
+/* ---- approach ---- */
+.ucx-global .approach {
+  margin-bottom: clamp(56px,7vw,88px);
+  opacity: 0; animation: gdFadeUp .9s var(--ease) forwards; animation-delay: .2s;
+}
+.ucx-global .approach-head { max-width: 780px; margin-bottom: clamp(40px,5vw,56px); }
+.ucx-global .approach-head .sub-eyebrow { display: block; margin-bottom: 14px; }
+.ucx-global .approach-title {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(24px,3.4vw,40px); line-height: 1.15; color: var(--accent);
+  margin-bottom: 16px;
+}
+.ucx-global .approach-title .arrow { color: var(--accent-dim); margin: 0 4px; }
+.ucx-global .approach-body { font-size: 16px; line-height: 1.7; color: var(--accent-dim); max-width: 58ch; }
+
+.ucx-global .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: clamp(20px,3vw,32px); }
+.ucx-global .step {
+  border: 1px solid var(--line); border-radius: 16px; padding: 26px 24px;
+  opacity: 0; animation: gdFadeUp .8s var(--ease) forwards;
+  transition: border-color .3s var(--ease), background .3s var(--ease);
+}
+.ucx-global .step:hover { border-color: var(--accent-dim); background: rgba(145,242,181,.04); }
+.ucx-global .step-n {
+  display: block; font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 12px; letter-spacing: .1em; color: var(--accent-dim); margin-bottom: 14px;
+}
+.ucx-global .step h3 {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 19px; color: var(--cream); text-transform: uppercase; margin-bottom: 10px;
+}
+.ucx-global .step p { font-size: 14px; line-height: 1.65; color: var(--accent-dim); }
+
+/* ---- closing ---- */
+.ucx-global .closing {
+  padding-top: clamp(36px,4vw,52px); border-top: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+}
+.ucx-global .closing p { font-size: 15px; color: var(--accent-dim); max-width: 52ch; line-height: 1.6; }
+.ucx-global .closing a {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent); white-space: nowrap;
+}
+
+@keyframes gdFadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ucx-global *, .ucx-global *::before, .ucx-global *::after {
+    animation-duration: .001ms !important; transition-duration: .001ms !important;
+  }
+}
+
+@media (max-width: 860px) {
+  .ucx-global .quality { grid-template-columns: 1fr; }
+  .ucx-global .steps { grid-template-columns: 1fr; }
+  .ucx-global .grid-glow, .ucx-global .cursor-haze { display: none; }
+}
+@media (max-width: 640px) {
+  .ucx-global .wrapper { padding: 70px 20px 60px; }
+  .ucx-global .approach-title { font-size: clamp(22px,6vw,30px); }
+}

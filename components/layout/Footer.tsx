@@ -1,6 +1,13 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+
 export default function Footer() {
+  const pathname = usePathname();
+  const isInteriors = pathname?.startsWith("/interiors") ?? false;
+
   return (
-    <footer className="ucx-footer">
+    <footer className={`ucx-footer${isInteriors ? " ucx-footer--interiors" : ""}`}>
       <div className="footer-top">
         <div className="badge-wrap">
           <svg viewBox="0 0 420 420" role="img" aria-label="UCX ecosystem badge: Design, Digital, Delivery, Asset">

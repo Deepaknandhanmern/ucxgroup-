@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 type PanelKey = "capabilities" | "experience" | "lab" | "insights" | "company";
 
@@ -16,6 +17,7 @@ interface Col {
   links: ColLink[];
   ctaHref: string;
   ctaLabel: string;
+  theme?: "interiors";
 }
 
 interface Promo {
@@ -156,6 +158,7 @@ const PANELS: Panel[] = [
         index: "02",
         title: "Interiors",
         desc: "Design and delivery across diverse interior environments.",
+        theme: "interiors",
         links: [
           { href: "#link-experience-workplace-and-office", label: "Workplace & Office" },
           { href: "#link-experience-hospitality-and-retail", label: "Hospitality & Retail" },
@@ -163,7 +166,7 @@ const PANELS: Panel[] = [
           { href: "#link-experience-custom-furniture", label: "Custom Furniture" },
           { href: "#link-experience-modular-interiors", label: "Modular Interiors" },
         ],
-        ctaHref: "#link-experience-explore-interior-projects",
+        ctaHref: "/interiors",
         ctaLabel: "Explore Interior Projects",
       },
       {
@@ -206,9 +209,9 @@ const PANELS: Panel[] = [
           { href: "#link-lab-about-the-lab", label: "About the Lab" },
           { href: "#link-lab-how-it-works", label: "How It Works" },
           { href: "#link-lab-collaboration-process", label: "Collaboration Process" },
-          { href: "#link-lab-live-collaboration-ideas", label: "Live Collaboration Ideas" },
+          { href: "/collaboration-lab#open-challenges", label: "Live Collaboration Ideas" },
         ],
-        ctaHref: "#link-lab-explore-the-lab",
+        ctaHref: "/collaboration-lab",
         ctaLabel: "Explore the Lab",
       },
       {
@@ -245,7 +248,7 @@ const PANELS: Panel[] = [
         eyebrow: "Have a challenge worth solving?",
         title: "Bring us a challenge, idea or opportunity.",
         desc: "Let's build the solution together.",
-        ctaHref: "#link-lab-start-a-collaboration",
+        ctaHref: "/collaboration-lab#open-challenges",
         ctaLabel: "Start a Collaboration",
         feature: true,
         icon: true,
@@ -321,7 +324,7 @@ const PANELS: Panel[] = [
           { href: "#link-company-our-story", label: "Our Story" },
           { href: "#link-company-our-approach", label: "Our Approach" },
           { href: "#link-company-leadership-and-team", label: "Leadership & Team" },
-          { href: "#link-company-our-workspace", label: "Our Workspace" },
+          { href: "/global-delivery#workspace", label: "Our Workspace" },
         ],
         ctaHref: "#link-company-explore-about-ucx",
         ctaLabel: "Explore About UCX",
@@ -331,11 +334,11 @@ const PANELS: Panel[] = [
         title: "Global Delivery",
         desc: "India-based delivery supporting international project teams.",
         links: [
-          { href: "#link-company-delivery-model", label: "Delivery Model" },
-          { href: "#link-company-global-markets", label: "Global Markets" },
-          { href: "#link-company-quality-and-standards", label: "Quality & Standards" },
+          { href: "/global-delivery#approach", label: "Delivery Model" },
+          { href: "/global-delivery#overview", label: "Global Markets" },
+          { href: "/global-delivery#quality", label: "Quality & Standards" },
         ],
-        ctaHref: "#link-company-explore-global-delivery",
+        ctaHref: "/global-delivery",
         ctaLabel: "Explore Global Delivery",
       },
       {
@@ -378,7 +381,7 @@ const MOBILE_ITEMS: MobileItem[] = [
     label: "Experience",
     links: [
       { href: "#link-experience-built-environment", label: "Built Environment" },
-      { href: "#link-experience-interiors", label: "Interiors" },
+      { href: "/interiors", label: "Interiors" },
       { href: "#link-experience-digital-project-experience", label: "Digital Project Experience" },
     ],
   },
@@ -406,7 +409,7 @@ const MOBILE_ITEMS: MobileItem[] = [
     label: "Company",
     links: [
       { href: "#link-company-about-ucx", label: "About UCX" },
-      { href: "#link-company-global-delivery", label: "Global Delivery" },
+      { href: "/global-delivery", label: "Global Delivery" },
       { href: "/careers", label: "Careers" },
     ],
   },
@@ -433,6 +436,8 @@ function ArrowRight({ width, height, viewBox, d }: { width: string; height: stri
 export default function Header() {
   const rootRef = useRef<HTMLElement>(null);
   const xIconRef = useRef<HTMLImageElement>(null);
+  const pathname = usePathname();
+  const isInteriors = pathname?.startsWith("/interiors") ?? false;
 
   const [openKey, setOpenKey] = useState<PanelKey | null>(null);
   const [mobileOpenKey, setMobileOpenKey] = useState<PanelKey | null>(null);
@@ -543,7 +548,7 @@ export default function Header() {
     <header
       ref={rootRef}
       id="ucxnav"
-      className={`ucxnav${isScrolled ? " is-scrolled" : ""}${isMobileMenuOpen ? " is-mobile-open" : ""}`}
+      className={`ucxnav${isScrolled ? " is-scrolled" : ""}${isMobileMenuOpen ? " is-mobile-open" : ""}${isInteriors ? " ucxnav--interiors" : ""}`}
     >
       <div className="ucxnav__bar">
         <div className="ucxnav__inner">
@@ -643,7 +648,13 @@ export default function Header() {
             <div className="ucxnav__panel-inner">
               <div className={`ucxnav__cols ucxnav__cols--${panel.colsVariant}`}>
                 {panel.cols.map((col) => (
-                  <div className="ucxnav__col" key={col.index}>
+                  <div
+                    className={`ucxnav__col${col.theme ? ` ucxnav__col--${col.theme}` : ""}`}
+                    key={col.index}
+                  >
+                    {col.theme === "interiors" && (
+                      <img className="ucxnav__col-logo" src="/brand/interiors/logo.png" alt="SpayceX" />
+                    )}
                     <span className="ucxnav__col-index">{col.index}</span>
                     <h3 className="ucxnav__col-title">{col.title}</h3>
                     <p className="ucxnav__col-desc">{col.desc}</p>

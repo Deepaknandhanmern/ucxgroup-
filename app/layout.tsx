@@ -7,6 +7,7 @@ import "@/components/sections/Hero.css";
 import "@/components/sections/AboutUs.css";
 import "@/components/sections/WhyChooseUs.css";
 import "@/components/sections/Founders.css";
+import "@/components/sections/Workspace.css";
 import "@/components/layout/Footer.css";
 import "@/components/sections/ContactForm.css";
 import "@/components/sections/FAQ.css";
@@ -15,6 +16,9 @@ import "@/components/sections/CapabilitiesRail.css";
 import "@/components/sections/Support.css";
 import "@/components/sections/CaseStudies.css";
 import "@/components/sections/Careers.css";
+import "@/components/sections/GlobalDelivery.css";
+import "@/components/sections/Interiors.css";
+import "@/components/sections/CollaborationLab.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
