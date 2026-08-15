@@ -202,6 +202,67 @@
   color: var(--ucx-muted);
 }
 
+/* ---- final CTA + queries form ---- */
+.ucx-final {
+  max-width: 1240px; margin: clamp(56px,6vw,88px) auto 0;
+  padding-top: clamp(40px,5vw,56px);
+  border-top: 1px solid var(--ucx-rule);
+  display: grid; grid-template-columns: 1fr .85fr;
+  gap: clamp(32px,5vw,56px); align-items: center;
+}
+.ucx-final__copy h3 {
+  font-family: var(--ucx-display); font-weight: 700;
+  font-size: clamp(26px,3.4vw,42px); line-height: 1.08; letter-spacing: -.015em;
+  color: var(--ucx-text); margin: 0 0 12px;
+}
+.ucx-final__copy p { font-size: 15px; line-height: 1.6; color: var(--ucx-muted); max-width: 42ch; margin: 0 0 24px; }
+
+.ucx-final__form {
+  display: flex; flex-direction: column; gap: 12px;
+  padding: clamp(22px,2.6vw,28px);
+  border: 1px solid var(--ucx-rule); border-radius: var(--ucx-radius);
+  background: #FFFFFF;
+  box-shadow: 0 2px 10px rgba(0,53,45,.04);
+}
+.ucx-final__label {
+  font-family: var(--ucx-display); font-weight: 700;
+  font-size: 13px; letter-spacing: .02em; color: var(--ucx-text); margin-bottom: 4px;
+}
+.ucx-final__form input, .ucx-final__form textarea {
+  font-family: var(--ucx-body); font-size: 14px; color: var(--ucx-text);
+  padding: 12px 14px; border: 1px solid var(--ucx-rule); border-radius: 11px;
+  background: #FBFEFC; outline: none;
+  transition: border-color .25s ease, box-shadow .25s ease;
+}
+.ucx-final__form input::placeholder, .ucx-final__form textarea::placeholder { color: rgba(0,53,45,.32); }
+.ucx-final__form input:focus, .ucx-final__form textarea:focus {
+  border-color: var(--ucx-dark); box-shadow: 0 0 0 3px rgba(145,242,181,.45);
+}
+.ucx-final__form textarea { resize: vertical; min-height: 70px; }
+.ucx-final__form button {
+  margin-top: 4px;
+  font-family: var(--ucx-body); font-size: 14px; padding: 13px 22px;
+  border-radius: var(--ucx-radius-pill); cursor: pointer;
+  background: var(--ucx-dark); color: #FFFFFF; border: 1px solid var(--ucx-dark);
+  transition: background .25s ease, color .25s ease, opacity .25s ease;
+}
+.ucx-final__form button:hover { background: transparent; color: var(--ucx-dark); }
+.ucx-final__form button:disabled { opacity: .6; cursor: default; }
+.ucx-final__error { font-size: 12.5px; color: #b3261e; margin: 0; }
+.ucx-final__done {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 14px; line-height: 1.5; color: var(--ucx-text);
+}
+.ucx-final__done span:first-child {
+  flex: none; width: 32px; height: 32px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--ucx-lite); color: var(--ucx-dark); font-size: 15px;
+}
+
+@media (max-width: 900px) {
+  .ucx-final { grid-template-columns: 1fr; }
+}
+
 /* ---- entrance ---- */
 .ucx-support [data-reveal] {
   opacity: 0;

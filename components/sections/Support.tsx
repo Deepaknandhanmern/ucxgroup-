@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { submitToSplitForms } from "@/lib/splitforms";
 
 interface SupportLine {
   href: string;
@@ -48,8 +49,23 @@ const LINES: SupportLine[] = [
   },
 ];
 
+type QueryStatus = "idle" | "sending" | "sent" | "error";
+
 export default function Support() {
   const sectRef = useRef<HTMLElement>(null);
+  const [status, setStatus] = useState<QueryStatus>("idle");
+
+  async function handleQuerySubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus("sending");
+    const formData = new FormData(e.currentTarget);
+    const payload: Record<string, string> = { subject: "Homepage query" };
+    formData.forEach((value, key) => {
+      payload[key] = String(value);
+    });
+    const { ok } = await submitToSplitForms(payload);
+    setStatus(ok ? "sent" : "error");
+  }
 
   useEffect(() => {
     const section = sectRef.current;
@@ -58,6 +74,7 @@ export default function Support() {
     const targets = [
       section.querySelector<HTMLElement>(".ucx-support__lead"),
       ...Array.from(section.querySelectorAll<HTMLElement>(".ucx-line")),
+      section.querySelector<HTMLElement>(".ucx-final"),
     ].filter((el): el is HTMLElement => el !== null);
 
     targets.forEach((el, i) => {
@@ -128,6 +145,39 @@ export default function Support() {
             </a>
           ))}
         </div>
+      </div>
+
+      <div className="ucx-final">
+        <div className="ucx-final__copy">
+          <h3>Have a Project to Deliver?</h3>
+          <p>Tell us what you&rsquo;re working on and we&rsquo;ll route it to the right team.</p>
+          <a className="ucx-support__cta" href="/contact">
+            <span>Start a Project</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 12h15M13 6l6 6-6 6" />
+            </svg>
+          </a>
+        </div>
+
+        <form className="ucx-final__form" onSubmit={handleQuerySubmit}>
+          {status === "sent" ? (
+            <div className="ucx-final__done">
+              <span>&#10003;</span>
+              <span>Thanks — we&apos;ve got your query and will be in touch shortly.</span>
+            </div>
+          ) : (
+            <>
+              <span className="ucx-final__label">Have Queries?</span>
+              <input required type="text" name="name" placeholder="Your name" />
+              <input required type="email" name="email" placeholder="you@email.com" />
+              <textarea name="message" placeholder="What's your question?"></textarea>
+              {status === "error" && <p className="ucx-final__error">Something went wrong — please try again.</p>}
+              <button type="submit" disabled={status === "sending"}>
+                {status === "sending" ? "Sending…" : "Send Query"}
+              </button>
+            </>
+          )}
+        </form>
       </div>
     </section>
   );

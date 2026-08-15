@@ -1,0 +1,91 @@
+.ucx-labpromo {
+  --bg: #91F2B5;
+  --bg-deep: #00211B;
+  --accent: #00352D;
+  --accent-dim: rgba(0,53,45,0.6);
+  --line: rgba(0,53,45,0.18);
+  --line-soft: rgba(0,53,45,0.04);
+  --line-glow: rgba(0,53,45,0.16);
+  --cream: #00352D;
+  --ease: cubic-bezier(.16,.84,.36,1);
+
+  background: var(--bg) !important;
+  color: var(--accent);
+  font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding-bottom: 1px;
+}
+.ucx-labpromo * { box-sizing: border-box; margin: 0; padding: 0; }
+
+.ucx-labpromo .grid-overlay {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-soft) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 120px);
+  opacity: .5;
+}
+.ucx-labpromo .grid-glow {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-glow) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, var(--line-glow) 0 1px, transparent 1px 120px);
+  opacity: 0;
+  transition: opacity .5s var(--ease);
+  -webkit-mask-image: radial-gradient(280px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
+          mask-image: radial-gradient(280px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
+}
+.ucx-labpromo.is-hot .grid-glow { opacity: 1; }
+.ucx-labpromo .cursor-haze {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  opacity: 0; transition: opacity .6s var(--ease);
+  background: radial-gradient(320px circle at var(--mx,50%) var(--my,50%), rgba(0,53,45,.06), transparent 70%);
+}
+.ucx-labpromo.is-hot .cursor-haze { opacity: 1; }
+
+.ucx-labpromo .wrapper {
+  position: relative; z-index: 1;
+  max-width: 900px; margin: 0 auto;
+  padding: clamp(80px,9vw,120px) clamp(20px,6vw,80px);
+  text-align: center;
+  display: flex; flex-direction: column; align-items: center;
+}
+
+.ucx-labpromo .eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--accent-dim); margin-bottom: 18px;
+}
+.ucx-labpromo .eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--accent-dim); }
+.ucx-labpromo .heading {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  text-transform: uppercase; line-height: .98; letter-spacing: -.01em;
+  font-size: clamp(32px,5.4vw,64px); color: var(--accent); margin-bottom: 22px;
+}
+.ucx-labpromo .intro { font-size: 17px; line-height: 1.7; color: var(--accent-dim); max-width: 58ch; margin-bottom: 28px; }
+.ucx-labpromo .tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 32px; }
+.ucx-labpromo .tags span {
+  font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase;
+  border: 1px solid var(--line); border-radius: 999px; padding: 9px 18px; color: var(--accent-dim);
+}
+.ucx-labpromo .cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--bg); background: var(--accent);
+  padding: 16px 30px; border-radius: 999px; border: 1px solid var(--accent);
+  transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
+}
+.ucx-labpromo .cta svg { width: 14px; height: 14px; transition: transform .3s var(--ease); }
+.ucx-labpromo .cta:hover { background: transparent; color: var(--accent); transform: translateY(-2px); }
+.ucx-labpromo .cta:hover svg { transform: translateX(3px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ucx-labpromo *, .ucx-labpromo *::before, .ucx-labpromo *::after {
+    animation-duration: .001ms !important; transition-duration: .001ms !important;
+  }
+}
+@media (max-width: 860px) {
+  .ucx-labpromo .grid-glow, .ucx-labpromo .cursor-haze { display: none; }
+}

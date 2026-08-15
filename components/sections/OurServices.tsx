@@ -7,42 +7,32 @@ interface Service {
   title: string;
   desc: string;
   tags: string[];
-  image: string;
-  alt: string;
 }
 
 const SERVICES: Service[] = [
   {
     num: "01",
-    title: "Conceptual design",
-    desc: "We turn ideas into reality with innovative design",
-    tags: ["Architecture", "Design"],
-    image: "https://picsum.photos/seed/svcA/900/900",
-    alt: "Faceted glass museum facade",
+    title: "BIM & Digital Delivery",
+    desc: "Digital engineering from design through construction.",
+    tags: ["BIM", "VDC", "Digital Engineering", "Coordination", "4D/5D"],
   },
   {
     num: "02",
-    title: "Interior architecture",
-    desc: "We turn ideas into reality with innovative design",
-    tags: ["Interiordesign", "Archilovers"],
-    image: "https://picsum.photos/seed/svcB/900/900",
-    alt: "Sunlit minimal interior",
+    title: "Design & Interiors",
+    desc: "Integrated design and interior delivery.",
+    tags: ["Architecture", "Planning", "Interior Design", "Documentation"],
   },
   {
     num: "03",
-    title: "Urban planning",
-    desc: "We turn ideas into reality with innovative design",
-    tags: ["Architecture", "Design"],
-    image: "https://picsum.photos/seed/svcC/900/900",
-    alt: "Aerial view of a planned district",
+    title: "Project & Construction Support",
+    desc: "Coordinated support for project delivery.",
+    tags: ["Documentation", "Project Controls", "QA/QC", "Execution Support"],
   },
   {
     num: "04",
-    title: "Renovations & restorations",
-    desc: "We turn ideas into reality with innovative design",
-    tags: ["Architecture", "Design"],
-    image: "https://picsum.photos/seed/svcD/900/900",
-    alt: "Restored brick building with new addition",
+    title: "Asset & Digital Information",
+    desc: "Structured information for handover and operations.",
+    tags: ["As-Built BIM", "COBie", "Asset Information", "Digital Handover"],
   },
 ];
 
@@ -144,11 +134,11 @@ export default function OurServices() {
 
       <div className="wrapper">
         <div className="head">
-          <span className="eyebrow">What We Do</span>
+          <span className="eyebrow">What We Deliver</span>
           <h2 className="heading">
-            Our <span className="stroke">Services</span>
+            What We <span className="stroke">Deliver</span>
           </h2>
-          <p className="intro">From first sketch to final handover, four disciplines, one continuous line of thinking.</p>
+          <p className="intro">Integrated capabilities for complex project requirements.</p>
         </div>
 
         <div className="svc-list" ref={listRef} onMouseLeave={handleListLeave}>
@@ -156,9 +146,14 @@ export default function OurServices() {
             className={`svc-figure${activeIndex !== null ? " is-on" : ""}`}
             style={{ top: figureTop, transform: figureTransform }}
           >
-            {SERVICES.map((s, i) => (
-              <img key={s.num} src={s.image} alt={s.alt} className={activeIndex === i ? "is-shown" : ""} />
-            ))}
+            <div className="svc-figure-placeholder">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <span>Image placeholder</span>
+            </div>
           </div>
 
           {SERVICES.map((s, i) => (
@@ -187,6 +182,15 @@ export default function OurServices() {
               </div>
             </div>
           ))}
+        </div>
+
+        <div className="svc-closing">
+          <a className="svc-closing-cta" href="/capabilities">
+            Explore All Capabilities
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h13M13 6l6 6-6 6" />
+            </svg>
+          </a>
         </div>
       </div>
     </div>

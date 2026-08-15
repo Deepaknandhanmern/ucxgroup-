@@ -1,48 +1,56 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Reason {
   badge: string;
   title: string;
   desc: string;
-  position: "tl" | "bl" | "tr" | "br";
+  position: "tl" | "ml" | "bl" | "tr" | "br";
   style: { left?: string; right?: string; top: string };
 }
 
 const REASONS: Reason[] = [
   {
     badge: "01",
-    title: "Local Experts",
-    desc: "In-depth understanding of the regional design and architecture market.",
+    title: "Integrated Expertise",
+    desc: "Design, BIM, digital engineering and delivery support within one connected framework.",
     position: "tl",
-    style: { left: "7.8%", top: "19.3%" },
+    style: { left: "6%", top: "14%" },
   },
   {
     badge: "02",
-    title: "Personalized Service",
-    desc: "Customized solutions tailored to your unique property requirements.",
-    position: "bl",
-    style: { left: "7.8%", top: "74.2%" },
+    title: "Scalable Capacity",
+    desc: "Extend your team without adding permanent delivery overhead.",
+    position: "ml",
+    style: { left: "6%", top: "48%" },
   },
   {
     badge: "03",
-    title: "Proven Success",
-    desc: "A track record of delivering exceptional design outcomes for clients.",
-    position: "tr",
-    style: { right: "7.8%", top: "19.3%" },
+    title: "Technology-Enabled",
+    desc: "BIM, automation, data and digital workflows integrated into project delivery.",
+    position: "bl",
+    style: { left: "6%", top: "82%" },
   },
   {
     badge: "04",
-    title: "Industry Recognition",
-    desc: "Proud members of leading associations and award recipients.",
+    title: "Delivery Discipline",
+    desc: "Structured workflows, coordination and QA/QC aligned to project requirements.",
+    position: "tr",
+    style: { right: "6%", top: "24%" },
+  },
+  {
+    badge: "05",
+    title: "International Delivery",
+    desc: "India-based delivery capability supporting international project teams.",
     position: "br",
-    style: { right: "7.8%", top: "74.2%" },
+    style: { right: "6%", top: "72%" },
   },
 ];
 
 export default function WhyChooseUs() {
   const sectRef = useRef<HTMLDivElement>(null);
+  const [imgOk, setImgOk] = useState(true);
 
   useEffect(() => {
     const sect = sectRef.current;
@@ -91,14 +99,11 @@ export default function WhyChooseUs() {
       <div className="wrapper">
         <div className="head-row">
           <div className="head-text">
-            <span className="eyebrow">Our Advantage</span>
+            <span className="eyebrow">Why UCX</span>
             <h2 className="heading">
-              Why <span className="stroke">Choose</span> Us
+              <span className="ln">More Than Capability.</span>
+              <span className="ln stroke">A Connected Delivery Partner.</span>
             </h2>
-            <p className="intro">
-              Every reason below is load-bearing. We design with precision, deliver with certainty, and build
-              relationships the same way we build spaces, to last.
-            </p>
           </div>
 
           <div className="compass" aria-hidden="true">
@@ -132,75 +137,23 @@ export default function WhyChooseUs() {
         </div>
 
         <div className="diagram">
-          <svg className="diagram-svg" viewBox="0 0 900 620" preserveAspectRatio="xMidYMid meet">
-            <defs>
-              <radialGradient id="w2glow" cx="50%" cy="45%" r="55%">
-                <stop offset="0%" stopColor="rgba(145,242,181,0.30)" />
-                <stop offset="100%" stopColor="rgba(145,242,181,0)" />
-              </radialGradient>
-            </defs>
-            <ellipse className="glow" cx="450" cy="330" rx="260" ry="230" fill="url(#w2glow)"></ellipse>
-
-            <line x1="150" y1="560" x2="750" y2="560" className="ground" />
-            <g className="ticks">
-              <line x1="180" y1="554" x2="180" y2="566" />
-              <line x1="270" y1="554" x2="270" y2="566" />
-              <line x1="360" y1="554" x2="360" y2="566" />
-              <line x1="450" y1="554" x2="450" y2="566" />
-              <line x1="540" y1="554" x2="540" y2="566" />
-              <line x1="630" y1="554" x2="630" y2="566" />
-              <line x1="720" y1="554" x2="720" y2="566" />
-            </g>
-
-            <g className="building">
-              <rect x="360" y="380" width="180" height="180" />
-              <rect x="385" y="220" width="130" height="160" />
-              <rect x="405" y="100" width="90" height="120" />
-              <line x1="450" y1="100" x2="450" y2="60" className="spire" />
-              <circle className="beacon-ring" cx="450" cy="58" r="3" />
-              <circle className="beacon-ring" cx="450" cy="58" r="3" style={{ animationDelay: "1.2s" }} />
-              <circle cx="450" cy="58" r="3" className="spire-tip" />
-              <g className="windows">
-                <line x1="368" y1="410" x2="532" y2="410" />
-                <line x1="368" y1="440" x2="532" y2="440" />
-                <line x1="368" y1="470" x2="532" y2="470" />
-                <line x1="368" y1="500" x2="532" y2="500" />
-                <line x1="368" y1="530" x2="532" y2="530" />
-                <line x1="392" y1="250" x2="508" y2="250" />
-                <line x1="392" y1="280" x2="508" y2="280" />
-                <line x1="392" y1="310" x2="508" y2="310" />
-                <line x1="392" y1="340" x2="508" y2="340" />
-                <line x1="392" y1="370" x2="508" y2="370" />
-                <line x1="412" y1="130" x2="488" y2="130" />
-                <line x1="412" y1="155" x2="488" y2="155" />
-                <line x1="412" y1="180" x2="488" y2="180" />
-                <line x1="412" y1="205" x2="488" y2="205" />
-              </g>
-            </g>
-
-            <g className="leaders">
-              <path className="leader" d="M405,140 L70,120" />
-              <circle className="leader-dot" cx="405" cy="140" r="4" />
-              <circle className="leader-dot" cx="70" cy="120" r="4" />
-
-              <path className="leader" d="M365,420 L70,460" />
-              <circle className="leader-dot" cx="365" cy="420" r="4" />
-              <circle className="leader-dot" cx="70" cy="460" r="4" />
-
-              <path className="leader" d="M495,140 L830,120" />
-              <circle className="leader-dot" cx="495" cy="140" r="4" />
-              <circle className="leader-dot" cx="830" cy="120" r="4" />
-
-              <path className="leader" d="M535,420 L830,460" />
-              <circle className="leader-dot" cx="535" cy="420" r="4" />
-              <circle className="leader-dot" cx="830" cy="460" r="4" />
-
-              <circle className="pulse p1" r="3.4" />
-              <circle className="pulse p2" r="3.4" />
-              <circle className="pulse p3" r="3.4" />
-              <circle className="pulse p4" r="3.4" />
-            </g>
-          </svg>
+          {imgOk ? (
+            <img
+              className="diagram-image"
+              src="/brand/why-ucx.png"
+              alt="UCX connected delivery"
+              onError={() => setImgOk(false)}
+            />
+          ) : (
+            <div className="diagram-placeholder">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <path d="M21 15l-5-5L5 21" />
+              </svg>
+              <span>Image placeholder &mdash; drop file at public/brand/why-ucx.png</span>
+            </div>
+          )}
 
           {REASONS.map((r) => (
             <div key={r.badge} className={`callout ${r.position}`} style={r.style}>
