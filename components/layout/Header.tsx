@@ -78,6 +78,7 @@ const PANELS: Panel[] = [
         index: "02",
         title: "Design & Interiors",
         desc: "Integrated design and interior delivery.",
+        theme: "interiors",
         links: [
           { href: "#link-capabilities-architecture-and-planning", label: "Architecture & Planning" },
           { href: "#link-capabilities-interior-solutions", label: "Interior Solutions" },
@@ -85,7 +86,7 @@ const PANELS: Panel[] = [
           { href: "#link-capabilities-construction-documentation", label: "Construction Documentation" },
           { href: "#link-capabilities-bim-integrated-interiors", label: "BIM-Integrated Interiors" },
         ],
-        ctaHref: "#link-capabilities-explore-design-and-interiors",
+        ctaHref: "/interiors",
         ctaLabel: "Explore Design & Interiors",
       },
       {
@@ -371,7 +372,7 @@ const MOBILE_ITEMS: MobileItem[] = [
     label: "Capabilities",
     links: [
       { href: "#link-capabilities-bim-and-digital-delivery", label: "BIM & Digital Delivery" },
-      { href: "#link-capabilities-design-and-interiors", label: "Design & Interiors" },
+      { href: "/interiors", label: "Design & Interiors" },
       { href: "#link-capabilities-project-and-construction-support", label: "Project & Construction Support" },
       { href: "#link-capabilities-asset-and-digital-information", label: "Asset & Digital Information" },
     ],
