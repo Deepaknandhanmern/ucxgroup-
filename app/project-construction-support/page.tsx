@@ -10,6 +10,7 @@ export default function ProjectConstructionSupportPage() {
       intro="Coordinated support for project delivery — documentation, controls and quality management that keep every stage of a project on track."
       process={["Document", "Control", "Support"]}
       heroMotif={IconDocument}
+      heroImage="/brand/capabilities/project-construction-support.jpg"
       items={[
         { title: "Project Documentation", desc: "Structured, accurate documentation across project stages.", icon: IconDocument },
         { title: "Project Controls", desc: "Tracking scope, schedule and progress against plan.", icon: IconGauge },

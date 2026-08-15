@@ -10,7 +10,7 @@ import "@/components/sections/SpecialistSolutions.css";
 import "@/components/sections/Sectors.css";
 import "@/components/sections/GalleryArc.css";
 import "@/components/sections/DeliveryModel.css";
-import "@/components/sections/Testimonials.css";
+import "@/components/sections/TestimonialReel.css";
 import "@/components/sections/LabPromo.css";
 import "@/components/sections/WhyChooseUs.css";
 import "@/components/sections/Founders.css";

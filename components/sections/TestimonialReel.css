@@ -1,0 +1,168 @@
+.ucx-reel {
+  --dark: #00352D;
+  --mint: #91F2B5;
+  --line: rgba(0,53,45,.14);
+  --line-soft: rgba(0,53,45,.045);
+  --muted: rgba(0,53,45,.6);
+  --ease: cubic-bezier(.22,.61,.36,1);
+
+  position: relative;
+  background: #FFFFFF !important;
+  color: var(--dark);
+  font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
+  overflow: hidden;
+}
+.ucx-reel * { box-sizing: border-box; }
+
+.ucx-reel .grid-overlay {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-soft) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 120px);
+  opacity: .6;
+}
+
+.ucx-reel .wrapper {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto;
+  padding: clamp(70px,8vw,120px) clamp(20px,6vw,80px);
+}
+
+.ucx-reel .reel-head { max-width: 640px; margin-bottom: clamp(40px,5vw,60px); }
+.ucx-reel .eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 18px;
+}
+.ucx-reel .eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--mint); }
+.ucx-reel .heading {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  line-height: 1.1; letter-spacing: -.01em;
+  font-size: clamp(24px,3.4vw,40px);
+}
+
+/* ---- shell ---- */
+.ucx-reel .reel-shell {
+  position: relative;
+  display: flex; flex-direction: column;
+  border: 1px solid var(--line); border-radius: 22px;
+  background: rgba(0,53,45,.02);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7);
+  outline: none;
+  overflow: hidden;
+}
+.ucx-reel .reel-shell:focus-visible { box-shadow: 0 0 0 3px rgba(145,242,181,.5); }
+@media (min-width: 768px) {
+  .ucx-reel .reel-shell { flex-direction: row; min-height: 340px; }
+}
+
+/* ---- reel stage ---- */
+.ucx-reel .reel-stage {
+  position: relative;
+  width: 100%; height: 224px;
+  flex-shrink: 0;
+  overflow: hidden;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+  mask-image:
+    linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%),
+    linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+@media (min-width: 768px) {
+  .ucx-reel .reel-stage { width: 380px; height: auto; }
+}
+.ucx-reel .reel-track {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.ucx-reel .reel-col {
+  display: flex; flex-direction: column; gap: 8px; flex-shrink: 0;
+  will-change: transform;
+}
+.ucx-reel .reel-cell {
+  flex-shrink: 0; width: 121px; height: 121px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(0,53,45,.05), rgba(0,53,45,.02));
+  filter: blur(1px);
+  box-shadow: inset 0 2px 0 rgba(255,255,255,.9);
+}
+.ucx-reel .reel-featured {
+  position: relative; flex-shrink: 0;
+  width: 121px; height: 121px;
+  border-radius: 14px; overflow: hidden;
+  background: rgba(0,53,45,.06);
+  box-shadow: 0 20px 40px -20px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.7);
+}
+.ucx-reel .reel-avatar-3d {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background:
+    radial-gradient(circle at 32% 26%, rgba(255,255,255,.55), rgba(255,255,255,0) 44%),
+    radial-gradient(circle at 70% 80%, rgba(0,20,16,.55), transparent 58%),
+    linear-gradient(150deg, #C4F7DC 0%, #58C98C 42%, #0F5A42 78%, #00352D 100%);
+  box-shadow: inset 0 -10px 16px rgba(0,20,16,.45), inset 0 6px 10px rgba(255,255,255,.35);
+}
+.ucx-reel .reel-avatar-initials {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 30px; letter-spacing: .01em;
+  color: rgba(0,33,27,.85);
+  text-shadow: 0 1px 0 rgba(255,255,255,.35), 0 -1px 1px rgba(0,20,16,.25);
+}
+
+/* ---- content ---- */
+.ucx-reel .reel-content {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: clamp(24px,3vw,40px);
+}
+.ucx-reel .reel-quote-mark { width: 34px; height: 34px; color: rgba(0,53,45,.25); margin-bottom: 12px; }
+.ucx-reel .reel-text-stage { position: relative; width: 100%; max-width: 460px; overflow: hidden; }
+.ucx-reel .reel-text-ghost { visibility: hidden; display: flex; flex-direction: column; gap: 14px; min-height: 130px; }
+.ucx-reel .reel-text {
+  position: absolute; inset: 0 0 auto 0;
+  display: flex; flex-direction: column; gap: 14px;
+  will-change: transform, opacity;
+}
+.ucx-reel .reel-quote {
+  margin: 0; font-size: 17px; line-height: 1.45; font-weight: 500; letter-spacing: -.01em; color: var(--dark);
+}
+.ucx-reel .reel-author { margin: 0; font-size: 12.5px; color: var(--muted); }
+.ucx-reel .reel-word { display: inline-block; white-space: nowrap; }
+.ucx-reel .reel-char {
+  display: inline-block;
+  opacity: 0; transform: translateY(70%);
+  animation: reelCharRise .5s var(--ease) forwards;
+}
+.ucx-reel .reel-text--exit .reel-char {
+  animation: reelExit .24s ease forwards !important;
+  animation-delay: 0ms !important;
+}
+
+@keyframes reelCharRise { to { opacity: 1; transform: translateY(0); } }
+@keyframes reelExit {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-12px); }
+}
+
+.ucx-reel .reel-controls { display: flex; align-items: center; gap: 10px; margin-top: 24px; }
+.ucx-reel .reel-arrow {
+  display: grid; place-items: center;
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 1px solid var(--line); background: transparent; color: var(--dark);
+  cursor: pointer;
+  transition: transform .2s var(--ease), border-color .2s var(--ease), background .2s var(--ease);
+}
+.ucx-reel .reel-arrow:hover:not(:disabled) { border-color: var(--dark); background: rgba(0,53,45,.05); transform: scale(1.08); }
+.ucx-reel .reel-arrow:active:not(:disabled) { transform: scale(.94); }
+.ucx-reel .reel-arrow:disabled { opacity: .35; cursor: default; }
+.ucx-reel .reel-arrow svg { width: 12px; height: 12px; }
+.ucx-reel .reel-counter { font-size: 11px; letter-spacing: .06em; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ucx-reel .reel-col { transition: none !important; }
+  .ucx-reel .reel-char { animation: none !important; opacity: 1; transform: none; }
+}

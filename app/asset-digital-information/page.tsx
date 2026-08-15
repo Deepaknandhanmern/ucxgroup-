@@ -10,6 +10,7 @@ export default function AssetDigitalInformationPage() {
       intro="Structured information for handover and operations — models and data built to stay useful long after construction is complete."
       process={["Capture", "Structure", "Handover"]}
       heroMotif={IconDatabase}
+      heroImage="/brand/capabilities/asset-digital-information.jpg"
       items={[
         { title: "As-Built BIM", desc: "Models updated to reflect what was actually built.", icon: IconCube },
         { title: "Asset Information", desc: "Structured asset data aligned to client requirements.", icon: IconTag },

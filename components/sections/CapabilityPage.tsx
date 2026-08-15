@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export interface CapabilityItem {
   title: string;
@@ -16,10 +16,13 @@ export interface CapabilityPageProps {
   items: CapabilityItem[];
   process: [string, string, string];
   heroMotif: React.ReactNode;
+  /** Optional real photo — shown in place of heroMotif once the file exists at this path. */
+  heroImage?: string;
 }
 
-export default function CapabilityPage({ index, eyebrow, title, intro, items, process, heroMotif }: CapabilityPageProps) {
+export default function CapabilityPage({ index, eyebrow, title, intro, items, process, heroMotif, heroImage }: CapabilityPageProps) {
   const sectRef = useRef<HTMLDivElement>(null);
+  const [imgOk, setImgOk] = useState(true);
 
   // cursor spotlight
   useEffect(() => {
@@ -110,7 +113,11 @@ export default function CapabilityPage({ index, eyebrow, title, intro, items, pr
           </div>
 
           <div className="hero-motif" data-reveal aria-hidden="true">
-            {heroMotif}
+            {heroImage && imgOk ? (
+              <img className="hero-motif-img" src={heroImage} alt="" onError={() => setImgOk(false)} />
+            ) : (
+              heroMotif
+            )}
           </div>
         </div>
 

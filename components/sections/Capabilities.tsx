@@ -175,29 +175,24 @@ export default function Capabilities() {
           <p className="framework-tagline">Different disciplines. One coordinated approach.</p>
         </div>
 
-        {/* ---------- four connected capabilities ---------- */}
+        {/* ---------- four connected capabilities: modular grid ---------- */}
         <div className="blocks">
-          <div className="spine" aria-hidden="true"></div>
           {BLOCKS.map((b) => (
-            <div className="block" key={b.index} data-reveal>
-              <div className="block-node">
-                <span className="node-dot">{b.index}</span>
+            <div className="mod-card" key={b.index} data-reveal>
+              <span className="mod-index" aria-hidden="true">{b.index}</span>
+              <h3 className="mod-title">{b.title}</h3>
+              <p className="mod-desc">{b.desc}</p>
+              <div className="mod-tags">
+                {b.tags.map((t) => (
+                  <span key={t}>{t}</span>
+                ))}
               </div>
-              <div className="block-body">
-                <h3 className="block-title">{b.title}</h3>
-                <p className="block-desc">{b.desc}</p>
-                <div className="block-tags">
-                  {b.tags.map((t) => (
-                    <span key={t}>{t}</span>
-                  ))}
-                </div>
-                <a className="block-cta" href={b.ctaHref}>
-                  {b.ctaLabel}
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M5 12h13M13 6l6 6-6 6" />
-                  </svg>
-                </a>
-              </div>
+              <a className="mod-cta" href={b.ctaHref}>
+                {b.ctaLabel}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h13M13 6l6 6-6 6" />
+                </svg>
+              </a>
             </div>
           ))}
         </div>

@@ -8,7 +8,7 @@ import CapabilitiesRail from "@/components/sections/CapabilitiesRail";
 import Sectors from "@/components/sections/Sectors";
 import GalleryArc from "@/components/sections/GalleryArc";
 import DeliveryModel from "@/components/sections/DeliveryModel";
-import Testimonials from "@/components/sections/Testimonials";
+import TestimonialReel from "@/components/sections/TestimonialReel";
 import LabPromo from "@/components/sections/LabPromo";
 import Support from "@/components/sections/Support";
 
@@ -25,7 +25,7 @@ export default function Home() {
       <Sectors />
       <GalleryArc />
       <DeliveryModel />
-      <Testimonials />
+      <TestimonialReel />
       <LabPromo />
       <Support />
     </>
