@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import CapabilityPage from "@/components/sections/CapabilityPage";
 import { IconCube, IconTag, IconDatabase, IconBuildingGear, IconHandover } from "@/components/sections/capabilityIcons";
+
+export const metadata: Metadata = {
+  title: "Asset & Digital Information",
+  description:
+    "As-built BIM, COBie data, FM-ready models and digital twin workflows — turning project information into long-term asset value beyond construction.",
+};
 
 export default function AssetDigitalInformationPage() {
   return (

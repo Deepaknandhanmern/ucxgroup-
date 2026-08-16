@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import CapabilityPage from "@/components/sections/CapabilityPage";
 import { IconCube, IconChip, IconNodes, IconCrane, IconAutomation } from "@/components/sections/capabilityIcons";
+
+export const metadata: Metadata = {
+  title: "BIM & Digital Delivery",
+  description:
+    "Coordinated BIM, digital engineering, clash-resolved coordination and 4D/5D automation — building coordinated digital environments for complex projects.",
+};
 
 export default function BimDigitalDeliveryPage() {
   return (

@@ -1,9 +1,22 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { POSTS, getPost } from "@/lib/insights";
 import InsightArticle from "@/components/sections/InsightArticle";
 
 export function generateStaticParams() {
   return POSTS.map((p) => ({ slug: p.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const post = getPost(slug);
+  if (!post) return {};
+
+  return {
+    title: post.title,
+    description: post.excerpt,
+    openGraph: { title: post.title, description: post.excerpt, images: [post.image] },
+  };
 }
 
 export default async function InsightArticlePage({ params }: { params: Promise<{ slug: string }> }) {

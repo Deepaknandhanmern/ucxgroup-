@@ -24,6 +24,7 @@ import "@/components/sections/BuildingEcosystem.css";
 import "@/components/sections/Workspace.css";
 import "@/components/layout/Footer.css";
 import "@/components/sections/ContactForm.css";
+import "@/components/sections/ContactMap.css";
 import "@/components/sections/FAQ.css";
 import "@/components/sections/OurServices.css";
 import "@/components/sections/CapabilitiesRail.css";
@@ -47,6 +48,7 @@ import "@/components/sections/ProjectDetail.css";
 import "@/components/sections/Insights.css";
 import "@/components/sections/InsightArticle.css";
 import "@/components/sections/Maintenance.css";
+import "@/components/sections/NotFoundContent.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BackToTop from "@/components/layout/BackToTop";
@@ -62,8 +64,28 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "UCX Group",
-  description: "Unconventional Collaboration",
+  metadataBase: new URL("https://ucx-group.com"),
+  title: {
+    default: "UCX Group — Unconventional Collaboration",
+    template: "%s | UCX Group",
+  },
+  description:
+    "UCX is a design, digital engineering, project delivery and asset information ecosystem — one connected team delivering built environments end to end.",
+  openGraph: {
+    title: "UCX Group — Unconventional Collaboration",
+    description:
+      "Design, digital engineering, project delivery and asset information — one connected delivery ecosystem.",
+    url: "https://ucx-group.com",
+    siteName: "UCX Group",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "UCX Group — Unconventional Collaboration",
+    description:
+      "Design, digital engineering, project delivery and asset information — one connected delivery ecosystem.",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

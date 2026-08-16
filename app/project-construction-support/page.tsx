@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import CapabilityPage from "@/components/sections/CapabilityPage";
 import { IconDocument, IconGauge, IconBars, IconShieldCheck, IconWrench } from "@/components/sections/capabilityIcons";
+
+export const metadata: Metadata = {
+  title: "Project & Construction Support",
+  description:
+    "Structured project documentation, QA/QC, project controls and execution support — helping teams manage demanding delivery schedules with coordinated information.",
+};
 
 export default function ProjectConstructionSupportPage() {
   return (

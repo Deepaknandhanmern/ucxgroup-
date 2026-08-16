@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import CapabilityPage from "@/components/sections/CapabilityPage";
 import { IconScan, IconPrefab, IconHeritage, IconSpark, IconParametric } from "@/components/sections/capabilityIcons";
+
+export const metadata: Metadata = {
+  title: "Specialist Solutions",
+  description:
+    "Scan-to-BIM, prefabrication, heritage & restoration, BIM automation & AI, and parametric systems — engineering beyond the standard delivery scope.",
+};
 
 export default function SpecialistSolutionsPage() {
   return (
