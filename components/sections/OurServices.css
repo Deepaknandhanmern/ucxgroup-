@@ -72,13 +72,20 @@
 .ucx-svc .heading .stroke { color: transparent; -webkit-text-stroke: 1.6px var(--accent); }
 .ucx-svc .intro { max-width: 420px; font-size: 15px; line-height: 1.75; color: var(--accent-dim); margin-top: 22px; }
 
-.ucx-svc .svc-list { position: relative; }
+.ucx-svc .svc-body {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 32px;
+  align-items: start;
+}
+
+.ucx-svc .svc-rows { position: relative; min-width: 0; }
 
 .ucx-svc .svc-row {
   position: relative; z-index: 2;
-  display: grid; grid-template-columns: 150px 1fr auto auto; gap: 40px; align-items: center;
+  display: grid; grid-template-columns: 90px 1fr auto; gap: 24px; align-items: center;
   border-top: 1px solid var(--line);
-  padding: 34px 28px;
+  padding: 30px 12px;
   opacity: 0;
   animation: svcFadeUp .9s var(--ease) forwards;
   transition: background .45s var(--ease), box-shadow .45s var(--ease);
@@ -87,7 +94,7 @@
 .ucx-svc .svc-row:nth-child(3) { animation-delay: .30s; }
 .ucx-svc .svc-row:nth-child(4) { animation-delay: .40s; }
 .ucx-svc .svc-row:nth-child(5) { animation-delay: .50s; }
-.ucx-svc .svc-list .svc-row:last-child { border-bottom: 1px solid var(--line); }
+.ucx-svc .svc-rows .svc-row:last-child { border-bottom: 1px solid var(--line); }
 
 .ucx-svc .svc-row.is-active {
   background: rgba(145,242,181,.06);
@@ -136,38 +143,40 @@
   margin-bottom: 12px;
   transition: transform .45s var(--ease), color .45s var(--ease);
 }
-.ucx-svc .svc-copy p { font-size: 14.5px; line-height: 1.65; color: var(--accent-dim); max-width: 300px; transition: transform .45s var(--ease); }
+.ucx-svc .svc-copy p { font-size: 14.5px; line-height: 1.65; color: var(--accent-dim); max-width: 420px; transition: transform .45s var(--ease); }
 .ucx-svc .svc-row.is-active .svc-copy h3,
 .ucx-svc .svc-row.is-active .svc-copy p { transform: translateX(16px); }
 .ucx-svc .svc-row.is-active .svc-copy h3 { color: var(--accent); }
 
-.ucx-svc .svc-tags { display: flex; flex-wrap: wrap; gap: 10px; max-width: 360px; justify-content: flex-end; }
+.ucx-svc .svc-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
 .ucx-svc .svc-tags span {
   border: 1px solid var(--line);
   background: transparent;
   border-radius: 999px;
-  padding: 8px 14px;
-  font-size: 11px; font-weight: 400; letter-spacing: .1em; text-transform: uppercase;
+  padding: 6px 12px;
+  font-size: 10.5px; font-weight: 400; letter-spacing: .08em; text-transform: uppercase;
   color: var(--accent-dim);
   white-space: nowrap;
   transition: border-color .45s var(--ease), color .45s var(--ease);
 }
 .ucx-svc .svc-row.is-active .svc-tags span { border-color: var(--accent-dim); color: var(--accent); }
 
-/* floating hover image */
-.ucx-svc .svc-figure {
-  position: absolute; top: 0; left: 50%; z-index: 5;
-  width: 270px; height: 200px;
-  margin-top: -100px;
-  transform: translateX(-50%);
-  pointer-events: none;
-  border-radius: 4px;
+/* sticky preview panel — sits in its own column so it never overlaps row text */
+.ucx-svc .svc-preview {
+  position: sticky; top: 120px;
+  width: 100%; aspect-ratio: 4 / 3;
+  border-radius: 16px;
   overflow: hidden;
-  opacity: 0;
+  opacity: .55;
   box-shadow: 0 0 0 1px var(--line), 0 30px 70px -30px rgba(0,0,0,.75);
-  transition: opacity .45s var(--ease), top .55s var(--ease);
+  transition: opacity .45s var(--ease);
 }
-.ucx-svc .svc-figure.is-on { opacity: 1; }
+.ucx-svc .svc-preview.is-on { opacity: 1; }
+.ucx-svc .svc-figure-img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transition: opacity .5s var(--ease);
+}
+.ucx-svc .svc-preview.is-on .svc-figure-img { opacity: 1; }
 .ucx-svc .svc-figure-placeholder {
   position: absolute; inset: 0;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
@@ -206,11 +215,11 @@
 }
 
 @media (max-width: 900px) {
+  .ucx-svc .svc-body { grid-template-columns: 1fr; }
+  .ucx-svc .svc-preview { display: none; }
   .ucx-svc .svc-row { grid-template-columns: 80px 1fr; gap: 22px; padding: 26px 14px; }
   .ucx-svc .svc-go { display: none; }
   .ucx-svc .svc-num { font-size: 46px; }
-  .ucx-svc .svc-tags { grid-column: 2/-1; flex-wrap: wrap; gap: 10px; }
-  .ucx-svc .svc-figure { display: none; }
 }
 @media (max-width: 560px) {
   .ucx-svc .wrapper { padding: 60px 20px 70px; }

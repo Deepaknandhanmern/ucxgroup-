@@ -151,13 +151,14 @@ const PANELS: Panel[] = [
           { href: "#link-experience-industrial", label: "Industrial" },
           { href: "#link-experience-infrastructure", label: "Infrastructure" },
           { href: "#link-experience-specialized-projects", label: "Specialized Projects" },
+          { href: "/projects", label: "Projects" },
         ],
         ctaHref: "/experience#areas",
         ctaLabel: "Explore Built Environment Projects",
       },
       {
         index: "02",
-        title: "Interiors",
+        title: "Design & Interiors",
         desc: "Design and delivery across diverse interior environments.",
         theme: "interiors",
         links: [
@@ -166,6 +167,7 @@ const PANELS: Panel[] = [
           { href: "/interiors#residential-interiors", label: "Residential Interiors" },
           { href: "/interiors#custom-furniture", label: "Custom Furniture" },
           { href: "/interiors#modular-interiors", label: "Modular Interiors" },
+          { href: "/projects", label: "Projects" },
         ],
         ctaHref: "/interiors",
         ctaLabel: "Explore Interior Projects",
@@ -180,6 +182,7 @@ const PANELS: Panel[] = [
           { href: "#link-experience-as-built-bim", label: "As-Built BIM" },
           { href: "#link-experience-digital-engineering", label: "Digital Engineering" },
           { href: "#link-experience-prefabrication", label: "Prefabrication" },
+          { href: "/projects", label: "Projects" },
         ],
         ctaHref: "/experience#areas",
         ctaLabel: "Explore Digital Projects",
@@ -267,12 +270,12 @@ const PANELS: Panel[] = [
         title: "Insights",
         desc: "Industry perspectives and practical knowledge.",
         links: [
-          { href: "#link-insights-all-insights", label: "All Insights" },
+          { href: "/insights", label: "All Insights" },
           { href: "#link-insights-bim-and-digital", label: "BIM & Digital" },
           { href: "#link-insights-design-and-interiors", label: "Design & Interiors" },
           { href: "#link-insights-technology-and-ai", label: "Technology & AI" },
         ],
-        ctaHref: "#link-insights-explore-insights",
+        ctaHref: "/insights",
         ctaLabel: "Explore Insights",
       },
       {
@@ -382,8 +385,9 @@ const MOBILE_ITEMS: MobileItem[] = [
     label: "Experience",
     links: [
       { href: "/experience#areas", label: "Built Environment" },
-      { href: "/interiors", label: "Interiors" },
+      { href: "/interiors", label: "Design & Interiors" },
       { href: "/experience#areas", label: "Digital Project Experience" },
+      { href: "/projects", label: "Projects" },
     ],
   },
   {
@@ -400,7 +404,7 @@ const MOBILE_ITEMS: MobileItem[] = [
     key: "insights",
     label: "Insights",
     links: [
-      { href: "#link-insights-insights", label: "Insights" },
+      { href: "/insights", label: "Insights" },
       { href: "#link-insights-project-knowledge", label: "Project Knowledge" },
       { href: "/resources", label: "Resources" },
     ],
@@ -555,7 +559,7 @@ export default function Header() {
         <div className="ucxnav__inner">
           {/* ---------- Logo ---------- */}
           {isInteriors ? (
-            <a href="/interiors" className="ucxnav__logo" aria-label="SpayceX — Interiors by UCX, home">
+            <a href="/interiors" className="ucxnav__logo" aria-label="SpayceX — Design & Interiors by UCX, home">
               <img className="ucxnav__logo-img" src="/brand/interiors/logo.png" alt="SpayceX" />
             </a>
           ) : (

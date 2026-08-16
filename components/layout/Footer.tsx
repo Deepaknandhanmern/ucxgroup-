@@ -60,7 +60,7 @@ export default function Footer() {
         )}
 
         <div>
-          <p className="eyebrow">{isInteriors ? "SpayceX — Interiors by UCX" : "UCX Engineering Technologies"}</p>
+          <p className="eyebrow">{isInteriors ? "SpayceX — Design & Interiors by UCX" : "UCX Engineering Technologies"}</p>
           <h2 className="headline">One connected delivery ecosystem</h2>
           <p className="services-line">DESIGN &middot; DIGITAL ENGINEERING &middot; PROJECT DELIVERY &middot; ASSET INFORMATION</p>
           <p className="location-line">India-based &middot; Global collaboration</p>
@@ -71,11 +71,11 @@ export default function Footer() {
         <div>
           <p className="col-title">Explore</p>
           <ul className="col-links">
-            <li><a href="#">Capabilities</a></li>
-            <li><a href="#">Projects</a></li>
-            <li><a href="#">Collaboration Lab</a></li>
+            <li><a href="/capabilities">Capabilities</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/collaboration-lab">Collaboration Lab</a></li>
             <li><a href="/about-us">About UCX</a></li>
-            <li><a href="#">Insights</a></li>
+            <li><a href="/insights">Insights</a></li>
           </ul>
         </div>
 

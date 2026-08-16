@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { submitToSplitForms } from "@/lib/splitforms";
+import ScrollExpandHero from "@/components/sections/ScrollExpandHero";
 
 const SERVICES = [
   {
@@ -165,49 +166,41 @@ export default function Interiors() {
     <div className="ucx-interiors" ref={sectRef}>
       <div className="cursor-haze"></div>
 
+      {/* ---------- hero: scroll-expand media ----------
+          Rendered outside .wrapper (which is max-width:1200px + padded)
+          so it needs no negative-margin escape hack — it's a direct
+          child of .ucx-interiors, which has no width constraint at all. */}
+      <ScrollExpandHero
+        mediaType="video"
+        mediaSrc="/brand/interiors/hero-expand.mp4"
+        posterSrc="/brand/interiors/hero-expand-poster.jpg"
+        bgImageSrc="/brand/interiors/hero.png"
+        kicker="Design & Interiors"
+        title="Design, Documentation & Delivery for Interior Environments"
+        scrollHint="Scroll to Expand"
+      >
+        <p className="intro">
+          UCX combines interior design expertise with BIM, technical documentation, coordination and execution
+          support to connect design intent with project delivery.
+        </p>
+        <a className="hero-cta" href="#categories">
+          <span>Explore Our Work</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h13M13 6l6 6-6 6" />
+          </svg>
+        </a>
+      </ScrollExpandHero>
+
+      {/* ---------- marquee: full-bleed scrolling strip, right under the hero ---------- */}
+      <div className="marquee-strip" aria-hidden="true">
+        <div className="marquee-track">
+          {[...SERVICES, ...SERVICES].map((s, i) => (
+            <span key={i}>{s.name}</span>
+          ))}
+        </div>
+      </div>
+
       <div className="wrapper">
-        {/* ---------- hero: full-bleed image banner ---------- */}
-        <div className="hero-banner" data-reveal>
-          <Ph src="/brand/interiors/hero.jpg" alt="SpayceX interior project" className="hero-banner-img" />
-          <div className="hero-banner-fade"></div>
-          <div className="hero-banner-copy">
-            <span className="eyebrow">Interiors</span>
-            <h1 className="heading">Design, Documentation &amp; Delivery for Interior Environments</h1>
-            <p className="intro">
-              UCX combines interior design expertise with BIM, technical documentation, coordination and execution
-              support to connect design intent with project delivery.
-            </p>
-            <a className="hero-cta" href="#categories">
-              <span>Explore Our Work</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h13M13 6l6 6-6 6" />
-              </svg>
-            </a>
-          </div>
-        </div>
-
-        {/* ---------- lead strip: full-bleed logo + horizontal form ---------- */}
-        <div className="lead-strip" data-reveal>
-          <img className="lead-strip-logo" src="/brand/interiors/logo.png" alt="SpayceX" />
-
-          {leadStatus === "sent" ? (
-            <p className="lead-strip-done">
-              <span>&#10003;</span>
-              Thanks &mdash; we&apos;ve got your enquiry and will be in touch shortly.
-            </p>
-          ) : (
-            <form className="lead-strip-form" onSubmit={handleLeadSubmit}>
-              <input required type="text" name="name" placeholder="Your name" />
-              <input required type="email" name="email" placeholder="you@email.com" />
-              <input type="tel" name="phone" placeholder="Phone (optional)" />
-              <button type="submit" disabled={leadStatus === "sending"}>
-                {leadStatus === "sending" ? "Sending…" : "Start a Project"}
-              </button>
-            </form>
-          )}
-          {leadStatus === "error" && <p className="lead-strip-error">Something went wrong &mdash; please try again.</p>}
-        </div>
-
         {/* ---------- services ---------- */}
         <div className="svc-head" data-reveal>
           <span className="sub-eyebrow">What We Deliver</span>
@@ -295,19 +288,42 @@ export default function Interiors() {
           </div>
         </div>
 
-        {/* ---------- closing banner ---------- */}
-        <div className="closing" data-reveal>
+        {/* ---------- closing: copy + inline enquiry form ---------- */}
+        <div className="closing-final" data-reveal>
           <div className="closing-copy">
             <span className="closing-eyebrow">Start a Project</span>
             <h3>Have an Interiors Project in Mind?</h3>
             <p>From concept through delivery &mdash; let&rsquo;s bring your space to life.</p>
+            <a className="closing-link" href="/contact">
+              Or reach us directly
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h13M13 6l6 6-6 6" />
+              </svg>
+            </a>
           </div>
-          <a className="closing-cta" href="/contact">
-            Start a Collaboration
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M5 12h13M13 6l6 6-6 6" />
-            </svg>
-          </a>
+
+          <div className="closing-form-card">
+            <img className="closing-logo" src="/brand/interiors/logo.png" alt="SpayceX" />
+
+            {leadStatus === "sent" ? (
+              <div className="closing-done">
+                <span>&#10003;</span>
+                <p>Thanks &mdash; we&rsquo;ve got your enquiry and will be in touch shortly.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleLeadSubmit}>
+                <input required type="text" name="name" placeholder="Your name" />
+                <input required type="email" name="email" placeholder="you@email.com" />
+                <input type="tel" name="phone" placeholder="Phone (optional)" />
+                <button type="submit" disabled={leadStatus === "sending"}>
+                  {leadStatus === "sending" ? "Sending…" : "Start a Collaboration"}
+                </button>
+                {leadStatus === "error" && (
+                  <p className="closing-error">Something went wrong &mdash; please try again.</p>
+                )}
+              </form>
+            )}
+          </div>
         </div>
       </div>
     </div>

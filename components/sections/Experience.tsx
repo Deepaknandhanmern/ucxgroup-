@@ -21,6 +21,7 @@ interface Area {
   desc: string;
   icon: React.ReactNode;
   tags: string[];
+  ctaLabel: string;
 }
 
 const AREAS: Area[] = [
@@ -37,10 +38,11 @@ const AREAS: Area[] = [
       </svg>
     ),
     tags: ["Commercial & Mixed-Use", "Residential", "Industrial", "Infrastructure", "Specialized Projects"],
+    ctaLabel: "Explore Built Environment Projects",
   },
   {
     index: "02",
-    title: "Interiors",
+    title: "Design & Interiors",
     desc: "Design and delivery across diverse interior environments.",
     icon: (
       <svg viewBox="0 0 48 48">
@@ -50,6 +52,7 @@ const AREAS: Area[] = [
       </svg>
     ),
     tags: ["Workplace & Office", "Hospitality & Retail", "Residential Interiors", "Custom Furniture", "Modular Interiors"],
+    ctaLabel: "Explore Interior Projects",
   },
   {
     index: "03",
@@ -63,6 +66,7 @@ const AREAS: Area[] = [
       </svg>
     ),
     tags: ["BIM & VDC", "Scan-to-BIM", "As-Built BIM", "Digital Engineering", "Prefabrication"],
+    ctaLabel: "Explore Digital Projects",
   },
 ];
 
@@ -239,6 +243,12 @@ export default function Experience() {
                   <span key={t}>{t}</span>
                 ))}
               </div>
+              <a className="area-cta" href="/projects">
+                {a.ctaLabel}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h13M13 6l6 6-6 6" />
+                </svg>
+              </a>
             </div>
           ))}
         </div>
