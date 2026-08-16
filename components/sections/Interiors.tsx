@@ -9,6 +9,8 @@ const SERVICES = [
     id: "architecture-planning",
     n: "01",
     name: "Architecture & Planning",
+    statement: "From Concept to Coordinated Design",
+    deliverables: ["Concept development", "Space planning", "Architectural design", "Design development", "Planning support", "Design documentation"],
     imgA: "/brand/interiors/svc-architecture-planning-a.jpg",
     imgB: "/brand/interiors/svc-architecture-planning-b.jpg",
   },
@@ -16,6 +18,8 @@ const SERVICES = [
     id: "interior-solutions",
     n: "02",
     name: "Interior Solutions",
+    statement: "Interior Design With Delivery in Mind",
+    deliverables: ["Workplace interiors", "Commercial interiors", "Residential interiors", "Hospitality & retail", "Space planning", "Interior detailing"],
     imgA: "/brand/interiors/svc-interior-solutions-a.jpg",
     imgB: "/brand/interiors/svc-interior-solutions-b.jpg",
   },
@@ -23,6 +27,8 @@ const SERVICES = [
     id: "design-development",
     n: "03",
     name: "Design Development",
+    statement: "Developing Ideas Into Buildable Solutions",
+    deliverables: ["Design development", "Material coordination", "Technical detailing", "Design coordination", "Constructability considerations"],
     imgA: "/brand/interiors/svc-design-development-a.jpg",
     imgB: "/brand/interiors/svc-design-development-b.jpg",
   },
@@ -30,6 +36,8 @@ const SERVICES = [
     id: "construction-documentation",
     n: "04",
     name: "Construction Documentation",
+    statement: "Information That Can Be Built",
+    deliverables: ["Working drawings", "Detailed drawings", "BIM documentation", "Interior documentation", "Schedules", "Drawing coordination"],
     imgA: "/brand/interiors/svc-construction-documentation-a.jpg",
     imgB: "/brand/interiors/svc-construction-documentation-b.jpg",
   },
@@ -37,6 +45,8 @@ const SERVICES = [
     id: "bim-integrated-interiors",
     n: "05",
     name: "BIM-Integrated Interiors",
+    statement: "Where Interior Design Meets Digital Delivery",
+    deliverables: ["Interior BIM", "Furniture modelling", "Finish schedules", "Detailed interiors", "Coordination", "Fabrication-ready information"],
     imgA: "/brand/interiors/svc-bim-integrated-interiors-a.jpg",
     imgB: "/brand/interiors/svc-bim-integrated-interiors-b.jpg",
   },
@@ -207,13 +217,26 @@ export default function Interiors() {
         </div>
         <div className="services">
           {SERVICES.map((s) => (
-            <div id={s.id} className="svc-card" key={s.n} data-reveal>
-              <span className="svc-index">{s.n}</span>
-              <div className="svc-media">
-                <Ph src={s.imgA} alt={s.name} className="svc-img svc-img-a" />
-                <Ph src={s.imgB} alt={s.name} className="svc-img svc-img-b" />
+            <div id={s.id} className="svc-flip" key={s.n} data-reveal tabIndex={0}>
+              <div className="svc-flip-inner">
+                <div className="svc-card svc-flip-front">
+                  <span className="svc-index">{s.n}</span>
+                  <div className="svc-media">
+                    <Ph src={s.imgA} alt={s.name} className="svc-img svc-img-a" />
+                    <Ph src={s.imgB} alt={s.name} className="svc-img svc-img-b" />
+                  </div>
+                  <h3 className="svc-name">{s.name}</h3>
+                </div>
+                <div className="svc-card svc-flip-back">
+                  <span className="svc-index">{s.n}</span>
+                  <p className="svc-statement">{s.statement}</p>
+                  <ul className="svc-deliverables">
+                    {s.deliverables.map((d) => (
+                      <li key={d}>{d}</li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-              <h3 className="svc-name">{s.name}</h3>
             </div>
           ))}
         </div>

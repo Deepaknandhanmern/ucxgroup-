@@ -13,6 +13,7 @@ interface ColLink {
 interface Col {
   index: string;
   title: string;
+  titleHref?: string;
   desc: string;
   links: ColLink[];
   ctaHref: string;
@@ -123,7 +124,7 @@ const PANELS: Panel[] = [
         eyebrow: "01 — Specialist Solutions",
         title: "Engineering Beyond the Standard",
         desc: "Advanced solutions that solve complex project and delivery challenges.",
-        ctaHref: "#link-capabilities-explore-specialist-solutions",
+        ctaHref: "/specialist-solutions",
         ctaLabel: "Explore Specialist Solutions",
       },
       {
@@ -151,14 +152,13 @@ const PANELS: Panel[] = [
           { href: "#link-experience-industrial", label: "Industrial" },
           { href: "#link-experience-infrastructure", label: "Infrastructure" },
           { href: "#link-experience-specialized-projects", label: "Specialized Projects" },
-          { href: "/projects", label: "Projects" },
         ],
-        ctaHref: "/experience#areas",
+        ctaHref: "/projects",
         ctaLabel: "Explore Built Environment Projects",
       },
       {
         index: "02",
-        title: "Design & Interiors",
+        title: "Interiors",
         desc: "Design and delivery across diverse interior environments.",
         theme: "interiors",
         links: [
@@ -167,9 +167,8 @@ const PANELS: Panel[] = [
           { href: "/interiors#residential-interiors", label: "Residential Interiors" },
           { href: "/interiors#custom-furniture", label: "Custom Furniture" },
           { href: "/interiors#modular-interiors", label: "Modular Interiors" },
-          { href: "/projects", label: "Projects" },
         ],
-        ctaHref: "/interiors",
+        ctaHref: "/projects?filter=interiors",
         ctaLabel: "Explore Interior Projects",
       },
       {
@@ -182,9 +181,8 @@ const PANELS: Panel[] = [
           { href: "#link-experience-as-built-bim", label: "As-Built BIM" },
           { href: "#link-experience-digital-engineering", label: "Digital Engineering" },
           { href: "#link-experience-prefabrication", label: "Prefabrication" },
-          { href: "/projects", label: "Projects" },
         ],
-        ctaHref: "/experience#areas",
+        ctaHref: "/projects?filter=bim",
         ctaLabel: "Explore Digital Projects",
       },
     ],
@@ -224,12 +222,13 @@ const PANELS: Panel[] = [
         desc: "Exploring innovation across the built environment.",
         links: [
           { href: "/collaboration-lab#domains", label: "BIM & Digital Innovation" },
-          { href: "/collaboration-lab#domains", label: "Construction & Prefabrication" },
           { href: "/collaboration-lab#domains", label: "AI & Automation" },
+          { href: "/collaboration-lab#domains", label: "Construction & Prefabrication" },
           { href: "/collaboration-lab#domains", label: "Smart Assets" },
-          { href: "/collaboration-lab#domains", label: "Design & Sustainable Innovation" },
+          { href: "/collaboration-lab#domains", label: "Design Technology" },
+          { href: "/collaboration-lab#domains", label: "Sustainable Innovation" },
         ],
-        ctaHref: "#link-lab-explore-collaboration-domains",
+        ctaHref: "/collaboration-lab#domains",
         ctaLabel: "Explore Collaboration Domains",
       },
       {
@@ -323,14 +322,15 @@ const PANELS: Panel[] = [
       {
         index: "01",
         title: "About UCX",
+        titleHref: "/about-us",
         desc: "Our story, people and approach to connected project delivery.",
         links: [
-          { href: "#link-company-our-story", label: "Our Story" },
-          { href: "#link-company-our-approach", label: "Our Approach" },
-          { href: "#link-company-leadership-and-team", label: "Leadership & Team" },
+          { href: "/about-us", label: "Our Story" },
+          { href: "/about-us#approach", label: "Our Approach" },
+          { href: "/about-us#founders", label: "Leadership & Team" },
           { href: "/global-delivery#workspace", label: "Our Workspace" },
         ],
-        ctaHref: "#link-company-explore-about-ucx",
+        ctaHref: "/about-us",
         ctaLabel: "Explore About UCX",
       },
       {
@@ -384,10 +384,9 @@ const MOBILE_ITEMS: MobileItem[] = [
     key: "experience",
     label: "Experience",
     links: [
-      { href: "/experience#areas", label: "Built Environment" },
-      { href: "/interiors", label: "Design & Interiors" },
-      { href: "/experience#areas", label: "Digital Project Experience" },
-      { href: "/projects", label: "Projects" },
+      { href: "/projects", label: "Built Environment" },
+      { href: "/projects?filter=interiors", label: "Interiors" },
+      { href: "/projects?filter=bim", label: "Digital Project Experience" },
     ],
   },
   {
@@ -413,7 +412,7 @@ const MOBILE_ITEMS: MobileItem[] = [
     key: "company",
     label: "Company",
     links: [
-      { href: "#link-company-about-ucx", label: "About UCX" },
+      { href: "/about-us", label: "About UCX" },
       { href: "/global-delivery", label: "Global Delivery" },
       { href: "/careers", label: "Careers" },
     ],
@@ -667,7 +666,9 @@ export default function Header() {
                       <img className="ucxnav__col-logo" src="/brand/interiors/logo.png" alt="SpayceX" />
                     )}
                     <span className="ucxnav__col-index">{col.index}</span>
-                    <h3 className="ucxnav__col-title">{col.title}</h3>
+                    <h3 className="ucxnav__col-title">
+                      {col.titleHref ? <a href={col.titleHref}>{col.title}</a> : col.title}
+                    </h3>
                     <p className="ucxnav__col-desc">{col.desc}</p>
                     <ul className="ucxnav__col-list">
                       {col.links.map((link) => (

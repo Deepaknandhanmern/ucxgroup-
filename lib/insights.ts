@@ -4,12 +4,22 @@ export interface Author {
   photo: string;
 }
 
+export type InsightCategory = "bim-digital" | "design-delivery" | "technology-ai";
+
+export const INSIGHT_FILTERS: { cat: InsightCategory | "all"; label: string }[] = [
+  { cat: "all", label: "All Insights" },
+  { cat: "bim-digital", label: "BIM & Digital" },
+  { cat: "design-delivery", label: "Design & Delivery" },
+  { cat: "technology-ai", label: "Technology & AI" },
+];
+
 export interface Post {
   slug: string;
   title: string;
   excerpt: string;
   image: string;
   team: string;
+  category: InsightCategory;
   date: string;
   readTime: string;
   tags: string[];
@@ -37,6 +47,7 @@ export const POSTS: Post[] = [
       "Design changes don't stop once documentation starts. The projects that stay on schedule are the ones with a process for absorbing late changes without the drawing set falling out of sync.",
     image: "/brand/insights/construction-documentation-alignment.jpg",
     team: "Project & Construction Support",
+    category: "design-delivery",
     date: "Aug 16, 2026",
     readTime: "5 min read",
     tags: ["Construction Support", "Documentation"],
@@ -55,6 +66,7 @@ export const POSTS: Post[] = [
       "Most 'digital twins' delivered at handover are just detailed models nobody in facilities management ends up opening. Here's what separates a model that gets used from one that gets archived.",
     image: "/brand/insights/digital-twin-after-handover.jpg",
     team: "Asset & Digital Information",
+    category: "bim-digital",
     date: "Aug 15, 2026",
     readTime: "6 min read",
     tags: ["Asset Information", "Digital Handover"],
@@ -73,6 +85,7 @@ export const POSTS: Post[] = [
       "Clash detection is the easy part. The real coordination problem is getting architecture, structure and MEP teams to agree on a single source of truth before it becomes expensive on site.",
     image: "/brand/insights/bim-coordination.jpg",
     team: "BIM & Digital Delivery",
+    category: "bim-digital",
     date: "Jan 12, 2026",
     readTime: "6 min read",
     tags: ["BIM", "Coordination"],
@@ -91,6 +104,7 @@ export const POSTS: Post[] = [
       "Point clouds are only useful once someone turns them into a model a design team can actually build on. Here's how that translation step decides whether a retrofit project stays on schedule.",
     image: "/brand/insights/scan-to-bim.jpg",
     team: "Digital Engineering",
+    category: "bim-digital",
     date: "Dec 18, 2025",
     readTime: "5 min read",
     tags: ["Scan-to-BIM", "Digital Engineering"],
@@ -109,6 +123,7 @@ export const POSTS: Post[] = [
       "A beautiful interior concept means little if it can't be documented cleanly for the site team. Where handoffs between design intent and construction detail tend to break down — and how to close the gap.",
     image: "/brand/insights/interiors-documentation.jpg",
     team: "Design & Interiors",
+    category: "design-delivery",
     date: "Nov 27, 2025",
     readTime: "7 min read",
     tags: ["Design & Interiors", "Documentation"],

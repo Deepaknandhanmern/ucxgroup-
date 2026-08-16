@@ -7,7 +7,7 @@
   --ease: cubic-bezier(.22,.61,.36,1);
 
   position: relative;
-  background: #FFFFFF !important;
+  background: #F3F1E6 !important;
   color: var(--dark);
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
   overflow: hidden;

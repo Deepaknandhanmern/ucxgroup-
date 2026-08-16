@@ -18,17 +18,20 @@ const STATS: Stat[] = [
 interface Area {
   index: string;
   title: string;
+  statement: string;
   desc: string;
   icon: React.ReactNode;
   tags: string[];
   ctaLabel: string;
+  ctaHref: string;
 }
 
 const AREAS: Area[] = [
   {
     index: "01",
     title: "Built Environment",
-    desc: "Projects spanning complex buildings, developments and infrastructure.",
+    statement: "Coordinated Delivery Across Complex Project Environments",
+    desc: "UCX supports building, development, industrial and infrastructure projects through integrated design, BIM, digital engineering and project delivery capabilities.",
     icon: (
       <svg viewBox="0 0 48 48">
         <path d="M8 40V14l10-6 10 6v26" />
@@ -39,11 +42,13 @@ const AREAS: Area[] = [
     ),
     tags: ["Commercial & Mixed-Use", "Residential", "Industrial", "Infrastructure", "Specialized Projects"],
     ctaLabel: "Explore Built Environment Projects",
+    ctaHref: "/projects",
   },
   {
     index: "02",
-    title: "Design & Interiors",
-    desc: "Design and delivery across diverse interior environments.",
+    title: "Interiors",
+    statement: "Design, Documentation & Delivery for Interior Environments",
+    desc: "UCX combines interior design expertise with BIM, technical documentation, coordination and execution support to connect design intent with project delivery.",
     icon: (
       <svg viewBox="0 0 48 48">
         <path d="M6 40V17.5L24 6l18 11.5V40H6Z" />
@@ -53,11 +58,13 @@ const AREAS: Area[] = [
     ),
     tags: ["Workplace & Office", "Hospitality & Retail", "Residential Interiors", "Custom Furniture", "Modular Interiors"],
     ctaLabel: "Explore Interior Projects",
+    ctaHref: "/projects?filter=interiors",
   },
   {
     index: "03",
     title: "Digital Project Experience",
-    desc: "Technology-led delivery for complex project requirements.",
+    statement: "Technology-Led Delivery for Complex Project Requirements",
+    desc: "Digital delivery is at the core of UCX's approach. We use BIM, digital engineering, coordination, automation and structured information workflows to connect project teams and improve delivery certainty.",
     icon: (
       <svg viewBox="0 0 48 48">
         <path d="M24 6 41 15.5v19L24 44 7 34.5v-19L24 6Z" />
@@ -67,6 +74,7 @@ const AREAS: Area[] = [
     ),
     tags: ["BIM & VDC", "Scan-to-BIM", "As-Built BIM", "Digital Engineering", "Prefabrication"],
     ctaLabel: "Explore Digital Projects",
+    ctaHref: "/projects?filter=bim",
   },
 ];
 
@@ -237,13 +245,14 @@ export default function Experience() {
                 <span className="area-icon">{a.icon}</span>
               </div>
               <h3 className="area-title">{a.title}</h3>
+              <p className="area-statement">{a.statement}</p>
               <p className="area-desc">{a.desc}</p>
               <div className="area-tags">
                 {a.tags.map((t) => (
                   <span key={t}>{t}</span>
                 ))}
               </div>
-              <a className="area-cta" href="/projects">
+              <a className="area-cta" href={a.ctaHref}>
                 {a.ctaLabel}
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h13M13 6l6 6-6 6" />
@@ -254,9 +263,15 @@ export default function Experience() {
         </div>
 
         <div className="closing" data-reveal>
-          <p>Want to see how this experience applies to your project?</p>
-          <a className="closing-cta" href="/contact">
-            Start a Collaboration
+          <div className="closing-copy">
+            <h3>Different Projects. One Commitment to Delivery.</h3>
+            <p>
+              Every project brings different requirements, teams and challenges. Our experience continues to shape
+              how UCX approaches design, digital delivery and project collaboration.
+            </p>
+          </div>
+          <a className="closing-cta" href="/capabilities">
+            Explore Our Capabilities
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12h13M13 6l6 6-6 6" />
             </svg>

@@ -60,7 +60,6 @@ export default function Workspace() {
       <div className="cursor-haze"></div>
 
       <div className="wrapper">
-        <span className="eyebrow">Our Workspace</span>
         <h2 className="heading">Where People, Projects &amp; Ideas Connect</h2>
         <p className="intro">
           UCX operates from an India-based collaborative workspace that supports focused project delivery, team

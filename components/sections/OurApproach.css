@@ -1,0 +1,64 @@
+.ucx-approach {
+  --bg-deep: #00211B;
+  --accent: #91F2B5;
+  --accent-dim: rgba(145,242,181,0.55);
+  --line: rgba(145,242,181,0.18);
+  --cream: #F3F1E6;
+  --ease: cubic-bezier(.16,.84,.36,1);
+
+  background: var(--bg-deep);
+  color: var(--accent);
+  font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
+  border-top: 1px solid var(--line);
+  scroll-margin-top: 80px;
+}
+.ucx-approach * { box-sizing: border-box; }
+
+.ucx-approach [data-reveal] {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity .8s var(--ease), transform .8s var(--ease);
+}
+.ucx-approach [data-reveal].is-in { opacity: 1; transform: none; }
+
+.ucx-approach .wrapper {
+  max-width: 1280px; margin: 0 auto;
+  padding: clamp(72px,9vw,120px) clamp(20px,6vw,80px);
+  display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(40px,6vw,72px);
+  align-items: center;
+}
+
+.ucx-approach .eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--accent-dim); margin-bottom: 18px;
+}
+.ucx-approach .eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--accent-dim); }
+.ucx-approach .heading {
+  font-family: 'Getho','Atyp Display',sans-serif;
+  font-weight: 700; text-transform: uppercase; line-height: 1.02; letter-spacing: -.01em;
+  font-size: clamp(28px,4vw,44px); color: var(--cream); margin-bottom: 20px; max-width: 16ch;
+}
+.ucx-approach .intro { font-size: 15.5px; line-height: 1.75; color: var(--accent-dim); margin-bottom: 14px; max-width: 54ch; }
+
+.ucx-approach .approach-words {
+  display: flex; flex-direction: column; align-items: flex-end;
+  border-left: 1px solid var(--line);
+  padding-left: clamp(28px,4vw,48px);
+}
+.ucx-approach .approach-word {
+  font-family: 'Getho','Atyp Display',sans-serif;
+  font-weight: 700; text-transform: uppercase; letter-spacing: -.01em;
+  line-height: 1.04;
+  font-size: clamp(30px,4.6vw,58px);
+  color: var(--accent);
+  transition-property: opacity, transform, color;
+}
+.ucx-approach .approach-word:hover { color: var(--cream); }
+
+@media (max-width: 860px) {
+  .ucx-approach .wrapper { grid-template-columns: 1fr; }
+  .ucx-approach .approach-words {
+    align-items: flex-start; border-left: 0; border-top: 1px solid var(--line);
+    padding-left: 0; padding-top: 32px; margin-top: 12px;
+  }
+}

@@ -331,9 +331,9 @@ export default function Hero() {
       {/* ============ top bar ============ */}
       <div className="topbar">
         <span className="live">
-          <i></i> Studio open / taking 2026 projects
+          <i></i> Available for New Projects &amp; Collaborations
         </span>
-        <span className="coords num-font">11.006&deg; N / 77.017&deg; E</span>
+        <span className="coords num-font">10.9847&deg; N / 77.2456&deg; E</span>
         <span className="clock num-font" ref={clockRef}>
           IST
         </span>

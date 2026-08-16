@@ -4,7 +4,9 @@ import { useEffect, useRef, useState } from "react";
 
 export interface CapabilityItem {
   title: string;
+  statement: string;
   desc: string;
+  deliverables: string[];
   icon: React.ReactNode;
 }
 
@@ -121,7 +123,7 @@ export default function CapabilityPage({ index, eyebrow, title, intro, items, pr
           </div>
         </div>
 
-        {/* ---------- process band ---------- */}
+        {/* ---------- process band (full-bleed) ---------- */}
         <div className="band" data-reveal>
           <span className="band-step">{process[0]}</span>
           <span className="band-arrow">&rarr;</span>
@@ -130,16 +132,30 @@ export default function CapabilityPage({ index, eyebrow, title, intro, items, pr
           <span className="band-step">{process[2]}</span>
         </div>
 
-        {/* ---------- capabilities grid ---------- */}
+        {/* ---------- services ---------- */}
         <div className="cap-head" id="capabilities" data-reveal>
           <span className="sub-eyebrow">Capabilities</span>
         </div>
-        <div className="grid">
-          {items.map((it) => (
-            <div className="card" key={it.title} data-reveal>
-              <span className="card-icon">{it.icon}</span>
-              <h3 className="card-title">{it.title}</h3>
-              <p className="card-desc">{it.desc}</p>
+        <div className="services">
+          {items.map((it, i) => (
+            <div className="service" key={it.title} data-reveal>
+              <div className="service-head">
+                <span className="service-index">{String(i + 1).padStart(2, "0")}</span>
+                <span className="service-icon">{it.icon}</span>
+              </div>
+              <div className="service-body">
+                <h3 className="service-title">{it.title}</h3>
+                <p className="service-statement">{it.statement}</p>
+                <p className="service-desc">{it.desc}</p>
+                <div className="service-deliverables">
+                  <span className="deliverables-label">Typical Deliverables</span>
+                  <ul>
+                    {it.deliverables.map((d) => (
+                      <li key={d}>{d}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </div>
           ))}
         </div>

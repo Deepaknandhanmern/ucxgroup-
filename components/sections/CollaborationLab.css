@@ -11,7 +11,7 @@
   --card: #FFFFFF;
   --ease: cubic-bezier(.16,.84,.36,1);
 
-  background: #FFFFFF !important;
+  background: #F3F1E6 !important;
   color: var(--dark);
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
   position: relative;
@@ -128,6 +128,8 @@
 .ucx-lab .status-open::before { background: var(--mint); }
 .ucx-lab .status-exploring { color: var(--dark); background: transparent; border: 1px solid var(--line); }
 .ucx-lab .status-exploring::before { background: var(--muted); }
+.ucx-lab .status-pilot { color: var(--dark); background: var(--mint-soft); }
+.ucx-lab .status-pilot::before { background: var(--dark); }
 
 /* ---- actions ---- */
 .ucx-lab .actions {
@@ -154,6 +156,58 @@
 .ucx-lab .approach-link span { transition: transform .25s var(--ease); }
 .ucx-lab .approach-link:hover { color: var(--dark); }
 .ucx-lab .approach-link:hover span { transform: translateX(3px); }
+
+/* ---- ways to collaborate ---- */
+.ucx-lab .ways { margin-top: clamp(80px,9vw,120px); }
+.ucx-lab .ways .heading { text-transform: uppercase; font-size: clamp(28px,4vw,44px); margin-bottom: clamp(28px,3.4vw,40px); }
+.ucx-lab .ways-list { border-top: 1px solid var(--line); margin-bottom: 28px; }
+.ucx-lab .way-row {
+  display: grid; grid-template-columns: 56px 1fr 1.6fr;
+  align-items: baseline; gap: clamp(16px,2.5vw,32px);
+  padding: clamp(20px,2.6vw,26px) 0;
+  border-bottom: 1px solid var(--line);
+  transition: background .3s var(--ease);
+}
+.ucx-lab .way-row:hover { background: rgba(145,242,181,.06); }
+.ucx-lab .way-index { font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; font-size: 13px; color: var(--muted); }
+.ucx-lab .way-title { font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; font-size: 16px; color: var(--dark); }
+.ucx-lab .way-desc { font-size: 14px; line-height: 1.6; color: var(--muted); }
+
+/* ---- built through collaboration / closing ---- */
+.ucx-lab .lab-closing {
+  margin-top: clamp(80px,9vw,120px);
+  padding-top: clamp(56px,7vw,88px);
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+.ucx-lab .lab-closing-kicker {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--muted);
+  margin-bottom: 16px;
+}
+.ucx-lab .lab-closing-lede { font-size: 15.5px; color: var(--muted); max-width: 54ch; margin: 0 auto 24px; }
+.ucx-lab .partner-types {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+  max-width: 700px; margin: 0 auto clamp(56px,7vw,84px);
+}
+.ucx-lab .partner-types span {
+  font-size: 11.5px; letter-spacing: .04em;
+  border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px; color: var(--muted);
+}
+.ucx-lab .lab-closing-heading {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; text-transform: uppercase;
+  line-height: 1.06; letter-spacing: -.01em;
+  font-size: clamp(28px,4.4vw,48px); color: var(--dark); max-width: 18ch; margin: 0 auto 16px;
+}
+.ucx-lab .lab-closing-sub { font-size: 15.5px; color: var(--muted); max-width: 52ch; margin: 0 auto 28px; }
+.ucx-lab .lab-closing-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+.ucx-lab .submit-cta--ghost { background: transparent; color: var(--dark); }
+.ucx-lab .submit-cta--ghost:hover { background: var(--dark); color: #fff; box-shadow: none; }
+
+@media (max-width: 640px) {
+  .ucx-lab .way-row { grid-template-columns: 32px 1fr; }
+  .ucx-lab .way-desc { grid-column: 2 / 3; }
+}
 
 /* ---- submit-a-challenge modal ---- */
 .ucx-lab .lab-overlay {

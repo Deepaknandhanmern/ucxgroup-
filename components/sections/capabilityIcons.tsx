@@ -108,3 +108,44 @@ export const IconHandover = (
     <path d="M42 30H22M28 24l-6 6 6 6" />
   </svg>
 );
+
+export const IconScan = (
+  <svg viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="4" />
+    <path d="M24 24 8 10M24 24 40 10M24 24 8 38M24 24 40 38" />
+    <path d="M6 6h6M36 6h6M6 36v6h6M36 42h6v-6" />
+  </svg>
+);
+
+export const IconPrefab = (
+  <svg viewBox="0 0 48 48">
+    <rect x="6" y="26" width="14" height="14" />
+    <rect x="28" y="26" width="14" height="14" />
+    <rect x="17" y="6" width="14" height="14" />
+    <path d="M20 20l4 6M28 20l-4 6" />
+  </svg>
+);
+
+export const IconHeritage = (
+  <svg viewBox="0 0 48 48">
+    <path d="M8 42h32M10 38h28M12 12h24M14 8h20" />
+    <path d="M16 12v26M23 12v26M25 12v26M32 12v26" />
+  </svg>
+);
+
+export const IconSpark = (
+  <svg viewBox="0 0 48 48">
+    <path d="M26 4 12 26h10l-4 18 18-24H26l4-16Z" />
+  </svg>
+);
+
+export const IconParametric = (
+  <svg viewBox="0 0 48 48">
+    <path d="M10 13v22M38 13v22M13 10h22M13 38h22M12 12l10 10M36 12 26 22M12 36l10-10M36 36 26 26" />
+    <circle cx="10" cy="10" r="3" />
+    <circle cx="38" cy="10" r="3" />
+    <circle cx="24" cy="24" r="3" />
+    <circle cx="10" cy="38" r="3" />
+    <circle cx="38" cy="38" r="3" />
+  </svg>
+);

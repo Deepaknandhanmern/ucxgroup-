@@ -113,21 +113,40 @@
   gap: 14px;
   margin-bottom: clamp(64px,8vw,100px);
 }
-.ucx-interiors .svc-card {
-  position: relative;
-  display: flex; flex-direction: column;
+.ucx-interiors .svc-flip {
   height: 300px;
+  perspective: 1400px;
+  outline: none;
+}
+.ucx-interiors .svc-flip-inner {
+  position: relative; width: 100%; height: 100%;
+  transition: transform .7s cubic-bezier(.4,.2,.2,1);
+  transform-style: preserve-3d;
+}
+.ucx-interiors .svc-flip:hover .svc-flip-inner,
+.ucx-interiors .svc-flip:focus-visible .svc-flip-inner {
+  transform: rotateY(180deg);
+}
+.ucx-interiors .svc-card {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
   padding: 22px;
   border: 1px solid var(--line);
   border-radius: 20px;
   background: rgba(116,198,162,.04);
   overflow: hidden;
-  transition: transform .35s var(--ease), border-color .35s var(--ease), background .35s var(--ease);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: border-color .35s var(--ease), background .35s var(--ease);
 }
-.ucx-interiors .svc-card:hover {
-  transform: translateY(-6px);
+.ucx-interiors .svc-flip:hover .svc-card.svc-flip-front {
   border-color: var(--accent);
   background: rgba(116,198,162,.08);
+}
+.ucx-interiors .svc-flip-back {
+  transform: rotateY(180deg);
+  background: var(--bg);
+  border-color: var(--bg);
 }
 .ucx-interiors .svc-index {
   display: block;
@@ -157,6 +176,26 @@
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   text-transform: uppercase; letter-spacing: -.005em; line-height: 1.2;
   font-size: 14.5px; color: var(--bg); margin-top: 14px;
+}
+
+/* ---- flip-back: statement + deliverables ---- */
+.ucx-interiors .svc-flip-back .svc-index { color: var(--accent); }
+.ucx-interiors .svc-statement {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 13px; line-height: 1.35; color: var(--cream); margin: 12px 0 14px;
+}
+.ucx-interiors .svc-deliverables {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-direction: column; gap: 7px;
+  overflow: hidden;
+}
+.ucx-interiors .svc-deliverables li {
+  font-size: 11px; line-height: 1.3; color: rgba(243,241,230,.68);
+  padding-left: 12px; position: relative;
+}
+.ucx-interiors .svc-deliverables li::before {
+  content: ''; position: absolute; left: 0; top: 6px;
+  width: 5px; height: 1px; background: var(--accent);
 }
 
 /* ---- process band (full-bleed, inverted) ---- */
@@ -392,7 +431,7 @@
 }
 @media (max-width: 640px) {
   .ucx-interiors .wrapper { padding: 60px 20px 70px; }
-  .ucx-interiors .svc-card { height: 260px; }
+  .ucx-interiors .svc-flip { height: 260px; }
   .ucx-interiors .categories { grid-template-columns: repeat(2, 1fr); }
   .ucx-interiors .materials { grid-template-columns: repeat(2, 1fr); }
   .ucx-interiors .band { flex-direction: column; }

@@ -153,6 +153,10 @@
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   font-size: clamp(19px,2.2vw,23px); color: var(--cream); margin-bottom: 10px; line-height: 1.2;
 }
+.ucx-experience .area-statement {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 13.5px; color: var(--accent); margin-bottom: 12px; line-height: 1.4;
+}
 .ucx-experience .area-desc { font-size: 14px; line-height: 1.65; color: var(--accent-dim); margin-bottom: 20px; }
 .ucx-experience .area-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .ucx-experience .area-tags span {
@@ -176,10 +180,12 @@
   padding-top: clamp(36px,4vw,52px); border-top: 1px solid var(--line);
   display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
 }
-.ucx-experience .closing p {
+.ucx-experience .closing-copy { max-width: 56ch; }
+.ucx-experience .closing-copy h3 {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; text-transform: uppercase;
-  letter-spacing: -.01em; font-size: clamp(18px,2.4vw,26px); color: var(--cream);
+  letter-spacing: -.01em; font-size: clamp(18px,2.4vw,26px); color: var(--cream); margin-bottom: 10px;
 }
+.ucx-experience .closing-copy p { font-size: 14.5px; line-height: 1.6; color: var(--accent-dim); }
 .ucx-experience .closing-cta {
   display: inline-flex; align-items: center; gap: 10px; flex: none;
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;

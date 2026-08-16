@@ -1,0 +1,111 @@
+.ucx-lifecycle {
+  --g: #00352D;
+  --mint: #91F2B5;
+  --paper: #F3F1E6;
+  --ink-70: rgba(0,53,45,.72);
+  --ink-45: rgba(0,53,45,.45);
+  --line: rgba(0,53,45,.12);
+  --ease: cubic-bezier(.22,.61,.36,1);
+
+  position: relative;
+  background: var(--paper);
+  color: var(--g);
+  font-family: 'UCXAtyp', 'Atyp Display', 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  border-top: 1px solid var(--line);
+  overflow: hidden;
+}
+.ucx-lifecycle * { box-sizing: border-box; }
+
+.ucx-lifecycle [data-reveal] {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity .8s var(--ease), transform .8s var(--ease);
+}
+.ucx-lifecycle [data-reveal].is-in { opacity: 1; transform: none; }
+
+.pl-grid {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,53,45,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,53,45,.05) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 82%);
+          mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 82%);
+}
+
+.pl-wrapper {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto;
+  padding: clamp(72px,9vw,120px) clamp(20px,6vw,80px) clamp(90px,10vw,140px);
+}
+
+.pl-head { max-width: 700px; margin-bottom: clamp(56px,7vw,90px); }
+.pl-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--g); font-weight: 700; margin-bottom: 18px;
+}
+.pl-eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--g); }
+.pl-title {
+  font-family: 'UCXGetho','Getho',sans-serif;
+  font-weight: 700; line-height: 1.06; letter-spacing: -.01em;
+  font-size: clamp(28px,4.4vw,48px); color: var(--g); margin-bottom: 18px; max-width: 18ch;
+}
+.pl-intro { font-size: 16px; line-height: 1.7; color: var(--ink-70); margin-bottom: 14px; max-width: 60ch; }
+.pl-sub {
+  display: inline-block; font-family: 'UCXGetho','Getho',sans-serif; font-weight: 700;
+  font-size: 12.5px; letter-spacing: .1em; text-transform: uppercase; color: #2E7D5A;
+}
+
+.pl-track {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;
+}
+.pl-stage { display: flex; flex-direction: column; }
+
+.pl-stage-top { display: flex; align-items: center; gap: 8px; margin-bottom: 22px; }
+.pl-dot {
+  flex: none; width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--g);
+  background: var(--mint);
+  box-shadow: 0 6px 16px -6px rgba(0,53,45,.35);
+}
+.pl-dot-index {
+  font-family: 'UCXGetho','Getho',sans-serif; font-weight: 700;
+  font-size: 12.5px; color: var(--g);
+}
+.pl-connector {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  color: var(--ink-45);
+  position: relative;
+}
+.pl-connector::before {
+  content: ''; position: absolute; left: 0; right: 22px; top: 50%;
+  height: 1px; background: var(--line);
+}
+.pl-connector svg { width: 16px; height: 16px; position: relative; z-index: 1; background: var(--paper); }
+
+.pl-stage-title {
+  font-family: 'UCXGetho','Getho',sans-serif; font-weight: 700;
+  font-size: clamp(15px,1.6vw,18px); color: var(--g); margin: 0 0 10px; letter-spacing: -.005em;
+}
+.pl-stage-items { font-size: 13px; line-height: 1.6; color: var(--ink-70); margin: 0; }
+
+@media (max-width: 900px) {
+  .pl-track { grid-template-columns: 1fr; gap: 0; }
+  .pl-stage { flex-direction: row; align-items: stretch; gap: 20px; padding-bottom: 8px; }
+  .pl-stage-top { flex-direction: column; margin-bottom: 0; }
+  .pl-connector { width: 1px; flex: 1; min-height: 40px; margin: 6px 0; }
+  .pl-connector::before { left: 50%; right: auto; top: 0; bottom: 0; height: auto; width: 1px; transform: translateX(-50%); }
+  .pl-connector svg { transform: rotate(90deg); }
+  .pl-stage-body { padding-bottom: 28px; }
+  .pl-stage:last-child .pl-stage-body { padding-bottom: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ucx-lifecycle *, .ucx-lifecycle *::before, .ucx-lifecycle *::after {
+    animation-duration: .001ms !important; transition-duration: .001ms !important;
+  }
+  .ucx-lifecycle [data-reveal] { opacity: 1; transform: none; }
+}

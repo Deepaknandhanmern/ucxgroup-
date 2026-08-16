@@ -1,83 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-
-type Cat = "bim" | "interiors" | "construction" | "asset";
-
-interface Project {
-  cat: Cat;
-  title: string;
-  sector: string;
-  location: string;
-  discipline: string;
-  image: string;
-}
-
-const FILTERS: { cat: Cat | "all"; label: string }[] = [
-  { cat: "all", label: "All Projects" },
-  { cat: "bim", label: "BIM & Digital Delivery" },
-  { cat: "interiors", label: "Design & Interiors" },
-  { cat: "construction", label: "Construction Support" },
-  { cat: "asset", label: "Asset Information" },
-];
-
-const PROJECTS: Project[] = [
-  {
-    cat: "bim",
-    title: "BIM Coordination for a Mixed-Use Cultural Campus",
-    sector: "Institutional",
-    location: "India",
-    discipline: "BIM & VDC",
-    image: "/brand/projects/cultural-campus.jpg",
-  },
-  {
-    cat: "interiors",
-    title: "Interior Design & Documentation for a Hospitality Development",
-    sector: "Hospitality",
-    location: "UAE",
-    discipline: "Design & Interiors",
-    image: "/brand/projects/hospitality-interiors.jpg",
-  },
-  {
-    cat: "construction",
-    title: "Construction Support for a Regional Medical Campus",
-    sector: "Healthcare",
-    location: "India",
-    discipline: "Construction Support",
-    image: "/brand/projects/medical-campus.jpg",
-  },
-  {
-    cat: "asset",
-    title: "Asset Information Delivery for an Urban Infrastructure Corridor",
-    sector: "Infrastructure",
-    location: "United Kingdom",
-    discipline: "Asset Information",
-    image: "/brand/projects/infrastructure-corridor.jpg",
-  },
-  {
-    cat: "bim",
-    title: "Scan-to-BIM for a Multi-Zone Urban Development",
-    sector: "Infrastructural",
-    location: "United States",
-    discipline: "Scan-to-BIM",
-    image: "/brand/projects/urban-development.jpg",
-  },
-  {
-    cat: "interiors",
-    title: "Workplace Interiors for a Corporate Headquarters",
-    sector: "Commercial",
-    location: "India",
-    discipline: "Workplace & Office",
-    image: "/brand/projects/corporate-workplace.jpg",
-  },
-];
+import { FILTERS, PROJECTS, type Cat, type Project } from "@/lib/projects";
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
-  const cardRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLAnchorElement>(null);
   const [imgOk, setImgOk] = useState(true);
   const pending = useRef(false);
 
-  function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
+  function onPointerMove(e: React.PointerEvent<HTMLAnchorElement>) {
     const el = cardRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -94,8 +25,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   }
 
   return (
-    <article
+    <a
       className="fp-card"
+      href={`/projects/${project.slug}`}
       ref={cardRef}
       data-reveal
       style={{ transitionDelay: `${(index % 6) * 60}ms` }}
@@ -133,7 +65,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           <span className="fp-tag">View project</span>
         </div>
       </div>
-    </article>
+    </a>
   );
 }
 
@@ -142,6 +74,11 @@ export default function FeaturedProjects() {
   const sectRef = useRef<HTMLDivElement>(null);
 
   const list = activeCat === "all" ? PROJECTS : PROJECTS.filter((p) => p.cat === activeCat);
+
+  useEffect(() => {
+    const filter = new URLSearchParams(window.location.search).get("filter") as Cat | null;
+    if (filter && FILTERS.some((f) => f.cat === filter)) setActiveCat(filter);
+  }, []);
 
   useEffect(() => {
     const sect = sectRef.current;
@@ -193,7 +130,7 @@ export default function FeaturedProjects() {
 
         <div className="fp-list">
           {list.map((p, i) => (
-            <ProjectCard project={p} index={i} key={p.title} />
+            <ProjectCard project={p} index={i} key={p.slug} />
           ))}
         </div>
 

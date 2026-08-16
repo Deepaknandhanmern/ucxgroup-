@@ -6,14 +6,39 @@ import { submitFormDataToSplitForms } from "@/lib/splitforms";
 interface ChallengeRow {
   challenge: string;
   domain: string;
-  status: "Open" | "Exploring";
+  status: "Open" | "Exploring" | "Pilot";
 }
 
 const CHALLENGES: ChallengeRow[] = [
   { challenge: "BIM-based facility dashboards", domain: "Smart Assets", status: "Open" },
   { challenge: "Automated prefab shop drawings", domain: "Prefabrication", status: "Exploring" },
   { challenge: "AI-assisted project documentation", domain: "AI & Automation", status: "Open" },
-  { challenge: "BIM-linked site progress", domain: "Construction", status: "Exploring" },
+  { challenge: "BIM-linked site progress", domain: "Construction", status: "Pilot" },
+];
+
+interface WayToCollaborate {
+  index: string;
+  title: string;
+  desc: string;
+}
+
+const WAYS: WayToCollaborate[] = [
+  { index: "01", title: "Project Collaboration", desc: "Solve a defined project challenge together." },
+  { index: "02", title: "Co-Innovation", desc: "Develop and test a new idea or workflow." },
+  { index: "03", title: "Pilot Project", desc: "Take a promising concept into a real project environment." },
+  { index: "04", title: "Strategic Partnership", desc: "Build a longer-term technology or delivery relationship." },
+  { index: "05", title: "Specialist Collaboration", desc: "Combine complementary expertise around a specific opportunity." },
+];
+
+const PARTNER_TYPES = [
+  "Architects",
+  "Developers",
+  "Engineers",
+  "Contractors",
+  "Manufacturers",
+  "Technology Companies",
+  "Facility Teams",
+  "Researchers",
 ];
 
 type FormStatus = "idle" | "sending" | "sent" | "error";
@@ -70,8 +95,7 @@ export default function CollaborationLab() {
 
       <div className="wrapper">
         <div className="head">
-          <span className="eyebrow">Collaboration Lab</span>
-          <h1 className="heading">Open Challenges</h1>
+          <h2 className="heading">Open Challenges</h2>
           <p className="intro">
             Industry problems looking for the right expertise, technology or collaboration.
           </p>
@@ -111,6 +135,57 @@ export default function CollaborationLab() {
             Have an Approach or Technology That Could Help?
             <span>&rarr;</span>
           </a>
+        </div>
+
+        {/* ---------- ways to collaborate ---------- */}
+        <div className="ways">
+          <h2 className="heading">Ways to Collaborate</h2>
+          <div className="ways-list">
+            {WAYS.map((w) => (
+              <div className="way-row" key={w.index}>
+                <span className="way-index">{w.index}</span>
+                <h3 className="way-title">{w.title}</h3>
+                <p className="way-desc">{w.desc}</p>
+              </div>
+            ))}
+          </div>
+          <a className="approach-link" href="/collaboration-lab#domains">
+            Explore Collaboration Models
+            <span>&rarr;</span>
+          </a>
+        </div>
+
+        {/* ---------- built through collaboration / closing ---------- */}
+        <div className="lab-closing">
+          <span className="lab-closing-kicker">Built Through Collaboration</span>
+          <p className="lab-closing-lede">
+            We collaborate with individuals, organisations and technology partners across the built environment.
+          </p>
+          <div className="partner-types">
+            {PARTNER_TYPES.map((p) => (
+              <span key={p}>{p}</span>
+            ))}
+          </div>
+
+          <h2 className="lab-closing-heading">The Future of AEC Won&apos;t Be Built Alone.</h2>
+          <p className="lab-closing-sub">
+            Have a problem worth solving? Bring us a challenge, idea or technology. Let&apos;s explore what we can
+            build together.
+          </p>
+          <div className="lab-closing-actions">
+            <a className="submit-cta" href="/contact">
+              Start a Collaboration
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h13M13 6l6 6-6 6" />
+              </svg>
+            </a>
+            <button className="submit-cta submit-cta--ghost" type="button" onClick={openForm}>
+              Share an Idea
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h13M13 6l6 6-6 6" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -165,7 +240,7 @@ export default function CollaborationLab() {
                 </div>
 
                 {status === "error" && (
-                  <p className="lab-error">Something went wrong sending this &mdash; please try again.</p>
+                  <p className="lab-error">Something went wrong sending this, please try again.</p>
                 )}
 
                 <button className="lab-submit" type="submit" disabled={status === "sending"}>

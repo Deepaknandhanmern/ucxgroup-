@@ -194,7 +194,7 @@ export default function SpecialistSolutions() {
         </div>
 
         <div className="closing">
-          <a className="closing-cta" href="/collaboration-lab">
+          <a className="closing-cta" href="/specialist-solutions">
             Explore Specialist Solutions
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12h13M13 6l6 6-6 6" />

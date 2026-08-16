@@ -6,6 +6,7 @@ import OurServices from "@/components/sections/OurServices";
 import SpecialistSolutions from "@/components/sections/SpecialistSolutions";
 import CapabilitiesRail from "@/components/sections/CapabilitiesRail";
 import Sectors from "@/components/sections/Sectors";
+import GlobalReach from "@/components/sections/GlobalReach";
 import GalleryArc from "@/components/sections/GalleryArc";
 import DeliveryModel from "@/components/sections/DeliveryModel";
 import TestimonialReel from "@/components/sections/TestimonialReel";
@@ -23,6 +24,7 @@ export default function Home() {
       <SpecialistSolutions />
       <CapabilitiesRail />
       <Sectors />
+      <GlobalReach />
       <GalleryArc />
       <DeliveryModel />
       <TestimonialReel />

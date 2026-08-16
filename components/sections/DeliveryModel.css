@@ -10,7 +10,7 @@
   --muted: rgba(0,53,45,.58);
   --ease: cubic-bezier(.22,.61,.36,1);
 
-  background: #FFFFFF !important;
+  background: #F3F1E6 !important;
   color: var(--dark);
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
   position: relative;

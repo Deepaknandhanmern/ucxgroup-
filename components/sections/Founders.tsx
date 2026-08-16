@@ -72,7 +72,7 @@ export default function Founders() {
   }, []);
 
   return (
-    <div className="ucx-founders" ref={sectRef}>
+    <div className="ucx-founders" id="founders" ref={sectRef}>
       <div className="grid-overlay"></div>
       <div className="grid-glow"></div>
       <div className="cursor-haze"></div>
@@ -83,7 +83,7 @@ export default function Founders() {
         <p className="tagline">Different Expertise. One Direction.</p>
         <p className="intro">
           UCX is built by people with complementary experience across architecture, BIM, interiors, technology and
-          business&mdash;united by a shared ambition to build something different.
+          business, united by a shared ambition to build something different.
         </p>
 
         <div className="roster">

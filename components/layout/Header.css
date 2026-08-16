@@ -264,6 +264,8 @@
   font-size: 17px; line-height: 1.25;
   color: var(--ucx-green); margin: 0 0 8px;
 }
+.ucxnav__col-title a { color: inherit; text-decoration: none; transition: opacity .2s ease; }
+.ucxnav__col-title a:hover { opacity: .72; }
 .ucxnav__col-desc {
   font-size: 13px; line-height: 1.5;
   color: var(--ucx-green); opacity: .62; margin: 0 0 16px;

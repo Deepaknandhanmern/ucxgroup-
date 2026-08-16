@@ -7,16 +7,76 @@ export default function AssetDigitalInformationPage() {
       index="04"
       eyebrow="Capabilities"
       title="Asset & Digital Information"
-      intro="Structured information for handover and operations — models and data built to stay useful long after construction is complete."
+      intro="Turning project information into long-term asset value. UCX structures digital information beyond construction to support as-built documentation, digital handover, facilities management and asset operations."
       process={["Capture", "Structure", "Handover"]}
       heroMotif={IconDatabase}
       heroImage="/brand/capabilities/asset-digital-information.jpg"
       items={[
-        { title: "As-Built BIM", desc: "Models updated to reflect what was actually built.", icon: IconCube },
-        { title: "Asset Information", desc: "Structured asset data aligned to client requirements.", icon: IconTag },
-        { title: "COBie & Data", desc: "Standards-based data exchange for handover.", icon: IconDatabase },
-        { title: "FM Models", desc: "Models structured for facilities management use.", icon: IconBuildingGear },
-        { title: "Digital Handover & Twin", desc: "Connected information ready for operational use.", icon: IconHandover },
+        {
+          title: "As-Built BIM",
+          statement: "A Digital Record of the Built Asset",
+          desc: "Develop as-built BIM models that reflect project conditions and provide structured information for downstream use.",
+          deliverables: [
+            "As-built BIM modelling",
+            "Existing-condition updates",
+            "Record documentation",
+            "Model verification",
+            "Asset-ready information",
+          ],
+          icon: IconCube,
+        },
+        {
+          title: "Asset Information",
+          statement: "From Model to Asset Data",
+          desc: "Structure information about building components, systems and assets to support handover and operational requirements.",
+          deliverables: [
+            "Asset data structuring",
+            "Equipment information",
+            "Component data",
+            "Information classification",
+            "Asset registers",
+          ],
+          icon: IconTag,
+        },
+        {
+          title: "COBie & Data",
+          statement: "Structured Information for Handover",
+          desc: "Support structured asset information and COBie-based workflows where required by project standards and client requirements.",
+          deliverables: [
+            "COBie data preparation",
+            "Asset data mapping",
+            "Information validation",
+            "Data structuring",
+            "Handover requirements",
+          ],
+          icon: IconDatabase,
+        },
+        {
+          title: "FM Models",
+          statement: "Digital Information for Facility Management",
+          desc: "Prepare BIM and asset information workflows that support facility management and operational use.",
+          deliverables: [
+            "FM-ready BIM models",
+            "Asset identification",
+            "Space & equipment data",
+            "Maintenance information",
+            "Operational workflows",
+          ],
+          icon: IconBuildingGear,
+        },
+        {
+          title: "Digital Handover & Digital Twin",
+          statement: "Connecting Project Information With the Future Asset",
+          desc: "Support digital handover and digital twin workflows by connecting geometry, asset information and structured project data.",
+          deliverables: [
+            "Digital handover",
+            "Structured project data",
+            "Asset information integration",
+            "Lifecycle information",
+            "Digital twin workflows",
+          ],
+          icon: IconHandover,
+        },
       ]}
     />
   );

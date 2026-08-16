@@ -2,11 +2,12 @@
   --g: #00352D;
   --mint: #91F2B5;
   --paper: #ffffff;
+  --bg: #F3F1E6;
   --ink-60: rgba(0,53,45,.62);
   --ink-40: rgba(0,53,45,.40);
   --line: rgba(0,53,45,.14);
   --ease: cubic-bezier(.22,.61,.36,1);
-  background: var(--paper);
+  background: var(--bg);
   color: var(--g);
   font-family: 'UCXAtyp', 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;

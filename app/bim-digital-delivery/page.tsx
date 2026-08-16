@@ -7,16 +7,86 @@ export default function BimDigitalDeliveryPage() {
       index="01"
       eyebrow="Capabilities"
       title="BIM & Digital Delivery"
-      intro="Digital engineering from design through construction — connected models, coordinated teams and data that carries through every stage of delivery."
+      intro="Building coordinated digital environments for complex projects. UCX supports architects, engineers, contractors and developers with BIM services, digital engineering and VDC workflows that improve coordination, documentation and construction readiness."
       process={["Model", "Coordinate", "Deliver"]}
       heroMotif={IconCube}
       heroImage="/brand/capabilities/bim-digital-delivery.jpg"
       items={[
-        { title: "BIM & VDC", desc: "Coordinated, model-based design and virtual construction.", icon: IconCube },
-        { title: "Digital Engineering", desc: "Technology-led workflows across the project lifecycle.", icon: IconChip },
-        { title: "BIM Coordination", desc: "Clash detection and cross-discipline model coordination.", icon: IconNodes },
-        { title: "Digital Construction", desc: "Model-driven support through construction on site.", icon: IconCrane },
-        { title: "Automation & 4D/5D", desc: "Scheduling and cost simulation linked to the model.", icon: IconAutomation },
+        {
+          title: "BIM & VDC",
+          statement: "Coordinated BIM for Multidisciplinary Projects",
+          desc: "Develop coordinated Building Information Models that bring architectural, structural and MEP information together within a structured project environment.",
+          deliverables: [
+            "Architectural BIM",
+            "Structural BIM",
+            "MEP BIM",
+            "Multidisciplinary coordination",
+            "Model development",
+            "BIM documentation",
+            "Clash detection support",
+          ],
+          icon: IconCube,
+        },
+        {
+          title: "Digital Engineering",
+          statement: "Engineering Information Connected Through Digital Workflows",
+          desc: "Support engineering and project teams with structured digital models, coordinated information and documentation workflows designed around project requirements.",
+          deliverables: [
+            "Digital modelling",
+            "Engineering documentation",
+            "Model-based workflows",
+            "Design coordination",
+            "Information structuring",
+            "Digital QA/QC",
+          ],
+          icon: IconChip,
+        },
+        {
+          title: "BIM Coordination",
+          statement: "Coordinate Before Construction",
+          desc: "Identify and resolve design and spatial conflicts through structured BIM coordination before they become construction issues.",
+          deliverables: [
+            "Multidisciplinary coordination",
+            "Clash detection",
+            "Coordination meetings",
+            "Issue tracking",
+            "Model review",
+            "Coordination reports",
+            "Design review support",
+          ],
+          icon: IconNodes,
+        },
+        {
+          title: "Digital Construction",
+          statement: "Turning Models Into Construction Information",
+          desc: "Connect BIM information with construction planning, sequencing and project delivery workflows.",
+          deliverables: [
+            "Construction modelling",
+            "4D BIM",
+            "5D BIM",
+            "Quantity workflows",
+            "Constructability support",
+            "Site coordination",
+            "Digital construction workflows",
+          ],
+          icon: IconCrane,
+        },
+        {
+          title: "Automation & 4D/5D",
+          statement: "Making Project Information Work Harder",
+          desc: "Use automation, structured data and visualisation to improve repetitive workflows, information quality and project decision-making.",
+          deliverables: [
+            "Dynamo workflows",
+            "Python automation",
+            "Quantity extraction",
+            "Model-based data",
+            "4D sequencing",
+            "5D workflows",
+            "Power BI dashboards",
+            "AI-assisted workflows",
+          ],
+          icon: IconAutomation,
+        },
       ]}
     />
   );

@@ -48,6 +48,27 @@ const BLOCKS: CapBlock[] = [
 
 const TAG_ROW = ["BIM & Digital Delivery", "Design & Interiors", "Project Support", "Asset Information"];
 
+interface DeliveryModel {
+  index: string;
+  title: string;
+  desc: string;
+}
+
+const DELIVERY_MODELS: DeliveryModel[] = [
+  { index: "01", title: "Project-Based Delivery", desc: "Defined scope. Clear deliverables. Dedicated execution." },
+  { index: "02", title: "Dedicated Delivery Teams", desc: "Extend your organisation with a dedicated UCX delivery team." },
+  { index: "03", title: "Overflow Capacity", desc: "Scale capacity when workloads increase or deadlines tighten." },
+  { index: "04", title: "White-Label Delivery", desc: "UCX operates within your brand and delivery structure." },
+  { index: "05", title: "Strategic Partnership", desc: "Build long-term delivery capability for recurring requirements." },
+  { index: "06", title: "Specialist Collaboration", desc: "Access specialized BIM, digital engineering, automation or asset capabilities when required." },
+];
+
+const STATS = [
+  { value: "30+", label: "Projects Delivered" },
+  { value: "07+", label: "Disciplines Covered" },
+  { value: "03+", label: "Countries Served" },
+];
+
 export default function Capabilities() {
   const sectRef = useRef<HTMLDivElement>(null);
 
@@ -168,8 +189,7 @@ export default function Capabilities() {
             <p>Projects are rarely limited by one discipline. They are challenged by the gaps between them.</p>
             <p>
               UCX connects design, digital engineering, delivery and asset information through one coordinated
-              framework&mdash;helping project teams move from intent to information, and from information to
-              execution.
+              framework, helping project teams move from intent to information, and from information to execution.
             </p>
           </div>
           <p className="framework-tagline">Different disciplines. One coordinated approach.</p>
@@ -197,14 +217,80 @@ export default function Capabilities() {
           ))}
         </div>
 
-        <div className="closing" data-reveal>
-          <p>Not sure which capability fits your project?</p>
-          <a className="closing-cta" href="/contact">
-            Start a Project
+        {/* ---------- delivery models ---------- */}
+        <div className="delivery" data-reveal>
+          <span className="sub-eyebrow">Engage UCX Around the Way Your Organisation Works</span>
+          <h2 className="delivery-title">Capabilities That Adapt to Your Delivery Model</h2>
+          <p className="delivery-intro">
+            Rather than forcing every client into the same service structure, UCX provides flexible delivery
+            models for different project and business requirements.
+          </p>
+
+          <div className="delivery-list">
+            {DELIVERY_MODELS.map((m) => (
+              <div className="delivery-row" key={m.index} data-reveal>
+                <span className="delivery-index">{m.index}</span>
+                <h3 className="delivery-name">{m.title}</h3>
+                <p className="delivery-desc">{m.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <a className="delivery-cta" href="/contact">
+            Discuss Your Delivery Model
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12h13M13 6l6 6-6 6" />
             </svg>
           </a>
+        </div>
+
+        {/* ---------- technology band ---------- */}
+        <div className="tech-band" data-reveal>
+          <h2>Technology That Enables Delivery</h2>
+          <p>
+            UCX uses established BIM, coordination, information management, automation and visualization
+            technologies according to project requirements.
+          </p>
+          <span className="tech-tagline">Technology is the enabler. Delivery is the outcome.</span>
+        </div>
+
+        {/* ---------- stats ---------- */}
+        <div className="stats-block" data-reveal>
+          <span className="sub-eyebrow">Capability Is Proven Through Delivery</span>
+          <div className="stats">
+            {STATS.map((s) => (
+              <div className="stat" key={s.label}>
+                <span className="stat-value">{s.value}</span>
+                <span className="stat-label">{s.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ---------- final CTA ---------- */}
+        <div className="closing" data-reveal>
+          <div className="closing-copy">
+            <h3>Need the Right Delivery Capability for Your Project?</h3>
+            <p>
+              Bring us the requirement. We&apos;ll help structure the right delivery approach. From BIM and digital
+              engineering to design, project support and asset information, UCX can integrate with your existing
+              team and workflow.
+            </p>
+          </div>
+          <div className="closing-actions">
+            <a className="closing-cta" href="/contact">
+              Start a Conversation
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h13M13 6l6 6-6 6" />
+              </svg>
+            </a>
+            <a className="closing-cta closing-cta--ghost" href="/collaboration-lab#domains">
+              Explore Collaboration Models
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h13M13 6l6 6-6 6" />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </div>
