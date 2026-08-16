@@ -1,0 +1,130 @@
+.ucx-loc {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0 0 44px;
+}
+
+.ucx-loc-card {
+  --dark: #00352D;
+  --light: #91F2B5;
+  --card: #FFFFFF;
+  --line: #DCEEE3;
+  --muted: #5B7A6E;
+
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  width: 248px;
+  height: 150px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  overflow: hidden;
+  transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: width .45s cubic-bezier(.16,.84,.36,1), height .45s cubic-bezier(.16,.84,.36,1),
+    transform .25s ease, box-shadow .3s ease;
+  box-shadow: 0 10px 26px rgba(0,53,45,.08);
+}
+.ucx-loc[data-expanded="true"] .ucx-loc-card { width: min(400px, 84vw); height: 300px; }
+.ucx-loc-card:hover, .ucx-loc-card:focus-visible { box-shadow: 0 18px 40px rgba(0,53,45,.15); }
+.ucx-loc-card:focus-visible { outline: 2px solid var(--dark); outline-offset: 3px; }
+
+.loc-grid {
+  position: absolute; inset: 0; opacity: .06; pointer-events: none;
+  background-image: linear-gradient(var(--dark) 1px, transparent 1px), linear-gradient(90deg, var(--dark) 1px, transparent 1px);
+  background-size: 20px 20px;
+  transition: opacity .3s ease;
+}
+.ucx-loc[data-expanded="true"] .loc-grid { opacity: 0; }
+
+.loc-schematic { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.loc-schematic .road {
+  fill: none; stroke: var(--dark); stroke-opacity: .22; stroke-width: 3;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  animation: locDraw .6s ease forwards;
+}
+.loc-schematic .road.minor { stroke-opacity: .13; stroke-width: 2; }
+.loc-schematic rect.block {
+  fill: var(--dark); fill-opacity: 0;
+  stroke: var(--dark); stroke-opacity: .2; stroke-width: 1.5;
+  stroke-dasharray: 1; stroke-dashoffset: 1;
+  animation: locDraw .5s ease forwards, locFill .4s ease forwards .3s;
+}
+@keyframes locDraw { to { stroke-dashoffset: 0; } }
+@keyframes locFill { to { fill-opacity: .1; } }
+
+.loc-pin {
+  position: absolute; top: 46%; left: 50%;
+  width: 30px; height: 30px;
+  transform: translate(-50%, -70%) scale(0);
+  opacity: 0;
+  filter: drop-shadow(0 4px 8px rgba(0,53,45,.35));
+  transition: transform .4s cubic-bezier(.34,1.56,.64,1) .15s, opacity .3s ease .15s;
+  pointer-events: none;
+  z-index: 1;
+}
+.ucx-loc[data-expanded="true"] .loc-pin { transform: translate(-50%, -78%) scale(1); opacity: 1; }
+.loc-pin svg { width: 100%; height: 100%; }
+
+.loc-content {
+  position: relative; z-index: 2; height: 100%;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: 18px;
+}
+.loc-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.loc-icon { width: 17px; height: 17px; color: var(--dark); opacity: .65; flex-shrink: 0; }
+.loc-live {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 9.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--muted); background: rgba(0,53,45,.05);
+  padding: 5px 9px; border-radius: 999px; white-space: nowrap;
+}
+.loc-live i {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--light);
+  box-shadow: 0 0 0 3px rgba(145,242,181,.28);
+  display: inline-block;
+}
+
+.loc-bottom h3 {
+  margin: 0 0 4px;
+  font-family: 'Getho', 'Atyp Display', sans-serif; font-weight: 700;
+  font-size: 15px; color: var(--dark); letter-spacing: -.01em;
+}
+.loc-address {
+  margin: 2px 0 10px; font-size: 11.5px; line-height: 1.55; color: var(--muted); max-width: 30ch;
+}
+.loc-underline {
+  display: block; height: 1.5px; width: 30%;
+  background: linear-gradient(90deg, var(--light), transparent);
+  transition: width .4s ease;
+}
+.ucx-loc[data-expanded="true"] .loc-underline,
+.ucx-loc-card:hover .loc-underline { width: 70%; }
+
+.loc-directions {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Getho', 'Atyp Display', sans-serif; font-weight: 700;
+  font-size: 12.5px; letter-spacing: .04em; text-transform: uppercase;
+  color: #00352D; text-decoration: none;
+  border-bottom: 1px solid #00352D; padding-bottom: 2px;
+  animation: locFadeUp .35s ease both .1s;
+}
+.loc-directions svg { width: 13px; height: 13px; transition: transform .25s ease; }
+.loc-directions:hover svg { transform: translateX(3px); }
+@keyframes locFadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+.loc-hint {
+  font-size: 10.5px; color: #5B7A6E; opacity: 0; transition: opacity .25s ease;
+}
+.loc-hint.is-visible { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ucx-loc-card, .loc-pin, .loc-underline, .loc-schematic .road, .loc-schematic .block, .loc-directions {
+    transition: none !important; animation: none !important;
+  }
+}

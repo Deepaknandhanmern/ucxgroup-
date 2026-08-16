@@ -95,11 +95,12 @@ export default function Ecosystem() {
       }
 
       const vh = window.innerHeight;
+      const vw = window.innerWidth;
       const rect = outer!.getBoundingClientRect();
       const scrollable = outer!.offsetHeight - vh;
       const progress = scrollable > 0 ? Math.min(1, Math.max(0, -rect.top / scrollable)) : 0;
 
-      const maxShift = (PANEL_COUNT - 1) * vh;
+      const maxShift = (PANEL_COUNT - 1) * vw;
       track!.style.transform = reduce ? "none" : `translateX(-${progress * maxShift}px)`;
       outer!.style.setProperty("--progress", String(progress));
       const raw = progress * (PANEL_COUNT - 1);

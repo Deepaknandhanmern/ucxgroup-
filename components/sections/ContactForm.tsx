@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { submitToSplitForms } from "@/lib/splitforms";
+import ContactMap from "./ContactMap";
 
 type QueryType = "bim" | "interior" | "training";
 
@@ -114,6 +115,22 @@ export default function ContactForm() {
           Pick a query type below and the form reshapes itself to ask exactly what that team needs, so your request
           lands with the right expert straight away.
         </p>
+
+        <div className="office-strip">
+          <div className="office-item">
+            <span className="office-label">Visit us</span>
+            <p>
+              Door No. 653, Part LCC Compound, 1-3, Trichy Rd, opposite Srivari Trisara, Singanallur,
+              Coimbatore, Tamil Nadu 641005
+            </p>
+          </div>
+          <div className="office-item">
+            <span className="office-label">Email</span>
+            <p><a href="mailto:collaborate@ucx-group.com">collaborate@ucx-group.com</a></p>
+          </div>
+        </div>
+
+        <ContactMap />
 
         <div className="selector-label">1. Choose your query type</div>
         <div className="selector">

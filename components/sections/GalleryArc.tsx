@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { PROJECTS } from "@/lib/projects";
 
-const FEATURED = PROJECTS.slice(0, 6);
+const FEATURED = PROJECTS.slice(0, 8);
 
 function ProjectImage({ src, alt, discipline }: { src: string; alt: string; discipline: string }) {
   const [ok, setOk] = useState(true);
@@ -18,7 +18,23 @@ function ProjectImage({ src, alt, discipline }: { src: string; alt: string; disc
 }
 
 export default function GalleryArc() {
-  const [featured, ...rest] = FEATURED;
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+
+  function onScroll() {
+    const el = trackRef.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    setProgress(max > 0 ? el.scrollLeft / max : 0);
+  }
+
+  function scrollByCard(dir: 1 | -1) {
+    const el = trackRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>(".arc-card");
+    const amount = (card?.offsetWidth ?? 360) + 20;
+    el.scrollBy({ left: dir * amount, behavior: "smooth" });
+  }
 
   return (
     <div className="ucx-gallery-arc">
@@ -28,32 +44,38 @@ export default function GalleryArc() {
         <p className="intro">From Digital Models to Real-World Delivery</p>
       </div>
 
-      <div className="arc-grid">
-        <a className="arc-card arc-card--featured" href={`/projects/${featured.slug}`}>
-          <div className="arc-media">
-            <ProjectImage src={featured.image} alt={featured.title} discipline={featured.discipline} />
-          </div>
-          <div className="arc-meta">
-            <span className="arc-sector">
-              {featured.sector} &middot; {featured.location}
-            </span>
-            <h3>{featured.title}</h3>
-          </div>
-        </a>
+      <div className="arc-scroller">
+        <div className="arc-track" ref={trackRef} onScroll={onScroll}>
+          {FEATURED.map((p) => (
+            <a className="arc-card" href={`/projects/${p.slug}`} key={p.slug}>
+              <div className="arc-media">
+                <ProjectImage src={p.image} alt={p.title} discipline={p.discipline} />
+              </div>
+              <div className="arc-meta">
+                <span className="arc-sector">
+                  {p.sector} &middot; {p.location}
+                </span>
+                <h3>{p.title}</h3>
+              </div>
+            </a>
+          ))}
+        </div>
 
-        {rest.map((p) => (
-          <a className="arc-card" href={`/projects/${p.slug}`} key={p.slug}>
-            <div className="arc-media">
-              <ProjectImage src={p.image} alt={p.title} discipline={p.discipline} />
-            </div>
-            <div className="arc-meta">
-              <span className="arc-sector">
-                {p.sector} &middot; {p.location}
-              </span>
-              <h3>{p.title}</h3>
-            </div>
-          </a>
-        ))}
+        <div className="arc-controls">
+          <button type="button" className="arc-arrow" aria-label="Previous project" onClick={() => scrollByCard(-1)}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 6l-6 6 6 6" />
+            </svg>
+          </button>
+          <div className="arc-progress">
+            <span style={{ transform: `scaleX(${Math.max(progress, 0.06)})` }} />
+          </div>
+          <button type="button" className="arc-arrow" aria-label="Next project" onClick={() => scrollByCard(1)}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 6l6 6-6 6" />
+            </svg>
+          </button>
+        </div>
       </div>
 
       <div className="arc-ctas">

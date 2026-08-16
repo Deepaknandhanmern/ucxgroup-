@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 interface Reason {
   index: string;
@@ -67,8 +67,23 @@ const REASONS: Reason[] = [
   },
 ];
 
+const DURATION = 5200;
+const TICK = 50;
+
 export default function WhyChooseUs() {
   const sectRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLDivElement>(null);
+  const rowRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const [active, setActive] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [indicator, setIndicator] = useState({ top: 0, height: 0 });
+  const reduceMotionRef = useRef(false);
+
+  useEffect(() => {
+    reduceMotionRef.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }, []);
 
   // cursor spotlight
   useEffect(() => {
@@ -136,6 +151,39 @@ export default function WhyChooseUs() {
     return () => io.disconnect();
   }, []);
 
+  // auto-advance timer, paused on hover/focus, skipped for reduced motion
+  useEffect(() => {
+    if (paused || reduceMotionRef.current) return;
+    const id = setInterval(() => {
+      setProgress((p) => {
+        const next = p + TICK / DURATION;
+        if (next >= 1) {
+          setActive((a) => (a + 1) % REASONS.length);
+          return 0;
+        }
+        return next;
+      });
+    }, TICK);
+    return () => clearInterval(id);
+  }, [paused]);
+
+  // slide the rail indicator to the active row
+  useLayoutEffect(() => {
+    const el = rowRefs.current[active];
+    if (!el) return;
+    const sync = () => setIndicator({ top: el.offsetTop, height: el.offsetHeight });
+    sync();
+    window.addEventListener("resize", sync);
+    return () => window.removeEventListener("resize", sync);
+  }, [active]);
+
+  function handleSelect(i: number) {
+    setActive(i);
+    setProgress(0);
+  }
+
+  const current = REASONS[active];
+
   return (
     <div className="ucx-why2" ref={sectRef}>
       <div className="grid-overlay"></div>
@@ -182,15 +230,58 @@ export default function WhyChooseUs() {
           </div>
         </div>
 
-        <div className="why-grid">
-          {REASONS.map((r, i) => (
-            <div className={`why-card${i === 0 ? " is-featured" : ""}`} key={r.index} data-reveal>
-              <span className="why-ghost" aria-hidden="true">{r.index}</span>
-              <span className="why-icon">{r.icon}</span>
-              <h3>{r.title}</h3>
-              <p>{r.desc}</p>
+        <div
+          className="why-stage-wrap"
+          data-reveal
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onFocus={() => setPaused(true)}
+          onBlur={() => setPaused(false)}
+        >
+          <div className="why-nav" role="tablist" aria-label="Reasons to choose UCX" ref={navRef}>
+            <div
+              className="why-nav-indicator"
+              aria-hidden="true"
+              style={{ transform: `translateY(${indicator.top}px)`, height: indicator.height }}
+            />
+            {REASONS.map((r, i) => (
+              <button
+                key={r.index}
+                ref={(el) => {
+                  rowRefs.current[i] = el;
+                }}
+                type="button"
+                role="tab"
+                aria-selected={active === i}
+                className={`why-nav-row${active === i ? " is-active" : ""}`}
+                onClick={() => handleSelect(i)}
+              >
+                <span className="why-nav-index">{r.index}</span>
+                <span className="why-nav-title">{r.title}</span>
+                <span
+                  className="why-nav-fill"
+                  style={active === i ? { transform: `scaleX(${progress})` } : { transform: "scaleX(0)" }}
+                />
+              </button>
+            ))}
+          </div>
+
+          <div className="why-stage" role="tabpanel" aria-live="polite">
+            <span className="why-stage-ghost" aria-hidden="true">{current.index}</span>
+            <div className="why-stage-inner" key={active}>
+              <div className="why-stage-icon">
+                <svg className="stage-ring" viewBox="0 0 108 108" aria-hidden="true">
+                  <circle cx="54" cy="54" r="50" pathLength="100" />
+                </svg>
+                {current.icon}
+              </div>
+              <span className="why-stage-count">
+                {String(active + 1).padStart(2, "0")} / {String(REASONS.length).padStart(2, "0")}
+              </span>
+              <h3>{current.title}</h3>
+              <p>{current.desc}</p>
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </div>

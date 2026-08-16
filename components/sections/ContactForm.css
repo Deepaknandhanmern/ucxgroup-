@@ -98,6 +98,34 @@
   line-height: 1.6;
 }
 
+.ucx-contact .office-strip {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 16px;
+  margin: 0 0 44px;
+  padding: 22px 26px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+}
+.ucx-contact .office-item { display: flex; flex-direction: column; gap: 6px; }
+.ucx-contact .office-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--dark);
+}
+.ucx-contact .office-item p {
+  margin: 0;
+  font-family: 'Atyp Display', sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+.ucx-contact .office-item p a { color: var(--dark); text-decoration: none; }
+.ucx-contact .office-item p a:hover { color: var(--dark-soft); text-decoration: underline; }
+
 .ucx-contact .selector-label {
   font-size: 13px;
   font-weight: 700;
@@ -318,6 +346,7 @@
 .ucx-contact button.submit:active { transform: scale(0.97); }
 
 @media (max-width: 640px) {
+  .ucx-contact .office-strip { grid-template-columns: 1fr; }
   .ucx-contact .selector { grid-template-columns: 1fr; }
   .ucx-contact .field-grid, .ucx-contact .dynamic-wrap { grid-template-columns: 1fr; }
   .ucx-contact h1 { font-size: 30px; }

@@ -63,7 +63,10 @@ export default function Footer() {
           <p className="eyebrow">{isInteriors ? "SpayceX — Design & Interiors by UCX" : "UCX Engineering Technologies"}</p>
           <h2 className="headline">One connected delivery ecosystem</h2>
           <p className="services-line">DESIGN &middot; DIGITAL ENGINEERING &middot; PROJECT DELIVERY &middot; ASSET INFORMATION</p>
-          <p className="location-line">India-based &middot; Global collaboration</p>
+          <p className="location-line">
+            Door No. 653, Part LCC Compound, 1-3, Trichy Rd, opposite Srivari Trisara, Singanallur, Coimbatore,
+            Tamil Nadu 641005 &middot; Global collaboration
+          </p>
         </div>
       </div>
 
@@ -91,9 +94,9 @@ export default function Footer() {
         <div>
           <p className="col-title">Follow</p>
           <div className="social-row">
-            <a href="#">LinkedIn</a>
-            <a href="#">Instagram</a>
-            <a href="#">YouTube</a>
+            <a href="#" aria-label="LinkedIn"><img src="/brand/social.png" alt="" /></a>
+            <a href="#" aria-label="Instagram"><img src="/brand/instagram.png" alt="" /></a>
+            <a href="#" aria-label="YouTube"><img src="/brand/youtube.png" alt="" /></a>
           </div>
         </div>
       </div>
