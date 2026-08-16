@@ -60,7 +60,10 @@ function SvcFigureImg({ src, alt }: { src: string; alt: string }) {
 
 export default function OurServices() {
   const sectRef = useRef<HTMLDivElement>(null);
+  const rowsRef = useRef<HTMLDivElement>(null);
+  const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [previewY, setPreviewY] = useState(0);
 
   // cursor spotlight over the grid
   useEffect(() => {
@@ -100,6 +103,37 @@ export default function OurServices() {
     };
   }, []);
 
+  // keep the preview panel aligned with the currently hovered row on resize
+  useEffect(() => {
+    if (activeIndex === null) return;
+    function onResize() {
+      alignPreviewTo(activeIndex as number);
+    }
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeIndex]);
+
+  // rest the preview next to the first row before anything's been hovered
+  useEffect(() => {
+    alignPreviewTo(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function alignPreviewTo(i: number) {
+    const rowEl = rowRefs.current[i];
+    const containerEl = rowsRef.current;
+    if (!rowEl || !containerEl) return;
+    const rowRect = rowEl.getBoundingClientRect();
+    const containerRect = containerEl.getBoundingClientRect();
+    setPreviewY(rowRect.top - containerRect.top + rowRect.height / 2);
+  }
+
+  function handleRowEnter(i: number) {
+    setActiveIndex(i);
+    alignPreviewTo(i);
+  }
+
   function handleListLeave() {
     setActiveIndex(null);
   }
@@ -120,12 +154,15 @@ export default function OurServices() {
         </div>
 
         <div className="svc-body">
-          <div className="svc-rows" onMouseLeave={handleListLeave}>
+          <div className="svc-rows" ref={rowsRef} onMouseLeave={handleListLeave}>
             {SERVICES.map((s, i) => (
               <div
                 key={s.num}
+                ref={(el) => {
+                  rowRefs.current[i] = el;
+                }}
                 className={`svc-row${activeIndex === i ? " is-active" : ""}`}
-                onMouseEnter={() => setActiveIndex(i)}
+                onMouseEnter={() => handleRowEnter(i)}
               >
                 <div className="svc-num">{s.num}</div>
                 <div className="svc-copy">
@@ -146,8 +183,13 @@ export default function OurServices() {
             ))}
           </div>
 
-          <div className={`svc-preview${activeIndex !== null ? " is-on" : ""}`}>
-            <SvcFigureImg src={SERVICES[activeIndex ?? 0].img} alt={SERVICES[activeIndex ?? 0].title} />
+          <div className="svc-preview-col">
+            <div
+              className={`svc-preview${activeIndex !== null ? " is-on" : ""}`}
+              style={{ transform: `translateY(${previewY.toFixed(2)}px) translateY(-50%)` }}
+            >
+              <SvcFigureImg src={SERVICES[activeIndex ?? 0].img} alt={SERVICES[activeIndex ?? 0].title} />
+            </div>
           </div>
         </div>
 

@@ -46,6 +46,7 @@ import "@/components/sections/FeaturedProjects.css";
 import "@/components/sections/ProjectDetail.css";
 import "@/components/sections/Insights.css";
 import "@/components/sections/InsightArticle.css";
+import "@/components/sections/Maintenance.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BackToTop from "@/components/layout/BackToTop";

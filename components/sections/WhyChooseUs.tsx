@@ -1,73 +1,76 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 interface Reason {
-  badge: string;
+  index: string;
   title: string;
   desc: string;
-  position: "tl" | "ml" | "bl" | "tr" | "br";
-  style: { left?: string; right?: string; top: string };
+  icon: React.ReactNode;
 }
 
 const REASONS: Reason[] = [
   {
-    badge: "01",
+    index: "01",
     title: "Integrated Expertise",
-    desc: "Design, BIM, digital engineering and delivery support within one connected framework.",
-    position: "tl",
-    style: { left: "6%", top: "14%" },
+    desc: "Design, BIM, digital engineering and delivery support within one connected framework — not five vendors stitched together after the fact.",
+    icon: (
+      <svg viewBox="0 0 48 48">
+        <circle cx="19" cy="24" r="13" />
+        <circle cx="29" cy="24" r="13" />
+      </svg>
+    ),
   },
   {
-    badge: "02",
+    index: "02",
     title: "Scalable Capacity",
     desc: "Extend your team without adding permanent delivery overhead.",
-    position: "ml",
-    style: { left: "6%", top: "48%" },
+    icon: (
+      <svg viewBox="0 0 48 48">
+        <path d="M9 38V28M19 38V17M29 38V23M39 38V9" />
+        <path d="M5 38h38" />
+      </svg>
+    ),
   },
   {
-    badge: "03",
+    index: "03",
     title: "Technology-Enabled",
     desc: "BIM, automation, data and digital workflows integrated into project delivery.",
-    position: "bl",
-    style: { left: "6%", top: "82%" },
+    icon: (
+      <svg viewBox="0 0 48 48">
+        <rect x="14" y="14" width="20" height="20" rx="2" />
+        <path d="M20 14V6M28 14V6M20 42v-8M28 42v-8M14 20H6M14 28H6M42 20h-8M42 28h-8" />
+      </svg>
+    ),
   },
   {
-    badge: "04",
+    index: "04",
     title: "Delivery Discipline",
     desc: "Structured workflows, coordination and QA/QC aligned to project requirements.",
-    position: "tr",
-    style: { right: "6%", top: "24%" },
+    icon: (
+      <svg viewBox="0 0 48 48">
+        <path d="M24 5 40 11v13c0 11-7 17-16 19-9-2-16-8-16-19V11Z" />
+        <path d="M17 24l5 5 9-11" />
+      </svg>
+    ),
   },
   {
-    badge: "05",
+    index: "05",
     title: "International Delivery",
     desc: "India-based delivery capability supporting international project teams.",
-    position: "br",
-    style: { right: "6%", top: "72%" },
+    icon: (
+      <svg viewBox="0 0 48 48">
+        <circle cx="24" cy="24" r="18" />
+        <path d="M6 24h36M24 6c6 6 6 30 0 36M24 6c-6 6-6 30 0 36" />
+      </svg>
+    ),
   },
 ];
 
-function signalStart(r: Reason): [number, number] {
-  const x = r.style.left ? parseFloat(r.style.left) : 100 - parseFloat(r.style.right ?? "0");
-  const y = parseFloat(r.style.top);
-  return [x, y];
-}
-
-// The image is the "body" — every reason radiates straight out from its
-// center like a spider's legs, so the diagram reads as one hub with 5 limbs.
-const CENTER: [number, number] = [50, 50];
-
-function radialPath(r: Reason): string {
-  const [sx, sy] = signalStart(r);
-  const [cx, cy] = CENTER;
-  return `M${cx},${cy} L${sx},${sy}`;
-}
-
 export default function WhyChooseUs() {
   const sectRef = useRef<HTMLDivElement>(null);
-  const [imgOk, setImgOk] = useState(true);
 
+  // cursor spotlight
   useEffect(() => {
     const sect = sectRef.current;
     if (!sect) return;
@@ -106,6 +109,33 @@ export default function WhyChooseUs() {
     };
   }, []);
 
+  // scroll reveal
+  useEffect(() => {
+    const sect = sectRef.current;
+    if (!sect) return;
+    const targets = Array.from(sect.querySelectorAll<HTMLElement>("[data-reveal]"));
+    targets.forEach((el, i) => {
+      el.style.transitionDelay = `${(i % 6) * 80}ms`;
+    });
+    if (!("IntersectionObserver" in window)) {
+      targets.forEach((el) => el.classList.add("is-in"));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-in");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
+    );
+    targets.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   return (
     <div className="ucx-why2" ref={sectRef}>
       <div className="grid-overlay"></div>
@@ -113,7 +143,7 @@ export default function WhyChooseUs() {
       <div className="cursor-haze"></div>
 
       <div className="wrapper">
-        <div className="head-row">
+        <div className="head-row" data-reveal>
           <div className="head-text">
             <span className="eyebrow">Why UCX</span>
             <h2 className="heading">
@@ -152,53 +182,13 @@ export default function WhyChooseUs() {
           </div>
         </div>
 
-        <div className="diagram">
-          {imgOk ? (
-            <img
-              className="diagram-image"
-              src="/brand/why-ucx.png"
-              alt="UCX connected delivery"
-              onError={() => setImgOk(false)}
-            />
-          ) : (
-            <div className="diagram-placeholder">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <circle cx="8.5" cy="8.5" r="1.5" />
-                <path d="M21 15l-5-5L5 21" />
-              </svg>
-              <span>Image placeholder &mdash; drop file at public/brand/why-ucx.png</span>
-            </div>
-          )}
-
-          <svg className="signals" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            {REASONS.map((r) => (
-              <path key={r.badge} className="leader" d={radialPath(r)} vectorEffect="non-scaling-stroke" fill="none" />
-            ))}
-            <circle className="spire-tip" cx={CENTER[0]} cy={CENTER[1]} r="1.6" vectorEffect="non-scaling-stroke" />
-            <circle className="beacon-ring" cx={CENTER[0]} cy={CENTER[1]} r="1.6" vectorEffect="non-scaling-stroke" />
-            <circle className="beacon-ring" cx={CENTER[0]} cy={CENTER[1]} r="1.6" style={{ animationDelay: "1.2s" }} vectorEffect="non-scaling-stroke" />
-          </svg>
-
-          {REASONS.map((r) => (
-            <div key={r.badge} className={`callout ${r.position}`} style={r.style}>
-              <span className="badge">{r.badge}</span>
-              <div className="callout-text">
-                <h3>{r.title}</h3>
-                <p>{r.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mobile-list">
-          {REASONS.map((r) => (
-            <div key={r.badge} className="m-item">
-              <span className="badge">{r.badge}</span>
-              <div>
-                <h3>{r.title}</h3>
-                <p>{r.desc}</p>
-              </div>
+        <div className="why-grid">
+          {REASONS.map((r, i) => (
+            <div className={`why-card${i === 0 ? " is-featured" : ""}`} key={r.index} data-reveal>
+              <span className="why-ghost" aria-hidden="true">{r.index}</span>
+              <span className="why-icon">{r.icon}</span>
+              <h3>{r.title}</h3>
+              <p>{r.desc}</p>
             </div>
           ))}
         </div>

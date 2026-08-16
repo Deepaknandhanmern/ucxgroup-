@@ -76,10 +76,11 @@
   display: grid;
   grid-template-columns: 1fr 320px;
   gap: 32px;
-  align-items: start;
+  align-items: stretch;
 }
 
 .ucx-svc .svc-rows { position: relative; min-width: 0; }
+.ucx-svc .svc-preview-col { position: relative; }
 
 .ucx-svc .svc-row {
   position: relative; z-index: 2;
@@ -161,15 +162,18 @@
 }
 .ucx-svc .svc-row.is-active .svc-tags span { border-color: var(--accent-dim); color: var(--accent); }
 
-/* sticky preview panel — sits in its own column so it never overlaps row text */
+/* preview panel — sits in its own column (never overlaps row text) and
+   slides vertically to stay aligned with whichever row is hovered, instead
+   of sticking to a fixed position while the list scrolls past it. */
 .ucx-svc .svc-preview {
-  position: sticky; top: 120px;
+  position: absolute; top: 0; left: 0; right: 0;
   width: 100%; aspect-ratio: 4 / 3;
   border-radius: 16px;
   overflow: hidden;
   opacity: .55;
   box-shadow: 0 0 0 1px var(--line), 0 30px 70px -30px rgba(0,0,0,.75);
-  transition: opacity .45s var(--ease);
+  transition: opacity .45s var(--ease), transform .45s var(--ease);
+  will-change: transform;
 }
 .ucx-svc .svc-preview.is-on { opacity: 1; }
 .ucx-svc .svc-figure-img {
