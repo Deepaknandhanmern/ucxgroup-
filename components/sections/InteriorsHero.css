@@ -1,0 +1,144 @@
+.ih-hero {
+  --bg: #04162C;
+  --bg-deep: #020D1A;
+  --accent: #74C6A2;
+  --accent-dim: rgba(116,198,162,0.55);
+  --cream: #F3F1E6;
+  --ease: cubic-bezier(.16,.84,.36,1);
+
+  position: relative;
+  /* 100svh measures the viewport, but the sticky header (76px / 66px below
+     640px) sits above this section and eats into that same viewport — without
+     subtracting it, bottom-anchored content lands below the fold. */
+  min-height: calc(100svh - 76px);
+  display: flex;
+  align-items: flex-end;
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
+  overflow: hidden;
+  isolation: isolate;
+}
+.ih-hero * { box-sizing: border-box; }
+
+/* ---- animated gradient backdrop: drifting blurred blobs, the site's
+   established "aurora" technique (see ContactForm.css), tuned to the
+   SpayceX navy/sage palette in place of a WebGL shader ---- */
+.ih-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+.ih-blob {
+  position: absolute; border-radius: 50%; filter: blur(120px);
+  animation: ihDrift 24s ease-in-out infinite;
+}
+.ih-blob.b1 { width: 640px; height: 640px; top: -220px; left: -160px; background: radial-gradient(circle, rgba(116,198,162,.55), rgba(116,198,162,0) 70%); }
+.ih-blob.b2 { width: 560px; height: 560px; bottom: -240px; right: -180px; background: radial-gradient(circle, rgba(116,198,162,.32), rgba(116,198,162,0) 70%); animation-delay: -8s; }
+.ih-blob.b3 { width: 420px; height: 420px; top: 18%; right: 10%; background: radial-gradient(circle, rgba(243,241,230,.16), rgba(243,241,230,0) 70%); animation-delay: -16s; }
+.ih-blob.b4 { width: 380px; height: 380px; bottom: 8%; left: 16%; background: radial-gradient(circle, rgba(46,122,92,.55), rgba(46,122,92,0) 70%); animation-delay: -4s; }
+@keyframes ihDrift {
+  0%, 100% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(34px,-26px) scale(1.08); }
+}
+.ih-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(243,241,230,.035) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, rgba(243,241,230,.035) 0 1px, transparent 1px 120px);
+  opacity: .5;
+}
+.ih-vignette {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 90% 70% at 28% 100%, rgba(2,13,26,.6), transparent 60%),
+    linear-gradient(0deg, rgba(2,13,26,.55), transparent 42%);
+}
+
+/* ---- content, anchored bottom-left ----
+   Note: Interiors.css defines `.ucx-interiors * { margin:0; padding:0; }`,
+   which matches every element in this hero (it's rendered inside
+   .ucx-interiors) at equal specificity to a bare class selector. Every rule
+   below that sets margin/padding is scoped as `.ih-hero .foo` instead of
+   `.foo` so it wins on specificity rather than depending on import order. */
+.ih-hero .ih-content {
+  position: relative; z-index: 1;
+  max-width: 760px;
+  padding: clamp(40px,5vw,64px) clamp(20px,6vw,80px) clamp(32px,4vw,48px);
+}
+.ih-hero .ih-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(243,241,230,.85);
+  border: 1px solid rgba(243,241,230,.22); border-radius: 999px;
+  padding: 9px 16px 9px 14px; margin-bottom: 18px;
+  background: rgba(243,241,230,.04);
+}
+.ih-badge i {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+  box-shadow: 0 0 0 3px rgba(116,198,162,.28);
+  animation: ihPulseDot 2.2s ease-in-out infinite;
+}
+@keyframes ihPulseDot { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
+
+.ih-hero .ih-heading { font-family: 'Getho','Atyp Display',sans-serif; line-height: 1.02; letter-spacing: -.01em; margin-bottom: 18px; }
+.ih-line { display: block; }
+.ih-hero .ih-line-lead {
+  font-weight: 400; text-transform: none;
+  font-size: clamp(20px,2.6vw,30px);
+  background: linear-gradient(120deg, var(--cream) 0%, var(--accent) 45%, var(--cream) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  animation: ihGradientShift 8s linear infinite;
+  margin-bottom: 4px;
+}
+@keyframes ihGradientShift { to { background-position: 200% center; } }
+.ih-line-bold { font-weight: 700; text-transform: uppercase; font-size: clamp(52px,9vw,108px); color: var(--cream); }
+.ih-hero .ih-line-italic { font-weight: 400; font-style: italic; text-transform: none; font-size: clamp(20px,2.6vw,28px); color: rgba(243,241,230,.7); margin-top: 4px; }
+
+.ih-hero .ih-intro { max-width: 48ch; font-size: 15.5px; line-height: 1.7; color: rgba(243,241,230,.68); margin-bottom: 22px; }
+
+.ih-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+.ih-hero .ih-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+  padding: 15px 26px; border-radius: 999px; border: 1px solid var(--accent);
+  transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease), border-color .3s var(--ease);
+}
+.ih-cta svg { width: 14px; height: 14px; transition: transform .3s var(--ease); }
+.ih-cta-solid { background: var(--accent); color: var(--bg-deep); }
+.ih-cta-solid:hover { background: transparent; color: var(--accent); transform: translateY(-2px); }
+.ih-cta-ghost { background: transparent; color: var(--cream); border-color: rgba(243,241,230,.3); }
+.ih-cta-ghost:hover { background: rgba(243,241,230,.08); border-color: var(--cream); transform: translateY(-2px); }
+.ih-cta:hover svg { transform: translateX(3px); }
+
+/* ---- rotating mark, bottom-right — same ring/textPath + beacon-pulse
+   technique already used for the footer badge and global-delivery hub ---- */
+.ih-mark {
+  position: absolute; right: clamp(20px,4vw,48px); bottom: clamp(20px,4vw,48px); z-index: 2;
+  width: clamp(72px,8vw,96px); height: clamp(72px,8vw,96px);
+}
+.ih-mark svg { width: 100%; height: 100%; overflow: visible; }
+.ih-mark-spin { transform-origin: 100px 100px; animation: ihMarkSpin 20s linear infinite; }
+@keyframes ihMarkSpin { to { transform: rotate(360deg); } }
+.ih-mark-text { font-family: 'Atyp Display',sans-serif; font-size: 13.5px; letter-spacing: .04em; fill: rgba(243,241,230,.6); }
+.ih-mark-pulse {
+  fill: none; stroke: var(--accent); stroke-width: 1.4;
+  transform-origin: 100px 100px;
+  animation: ihMarkBeacon 2.6s var(--ease) infinite;
+}
+@keyframes ihMarkBeacon { 0% { r: 30; opacity: .9; } 100% { r: 52; opacity: 0; } }
+.ih-mark-core { fill: rgba(4,22,44,.75); stroke: var(--accent-dim); stroke-width: 1; }
+.ih-mark-letter { font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; font-size: 22px; fill: var(--cream); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ih-blob, .ih-badge i, .ih-line-lead, .ih-mark-spin, .ih-mark-pulse { animation: none; }
+}
+
+@media (max-width: 900px) {
+  .ih-mark { display: none; }
+}
+@media (max-width: 640px) {
+  .ih-hero { min-height: calc(100svh - 66px); }
+}
+@media (max-width: 560px) {
+  .ih-actions { flex-direction: column; align-items: flex-start; }
+  .ih-line-bold { font-size: clamp(44px,16vw,64px); }
+}

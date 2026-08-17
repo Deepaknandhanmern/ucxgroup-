@@ -47,8 +47,8 @@ interface MobileItem {
   links: ColLink[];
 }
 
-const NAV_ITEMS: { key: PanelKey; label: string; iconOnly?: boolean }[] = [
-  { key: "capabilities", label: "Capabilities" },
+const NAV_ITEMS: { key: PanelKey; label: string; iconOnly?: boolean; href?: string }[] = [
+  { key: "capabilities", label: "Capabilities", href: "/capabilities" },
   { key: "experience", label: "Experience" },
   { key: "lab", label: "Collaboration Lab", iconOnly: true },
   { key: "insights", label: "Insights" },
@@ -374,6 +374,7 @@ const MOBILE_ITEMS: MobileItem[] = [
     key: "capabilities",
     label: "Capabilities",
     links: [
+      { href: "/capabilities", label: "All Capabilities" },
       { href: "/bim-digital-delivery", label: "BIM & Digital Delivery" },
       { href: "/interiors", label: "Design & Interiors" },
       { href: "/project-construction-support", label: "Project & Construction Support" },
@@ -558,8 +559,13 @@ export default function Header() {
         <div className="ucxnav__inner">
           {/* ---------- Logo ---------- */}
           {isInteriors ? (
-            <a href="/interiors" className="ucxnav__logo" aria-label="SpayceX — Design & Interiors by UCX, home">
+            <a href="/interiors" className="ucxnav__logo ucxnav__logo--interiors" aria-label="SpayceX — Design & Interiors by UCX, home">
               <img className="ucxnav__logo-img" src="/brand/interiors/logo.png" alt="SpayceX" />
+              <span className="ucxnav__spark s1" aria-hidden="true"></span>
+              <span className="ucxnav__spark s2" aria-hidden="true"></span>
+              <span className="ucxnav__spark s3" aria-hidden="true"></span>
+              <span className="ucxnav__spark s4" aria-hidden="true"></span>
+              <span className="ucxnav__spark s5" aria-hidden="true"></span>
             </a>
           ) : (
             <a href="/" className="ucxnav__logo" aria-label="UCX — Unconventional Collaboration, home">
@@ -592,42 +598,75 @@ export default function Header() {
                   data-menu={item.key}
                   onMouseEnter={() => handleItemMouseEnter(item.key)}
                 >
-                  <button
-                    className={`ucxnav__link${item.iconOnly ? " ucxnav__link--icon" : ""}`}
-                    aria-expanded={openKey === item.key}
-                    aria-controls={`panel-${item.key}`}
-                    aria-label={item.iconOnly ? item.label : undefined}
-                    onClick={(e) => handleItemClick(e, item.key)}
-                  >
-                    {item.iconOnly ? (
-                      <>
-                        <img
-                          ref={xIconRef}
-                          id="ucxnavXIcon"
-                          className="ucxnav__xicon"
-                          src={XMARK_SRC}
-                          alt=""
-                          aria-hidden="true"
-                        />
-                        <span className="ucxnav__link-label ucxnav__visually-hidden">{item.label}</span>
-                      </>
-                    ) : (
-                      <>
+                  {item.href ? (
+                    <span className="ucxnav__link-group">
+                      <a
+                        href={item.href}
+                        className="ucxnav__link-text"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         {item.label}
+                      </a>
+                      <button
+                        type="button"
+                        className="ucxnav__chev-btn"
+                        aria-expanded={openKey === item.key}
+                        aria-controls={`panel-${item.key}`}
+                        aria-label={`${item.label} menu`}
+                        onClick={(e) => handleItemClick(e, item.key)}
+                      >
                         <Chevron className="ucxnav__chev" />
-                      </>
-                    )}
-                  </button>
+                      </button>
+                    </span>
+                  ) : (
+                    <button
+                      className={`ucxnav__link${item.iconOnly ? " ucxnav__link--icon" : ""}`}
+                      aria-expanded={openKey === item.key}
+                      aria-controls={`panel-${item.key}`}
+                      aria-label={item.iconOnly ? item.label : undefined}
+                      onClick={(e) => handleItemClick(e, item.key)}
+                    >
+                      {item.iconOnly ? (
+                        <>
+                          <img
+                            ref={xIconRef}
+                            id="ucxnavXIcon"
+                            className="ucxnav__xicon"
+                            src={XMARK_SRC}
+                            alt=""
+                            aria-hidden="true"
+                          />
+                          <span className="ucxnav__link-label ucxnav__visually-hidden">{item.label}</span>
+                        </>
+                      ) : (
+                        <>
+                          {item.label}
+                          <Chevron className="ucxnav__chev" />
+                        </>
+                      )}
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>
           </nav>
 
           {/* ---------- Contact CTA ---------- */}
-          <a href="/contact" className="ucxnav__cta">
-            Contact
-            <ArrowRight width="13" height="12" viewBox="0 0 13 12" d="M1 6H12M12 6L7.5 1M12 6L7.5 11" />
-          </a>
+          {isInteriors ? (
+            <div className="ucxnav__cta-gooey">
+              <a href="/contact" className="ucxnav__cta ucxnav__cta--arrow" aria-hidden="true" tabIndex={-1}>
+                <ArrowRight width="13" height="12" viewBox="0 0 13 12" d="M1 6H12M12 6L7.5 1M12 6L7.5 11" />
+              </a>
+              <a href="/contact" className="ucxnav__cta ucxnav__cta--main">
+                Contact
+              </a>
+            </div>
+          ) : (
+            <a href="/contact" className="ucxnav__cta">
+              Contact
+              <ArrowRight width="13" height="12" viewBox="0 0 13 12" d="M1 6H12M12 6L7.5 1M12 6L7.5 11" />
+            </a>
+          )}
 
           {/* ---------- Mobile toggle ---------- */}
           <button

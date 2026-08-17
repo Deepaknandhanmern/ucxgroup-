@@ -69,6 +69,51 @@ const STATS = [
   { value: "03+", label: "Countries Served" },
 ];
 
+function FrameworkMotif() {
+  return (
+    <svg viewBox="0 0 300 300" aria-hidden="true">
+      <circle className="fw-ring" cx="150" cy="150" r="132" />
+      <circle className="fw-ring" cx="150" cy="150" r="108" />
+
+      <g className="fw-spokes">
+        <line x1="150" y1="150" x2="150" y2="46" />
+        <line x1="150" y1="150" x2="254" y2="150" />
+        <line x1="150" y1="150" x2="150" y2="254" />
+        <line x1="150" y1="150" x2="46" y2="150" />
+      </g>
+
+      <circle className="fw-pulse p1" r="3.5" />
+      <circle className="fw-pulse p2" r="3.5" />
+      <circle className="fw-pulse p3" r="3.5" />
+      <circle className="fw-pulse p4" r="3.5" />
+
+      <g className="fw-hub">
+        <circle className="fw-hub-ring" cx="150" cy="150" r="30" />
+        <circle className="fw-hub-beacon" cx="150" cy="150" r="4" />
+        <circle className="fw-hub-beacon-pulse" cx="150" cy="150" r="4" />
+        <text className="fw-hub-label" x="150" y="154" textAnchor="middle">UCX</text>
+      </g>
+
+      <g className="fw-node">
+        <circle cx="150" cy="46" r="6" />
+        <text x="150" y="26" textAnchor="middle">DESIGN</text>
+      </g>
+      <g className="fw-node">
+        <circle cx="254" cy="150" r="6" />
+        <text x="254" y="176" textAnchor="middle">DIGITAL</text>
+      </g>
+      <g className="fw-node">
+        <circle cx="150" cy="254" r="6" />
+        <text x="150" y="280" textAnchor="middle">DELIVERY</text>
+      </g>
+      <g className="fw-node">
+        <circle cx="46" cy="150" r="6" />
+        <text x="46" y="176" textAnchor="middle">ASSET</text>
+      </g>
+    </svg>
+  );
+}
+
 export default function Capabilities() {
   const sectRef = useRef<HTMLDivElement>(null);
 
@@ -146,38 +191,44 @@ export default function Capabilities() {
 
       <div className="wrapper">
         {/* ---------- hero ---------- */}
-        <div className="head" id="overview" data-reveal>
-          <span className="eyebrow">Capabilities</span>
-          <h1 className="heading">Connected expertise for better project delivery.</h1>
-          <p className="intro">
-            UCX brings together BIM, digital engineering, design, project delivery and asset information through
-            one connected delivery framework.
-          </p>
-          <p className="intro">
-            From design development and BIM coordination to construction documentation, execution support and
-            digital handover, we help project teams connect information, people and technology across the project
-            lifecycle.
-          </p>
+        <div className="hero" id="overview">
+          <div className="hero-copy" data-reveal>
+            <span className="eyebrow">Capabilities</span>
+            <h1 className="heading">Connected expertise for better project delivery.</h1>
+            <p className="intro">
+              UCX brings together BIM, digital engineering, design, project delivery and asset information through
+              one connected delivery framework.
+            </p>
+            <p className="intro">
+              From design development and BIM coordination to construction documentation, execution support and
+              digital handover, we help project teams connect information, people and technology across the project
+              lifecycle.
+            </p>
 
-          <div className="tags">
-            {TAG_ROW.map((t) => (
-              <span key={t}>{t}</span>
-            ))}
+            <div className="tags">
+              {TAG_ROW.map((t) => (
+                <span key={t}>{t}</span>
+              ))}
+            </div>
+
+            <div className="hero-actions">
+              <a className="cta-solid" href="/contact">
+                Start a Project
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h13M13 6l6 6-6 6" />
+                </svg>
+              </a>
+              <a className="cta-ghost" href="#framework">
+                Explore Our Capabilities
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 5v13M6 13l6 6 6-6" />
+                </svg>
+              </a>
+            </div>
           </div>
 
-          <div className="hero-actions">
-            <a className="cta-solid" href="/contact">
-              Start a Project
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h13M13 6l6 6-6 6" />
-              </svg>
-            </a>
-            <a className="cta-ghost" href="#framework">
-              Explore Our Capabilities
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 5v13M6 13l6 6 6-6" />
-              </svg>
-            </a>
+          <div className="hero-motif" data-reveal>
+            <FrameworkMotif />
           </div>
         </div>
 
@@ -256,7 +307,6 @@ export default function Capabilities() {
 
         {/* ---------- stats ---------- */}
         <div className="stats-block" data-reveal>
-          <span className="sub-eyebrow">Capability Is Proven Through Delivery</span>
           <div className="stats">
             {STATS.map((s) => (
               <div className="stat" key={s.label}>

@@ -32,6 +32,61 @@
   --ucx-green: #04162C;
   --ucx-mint: #74C6A2;
 }
+.ucxnav.ucxnav--interiors.is-scrolled .ucxnav__bar {
+  background: color-mix(in srgb, var(--ucx-green) 78%, transparent);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+}
+/* ---- interiors-only: glowing logo with a hover sparkle burst ---- */
+.ucxnav__logo--interiors { position: relative; }
+.ucxnav__logo--interiors .ucxnav__logo-img {
+  transition: transform .4s var(--ucx-ease), filter .4s ease;
+}
+.ucxnav__logo--interiors:hover .ucxnav__logo-img {
+  transform: scale(1.06) rotate(-1.5deg);
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--ucx-mint) 65%, transparent));
+}
+.ucxnav__spark {
+  position: absolute; width: 3px; height: 3px; border-radius: 50%;
+  background: var(--ucx-mint); opacity: 0; pointer-events: none;
+}
+.ucxnav__spark.s1 { top: -4px; left: 18%; }
+.ucxnav__spark.s2 { top: 6%; left: 96%; }
+.ucxnav__spark.s3 { top: 78%; left: 102%; }
+.ucxnav__spark.s4 { top: 92%; left: 34%; }
+.ucxnav__spark.s5 { top: 40%; left: -8%; }
+.ucxnav__logo--interiors:hover .ucxnav__spark { animation: ucxSpark 1.4s ease-in-out infinite; }
+.ucxnav__spark.s2 { animation-delay: .18s; }
+.ucxnav__spark.s3 { animation-delay: .36s; }
+.ucxnav__spark.s4 { animation-delay: .54s; }
+.ucxnav__spark.s5 { animation-delay: .72s; }
+@keyframes ucxSpark {
+  0% { opacity: 0; transform: translateY(0) scale(.4); }
+  40% { opacity: 1; transform: translateY(-6px) scale(1); }
+  100% { opacity: 0; transform: translateY(-14px) scale(.4); }
+}
+
+/* ---- interiors-only: an arrow badge slides out from behind the main
+   Contact pill on hover, revealing itself as a distinct circular tab ---- */
+.ucxnav__cta-gooey { position: relative; flex: none; display: flex; align-items: center; }
+.ucxnav__cta-gooey .ucxnav__cta--main { position: relative; z-index: 1; height: 40px; }
+.ucxnav__cta-gooey .ucxnav__cta--arrow {
+  position: absolute; top: 0; right: 0; z-index: 0;
+  width: 40px; height: 40px; padding: 0; gap: 0;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--ucx-green); color: var(--ucx-mint);
+  border: 1px solid var(--ucx-mint);
+  opacity: 0;
+  transform: translateX(0) scale(.6);
+  transition: transform .45s cubic-bezier(.22,1.4,.36,1), opacity .3s ease;
+}
+.ucxnav__cta-gooey:hover .ucxnav__cta--arrow { opacity: 1; transform: translateX(-108px) scale(1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ucxnav__spark { animation: none !important; }
+  .ucxnav__cta-gooey .ucxnav__cta--arrow { transition: none; }
+}
 
 .ucxnav img { box-sizing: content-box; flex-shrink: 0; max-width: none !important; }
 .ucxnav *, .ucxnav *::before, .ucxnav *::after { box-sizing: border-box; }
@@ -149,6 +204,30 @@
 .ucxnav__item.is-open .ucxnav__link {
   background: color-mix(in srgb, var(--ucx-mint) 12%, transparent);
   color: var(--ucx-white);
+}
+
+/* A nav item that's both a direct link and a dropdown trigger: the label
+   navigates, the chevron toggles the panel, but the two share one pill. */
+.ucxnav__link-group {
+  display: flex; align-items: center;
+  border-radius: 100px;
+  color: rgba(255,255,255,.86);
+  transition: background .25s var(--ucx-ease), color .25s ease;
+}
+.ucxnav__link-group:hover,
+.ucxnav__item.is-open .ucxnav__link-group {
+  background: color-mix(in srgb, var(--ucx-mint) 12%, transparent);
+  color: var(--ucx-white);
+}
+.ucxnav__link-text {
+  padding: 10px 2px 10px 14px;
+  font-size: 14.5px; font-weight: 500; letter-spacing: .01em;
+  color: inherit; white-space: nowrap;
+}
+.ucxnav__chev-btn {
+  display: flex; align-items: center; justify-content: center;
+  padding: 10px 14px 10px 6px;
+  background: none; border: none; color: inherit; cursor: pointer; font: inherit;
 }
 
 .ucxnav__visually-hidden {

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { submitToSplitForms } from "@/lib/splitforms";
-import ScrollExpandHero from "@/components/sections/ScrollExpandHero";
+import InteriorsHero from "@/components/sections/InteriorsHero";
 
 const SERVICES = [
   {
@@ -176,30 +176,11 @@ export default function Interiors() {
     <div className="ucx-interiors" ref={sectRef}>
       <div className="cursor-haze"></div>
 
-      {/* ---------- hero: scroll-expand media ----------
+      {/* ---------- hero ----------
           Rendered outside .wrapper (which is max-width:1200px + padded)
           so it needs no negative-margin escape hack — it's a direct
           child of .ucx-interiors, which has no width constraint at all. */}
-      <ScrollExpandHero
-        mediaType="video"
-        mediaSrc="/brand/interiors/hero-expand.mp4"
-        posterSrc="/brand/interiors/hero-expand-poster.jpg"
-        bgImageSrc="/brand/interiors/hero.png"
-        kicker="Design & Interiors"
-        title="Design, Documentation & Delivery for Interior Environments"
-        scrollHint="Scroll to Expand"
-      >
-        <p className="intro">
-          UCX combines interior design expertise with BIM, technical documentation, coordination and execution
-          support to connect design intent with project delivery.
-        </p>
-        <a className="hero-cta" href="#categories">
-          <span>Explore Our Work</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 12h13M13 6l6 6-6 6" />
-          </svg>
-        </a>
-      </ScrollExpandHero>
+      <InteriorsHero />
 
       {/* ---------- marquee: full-bleed scrolling strip, right under the hero ---------- */}
       <div className="marquee-strip" aria-hidden="true">
@@ -312,7 +293,7 @@ export default function Interiors() {
         </div>
 
         {/* ---------- closing: copy + inline enquiry form ---------- */}
-        <div className="closing-final" data-reveal>
+        <div id="closing" className="closing-final" data-reveal>
           <div className="closing-copy">
             <span className="closing-eyebrow">Start a Project</span>
             <h3>Have an Interiors Project in Mind?</h3>

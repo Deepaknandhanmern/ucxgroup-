@@ -1,20 +1,18 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import InteriorsFooter from "@/components/sections/InteriorsFooter";
 
 export default function Footer() {
   const pathname = usePathname();
   const isInteriors = pathname?.startsWith("/interiors") ?? false;
 
+  if (isInteriors) return <InteriorsFooter />;
+
   return (
-    <footer className={`ucx-footer${isInteriors ? " ucx-footer--interiors" : ""}`}>
+    <footer className="ucx-footer">
       <div className="footer-top">
-        {isInteriors ? (
-          <div className="badge-wrap badge-wrap--plain">
-            <img src="/brand/interiors/logo.png" alt="SpayceX" className="footer-logo-plain" />
-          </div>
-        ) : (
-          <div className="badge-wrap">
+        <div className="badge-wrap">
             <svg viewBox="0 0 420 420" role="img" aria-label="UCX ecosystem badge: Design, Digital, Delivery, Asset">
               <defs>
                 <radialGradient id="badgeGlow" cx="50%" cy="42%" r="65%">
@@ -56,11 +54,10 @@ export default function Footer() {
                 preserveAspectRatio="xMidYMid meet"
               />
             </svg>
-          </div>
-        )}
+        </div>
 
         <div>
-          <p className="eyebrow">{isInteriors ? "SpayceX — Design & Interiors by UCX" : "UCX Engineering Technologies"}</p>
+          <p className="eyebrow">UCX Engineering Technologies</p>
           <h2 className="headline">One connected delivery ecosystem</h2>
           <p className="services-line">DESIGN &middot; DIGITAL ENGINEERING &middot; PROJECT DELIVERY &middot; ASSET INFORMATION</p>
           <p className="location-line">
@@ -102,7 +99,9 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <p className="copyright">&copy; 2026 UCX. All rights reserved.</p>
+        <p className="copyright">
+          &copy; 2026 UCX. All rights reserved. <span className="credit">Designed &amp; Developed by Agape Works</span>
+        </p>
         <ul className="legal-links">
           <li><a href="#">Privacy</a></li>
           <li><a href="#">Terms</a></li>
