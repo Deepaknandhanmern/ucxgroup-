@@ -1,19 +1,30 @@
 .ucx-globalreach {
-  --bg-deep: #00211B;
-  --accent: #91F2B5;
-  --accent-dim: rgba(145,242,181,0.55);
-  --line: rgba(145,242,181,0.18);
-  --line-glow: rgba(145,242,181,0.30);
-  --cream: #F3F1E6;
+  --bg: #F3F1E6;
+  --mint: #91F2B5;
+  --accent: #00352D;
+  --accent-dim: rgba(0,53,45,0.58);
+  --line: rgba(0,53,45,0.14);
+  --line-glow: rgba(0,53,45,0.30);
+  --cream: #00352D;
   --ease: cubic-bezier(.16,.84,.36,1);
 
-  background: var(--bg-deep);
+  background: var(--bg);
   color: var(--accent);
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
   border-top: 1px solid var(--line);
+  position: relative;
   overflow: hidden;
+  isolation: isolate;
 }
 .ucx-globalreach * { box-sizing: border-box; }
+
+.ucx-globalreach .grid-overlay {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(0,53,45,.05) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, rgba(0,53,45,.05) 0 1px, transparent 1px 120px);
+  opacity: .5;
+}
 
 .ucx-globalreach [data-reveal] {
   opacity: 0; transform: translateY(24px);
@@ -22,6 +33,7 @@
 .ucx-globalreach [data-reveal].is-in { opacity: 1; transform: none; }
 
 .ucx-globalreach .wrapper {
+  position: relative; z-index: 1;
   max-width: 1440px; margin: 0 auto;
   padding: clamp(72px,9vw,120px) clamp(20px,6vw,80px);
   display: grid; grid-template-columns: 0.68fr 1.32fr;
@@ -52,7 +64,7 @@
   display: inline-flex; align-items: center; gap: 10px;
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--bg-deep); background: var(--accent);
+  color: var(--bg); background: var(--accent);
   padding: 15px 26px; border-radius: 999px; border: 1px solid var(--accent);
   transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
 }
@@ -60,46 +72,10 @@
 .ucx-globalreach .cta:hover { background: transparent; color: var(--accent); transform: translateY(-2px); }
 .ucx-globalreach .cta:hover svg { transform: translateX(3px); }
 
-/* ---- map (reuses GlobalDelivery's proven map graphic) ---- */
-.ucx-globalreach .map { position: relative; width: 100%; aspect-ratio: 1140 / 500; }
-.ucx-globalreach .map-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.ucx-globalreach .world-dots circle { fill: var(--line); }
-.ucx-globalreach .leader { fill: none; stroke: var(--line-glow); stroke-width: 1.4; stroke-dasharray: 3 6; }
-.ucx-globalreach .pulse { fill: var(--accent); offset-rotate: 0deg; animation: grTravel 3.6s var(--ease) infinite; }
-.ucx-globalreach .pulse.p1 { offset-path: path('M715,208 Q672,140 630,175'); }
-.ucx-globalreach .pulse.p2 { offset-path: path('M715,208 Q797,150 880,225'); animation-delay: .9s; }
-.ucx-globalreach .pulse.p3 { offset-path: path('M715,208 Q450,40 185,115'); animation-delay: 1.8s; }
-@keyframes grTravel {
-  0% { offset-distance: 0%; opacity: 0; }
-  12% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { offset-distance: 100%; opacity: 0; }
-}
-.ucx-globalreach .hub-ring { fill: none; stroke: var(--accent-dim); stroke-width: 1; }
-.ucx-globalreach .hub-beacon { fill: var(--accent); }
-.ucx-globalreach .hub-beacon-pulse {
-  fill: none; stroke: var(--accent); stroke-width: 1.4;
-  transform-origin: 715px 208px;
-  animation: grBeacon 2.4s var(--ease) infinite;
-}
-@keyframes grBeacon {
-  0% { r: 4.5; opacity: .9; }
-  100% { r: 26; opacity: 0; }
-}
-.ucx-globalreach .hub-label {
-  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; font-size: 15px;
-  letter-spacing: .06em; fill: var(--cream);
-}
-.ucx-globalreach .node-dot { fill: var(--accent); }
-.ucx-globalreach .node-label {
-  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; font-size: 14px;
-  fill: var(--cream);
-}
+/* ---- interactive globe ---- */
+.ucx-globalreach .map { width: 100%; max-width: 460px; margin: 0 auto; }
 
 @media (max-width: 900px) {
   .ucx-globalreach .wrapper { grid-template-columns: 1fr; }
-  .ucx-globalreach .map { order: -1; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .ucx-globalreach .pulse, .ucx-globalreach .hub-beacon-pulse { animation: none; }
+  .ucx-globalreach .map { order: -1; max-width: 320px; }
 }

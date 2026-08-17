@@ -1,10 +1,19 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { WORLD_DOTS } from "./globalDeliveryMap";
+import { Globe } from "@/components/ui/Globe";
 
 const REGIONS = ["India", "GCC", "Southeast Asia", "Global"];
 const TAGS = ["International Delivery", "Remote Collaboration", "Dedicated Teams"];
+
+const INDIA: [number, number] = [11.0168, 76.9558];
+const NODES: [number, number][] = [
+  [25.2048, 55.2708], // GCC
+  [1.3521, 103.8198], // Southeast Asia
+  [51.5074, -0.1278], // Global (UK · US · Australia)
+];
+const GLOBE_MARKERS = [{ location: INDIA, size: 0.06 }, ...NODES.map((location) => ({ location, size: 0.035 }))];
+const GLOBE_ARCS = NODES.map((to) => ({ from: INDIA, to }));
 
 export default function GlobalReach() {
   const sectRef = useRef<HTMLDivElement>(null);
@@ -37,6 +46,7 @@ export default function GlobalReach() {
 
   return (
     <div className="ucx-globalreach" ref={sectRef}>
+      <div className="grid-overlay"></div>
       <div className="wrapper">
         <div className="copy" data-reveal>
           <h2 className="heading">
@@ -65,53 +75,8 @@ export default function GlobalReach() {
           </a>
         </div>
 
-        <div className="map" aria-hidden="true" data-reveal>
-          <svg className="map-svg" viewBox="-20 0 1140 500" preserveAspectRatio="xMidYMid meet">
-            <defs>
-              <radialGradient id="grglow" cx="71.5%" cy="42%" r="45%">
-                <stop offset="0%" stopColor="rgba(145,242,181,0.22)" />
-                <stop offset="100%" stopColor="rgba(145,242,181,0)" />
-              </radialGradient>
-            </defs>
-            <ellipse className="glow" cx="715" cy="208" rx="320" ry="220" fill="url(#grglow)"></ellipse>
-
-            <g className="world-dots">
-              {WORLD_DOTS.map(([x, y]) => (
-                <circle key={`${x}-${y}`} cx={x} cy={y} r="2.1" />
-              ))}
-            </g>
-
-            <g className="leaders">
-              <path className="leader" d="M715,208 Q672,140 630,175" />
-              <path className="leader" d="M715,208 Q797,150 880,225" />
-              <path className="leader" d="M715,208 Q450,40 185,115" />
-
-              <circle className="pulse p1" r="4" />
-              <circle className="pulse p2" r="4" />
-              <circle className="pulse p3" r="4" />
-            </g>
-
-            <g className="hub">
-              <circle className="hub-ring" cx="715" cy="208" r="40" />
-              <circle className="hub-ring" cx="715" cy="208" r="26" />
-              <circle className="hub-beacon" cx="715" cy="208" r="4.5" />
-              <circle className="hub-beacon-pulse" cx="715" cy="208" r="4.5" />
-              <text className="hub-label" x="715" y="266" textAnchor="middle">INDIA</text>
-            </g>
-
-            <g className="node" transform="translate(630,175)">
-              <circle className="node-dot" r="5" />
-              <text className="node-label" x="-16" y="-14" textAnchor="end">GCC</text>
-            </g>
-            <g className="node" transform="translate(880,225)">
-              <circle className="node-dot" r="5" />
-              <text className="node-label" x="16" y="-14">Southeast Asia</text>
-            </g>
-            <g className="node" transform="translate(185,115)">
-              <circle className="node-dot" r="5" />
-              <text className="node-label" x="0" y="-18" textAnchor="middle">Global</text>
-            </g>
-          </svg>
+        <div className="map" data-reveal>
+          <Globe markers={GLOBE_MARKERS} arcs={GLOBE_ARCS} />
         </div>
       </div>
     </div>
