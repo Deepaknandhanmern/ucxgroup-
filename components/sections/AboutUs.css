@@ -60,7 +60,7 @@
   line-height: .98;
   letter-spacing: -.02em;
   text-transform: uppercase;
-  font-size: clamp(38px,7.2vw,96px);
+  font-size: clamp(32px,5vw,64px);
   margin-bottom: clamp(32px,4vw,48px);
 }
 .ucx-about .line-mask { display: block; overflow: hidden; }

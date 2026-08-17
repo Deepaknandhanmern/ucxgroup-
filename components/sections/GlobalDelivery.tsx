@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { WORLD_DOTS } from "./globalDeliveryMap";
+import { Globe } from "@/components/ui/Globe";
 
 const TAGS = ["International Delivery", "Remote Collaboration", "Dedicated Teams", "Scalable Capacity"];
 
@@ -10,6 +10,17 @@ const STEPS = [
   { n: "02", label: "Coordinate", desc: "Shared models, structured communication and defined delivery cadence." },
   { n: "03", label: "Deliver", desc: "Consistent, quality-controlled output handed off on schedule." },
 ];
+
+const INDIA: [number, number] = [11.0168, 76.9558];
+
+const NODES = [
+  { label: "GCC", caption: "UAE · Saudi · Qatar", location: [25.2048, 55.2708] as [number, number] },
+  { label: "Southeast Asia", caption: "Singapore · Malaysia", location: [1.3521, 103.8198] as [number, number] },
+  { label: "Global", caption: "UK · US · Australia", location: [51.5074, -0.1278] as [number, number] },
+];
+
+const GLOBE_MARKERS = [{ location: INDIA, size: 0.06 }, ...NODES.map((n) => ({ location: n.location, size: 0.035 }))];
+const GLOBE_ARCS = NODES.map((n) => ({ from: INDIA, to: n.location }));
 
 export default function GlobalDelivery() {
   const sectRef = useRef<HTMLDivElement>(null);
@@ -96,57 +107,29 @@ export default function GlobalDelivery() {
         </div>
 
         {/* ---------- connection map ---------- */}
-        <div className="map" aria-hidden="true">
-          <svg className="map-svg" viewBox="-20 0 1140 500" preserveAspectRatio="xMidYMid meet">
-            <defs>
-              <radialGradient id="gdglow" cx="71.5%" cy="42%" r="45%">
-                <stop offset="0%" stopColor="rgba(145,242,181,0.22)" />
-                <stop offset="100%" stopColor="rgba(145,242,181,0)" />
-              </radialGradient>
-            </defs>
-            <ellipse className="glow" cx="715" cy="208" rx="320" ry="220" fill="url(#gdglow)"></ellipse>
-
-            <g className="world-dots">
-              {WORLD_DOTS.map(([x, y]) => (
-                <circle key={`${x}-${y}`} cx={x} cy={y} r="2.1" />
-              ))}
-            </g>
-
-            <g className="leaders">
-              <path className="leader" d="M715,208 Q672,140 630,175" />
-              <path className="leader" d="M715,208 Q797,150 880,225" />
-              <path className="leader" d="M715,208 Q450,40 185,115" />
-
-              <circle className="pulse p1" r="4" />
-              <circle className="pulse p2" r="4" />
-              <circle className="pulse p3" r="4" />
-            </g>
-
-            <g className="hub">
-              <circle className="hub-ring" cx="715" cy="208" r="40" />
-              <circle className="hub-ring" cx="715" cy="208" r="26" />
-              <circle className="hub-beacon" cx="715" cy="208" r="4.5" />
-              <circle className="hub-beacon-pulse" cx="715" cy="208" r="4.5" />
-              <text className="hub-label" x="715" y="266" textAnchor="middle">INDIA</text>
-              <text className="hub-caption" x="715" y="285" textAnchor="middle">Delivery Origin</text>
-            </g>
-
-            <g className="node" transform="translate(630,175)">
-              <circle className="node-dot" r="5" />
-              <text className="node-label" x="-16" y="-14" textAnchor="end">GCC</text>
-              <text className="node-caption" x="-16" y="4" textAnchor="end">UAE · Saudi · Qatar</text>
-            </g>
-            <g className="node" transform="translate(880,225)">
-              <circle className="node-dot" r="5" />
-              <text className="node-label" x="16" y="-14">Southeast Asia</text>
-              <text className="node-caption" x="16" y="4">Singapore · Malaysia</text>
-            </g>
-            <g className="node" transform="translate(185,115)">
-              <circle className="node-dot" r="5" />
-              <text className="node-label" x="0" y="-18" textAnchor="middle">Global</text>
-              <text className="node-caption" x="0" y="2" textAnchor="middle">UK · US · Australia</text>
-            </g>
-          </svg>
+        <div className="map">
+          <div className="map-grid" aria-hidden="true"></div>
+          <div className="map-globe">
+            <Globe markers={GLOBE_MARKERS} arcs={GLOBE_ARCS} />
+          </div>
+          <div className="map-legend">
+            <div className="legend-item legend-hub">
+              <span className="legend-dot"></span>
+              <div>
+                <strong>India</strong>
+                <em>Delivery Origin</em>
+              </div>
+            </div>
+            {NODES.map((n) => (
+              <div className="legend-item" key={n.label}>
+                <span className="legend-dot"></span>
+                <div>
+                  <strong>{n.label}</strong>
+                  <em>{n.caption}</em>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* ---------- quality & standards ---------- */}

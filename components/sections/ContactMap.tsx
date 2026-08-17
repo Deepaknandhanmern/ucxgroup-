@@ -86,7 +86,6 @@ export default function ContactMap() {
 
           <div className="loc-bottom">
             <h3>Singanallur, Coimbatore</h3>
-            {expanded && <p className="loc-address">{ADDRESS}</p>}
             <span className="loc-underline"></span>
           </div>
         </div>
