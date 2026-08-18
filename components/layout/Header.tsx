@@ -442,7 +442,15 @@ export default function Header() {
   const rootRef = useRef<HTMLElement>(null);
   const xIconRef = useRef<HTMLImageElement>(null);
   const pathname = usePathname();
-  const isInteriors = pathname?.startsWith("/interiors") ?? false;
+  const [isInteriorsFilter, setIsInteriorsFilter] = useState(false);
+
+  useEffect(() => {
+    setIsInteriorsFilter(
+      pathname === "/projects" && new URLSearchParams(window.location.search).get("filter") === "interiors"
+    );
+  }, [pathname]);
+
+  const isInteriors = (pathname?.startsWith("/interiors") ?? false) || isInteriorsFilter;
 
   const [openKey, setOpenKey] = useState<PanelKey | null>(null);
   const [mobileOpenKey, setMobileOpenKey] = useState<PanelKey | null>(null);

@@ -1,11 +1,20 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import InteriorsFooter from "@/components/sections/InteriorsFooter";
 
 export default function Footer() {
   const pathname = usePathname();
-  const isInteriors = pathname?.startsWith("/interiors") ?? false;
+  const [isInteriorsFilter, setIsInteriorsFilter] = useState(false);
+
+  useEffect(() => {
+    setIsInteriorsFilter(
+      pathname === "/projects" && new URLSearchParams(window.location.search).get("filter") === "interiors"
+    );
+  }, [pathname]);
+
+  const isInteriors = (pathname?.startsWith("/interiors") ?? false) || isInteriorsFilter;
 
   if (isInteriors) return <InteriorsFooter />;
 
