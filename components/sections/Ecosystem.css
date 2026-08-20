@@ -69,8 +69,14 @@
 .focus-inner { width: 100%; transform-origin: center; }
 .ucx-eco-pin.is-stacked .focus-inner { transform: none !important; opacity: 1 !important; }
 
-/* ---- intro panel ---- */
-.ucx-eco-panel.intro { text-align: center; max-width: 780px; margin: 0 auto; }
+/* ---- intro panel ----
+   max-width/centering lives on .focus-inner, not the panel itself: the
+   panel must stay exactly 100vw so the scroll-driven translateX math in
+   Ecosystem.tsx (which assumes uniform vw-wide slots) lines up with what's
+   actually on screen. Capping the panel's own width used to desync the
+   progress rail from the visible pillar by a step. */
+.ucx-eco-panel.intro { text-align: center; }
+.ucx-eco-panel.intro .focus-inner { max-width: 780px; margin: 0 auto; }
 .ucx-eco-panel.intro .eyebrow {
   display: inline-flex; align-items: center; gap: 10px;
   font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
@@ -89,8 +95,8 @@
 .ucx-eco-pin.is-stacked .ucx-eco-panel.intro .scroll-hint { display: none; }
 
 /* ---- pillar panel ---- */
-.ucx-eco-panel.pillar { max-width: 1280px; margin: 0 auto; }
 .ucx-eco-panel.pillar .focus-inner {
+  max-width: 1280px; margin: 0 auto;
   display: grid; grid-template-columns: 1.25fr 1fr;
   gap: clamp(32px,5vw,64px); align-items: center;
 }

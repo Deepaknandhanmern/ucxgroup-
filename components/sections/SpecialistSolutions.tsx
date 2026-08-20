@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 interface Card {
   index: string;
@@ -17,8 +17,6 @@ const CARDS: Card[] = [
 
 export default function SpecialistSolutions() {
   const sectRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(0);
 
   // cursor spotlight
   useEffect(() => {
@@ -56,94 +54,6 @@ export default function SpecialistSolutions() {
     };
   }, []);
 
-  // drag-to-scroll + snap tracking
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    let isDown = false;
-    let startX = 0;
-    let startScroll = 0;
-    let paused = false;
-    let resumeTimer: ReturnType<typeof setTimeout> | null = null;
-    let autoTimer: ReturnType<typeof setInterval> | null = null;
-
-    function goToIndex(i: number) {
-      const cardWidth = track!.scrollWidth / CARDS.length;
-      track!.scrollTo({ left: cardWidth * i, behavior: "smooth" });
-    }
-
-    function startAuto() {
-      if (reduce || autoTimer) return;
-      autoTimer = setInterval(() => {
-        if (paused) return;
-        const cardWidth = track!.scrollWidth / CARDS.length;
-        const current = Math.round(track!.scrollLeft / cardWidth);
-        goToIndex((current + 1) % CARDS.length);
-      }, 3200);
-    }
-    function pauseAuto(temporary: boolean) {
-      paused = true;
-      if (resumeTimer) clearTimeout(resumeTimer);
-      if (temporary) resumeTimer = setTimeout(() => (paused = false), 4500);
-    }
-
-    function onDown(e: PointerEvent) {
-      isDown = true;
-      pauseAuto(false);
-      track!.setPointerCapture(e.pointerId);
-      startX = e.clientX;
-      startScroll = track!.scrollLeft;
-      track!.classList.add("is-dragging");
-    }
-    function onMove(e: PointerEvent) {
-      if (!isDown) return;
-      track!.scrollLeft = startScroll - (e.clientX - startX);
-    }
-    function onUp(e: PointerEvent) {
-      isDown = false;
-      track!.releasePointerCapture(e.pointerId);
-      track!.classList.remove("is-dragging");
-      pauseAuto(true);
-    }
-    function onEnter() {
-      pauseAuto(false);
-    }
-    function onLeave() {
-      if (!isDown) pauseAuto(true);
-    }
-    function onScroll() {
-      const cardWidth = track!.scrollWidth / CARDS.length;
-      setActive(Math.round(track!.scrollLeft / cardWidth));
-    }
-
-    track.addEventListener("pointerdown", onDown);
-    track.addEventListener("pointermove", onMove);
-    track.addEventListener("pointerup", onUp);
-    track.addEventListener("pointerenter", onEnter);
-    track.addEventListener("pointerleave", onLeave);
-    track.addEventListener("scroll", onScroll, { passive: true });
-    startAuto();
-    return () => {
-      track.removeEventListener("pointerdown", onDown);
-      track.removeEventListener("pointermove", onMove);
-      track.removeEventListener("pointerup", onUp);
-      track.removeEventListener("pointerenter", onEnter);
-      track.removeEventListener("pointerleave", onLeave);
-      track.removeEventListener("scroll", onScroll);
-      if (autoTimer) clearInterval(autoTimer);
-      if (resumeTimer) clearTimeout(resumeTimer);
-    };
-  }, []);
-
-  function goTo(i: number) {
-    const track = trackRef.current;
-    if (!track) return;
-    const cardWidth = track.scrollWidth / CARDS.length;
-    track.scrollTo({ left: cardWidth * i, behavior: "smooth" });
-  }
-
   return (
     <div className="ucx-special" ref={sectRef}>
       <div className="grid-overlay"></div>
@@ -157,17 +67,9 @@ export default function SpecialistSolutions() {
             <h2 className="heading">Beyond the Standard</h2>
             <p className="intro">Specialist workflows for complex project requirements.</p>
           </div>
-          <div className="head-nav">
-            <button type="button" aria-label="Previous" onClick={() => goTo(Math.max(0, active - 1))}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 6l-6 6 6 6" /></svg>
-            </button>
-            <button type="button" aria-label="Next" onClick={() => goTo(Math.min(CARDS.length - 1, active + 1))}>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6l6 6-6 6" /></svg>
-            </button>
-          </div>
         </div>
 
-        <div className="carousel" ref={trackRef}>
+        <div className="grid">
           {CARDS.map((c) => (
             <article className="card" key={c.index}>
               <div className="card-image">
@@ -184,12 +86,6 @@ export default function SpecialistSolutions() {
                 <p className="card-flow">{c.flow}</p>
               </div>
             </article>
-          ))}
-        </div>
-
-        <div className="dots">
-          {CARDS.map((c, i) => (
-            <button key={c.index} type="button" className={i === active ? "is-active" : ""} onClick={() => goTo(i)} aria-label={`Go to ${c.title}`}></button>
           ))}
         </div>
 

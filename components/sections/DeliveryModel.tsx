@@ -1,23 +1,18 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import HowItWorks, { type Step, type StepPosition } from "@/components/ui/how-it-works";
 
-const MINT_TINT = { bg: "bg-[#91F2B5]/15", text: "text-[#00352D]", border: "border-[#91F2B5]/50" };
-const DARK_TINT = { bg: "bg-[#00352D]/[0.04]", text: "text-[#00352D]", border: "border-[#00352D]/12" };
+interface Model {
+  title: string;
+  description: string;
+  tint: "mint" | "dark";
+}
 
-const STEP_POSITIONS: StepPosition[] = [
-  { className: "md:absolute md:top-0 md:left-[10%]", rotate: "md:rotate-8" },
-  { className: "md:absolute md:top-[83px] md:right-[10%]", rotate: "md:-rotate-8" },
-  { className: "md:absolute md:top-[310px] md:left-[10%]", rotate: "md:rotate-8" },
-  { className: "md:absolute md:top-[393px] md:right-[6%]", rotate: "md:-rotate-8" },
-];
-
-const MODELS: Step[] = [
-  { title: "Project Delivery", description: "Defined scopes. Clear deliverables.", colors: MINT_TINT },
-  { title: "Dedicated Teams", description: "Extend your team with UCX capability.", colors: DARK_TINT },
-  { title: "Flexible Delivery", description: "Scale when workloads and deadlines change.", colors: MINT_TINT },
-  { title: "Strategic Partnerships", description: "Build long-term delivery capability.", colors: DARK_TINT },
+const MODELS: Model[] = [
+  { title: "Project Delivery", description: "Defined scopes. Clear deliverables.", tint: "mint" },
+  { title: "Dedicated Teams", description: "Extend your team with UCX capability.", tint: "dark" },
+  { title: "Flexible Delivery", description: "Scale when workloads and deadlines change.", tint: "mint" },
+  { title: "Strategic Partnerships", description: "Build long-term delivery capability.", tint: "dark" },
 ];
 
 export default function DeliveryModel() {
@@ -59,13 +54,14 @@ export default function DeliveryModel() {
           <p className="intro">Flexible ways to work with UCX&mdash;built around your project, capacity and growth.</p>
         </div>
 
-        <div className="dm-track" data-reveal>
-          <HowItWorks
-            features={MODELS}
-            stepPositions={STEP_POSITIONS}
-            trackHeight={620}
-            className="!bg-[#F3F1E6] dark:!bg-[#F3F1E6] !py-0 !px-0"
-          />
+        <div className="dm-steps" data-reveal>
+          {MODELS.map((m, i) => (
+            <div className={`dm-step is-${m.tint}`} key={m.title}>
+              <span className="dm-step-num">0{i + 1}</span>
+              <h3>{m.title}</h3>
+              <p>{m.description}</p>
+            </div>
+          ))}
         </div>
 
         <div className="closing" data-reveal>

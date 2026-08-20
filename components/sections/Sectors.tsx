@@ -24,7 +24,6 @@ const SECTORS: Card[] = [
   { label: "Hospitality", back: "Hotels & leisure", icon: <Icon d="M3 19v-9a2 2 0 012-2h3v4M3 19h18M8 12h3a2 2 0 012 2v1M3 19v-3M21 19v-6a2 2 0 00-2-2h-3" /> },
   { label: "Healthcare", back: "Clinical & medical", icon: <Icon d="M12 3v6M9 6h6M4 21V10l8-6 8 6v11M4 21h16M10 21v-5h4v5" /> },
   { label: "Industrial", back: "Manufacturing & logistics", icon: <Icon d="M3 21V11l5 3v-3l5 3v-3l5 3v7H3ZM7 21v-4M12 21v-4M17 21v-4" /> },
-  { label: "Infrastructure", back: "Civil & public works", icon: <Icon d="M2 19h20M4 19V9l4-3M20 19V9l-4-3M8 19V6M16 19V6M8 12h8" /> },
 ];
 
 const PARTNERS: Card[] = [
