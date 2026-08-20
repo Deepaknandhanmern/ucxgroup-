@@ -19,7 +19,7 @@ const PILLARS: Pillar[] = [
     subtitle: "From vision to buildable design.",
     desc: "From concept to detailed documentation, we connect design thinking with delivery requirements.",
     tags: ["Architecture", "Interiors", "Design Development"],
-    image: "/brand/ecosystem/design-intelligence.jpg",
+    image: "/brand/ecosystem/design-intelligence.png",
   },
   {
     index: "02",
@@ -27,7 +27,7 @@ const PILLARS: Pillar[] = [
     subtitle: "From design to intelligent information.",
     desc: "We transform project information into coordinated, data-rich digital environments for better decisions and delivery.",
     tags: ["BIM", "Digital Engineering", "Coordination", "Automation"],
-    image: "/brand/ecosystem/digital-intelligence.jpg",
+    image: "/brand/ecosystem/digital-intelligence.png",
   },
   {
     index: "03",
@@ -35,7 +35,7 @@ const PILLARS: Pillar[] = [
     subtitle: "From information to coordinated execution.",
     desc: "We support teams with coordinated documentation, project controls and execution-focused delivery support.",
     tags: ["Documentation", "QA/QC", "Project Controls", "Execution"],
-    image: "/brand/ecosystem/delivery-intelligence.jpg",
+    image: "/brand/ecosystem/delivery-intelligence.png",
   },
   {
     index: "04",
@@ -43,7 +43,7 @@ const PILLARS: Pillar[] = [
     subtitle: "From handover to operational value.",
     desc: "We structure asset information for digital handover, facilities management and long-term operational performance.",
     tags: ["As-Built BIM", "COBie", "Asset Information", "Digital Handover"],
-    image: "/brand/ecosystem/asset-intelligence.jpg",
+    image: "/brand/ecosystem/asset-intelligence.png",
   },
 ];
 

@@ -16,28 +16,28 @@ const SERVICES: Service[] = [
     title: "BIM & Digital Delivery",
     desc: "Digital engineering from design through construction.",
     tags: ["BIM", "VDC", "Digital Engineering", "Coordination", "4D/5D"],
-    img: "/brand/services/bim-digital-delivery.jpg",
+    img: "/brand/services/bim-digital-delivery.png",
   },
   {
     num: "02",
     title: "Design & Interiors",
     desc: "Integrated design and interior delivery.",
     tags: ["Architecture", "Planning", "Interior Design", "Documentation"],
-    img: "/brand/services/design-interiors.jpg",
+    img: "/brand/services/design-interiors.png",
   },
   {
     num: "03",
     title: "Project & Construction Support",
     desc: "Coordinated support for project delivery.",
     tags: ["Documentation", "Project Controls", "QA/QC", "Execution Support"],
-    img: "/brand/services/project-construction-support.jpg",
+    img: "/brand/services/project-construction-support.png",
   },
   {
     num: "04",
     title: "Asset & Digital Information",
     desc: "Structured information for handover and operations.",
     tags: ["As-Built BIM", "COBie", "Asset Information", "Digital Handover"],
-    img: "/brand/services/asset-digital-information.jpg",
+    img: "/brand/services/asset-digital-information.png",
   },
 ];
 

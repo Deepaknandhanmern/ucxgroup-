@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Founder {
   index: string;
@@ -9,6 +9,7 @@ interface Founder {
   role: string;
   bio: string;
   focus: string[];
+  image: string;
 }
 
 const FOUNDERS: Founder[] = [
@@ -19,6 +20,7 @@ const FOUNDERS: Founder[] = [
     role: "Co-Founder | BIM & Digital Delivery",
     bio: "Leads UCX's BIM, digital delivery and technology strategy, with a focus on coordinated project workflows and scalable digital delivery.",
     focus: ["BIM", "Digital Delivery", "Technology", "Project Strategy"],
+    image: "/brand/founders/shangeeth-raju.png",
   },
   {
     index: "02",
@@ -27,8 +29,22 @@ const FOUNDERS: Founder[] = [
     role: "Co-Founder | Interiors & Business",
     bio: "Leads UCX's interiors and business development direction, connecting design capability with client requirements and commercial growth.",
     focus: ["Interiors", "Business Development", "Client Strategy", "Growth"],
+    image: "/brand/founders/bhuvaneshwari.png",
   },
 ];
+
+function FounderPhoto({ src, alt, initials }: { src: string; alt: string; initials: string }) {
+  const [ok, setOk] = useState(true);
+  if (ok) {
+    return <img className="photo-flip-img" src={src} alt={alt} onError={() => setOk(false)} />;
+  }
+  return (
+    <>
+      <span className="mark">{initials}</span>
+      <span className="photo-caption">Photo coming soon</span>
+    </>
+  );
+}
 
 export default function Founders() {
   const sectRef = useRef<HTMLDivElement>(null);
@@ -97,8 +113,7 @@ export default function Founders() {
                 <div className="photo-flip">
                   <div className="photo-flip-inner">
                     <div className="photo-flip-face photo-flip-front">
-                      <span className="mark">{f.initials}</span>
-                      <span className="photo-caption">Photo coming soon</span>
+                      <FounderPhoto src={f.image} alt={f.name} initials={f.initials} />
                     </div>
                     <div className="photo-flip-face photo-flip-back">
                       <p className="bio">{f.bio}</p>
