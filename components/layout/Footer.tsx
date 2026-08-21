@@ -140,9 +140,9 @@ export default function Footer() {
           &copy; {new Date().getFullYear()} UCX. All rights reserved. <span className="credit">Designed &amp; Developed by Agape Works</span>
         </p>
         <ul className="legal-links">
-          <li><a href="#">Privacy</a></li>
-          <li><a href="#">Terms</a></li>
-          <li><a href="#">Cookies</a></li>
+          <li><a href="/privacy-policy">Privacy</a></li>
+          <li><a href="/terms">Terms</a></li>
+          <li><a href="/cookies">Cookies</a></li>
         </ul>
       </div>
     </footer>

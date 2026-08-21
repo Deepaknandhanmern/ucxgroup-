@@ -23,6 +23,9 @@ const STATIC_ROUTES = [
   { path: "/global-delivery", priority: 0.5, changeFrequency: "monthly" as const },
   { path: "/careers", priority: 0.6, changeFrequency: "weekly" as const },
   { path: "/contact", priority: 0.6, changeFrequency: "yearly" as const },
+  { path: "/privacy-policy", priority: 0.2, changeFrequency: "yearly" as const },
+  { path: "/terms", priority: 0.2, changeFrequency: "yearly" as const },
+  { path: "/cookies", priority: 0.2, changeFrequency: "yearly" as const },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

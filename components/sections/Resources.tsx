@@ -186,7 +186,7 @@ export default function Resources({ resources }: { resources: ResourceItem[] }) 
                 <label className="ucxres__consent">
                   <input required type="checkbox" name="consent" />
                   <span>
-                    I agree to be contacted about this request, as set out in the <a href="/privacy-policy/">privacy policy</a>.
+                    I agree to be contacted about this request, as set out in the <a href="/privacy-policy">privacy policy</a>.
                   </span>
                 </label>
                 {submitError && (

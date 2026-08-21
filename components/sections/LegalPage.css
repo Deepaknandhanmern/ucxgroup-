@@ -1,0 +1,76 @@
+.ucx-legal {
+  --bg: #FFFFFF;
+  --dark: #00352D;
+  --muted: rgba(0,53,45,.62);
+  --line: rgba(0,53,45,.16);
+  --line-soft: rgba(0,53,45,.03);
+
+  position: relative;
+  background: var(--bg) !important;
+  color: var(--dark);
+  font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
+  overflow: hidden;
+}
+.ucx-legal * { box-sizing: border-box; }
+
+.ucx-legal .grid-overlay {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-soft) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 120px);
+  opacity: 1;
+}
+
+.ucx-legal .wrapper {
+  position: relative; z-index: 1;
+  max-width: 760px; margin: 0 auto;
+  padding: clamp(90px,10vw,140px) clamp(20px,6vw,40px) clamp(90px,9vw,130px);
+}
+
+.ucx-legal .eyebrow {
+  display: block;
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 16px;
+}
+
+.ucx-legal h1 {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  text-transform: uppercase; letter-spacing: -.01em; line-height: 1.05;
+  font-size: clamp(30px,4.2vw,48px);
+  margin: 0 0 14px;
+}
+
+.ucx-legal .updated {
+  font-size: 13px; color: var(--muted); margin: 0 0 28px;
+}
+
+.ucx-legal .intro {
+  font-size: 16px; line-height: 1.75; color: var(--dark);
+  max-width: 62ch;
+  padding-bottom: 28px; margin-bottom: 40px;
+  border-bottom: 1px solid var(--line);
+}
+
+.ucx-legal section { margin-bottom: 38px; }
+.ucx-legal section:last-child { margin-bottom: 0; }
+
+.ucx-legal h2 {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 18px; letter-spacing: -.005em;
+  margin: 0 0 12px;
+}
+
+.ucx-legal p {
+  font-size: 15px; line-height: 1.75; color: var(--muted);
+  max-width: 64ch;
+  margin: 0 0 12px;
+}
+.ucx-legal p:last-child { margin-bottom: 0; }
+
+.ucx-legal a { color: var(--dark); text-decoration: underline; text-underline-offset: 2px; }
+.ucx-legal a:hover { color: var(--muted); }
+
+@media (max-width: 640px) {
+  .ucx-legal .wrapper { padding: 70px 20px 80px; }
+}

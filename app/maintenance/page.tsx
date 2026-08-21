@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "UCX — Down for Maintenance",
+  description: "UCX Group's website is undergoing scheduled maintenance and will be back online shortly.",
   robots: { index: false, follow: false },
 };
 

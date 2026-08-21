@@ -98,10 +98,10 @@ export default function InteriorsFooter() {
           </div>
 
           <div className="ifoot-links">
-            <a className="ifoot-pill ifoot-pill--sm" href="#">
+            <a className="ifoot-pill ifoot-pill--sm" href="/privacy-policy">
               Privacy
             </a>
-            <a className="ifoot-pill ifoot-pill--sm" href="#">
+            <a className="ifoot-pill ifoot-pill--sm" href="/terms">
               Terms
             </a>
             <a className="ifoot-pill ifoot-pill--sm" href="mailto:collaborate@ucx-group.com">

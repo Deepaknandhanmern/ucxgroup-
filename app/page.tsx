@@ -1,4 +1,5 @@
 import Hero from "@/components/sections/Hero";
+import AnnouncementBanner from "@/components/ui/AnnouncementBanner";
 import AboutUs from "@/components/sections/AboutUs";
 import Ecosystem from "@/components/sections/Ecosystem";
 import WhyChooseUs from "@/components/sections/WhyChooseUs";
@@ -16,6 +17,12 @@ import Support from "@/components/sections/Support";
 export default function Home() {
   return (
     <>
+      <AnnouncementBanner
+        id="q4-2026-capacity"
+        buttonText="Accepting New Projects for Q4"
+        description="Limited delivery slots — reach out to discuss your project."
+        href="/contact"
+      />
       <Hero />
       <AboutUs />
       <Ecosystem />
