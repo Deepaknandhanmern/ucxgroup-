@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { POSTS, INSIGHT_FILTERS, type Post, type InsightCategory } from "@/lib/insights";
+import { INSIGHT_FILTERS, type Post, type InsightCategory } from "@/lib/insights";
 import FileCard, { type FileFormat } from "@/components/ui/FileCard";
 
 function initials(name: string): string {
@@ -77,9 +77,9 @@ function BlogCard({ post }: { post: Post }) {
 }
 
 /* ---------- Ideas That Move Projects Forward ---------- */
-function IdeasSection() {
+function IdeasSection({ posts }: { posts: Post[] }) {
   const [activeCat, setActiveCat] = useState<InsightCategory | "all">("all");
-  const list = activeCat === "all" ? POSTS : POSTS.filter((p) => p.category === activeCat);
+  const list = activeCat === "all" ? posts : posts.filter((p) => p.category === activeCat);
 
   return (
     <section className="ins-section" id="ideas">
@@ -262,7 +262,7 @@ function ResourcesSection() {
   );
 }
 
-export default function Insights() {
+export default function Insights({ posts }: { posts: Post[] }) {
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -310,7 +310,7 @@ export default function Insights() {
           </a>
         </div>
 
-        <IdeasSection />
+        <IdeasSection posts={posts} />
         <ProjectKnowledgeSection />
         <ResourcesSection />
 

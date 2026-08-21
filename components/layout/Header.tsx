@@ -52,7 +52,7 @@ const NAV_ITEMS: { key: PanelKey; label: string; iconOnly?: boolean; href?: stri
   { key: "experience", label: "Experience", href: "/experience" },
   { key: "lab", label: "Collaboration Lab", iconOnly: true },
   { key: "insights", label: "Insights", href: "/insights" },
-  { key: "company", label: "Company" },
+  { key: "company", label: "Company", href: "/about-us" },
 ];
 
 const PANELS: Panel[] = [

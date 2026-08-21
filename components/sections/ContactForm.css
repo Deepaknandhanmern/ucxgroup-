@@ -126,6 +126,28 @@
 .ucx-contact .office-item p a { color: var(--dark); text-decoration: none; }
 .ucx-contact .office-item p a:hover { color: var(--dark-soft); text-decoration: underline; }
 
+.ucx-contact .schedule-block {
+  margin: 0 0 44px;
+  padding: 28px 26px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+}
+.ucx-contact .schedule-copy { margin: 0 0 18px; }
+.ucx-contact .schedule-copy h2 {
+  font-size: clamp(20px, 2.4vw, 26px);
+  margin: 8px 0 6px;
+}
+.ucx-contact .schedule-copy p.sub {
+  margin: 0;
+  max-width: none;
+  font-size: 14px;
+}
+.ucx-contact .calendly-inline-widget {
+  min-width: 320px;
+  height: 650px;
+}
+
 .ucx-contact .selector-label {
   font-size: 13px;
   font-weight: 700;

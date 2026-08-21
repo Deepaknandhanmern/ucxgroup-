@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Insights from "@/components/sections/Insights";
+import { getAllInsightPosts } from "@/lib/insights-content";
 
 export const metadata: Metadata = {
   title: "Insights",
@@ -8,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function InsightsPage() {
-  return <Insights />;
+  return <Insights posts={getAllInsightPosts()} />;
 }

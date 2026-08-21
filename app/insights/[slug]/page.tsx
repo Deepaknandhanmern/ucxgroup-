@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { POSTS, getPost } from "@/lib/insights";
+import { getAllInsightPosts, getInsightPost } from "@/lib/insights-content";
 import InsightArticle from "@/components/sections/InsightArticle";
 
 export function generateStaticParams() {
-  return POSTS.map((p) => ({ slug: p.slug }));
+  return getAllInsightPosts().map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPost(slug);
+  const post = getInsightPost(slug);
   if (!post) return {};
 
   return {
@@ -21,10 +21,28 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function InsightArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = getPost(slug);
+  const post = getInsightPost(slug);
   if (!post) notFound();
 
-  const more = POSTS.filter((p) => p.slug !== post.slug).slice(0, 3);
+  const more = getAllInsightPosts()
+    .filter((p) => p.slug !== post.slug)
+    .slice(0, 3);
 
-  return <InsightArticle post={post} more={more} />;
+  const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt,
+    image: post.image,
+    datePublished: post.date,
+    author: { "@type": "Person", name: post.author.name },
+    publisher: { "@type": "Organization", name: "UCX Group", logo: { "@type": "ImageObject", url: "https://ucx-group.com/brand/logo.png" } },
+  };
+
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      <InsightArticle post={post} more={more} />
+    </>
+  );
 }

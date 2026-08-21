@@ -91,6 +91,17 @@ export const metadata: Metadata = {
   },
 };
 
+const ORGANIZATION_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "UCX Group",
+  url: "https://ucx-group.com",
+  logo: "https://ucx-group.com/brand/logo.png",
+  description:
+    "UCX is a design, digital engineering, project delivery and asset information ecosystem — one connected team delivering built environments end to end.",
+  email: "collaborate@ucx-group.com",
+};
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -98,6 +109,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION_JSON_LD) }}
+        />
         <Header />
         {children}
         <Footer />

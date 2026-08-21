@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Post } from "@/lib/insights";
+import { formatPostDate, type Post } from "@/lib/insights";
 
 function initials(name: string): string {
   return name
@@ -48,7 +48,7 @@ export default function InsightArticle({ post, more }: { post: Post; more: Post[
             </div>
           </div>
           <span className="art-meta-dot" aria-hidden="true" />
-          <span className="art-meta-date">{post.date}</span>
+          <span className="art-meta-date">{formatPostDate(post.date)}</span>
           <span className="art-meta-dot" aria-hidden="true" />
           <span className="art-meta-read">{post.readTime}</span>
         </div>
@@ -63,11 +63,7 @@ export default function InsightArticle({ post, more }: { post: Post; more: Post[
           )}
         </div>
 
-        <div className="art-body">
-          {post.body.map((p, i) => (
-            <p key={i}>{p}</p>
-          ))}
-        </div>
+        <div className="art-body" dangerouslySetInnerHTML={{ __html: post.bodyHtml }} />
 
         <div className="art-cta">
           <div>

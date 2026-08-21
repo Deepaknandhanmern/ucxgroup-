@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Script from "next/script";
 import { submitToSplitForms } from "@/lib/splitforms";
 import ContactMap from "./ContactMap";
+
+const CALENDLY_URL = "https://calendly.com/deepaknandhan25/30min";
 
 type QueryType = "bim" | "interior" | "training";
 
@@ -131,6 +134,16 @@ export default function ContactForm() {
         </div>
 
         <ContactMap />
+
+        <div className="schedule-block">
+          <div className="schedule-copy">
+            <span className="office-label">Prefer to talk it through?</span>
+            <h2>Book a 30-minute call directly</h2>
+            <p className="sub">Skip the form below and grab a slot on our calendar — no back-and-forth over email.</p>
+          </div>
+          <div className="calendly-inline-widget" data-url={CALENDLY_URL} />
+        </div>
+        <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="lazyOnload" />
 
         <div className="selector-label">1. Choose your query type</div>
         <div className="selector">
