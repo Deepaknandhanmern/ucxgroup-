@@ -112,7 +112,7 @@ export default function InteriorsFooter() {
 
         <div className="ifoot-bottom">
           <span className="ifoot-copy">
-            &copy; 2026 SpayceX by UCX. All rights reserved.
+            &copy; {new Date().getFullYear()} SpayceX by UCX. All rights reserved.
             <i className="ifoot-copy-credit">Designed &amp; Developed by Agape Works</i>
           </span>
           <span className="ifoot-credit">

@@ -55,7 +55,7 @@ function SvcFigureImg({ src, alt }: { src: string; alt: string }) {
       </div>
     );
   }
-  return <img className="svc-figure-img" src={src} alt={alt} onError={() => setOk(false)} />;
+  return <img className="svc-figure-img" src={src} alt={alt} loading="lazy" onError={() => setOk(false)} />;
 }
 
 export default function OurServices() {

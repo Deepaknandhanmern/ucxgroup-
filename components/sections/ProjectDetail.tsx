@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CAT_LABELS, type Project } from "@/lib/projects";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
 
 export default function ProjectDetail({ project, more }: { project: Project; more: Project[] }) {
   const [imgOk, setImgOk] = useState(true);
@@ -10,6 +11,10 @@ export default function ProjectDetail({ project, more }: { project: Project; mor
     <div className="ucx-pd">
       <div className="pd-bg-grid" aria-hidden="true"></div>
       <div className="pd-wrapper">
+        <Breadcrumbs
+          variant="light"
+          items={[{ label: "Home", href: "/" }, { label: "Projects", href: "/projects" }, { label: project.title }]}
+        />
         <a className="pd-back" href="/projects">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M19 12H5M11 18l-6-6 6-6" />

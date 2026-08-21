@@ -3,70 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { submitToSplitForms } from "@/lib/splitforms";
 import FileCard from "@/components/ui/FileCard";
+import { CASE_STUDY_FILTERS, type CaseStudy } from "@/lib/case-studies";
 
-interface CaseItem {
-  cat: string;
-  label: string;
-  ref: string;
-  pages: string;
-  title: string;
-}
+type CaseItem = CaseStudy;
 
-const CASES: CaseItem[] = [
-  {
-    cat: "institutional",
-    label: "Institutional",
-    ref: "CS-01",
-    pages: "12 pp",
-    title: "Structural documentation & multidisciplinary coordination for a mixed-use cultural campus",
-  },
-  {
-    cat: "infrastructural",
-    label: "Infrastructural",
-    ref: "CS-02",
-    pages: "09 pp",
-    title: "Landscape modeling & streetscape coordination for an urban infrastructure corridor",
-  },
-  {
-    cat: "infrastructural",
-    label: "Infrastructural",
-    ref: "CS-03",
-    pages: "14 pp",
-    title: "Landscape modeling & documentation for a multi-zone urban development",
-  },
-  {
-    cat: "hospitality",
-    label: "Hospitality",
-    ref: "CS-04",
-    pages: "11 pp",
-    title: "Facade documentation with multidisciplinary coordination for a hospitality development",
-  },
-  {
-    cat: "healthcare",
-    label: "Healthcare",
-    ref: "CS-05",
-    pages: "16 pp",
-    title: "Systems coordination & clash resolution for a regional medical campus",
-  },
-  {
-    cat: "retail",
-    label: "Retail",
-    ref: "CS-06",
-    pages: "08 pp",
-    title: "Tenant fit-out documentation for a mixed-retail redevelopment",
-  },
-];
+const FILTERS = CASE_STUDY_FILTERS;
 
-const FILTERS = [
-  { cat: "all", label: "All" },
-  { cat: "institutional", label: "Institutional" },
-  { cat: "infrastructural", label: "Infrastructural" },
-  { cat: "hospitality", label: "Hospitality" },
-  { cat: "healthcare", label: "Healthcare" },
-  { cat: "retail", label: "Retail" },
-];
-
-export default function CaseStudies() {
+export default function CaseStudies({ cases }: { cases: CaseItem[] }) {
   const [activeCat, setActiveCat] = useState("all");
   const [modalOpen, setModalOpen] = useState(false);
   const [modalCase, setModalCase] = useState<CaseItem | null>(null);
@@ -76,7 +19,7 @@ export default function CaseStudies() {
   const lastFocusRef = useRef<HTMLElement | null>(null);
   const firstFieldRef = useRef<HTMLInputElement | null>(null);
 
-  const list = activeCat === "all" ? CASES : CASES.filter((c) => c.cat === activeCat);
+  const list = activeCat === "all" ? cases : cases.filter((c) => c.cat === activeCat);
 
   function openModal(c: CaseItem, e: React.MouseEvent<HTMLButtonElement>) {
     lastFocusRef.current = e.currentTarget;
@@ -188,9 +131,16 @@ export default function CaseStudies() {
                   <span className="ucxcs__ref">{c.ref}</span>
                   <span className="ucxcs__pages">{c.pages}</span>
                 </div>
-                <div className="ucxcs__filewrap">
+                <div className="ucxcs__filewrap ucxcs__filewrap--locked">
                   <FileCard format="pdf" />
                 </div>
+                <span className="ucxcs__lock" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="5" y="11" width="14" height="9" rx="2" />
+                    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+                  </svg>
+                  Preview locked
+                </span>
                 <span className="ucxcs__cat">{c.label}</span>
               </div>
               <div className="ucxcs__body">

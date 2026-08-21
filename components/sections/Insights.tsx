@@ -21,7 +21,7 @@ function BlogCard({ post }: { post: Post }) {
     <article className="ins-card" data-reveal>
       <a className="ins-media" href={`/insights/${post.slug}`}>
         {imgOk ? (
-          <img src={post.image} alt={post.title} onError={() => setImgOk(false)} />
+          <img src={post.image} alt={post.title} loading="lazy" onError={() => setImgOk(false)} />
         ) : (
           <div className="ins-media-fallback" aria-hidden="true">
             <span>{post.team}</span>
@@ -53,7 +53,7 @@ function BlogCard({ post }: { post: Post }) {
           <a className="ins-author" href={`/insights/${post.slug}`}>
             <span className="ins-avatar">
               {photoOk ? (
-                <img src={post.author.photo} alt={post.author.name} onError={() => setPhotoOk(false)} />
+                <img src={post.author.photo} alt={post.author.name} loading="lazy" onError={() => setPhotoOk(false)} />
               ) : (
                 <span className="ins-avatar-initials">{initials(post.author.name)}</span>
               )}

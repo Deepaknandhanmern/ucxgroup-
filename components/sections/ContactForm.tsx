@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Script from "next/script";
 import { submitToSplitForms } from "@/lib/splitforms";
+import { useMagnetic } from "@/components/ui/useMagnetic";
+import Toast from "@/components/ui/Toast";
 import ContactMap from "./ContactMap";
 
 const CALENDLY_URL = "https://calendly.com/deepaknandhan25/30min";
@@ -78,18 +80,21 @@ const CONFIG: Record<QueryType, TypeConfig> = {
 
 const OPTIONS: { type: QueryType }[] = [{ type: "bim" }, { type: "interior" }, { type: "training" }];
 
-type Status = "idle" | "submitting" | "success" | "error";
+type Status = "idle" | "submitting" | "error";
 
 export default function ContactForm() {
   const [selected, setSelected] = useState<QueryType>("bim");
   const [status, setStatus] = useState<Status>("idle");
+  const [toastShow, setToastShow] = useState(false);
   const cfg = CONFIG[selected];
+  const submitBtnRef = useMagnetic<HTMLButtonElement>();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setStatus("submitting");
 
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
     const payload: Record<string, string> = {
       subject: `New contact request — ${cfg.title}`,
       query_type: cfg.title,
@@ -99,7 +104,13 @@ export default function ContactForm() {
     });
 
     const { ok } = await submitToSplitForms(payload);
-    setStatus(ok ? "success" : "error");
+    if (ok) {
+      form.reset();
+      setStatus("idle");
+      setToastShow(true);
+    } else {
+      setStatus("error");
+    }
   }
 
   return (
@@ -170,80 +181,75 @@ export default function ContactForm() {
         <form className="panel" onSubmit={handleSubmit}>
           <div className="corner-blob"></div>
           <div className="panel-inner">
-            {status === "success" ? (
-              <div className="field full" style={{ textAlign: "center", padding: "20px 0" }}>
-                <h2 style={{ marginBottom: 8 }}>Request sent</h2>
-                <p className="sub" style={{ margin: "0 auto" }}>
-                  Thanks — your request has been routed to the {cfg.route}. They&apos;ll be in touch shortly.
-                </p>
+            <div className="panel-head">
+              <h2>{cfg.title}</h2>
+              <div className="route">
+                Routing to <b>{cfg.route}</b>
               </div>
-            ) : (
-              <>
-                <div className="panel-head">
-                  <h2>{cfg.title}</h2>
-                  <div className="route">
-                    Routing to <b>{cfg.route}</b>
-                  </div>
-                </div>
+            </div>
 
-                <div className="field-grid">
-                  <div className="field">
-                    <label>Full name</label>
-                    <input type="text" name="name" placeholder="Your name" required />
-                  </div>
-                  <div className="field">
-                    <label>Email address</label>
-                    <input type="email" name="email" placeholder="you@company.com" required />
-                  </div>
-                  <div className="field">
-                    <label>Phone number</label>
-                    <input type="tel" name="phone" placeholder="+91 00000 00000" />
-                  </div>
-                  <div className="field">
-                    <label>Company / project name</label>
-                    <input type="text" name="company" placeholder="Optional" />
-                  </div>
+            <div className="field-grid">
+              <div className="field">
+                <label>Full name</label>
+                <input type="text" name="name" placeholder="Your name" required />
+              </div>
+              <div className="field">
+                <label>Email address</label>
+                <input type="email" name="email" placeholder="you@company.com" required />
+              </div>
+              <div className="field">
+                <label>Phone number</label>
+                <input type="tel" name="phone" placeholder="+91 00000 00000" />
+              </div>
+              <div className="field">
+                <label>Company / project name</label>
+                <input type="text" name="company" placeholder="Optional" />
+              </div>
 
-                  <div className="dynamic-wrap" key={selected}>
-                    <div className="dynamic-section-label">Details for {cfg.title.toLowerCase()}</div>
-                    {cfg.fields.map((f) => (
-                      <div className="field" key={f.name}>
-                        <label>{f.label}</label>
-                        {f.type === "select" ? (
-                          <select name={f.name} defaultValue="">
-                            <option value="">Select an option</option>
-                            {f.options!.map((o) => (
-                              <option key={o} value={o}>
-                                {o}
-                              </option>
-                            ))}
-                          </select>
-                        ) : (
-                          <input type="text" name={f.name} placeholder={f.placeholder || ""} />
-                        )}
-                      </div>
-                    ))}
+              <div className="dynamic-wrap" key={selected}>
+                <div className="dynamic-section-label">Details for {cfg.title.toLowerCase()}</div>
+                {cfg.fields.map((f) => (
+                  <div className="field" key={f.name}>
+                    <label>{f.label}</label>
+                    {f.type === "select" ? (
+                      <select name={f.name} defaultValue="">
+                        <option value="">Select an option</option>
+                        {f.options!.map((o) => (
+                          <option key={o} value={o}>
+                            {o}
+                          </option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input type="text" name={f.name} placeholder={f.placeholder || ""} />
+                    )}
                   </div>
+                ))}
+              </div>
 
-                  <div className="field full">
-                    <label>{cfg.messageLabel}</label>
-                    <textarea name="message" placeholder={cfg.messagePlaceholder}></textarea>
-                  </div>
-                </div>
+              <div className="field full">
+                <label>{cfg.messageLabel}</label>
+                <textarea name="message" placeholder={cfg.messagePlaceholder}></textarea>
+              </div>
+            </div>
 
-                <div className="actions">
-                  <span className="hint">
-                    {status === "error" ? "Something went wrong — please try again or email us directly." : cfg.hint}
-                  </span>
-                  <button type="submit" className="submit" disabled={status === "submitting"}>
-                    {status === "submitting" ? "Sending…" : "Send request"}
-                  </button>
-                </div>
-              </>
-            )}
+            <div className="actions">
+              <span className="hint">
+                {status === "error" ? "Something went wrong — please try again or email us directly." : cfg.hint}
+              </span>
+              <button type="submit" className="submit" disabled={status === "submitting"} ref={submitBtnRef}>
+                {status === "submitting" ? "Sending…" : "Send request"}
+              </button>
+            </div>
           </div>
         </form>
       </div>
+
+      <Toast
+        show={toastShow}
+        message={`Request sent — routed to the ${cfg.route}.`}
+        onDismiss={() => setToastShow(false)}
+      />
     </div>
   );
 }

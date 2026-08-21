@@ -4,9 +4,22 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import InteriorsFooter from "@/components/sections/InteriorsFooter";
 
+const EMAIL = "collaborate@ucx-group.com";
+
 export default function Footer() {
   const pathname = usePathname();
   const [isInteriorsFilter, setIsInteriorsFilter] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  async function copyEmail() {
+    try {
+      await navigator.clipboard.writeText(EMAIL);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      /* clipboard unavailable — the mailto link still works */
+    }
+  }
 
   useEffect(() => {
     setIsInteriorsFilter(
@@ -94,22 +107,37 @@ export default function Footer() {
             Start a conversation <span>&rarr;</span>
           </a>
           <br />
-          <a className="email-link" href="mailto:collaborate@ucx-group.com">collaborate@ucx-group.com</a>
+          <span className="email-row">
+            <a className="email-link" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+            <button type="button" className="email-copy" onClick={copyEmail} aria-label="Copy email address">
+              {copied ? (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="9" y="9" width="12" height="12" rx="2" />
+                  <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" />
+                </svg>
+              )}
+            </button>
+            {copied && <span className="email-copied-label">Copied</span>}
+          </span>
         </div>
 
         <div>
           <p className="col-title">Follow</p>
           <div className="social-row">
-            <a href="#" aria-label="LinkedIn"><img src="/brand/social.png" alt="" /></a>
-            <a href="#" aria-label="Instagram"><img src="/brand/instagram.png" alt="" /></a>
-            <a href="#" aria-label="YouTube"><img src="/brand/youtube.png" alt="" /></a>
+            <a href="#" aria-label="LinkedIn"><img src="/brand/social.png" alt="" loading="lazy" /></a>
+            <a href="#" aria-label="Instagram"><img src="/brand/instagram.png" alt="" loading="lazy" /></a>
+            <a href="#" aria-label="YouTube"><img src="/brand/youtube.png" alt="" loading="lazy" /></a>
           </div>
         </div>
       </div>
 
       <div className="footer-bottom">
         <p className="copyright">
-          &copy; 2026 UCX. All rights reserved. <span className="credit">Designed &amp; Developed by Agape Works</span>
+          &copy; {new Date().getFullYear()} UCX. All rights reserved. <span className="credit">Designed &amp; Developed by Agape Works</span>
         </p>
         <ul className="legal-links">
           <li><a href="#">Privacy</a></li>

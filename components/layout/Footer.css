@@ -130,6 +130,21 @@
 }
 .ucx-footer .email-link:hover { text-decoration: underline; }
 
+.ucx-footer .email-row { display: inline-flex; align-items: center; gap: 8px; position: relative; }
+.ucx-footer .email-copy {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; padding: 0;
+  background: transparent; border: none; cursor: pointer;
+  color: var(--secondary); opacity: .7;
+  transition: opacity .2s ease;
+}
+.ucx-footer .email-copy:hover { opacity: 1; }
+.ucx-footer .email-copy svg { width: 15px; height: 15px; }
+.ucx-footer .email-copied-label {
+  position: absolute; left: 0; top: -22px;
+  font-size: 11px; letter-spacing: .04em; color: var(--secondary);
+}
+
 .ucx-footer .social-row { display: flex; gap: 14px; }
 .ucx-footer .social-row a {
   display: inline-flex;

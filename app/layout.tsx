@@ -44,6 +44,8 @@ import "@/components/sections/CapabilityPage.css";
 import "@/components/sections/Capabilities.css";
 import "@/components/sections/DigitalProjectExperience.css";
 import "@/components/ui/FileCard.css";
+import "@/components/ui/Breadcrumbs.css";
+import "@/components/ui/Toast.css";
 import "@/components/ui/WorldMap.css";
 import "@/components/sections/Resources.css";
 import "@/components/sections/FeaturedProjects.css";
@@ -55,6 +57,7 @@ import "@/components/sections/NotFoundContent.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BackToTop from "@/components/layout/BackToTop";
+import TabTitleSwitcher from "@/components/ui/TabTitleSwitcher";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -93,13 +96,22 @@ export const metadata: Metadata = {
 
 const ORGANIZATION_JSON_LD = {
   "@context": "https://schema.org",
-  "@type": "Organization",
+  "@type": ["Organization", "LocalBusiness"],
   name: "UCX Group",
   url: "https://ucx-group.com",
   logo: "https://ucx-group.com/brand/logo.png",
+  image: "https://ucx-group.com/brand/logo.png",
   description:
     "UCX is a design, digital engineering, project delivery and asset information ecosystem — one connected team delivering built environments end to end.",
   email: "collaborate@ucx-group.com",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Door No. 653, Part LCC Compound, 1-3, Trichy Rd, opposite Srivari Trisara, Singanallur",
+    addressLocality: "Coimbatore",
+    addressRegion: "Tamil Nadu",
+    postalCode: "641005",
+    addressCountry: "IN",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -109,12 +121,19 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:text-[#00352D] focus:shadow-lg"
+        >
+          Skip to content
+        </a>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION_JSON_LD) }}
         />
+        <TabTitleSwitcher />
         <Header />
-        {children}
+        <main id="main-content">{children}</main>
         <Footer />
         <BackToTop />
       </body>

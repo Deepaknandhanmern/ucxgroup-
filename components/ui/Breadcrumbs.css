@@ -1,0 +1,22 @@
+.ucx-breadcrumbs { margin-bottom: 14px; }
+.ucx-breadcrumbs ol {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  list-style: none; margin: 0; padding: 0;
+}
+.ucx-breadcrumbs li { display: inline-flex; align-items: center; gap: 6px; }
+.ucx-breadcrumbs a,
+.ucx-breadcrumbs span[aria-current] {
+  font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase;
+  text-decoration: none;
+}
+.ucx-breadcrumbs a { transition: opacity .2s ease; }
+.ucx-breadcrumbs a:hover { text-decoration: underline; }
+.ucx-breadcrumbs-sep { font-size: 11px; opacity: .5; }
+
+.ucx-breadcrumbs--dark a,
+.ucx-breadcrumbs--dark .ucx-breadcrumbs-sep { color: rgba(145,242,181,0.55); }
+.ucx-breadcrumbs--dark span[aria-current] { color: rgba(145,242,181,0.85); }
+
+.ucx-breadcrumbs--light a,
+.ucx-breadcrumbs--light .ucx-breadcrumbs-sep { color: rgba(0,53,45,.58); }
+.ucx-breadcrumbs--light span[aria-current] { color: #00352D; }

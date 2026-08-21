@@ -9,7 +9,7 @@ export default function StudioInterlude() {
     <div className="ucx-interlude">
       <div className="interlude-frame">
         {imgOk ? (
-          <img src="/brand/about/interlude.jpg" alt="UCX project delivery" onError={() => setImgOk(false)} />
+          <img src="/brand/about/interlude.jpg" alt="UCX project delivery" loading="lazy" onError={() => setImgOk(false)} />
         ) : (
           <div className="interlude-fallback" aria-hidden="true">
             <svg viewBox="0 0 240 120" fill="none" stroke="currentColor" strokeWidth="0.6">

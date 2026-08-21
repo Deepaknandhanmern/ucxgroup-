@@ -36,7 +36,7 @@ const FOUNDERS: Founder[] = [
 function FounderPhoto({ src, alt, initials }: { src: string; alt: string; initials: string }) {
   const [ok, setOk] = useState(true);
   if (ok) {
-    return <img className="photo-flip-img" src={src} alt={alt} onError={() => setOk(false)} />;
+    return <img className="photo-flip-img" src={src} alt={alt} loading="lazy" onError={() => setOk(false)} />;
   }
   return (
     <>

@@ -2,36 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { submitToSplitForms } from "@/lib/splitforms";
-import FileCard, { type FileFormat } from "@/components/ui/FileCard";
+import FileCard from "@/components/ui/FileCard";
+import { RESOURCE_FILTERS, type ResourceItem } from "@/lib/resources";
 
-interface ResourceItem {
-  cat: "guides" | "templates" | "reports";
-  label: string;
-  ref: string;
-  format: FileFormat;
-  title: string;
-}
+const FILTERS = RESOURCE_FILTERS;
 
-const RESOURCES: ResourceItem[] = [
-  { cat: "guides", label: "Guides", ref: "RS-01", format: "pdf", title: "BIM Standards Guide for project teams" },
-  { cat: "guides", label: "Guides", ref: "RS-02", format: "pdf", title: "Digital Delivery Handbook — process and roles" },
-  { cat: "guides", label: "Guides", ref: "RS-03", format: "doc", title: "Interior Documentation Guide" },
-  { cat: "templates", label: "Templates", ref: "RS-04", format: "doc", title: "Project Documentation Template" },
-  { cat: "templates", label: "Templates", ref: "RS-05", format: "xlsx", title: "Quantity Take-off Template" },
-  { cat: "templates", label: "Templates", ref: "RS-06", format: "csv", title: "QA/QC Checklist Template" },
-  { cat: "reports", label: "Reports", ref: "RS-07", format: "pdf", title: "Annual Delivery Report" },
-  { cat: "reports", label: "Reports", ref: "RS-08", format: "json", title: "Asset Data Sample Export" },
-  { cat: "reports", label: "Reports", ref: "RS-09", format: "png", title: "Model Coordination Snapshot" },
-];
-
-const FILTERS = [
-  { cat: "all", label: "All" },
-  { cat: "guides", label: "Guides" },
-  { cat: "templates", label: "Templates" },
-  { cat: "reports", label: "Reports" },
-];
-
-export default function Resources() {
+export default function Resources({ resources }: { resources: ResourceItem[] }) {
   const [activeCat, setActiveCat] = useState("all");
   const [modalOpen, setModalOpen] = useState(false);
   const [modalItem, setModalItem] = useState<ResourceItem | null>(null);
@@ -41,7 +17,7 @@ export default function Resources() {
   const lastFocusRef = useRef<HTMLElement | null>(null);
   const firstFieldRef = useRef<HTMLInputElement | null>(null);
 
-  const list = activeCat === "all" ? RESOURCES : RESOURCES.filter((r) => r.cat === activeCat);
+  const list = activeCat === "all" ? resources : resources.filter((r) => r.cat === activeCat);
 
   function openModal(item: ResourceItem, e: React.MouseEvent<HTMLButtonElement>) {
     lastFocusRef.current = e.currentTarget;

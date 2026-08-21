@@ -18,6 +18,10 @@ export default function ProjectConstructionSupportPage() {
       process={["Document", "Control", "Support"]}
       heroMotif={IconDocument}
       heroImage="/brand/capabilities/project-construction-support.jpg"
+      related={[
+        { label: "BIM & Digital Delivery", href: "/bim-digital-delivery" },
+        { label: "Asset & Digital Information", href: "/asset-digital-information" },
+      ]}
       items={[
         {
           title: "Project Documentation",

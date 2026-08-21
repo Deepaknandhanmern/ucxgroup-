@@ -74,7 +74,7 @@ function Ph({ src, alt, className }: { src: string; alt: string; className?: str
       </div>
     );
   }
-  return <img className={className} src={src} alt={alt} onError={() => setOk(false)} />;
+  return <img className={className} src={src} alt={alt} loading="lazy" onError={() => setOk(false)} />;
 }
 
 type LeadStatus = "idle" | "sending" | "sent" | "error";
@@ -283,7 +283,7 @@ export default function Interiors() {
           </div>
 
           <div className="closing-form-card">
-            <img className="closing-logo" src="/brand/interiors/logo.png" alt="SpayceX" />
+            <img className="closing-logo" src="/brand/interiors/logo.png" alt="SpayceX" loading="lazy" />
 
             {leadStatus === "sent" ? (
               <div className="closing-done">

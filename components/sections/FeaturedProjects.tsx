@@ -35,7 +35,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     >
       <div className="fp-media">
         {imgOk ? (
-          <img src={project.image} alt={project.title} onError={() => setImgOk(false)} />
+          <img src={project.image} alt={project.title} loading="lazy" onError={() => setImgOk(false)} />
         ) : (
           <div className="fp-media-fallback" aria-hidden="true">
             <span>{project.discipline}</span>

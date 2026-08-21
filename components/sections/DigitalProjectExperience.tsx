@@ -20,7 +20,7 @@ function CatCard({ cat, index }: { cat: (typeof CATEGORIES)[number]; index: numb
     <div id={cat.id} className="dpe-card" data-reveal style={{ transitionDelay: `${(index % 6) * 60}ms` }}>
       <div className="dpe-media">
         {imgOk ? (
-          <img src={cat.img} alt={cat.name} onError={() => setImgOk(false)} />
+          <img src={cat.img} alt={cat.name} loading="lazy" onError={() => setImgOk(false)} />
         ) : (
           <div className="dpe-media-fallback" aria-hidden="true">
             <span>{cat.name}</span>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useMagnetic } from "@/components/ui/useMagnetic";
 
 const WORDS = ["Designed.", "Connected.", "Delivered."];
 const RADAR_WORDS = ["Concept", "Design", "BIM", "Detailing", "Execution", "Handover"];
@@ -24,6 +25,8 @@ export default function Hero() {
   const linkRef = useRef<HTMLDivElement>(null);
   const readRef = useRef<HTMLElement>(null);
   const scrollBtnRef = useRef<HTMLButtonElement>(null);
+  const solidBtnRef = useMagnetic<HTMLAnchorElement>();
+  const ghostBtnRef = useMagnetic<HTMLAnchorElement>();
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -368,13 +371,13 @@ export default function Hero() {
           </p>
 
           <div className="actions">
-            <a className="btn solid" href="#capabilities">
+            <a className="btn solid" href="#capabilities" ref={solidBtnRef}>
               <span>Explore Capabilities</span>
               <svg viewBox="0 0 24 24">
                 <path d="M5 12h13M13 6l6 6-6 6" />
               </svg>
             </a>
-            <a className="btn ghost" href="/contact">
+            <a className="btn ghost" href="/contact" ref={ghostBtnRef}>
               <span>Start a Collaboration</span>
               <svg viewBox="0 0 24 24">
                 <path d="M5 12h13M13 6l6 6-6 6" />

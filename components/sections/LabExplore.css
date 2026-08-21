@@ -50,6 +50,14 @@
   padding-bottom: clamp(32px,4vw,44px);
   border-bottom: 1px solid var(--line);
 }
+.ucx-lab-explore .lx-toggle-row--bottom {
+  margin-top: clamp(40px,5vw,60px);
+  margin-bottom: 0;
+  padding-bottom: 0;
+  padding-top: clamp(32px,4vw,44px);
+  border-bottom: none;
+  border-top: 1px solid var(--line);
+}
 .ucx-lab-explore .lx-toggle-label {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   font-size: 13px; letter-spacing: .04em; text-transform: uppercase;

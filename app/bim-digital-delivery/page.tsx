@@ -18,6 +18,11 @@ export default function BimDigitalDeliveryPage() {
       process={["Model", "Coordinate", "Deliver"]}
       heroMotif={IconCube}
       heroImage="/brand/capabilities/bim-digital-delivery.jpg"
+      related={[
+        { label: "Design & Interiors", href: "/design-interiors" },
+        { label: "Asset & Digital Information", href: "/asset-digital-information" },
+        { label: "Specialist Solutions", href: "/specialist-solutions" },
+      ]}
       items={[
         {
           title: "BIM & VDC",

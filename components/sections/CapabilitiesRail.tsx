@@ -380,7 +380,7 @@ export default function CapabilitiesRail() {
     >
       <div className="nxm__panel" ref={panelRef}>
         <div className="nxm__media">
-          <img src={modalData.image} alt={modalData.alt} />
+          <img src={modalData.image} alt={modalData.alt} loading="lazy" />
         </div>
         <button className="nxm__close" type="button" aria-label="Close" ref={closeBtnRef} onClick={() => setModalOpen(false)}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9">

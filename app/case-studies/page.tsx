@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import CaseStudies from "@/components/sections/CaseStudies";
+import { getAllCaseStudies } from "@/lib/case-studies-content";
 
 export const metadata: Metadata = {
   title: "Case Studies",
@@ -8,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function CaseStudiesPage() {
-  return <CaseStudies />;
+  return <CaseStudies cases={getAllCaseStudies()} />;
 }

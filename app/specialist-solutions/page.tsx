@@ -18,6 +18,11 @@ export default function SpecialistSolutionsPage() {
       process={["Identify", "Apply", "Deliver"]}
       heroMotif={IconScan}
       heroImage="/brand/capabilities/specialist-solutions.jpg"
+      related={[
+        { label: "BIM & Digital Delivery", href: "/bim-digital-delivery" },
+        { label: "Design & Interiors", href: "/design-interiors" },
+        { label: "Asset & Digital Information", href: "/asset-digital-information" },
+      ]}
       items={[
         {
           title: "Scan-to-BIM",

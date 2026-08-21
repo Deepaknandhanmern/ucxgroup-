@@ -122,6 +122,25 @@ const STATUS_CLASS: Record<Status, string> = {
 
 type Mode = "explore" | "ideas";
 
+function ToggleRow({ mode, setMode, position = "top" }: { mode: Mode; setMode: React.Dispatch<React.SetStateAction<Mode>>; position?: "top" | "bottom" }) {
+  return (
+    <div className={`lx-toggle-row${position === "bottom" ? " lx-toggle-row--bottom" : ""}`}>
+      <span className={`lx-toggle-label${mode === "explore" ? " is-active" : ""}`}>Where We Explore</span>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={mode === "ideas"}
+        aria-label="Switch between Where We Explore and Ideas in the Lab"
+        className={`lx-switch${mode === "ideas" ? " is-on" : ""}`}
+        onClick={() => setMode((m) => (m === "explore" ? "ideas" : "explore"))}
+      >
+        <span className="lx-switch-thumb"></span>
+      </button>
+      <span className={`lx-toggle-label${mode === "ideas" ? " is-active" : ""}`}>Ideas in the Lab</span>
+    </div>
+  );
+}
+
 export default function LabExplore() {
   const [mode, setMode] = useState<Mode>("explore");
 
@@ -140,20 +159,7 @@ export default function LabExplore() {
           </p>
         </div>
 
-        <div className="lx-toggle-row">
-          <span className={`lx-toggle-label${mode === "explore" ? " is-active" : ""}`}>Where We Explore</span>
-          <button
-            type="button"
-            role="switch"
-            aria-checked={mode === "ideas"}
-            aria-label="Switch between Where We Explore and Ideas in the Lab"
-            className={`lx-switch${mode === "ideas" ? " is-on" : ""}`}
-            onClick={() => setMode((m) => (m === "explore" ? "ideas" : "explore"))}
-          >
-            <span className="lx-switch-thumb"></span>
-          </button>
-          <span className={`lx-toggle-label${mode === "ideas" ? " is-active" : ""}`}>Ideas in the Lab</span>
-        </div>
+        <ToggleRow mode={mode} setMode={setMode} />
 
         {mode === "explore" ? (
           <div className="lx-fade" key="explore">
@@ -181,6 +187,7 @@ export default function LabExplore() {
                 </div>
               ))}
             </div>
+            <ToggleRow mode={mode} setMode={setMode} position="bottom" />
           </div>
         ) : (
           <div className="lx-fade" key="ideas" id="ideas">
@@ -203,6 +210,7 @@ export default function LabExplore() {
                 </div>
               ))}
             </div>
+            <ToggleRow mode={mode} setMode={setMode} position="bottom" />
           </div>
         )}
       </div>

@@ -54,7 +54,7 @@ const DESKTOP_MIN = 900;
 function PillarVisual({ src, alt, index }: { src: string; alt: string; index: string }) {
   const [ok, setOk] = useState(true);
   if (ok) {
-    return <img className="pillar-photo" src={src} alt={alt} onError={() => setOk(false)} />;
+    return <img className="pillar-photo" src={src} alt={alt} loading="lazy" onError={() => setOk(false)} />;
   }
   return (
     <>

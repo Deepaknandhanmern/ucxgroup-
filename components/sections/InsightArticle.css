@@ -69,6 +69,21 @@
 .art-meta-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--ink-40); }
 .art-meta-date, .art-meta-read { font-size: 13px; color: var(--ink-60); }
 
+.art-share {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 28px; position: relative;
+}
+.art-share-label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-40); margin-right: 2px; }
+.art-share-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1px solid var(--line); background: transparent; color: var(--g);
+  cursor: pointer; transition: border-color .2s var(--ease), background .2s var(--ease);
+}
+.art-share-btn:hover { border-color: var(--g); background: rgba(0,53,45,.05); }
+.art-share-btn svg { width: 15px; height: 15px; }
+.art-share-copied { font-size: 12px; color: var(--ink-60); }
+
 .art-hero {
   position: relative; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden;
   margin-bottom: clamp(32px,4vw,48px);

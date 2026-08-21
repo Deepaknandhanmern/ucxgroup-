@@ -53,7 +53,7 @@ function ProjectImage({ src, alt, discipline }: { src: string; alt: string; disc
       </div>
     );
   }
-  return <img src={src} alt={alt} className="arc-img" onError={() => setOk(false)} draggable={false} />;
+  return <img src={src} alt={alt} className="arc-img" loading="lazy" onError={() => setOk(false)} draggable={false} />;
 }
 
 export default function GalleryArc() {

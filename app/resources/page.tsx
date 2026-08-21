@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Resources from "@/components/sections/Resources";
+import { getAllResources } from "@/lib/resources-content";
 
 export const metadata: Metadata = {
   title: "Resources",
@@ -8,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function ResourcesPage() {
-  return <Resources />;
+  return <Resources resources={getAllResources()} />;
 }

@@ -18,6 +18,10 @@ export default function AssetDigitalInformationPage() {
       process={["Capture", "Structure", "Handover"]}
       heroMotif={IconDatabase}
       heroImage="/brand/capabilities/asset-digital-information.jpg"
+      related={[
+        { label: "BIM & Digital Delivery", href: "/bim-digital-delivery" },
+        { label: "Project & Construction Support", href: "/project-construction-support" },
+      ]}
       items={[
         {
           title: "As-Built BIM",

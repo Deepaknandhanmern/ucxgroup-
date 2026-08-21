@@ -217,6 +217,24 @@
   width: 6px; height: 1px; background: var(--accent);
 }
 
+/* ---- related capabilities ---- */
+.ucx-cap .related {
+  padding-top: clamp(36px,4vw,52px); margin-bottom: clamp(36px,4vw,52px);
+  border-top: 1px solid var(--line);
+}
+.ucx-cap .related-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.ucx-cap .related-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--dark); border: 1px solid var(--line);
+  padding: 11px 18px; border-radius: 999px;
+  transition: border-color .3s var(--ease), background .3s var(--ease);
+}
+.ucx-cap .related-link svg { width: 12px; height: 12px; transition: transform .3s var(--ease); }
+.ucx-cap .related-link:hover { border-color: var(--accent); background: rgba(145,242,181,.08); }
+.ucx-cap .related-link:hover svg { transform: translateX(2px); }
+
 /* ---- closing ---- */
 .ucx-cap .closing {
   padding-top: clamp(36px,4vw,52px); border-top: 1px solid var(--line);
