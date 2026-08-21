@@ -1,0 +1,115 @@
+/* Dotted world map with animated connection arcs — a native rebuild (plain
+   CSS + SVG, no framer-motion/next-themes) of a pasted Aceternity-style
+   component, matching this codebase's convention. The dot texture itself is
+   a static pre-generated SVG (scripts/gen-dotted-map.mjs) rather than a
+   runtime dependency. */
+.ucx-worldmap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+}
+
+.ucx-worldmap-bg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  opacity: .5;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+          mask-image: linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent);
+}
+
+.ucx-worldmap-svg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+}
+
+.ucx-worldmap-path {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.ucx-worldmap-arc {
+  animation: wmDraw 6s cubic-bezier(.4,0,.2,1) infinite;
+}
+.ucx-worldmap-arc .ucx-worldmap-path {
+  animation: wmPathDash 6s cubic-bezier(.4,0,.2,1) infinite;
+  animation-delay: inherit;
+}
+@keyframes wmPathDash {
+  0% { stroke-dashoffset: 1; }
+  38% { stroke-dashoffset: 0; }
+  78% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: 0; }
+}
+@keyframes wmDraw {
+  0% { opacity: 0; }
+  4% { opacity: 1; }
+  78% { opacity: 1; }
+  92% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.ucx-worldmap-runner {
+  opacity: 0;
+  animation: wmRunner 6s cubic-bezier(.4,0,.2,1) infinite;
+  animation-delay: inherit;
+  filter: drop-shadow(0 0 4px currentColor);
+}
+@keyframes wmRunner {
+  0% { offset-distance: 0%; opacity: 0; }
+  4% { opacity: 1; }
+  38% { offset-distance: 100%; opacity: 1; }
+  44% { opacity: 0; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+.ucx-worldmap-marker { cursor: pointer; }
+.ucx-worldmap-marker circle:first-child {
+  transition: r .25s cubic-bezier(.4,0,.2,1);
+}
+.ucx-worldmap-marker:hover circle:first-child { r: 4.5; }
+
+.ucx-worldmap-label-slot { overflow: visible; }
+.ucx-worldmap-label {
+  display: flex; align-items: center; justify-content: center;
+  height: 100%;
+  opacity: 0; transform: translateY(4px);
+  transition: opacity .5s cubic-bezier(.16,.84,.36,1), transform .5s cubic-bezier(.16,.84,.36,1);
+  pointer-events: none;
+}
+.ucx-worldmap-label.is-in { opacity: 1; transform: none; }
+.ucx-worldmap-label span,
+.ucx-worldmap-label {
+  font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
+  font-size: 10px; font-weight: 600;
+  padding: 2px 7px; border-radius: 999px;
+  background: rgba(255,255,255,.92);
+  color: #00352D;
+  border: 1px solid rgba(0,53,45,.14);
+  white-space: nowrap;
+}
+
+.ucx-worldmap-tooltip {
+  position: absolute; left: 16px; bottom: 16px; z-index: 2;
+  font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
+  font-size: 13px; font-weight: 600;
+  padding: 8px 14px; border-radius: 999px;
+  background: rgba(0,53,45,.92);
+  color: #F3F1E6;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ucx-worldmap-arc, .ucx-worldmap-path, .ucx-worldmap-runner {
+    animation: none !important;
+  }
+  .ucx-worldmap-arc { opacity: 1; }
+  .ucx-worldmap-path { stroke-dashoffset: 0 !important; }
+  .ucx-worldmap-runner { display: none; }
+  .ucx-worldmap-label { transition: none; }
+}

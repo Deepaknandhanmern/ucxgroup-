@@ -1,18 +1,20 @@
 /* All custom properties scoped to the block, not :root, so they cannot
    collide with the theme. Same for the reset. */
 .ucx-about {
-  --bg: #00352D;
+  --bg: #FFFFFF;
   --bg-deep: #00211B;
+  --dark: #00352D;
+  --muted: rgba(0,53,45,.58);
   --accent: #91F2B5;
   --accent-dim: rgba(145,242,181,0.55);
-  --line: rgba(145,242,181,0.16);
-  --line-soft: rgba(145,242,181,0.035);
-  --line-glow: rgba(145,242,181,0.30);
+  --line: rgba(0,53,45,0.18);
+  --line-soft: rgba(0,53,45,0.08);
+  --line-glow: rgba(145,242,181,0.45);
   --cream: #F3F1E6;
   --ease: cubic-bezier(.16,.84,.36,1);
 
   background: var(--bg) !important;
-  color: var(--accent);
+  color: var(--dark);
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
   overflow-x: hidden;
   position: relative;
@@ -43,7 +45,7 @@
 .ucx-about .cursor-haze {
   position: absolute; inset: 0; pointer-events: none; z-index: 0;
   opacity: 0; transition: opacity .6s var(--ease);
-  background: radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.07), transparent 70%);
+  background: radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.1), transparent 70%);
 }
 .ucx-about.is-hot .cursor-haze { opacity: 1; }
 
@@ -66,11 +68,11 @@
 .ucx-about .line-mask { display: block; overflow: hidden; }
 .ucx-about .line-inner {
   display: block;
-  color: var(--accent);
+  color: var(--dark);
   transform: translateY(112%);
   transition: transform 1.05s var(--ease);
 }
-.ucx-about .line-inner.accent { color: transparent; -webkit-text-stroke: 1.5px var(--accent); }
+.ucx-about .line-inner.accent { color: transparent; -webkit-text-stroke: 1.5px var(--dark); }
 .ucx-about .copy.is-in .line-mask:nth-of-type(1) .line-inner { transition-delay: .05s; }
 .ucx-about .copy.is-in .line-mask:nth-of-type(2) .line-inner { transition-delay: .2s; }
 .ucx-about .copy.is-in .line-inner { transform: translateY(0); }
@@ -81,8 +83,8 @@
   opacity: 0; transform: translateY(100%);
   transition: opacity .8s var(--ease), transform .8s var(--ease);
 }
-.ucx-about .lede { font-size: 16.5px; line-height: 1.6; color: var(--cream); max-width: 62ch; }
-.ucx-about .sub { font-size: 14.5px; line-height: 1.65; color: var(--accent-dim); max-width: 58ch; }
+.ucx-about .lede { font-size: 16.5px; line-height: 1.6; color: var(--dark); max-width: 62ch; }
+.ucx-about .sub { font-size: 14.5px; line-height: 1.65; color: var(--muted); max-width: 58ch; }
 .ucx-about .copy.is-in .para-mask:nth-of-type(1) .lede { transition-delay: .4s; }
 .ucx-about .copy.is-in .para-mask:nth-of-type(2) .sub { transition-delay: .52s; }
 .ucx-about .copy.is-in .lede, .ucx-about .copy.is-in .sub { opacity: 1; transform: translateY(0); }

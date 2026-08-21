@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
+import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
 interface Pillar {
   index: string;
@@ -72,6 +73,7 @@ function PillarVisual({ src, alt, index }: { src: string; alt: string; index: st
 export default function Ecosystem() {
   const outerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const glowRef = useCursorGlow<HTMLDivElement>();
   const [active, setActive] = useState(0);
   const [activeFrac, setActiveFrac] = useState(0);
   const [pinned, setPinned] = useState(true);
@@ -138,8 +140,10 @@ export default function Ecosystem() {
         ref={outerRef}
         style={pinned ? { height: `${PANEL_COUNT * 100}vh` } : undefined}
       >
-        <div className="ucx-eco-sticky">
+        <div className="ucx-eco-sticky" ref={glowRef}>
           <div className="grid-overlay"></div>
+          <div className="grid-glow"></div>
+          <div className="cursor-haze"></div>
           <div className="ucx-eco-glow" aria-hidden="true"></div>
 
           <div className="ucx-eco-track" ref={trackRef}>

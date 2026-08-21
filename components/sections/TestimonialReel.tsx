@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties, KeyboardEvent } from "react";
+import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
 interface Testimonial {
   quote: string;
@@ -133,6 +134,7 @@ function Chars({ text, startIndex, staggerMs }: { text: string; startIndex: numb
 }
 
 export default function TestimonialReel() {
+  const glowRef = useCursorGlow<HTMLDivElement>();
   const [index, setIndex] = useState(0);
   const [displayIndex, setDisplayIndex] = useState(0);
   const [exiting, setExiting] = useState(false);
@@ -211,8 +213,10 @@ export default function TestimonialReel() {
   const authorLine = `${current.author} — ${current.role}, ${current.location}`;
 
   return (
-    <div className="ucx-reel">
+    <div className="ucx-reel" ref={glowRef}>
       <div className="grid-overlay"></div>
+      <div className="grid-glow"></div>
+      <div className="cursor-haze"></div>
 
       <div className="wrapper">
         <div className="reel-head">

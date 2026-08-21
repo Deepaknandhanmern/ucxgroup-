@@ -1,16 +1,13 @@
-/* Deliberately the calmest section on the page — light surface, no cursor
-   glow, minimal motion — a quiet beat between the more maximalist
-   scroll/carousel sections around it. A faint grid texture ties it back
-   into the rest of the page's visual language. */
 .ucx-model {
   --dark: #00352D;
   --mint: #91F2B5;
-  --line: rgba(0,53,45,.14);
-  --line-soft: rgba(0,53,45,.05);
+  --line: rgba(0,53,45,.18);
+  --line-soft: rgba(0,53,45,.08);
+  --line-glow: rgba(145,242,181,.45);
   --muted: rgba(0,53,45,.58);
   --ease: cubic-bezier(.22,.61,.36,1);
 
-  background: #F3F1E6 !important;
+  background: #FFFFFF !important;
   color: var(--dark);
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
   position: relative;
@@ -26,6 +23,23 @@
     repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 120px);
   opacity: .5;
 }
+.ucx-model .grid-glow {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-glow) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, var(--line-glow) 0 1px, transparent 1px 120px);
+  opacity: 0;
+  transition: opacity .5s var(--ease);
+  -webkit-mask-image: radial-gradient(240px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
+          mask-image: radial-gradient(240px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
+}
+.ucx-model.is-hot .grid-glow { opacity: 1; }
+.ucx-model .cursor-haze {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  opacity: 0; transition: opacity .6s var(--ease);
+  background: radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.12), transparent 70%);
+}
+.ucx-model.is-hot .cursor-haze { opacity: 1; }
 
 .ucx-model .wrapper { position: relative; z-index: 1; }
 

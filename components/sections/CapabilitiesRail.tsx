@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
 interface CardItem {
   title: string;
@@ -87,6 +88,7 @@ const SPEED = 0.42; // px per frame
 
 export default function CapabilitiesRail() {
   const rootRef = useRef<HTMLElement>(null);
+  const glowRef = useCursorGlow<HTMLElement>();
   const vpRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const pauseBtnRef = useRef<HTMLButtonElement>(null);
@@ -414,7 +416,16 @@ export default function CapabilitiesRail() {
   );
 
   return (
-    <section className="nx" id="capabilities" ref={rootRef} aria-label="Capabilities">
+    <section
+      className="nx"
+      id="capabilities"
+      ref={(el) => {
+        rootRef.current = el;
+        glowRef.current = el;
+      }}
+      aria-label="Capabilities"
+    >
+      <div className="nx__glow"></div>
       <div className="nx__head">
         <div>
           <p className="nx__eyebrow">What we do</p>

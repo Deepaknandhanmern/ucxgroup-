@@ -1,15 +1,18 @@
 .ucx-ecosystem {
-  --bg: #00352D;
+  --bg: #FFFFFF;
   --bg-deep: #00211B;
+  --dark: #00352D;
+  --muted: rgba(0,53,45,.58);
   --accent: #91F2B5;
   --accent-dim: rgba(145,242,181,0.55);
-  --line: rgba(145,242,181,0.18);
-  --line-soft: rgba(145,242,181,0.04);
+  --line: rgba(0,53,45,0.2);
+  --line-soft: rgba(0,53,45,0.08);
+  --line-glow: rgba(145,242,181,0.45);
   --cream: #F3F1E6;
   --ease: cubic-bezier(.16,.84,.36,1);
 
   background: var(--bg) !important;
-  color: var(--accent);
+  color: var(--dark);
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
   position: relative;
 }
@@ -30,6 +33,23 @@
     repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 120px);
   opacity: .5;
 }
+.ucx-eco-sticky .grid-glow {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-glow) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, var(--line-glow) 0 1px, transparent 1px 120px);
+  opacity: 0;
+  transition: opacity .5s var(--ease);
+  -webkit-mask-image: radial-gradient(240px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
+          mask-image: radial-gradient(240px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
+}
+.ucx-eco-sticky.is-hot .grid-glow { opacity: 1; }
+.ucx-eco-sticky .cursor-haze {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  opacity: 0; transition: opacity .6s var(--ease);
+  background: radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.1), transparent 70%);
+}
+.ucx-eco-sticky.is-hot .cursor-haze { opacity: 1; }
 
 /* Drifting glow that tracks scroll progress across the pinned viewport,
    giving the whole section a sense of continuous motion/energy. */
@@ -80,17 +100,17 @@
 .ucx-eco-panel.intro .eyebrow {
   display: inline-flex; align-items: center; gap: 10px;
   font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
-  color: var(--accent-dim); margin-bottom: 18px;
+  color: var(--muted); margin-bottom: 18px;
 }
-.ucx-eco-panel.intro .eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--accent-dim); }
+.ucx-eco-panel.intro .eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--accent); }
 .ucx-eco-panel.intro .heading {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   text-transform: uppercase; line-height: 1; letter-spacing: -.01em;
-  font-size: clamp(34px,5.4vw,64px); color: var(--accent); margin-bottom: 22px;
+  font-size: clamp(34px,5.4vw,64px); color: var(--dark); margin-bottom: 22px;
 }
-.ucx-eco-panel.intro .tagline { font-size: 17px; line-height: 1.65; color: var(--cream); max-width: 56ch; margin: 0 auto 32px; }
+.ucx-eco-panel.intro .tagline { font-size: 17px; line-height: 1.65; color: var(--dark); max-width: 56ch; margin: 0 auto 32px; }
 .ucx-eco-panel.intro .scroll-hint {
-  font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-dim);
+  font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
 }
 .ucx-eco-pin.is-stacked .ucx-eco-panel.intro .scroll-hint { display: none; }
 
@@ -107,9 +127,9 @@
   overflow: hidden;
   height: min(60vh, 520px);
   border: 1px solid var(--line); border-radius: 24px;
-  background: rgba(145,242,181,.025);
+  background: rgba(0,53,45,.02);
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
-  color: var(--accent-dim);
+  color: var(--muted);
 }
 .ucx-eco-pin.is-stacked .pillar-image { height: 320px; }
 .pillar-photo { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; }
@@ -125,7 +145,7 @@
   top: 50%; left: 50%; transform: translate(-50%,-52%);
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   font-size: clamp(160px,22vw,320px); line-height: 1;
-  color: rgba(145,242,181,.06);
+  color: rgba(0,53,45,.04);
 }
 .pillar-image-pulse {
   position: absolute; z-index: 0; pointer-events: none;
@@ -141,21 +161,21 @@
 .pillar-body { display: flex; flex-direction: column; gap: 6px; }
 .pillar-index {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
-  font-size: 15px; letter-spacing: .12em; color: var(--accent-dim); margin-bottom: 10px;
+  font-size: 15px; letter-spacing: .12em; color: var(--muted); margin-bottom: 10px;
 }
 .pillar-eyebrow {
-  font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px;
+  font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--dark); margin-bottom: 14px;
 }
 .pillar-subtitle {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   text-transform: uppercase; line-height: 1.1; letter-spacing: -.01em;
-  font-size: clamp(24px,3vw,36px); color: var(--cream); margin-bottom: 16px; max-width: 14ch;
+  font-size: clamp(24px,3vw,36px); color: var(--dark); margin-bottom: 16px; max-width: 14ch;
 }
-.pillar-desc { font-size: 15.5px; line-height: 1.7; color: var(--accent-dim); max-width: 46ch; margin-bottom: 20px; }
+.pillar-desc { font-size: 15.5px; line-height: 1.7; color: var(--muted); max-width: 46ch; margin-bottom: 20px; }
 .pillar-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .pillar-tags span {
   font-size: 11px; letter-spacing: .04em;
-  border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; color: var(--accent-dim);
+  border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; color: var(--muted);
 }
 
 /* ---- progress rail ---- */
@@ -184,7 +204,7 @@
   color: var(--line);
 }
 .ucx-eco-progress-labels span { transition: color .3s var(--ease); }
-.ucx-eco-progress-labels span.is-active { color: var(--accent); }
+.ucx-eco-progress-labels span.is-active { color: var(--dark); }
 
 /* ---- closing ---- */
 .ucx-eco-closing {
@@ -202,7 +222,7 @@
   transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
 }
 .ucx-eco-closing .closing-cta svg { width: 14px; height: 14px; transition: transform .3s var(--ease); }
-.ucx-eco-closing .closing-cta:hover { background: transparent; color: var(--accent); transform: translateY(-2px); }
+.ucx-eco-closing .closing-cta:hover { background: transparent; color: var(--dark); border-color: var(--dark); transform: translateY(-2px); }
 .ucx-eco-closing .closing-cta:hover svg { transform: translateX(3px); }
 
 @media (prefers-reduced-motion: reduce) {

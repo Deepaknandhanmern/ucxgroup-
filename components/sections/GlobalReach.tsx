@@ -1,22 +1,23 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Globe } from "@/components/ui/Globe";
+import { WorldMap } from "@/components/ui/WorldMap";
+import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
 const REGIONS = ["India", "GCC", "Southeast Asia", "Global"];
 const TAGS = ["International Delivery", "Remote Collaboration", "Dedicated Teams"];
 
-const INDIA: [number, number] = [11.0168, 76.9558];
-const NODES: [number, number][] = [
-  [25.2048, 55.2708], // GCC
-  [1.3521, 103.8198], // Southeast Asia
-  [51.5074, -0.1278], // Global (UK · US · Australia)
+const INDIA = { lat: 11.0168, lng: 76.9558, label: "India" };
+const NODES = [
+  { lat: 25.2048, lng: 55.2708, label: "GCC" },
+  { lat: 1.3521, lng: 103.8198, label: "Southeast Asia" },
+  { lat: 51.5074, lng: -0.1278, label: "Global" }, // UK · US · Australia
 ];
-const GLOBE_MARKERS = [{ location: INDIA, size: 0.06 }, ...NODES.map((location) => ({ location, size: 0.035 }))];
-const GLOBE_ARCS = NODES.map((to) => ({ from: INDIA, to }));
+const MAP_DOTS = NODES.map((n) => ({ start: INDIA, end: n }));
 
 export default function GlobalReach() {
   const sectRef = useRef<HTMLDivElement>(null);
+  const glowRef = useCursorGlow<HTMLDivElement>();
 
   useEffect(() => {
     const sect = sectRef.current;
@@ -45,8 +46,16 @@ export default function GlobalReach() {
   }, []);
 
   return (
-    <div className="ucx-globalreach" ref={sectRef}>
+    <div
+      className="ucx-globalreach"
+      ref={(el) => {
+        sectRef.current = el;
+        glowRef.current = el;
+      }}
+    >
       <div className="grid-overlay"></div>
+      <div className="grid-glow"></div>
+      <div className="cursor-haze"></div>
       <div className="wrapper">
         <div className="copy" data-reveal>
           <h2 className="heading">
@@ -76,7 +85,7 @@ export default function GlobalReach() {
         </div>
 
         <div className="map" data-reveal>
-          <Globe markers={GLOBE_MARKERS} arcs={GLOBE_ARCS} />
+          <WorldMap dots={MAP_DOTS} />
         </div>
       </div>
     </div>

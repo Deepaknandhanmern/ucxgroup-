@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
 interface Model {
   title: string;
@@ -17,6 +18,7 @@ const MODELS: Model[] = [
 
 export default function DeliveryModel() {
   const sectRef = useRef<HTMLDivElement>(null);
+  const glowRef = useCursorGlow<HTMLDivElement>();
 
   useEffect(() => {
     const sect = sectRef.current;
@@ -45,8 +47,16 @@ export default function DeliveryModel() {
   }, []);
 
   return (
-    <div className="ucx-model" ref={sectRef}>
+    <div
+      className="ucx-model"
+      ref={(el) => {
+        sectRef.current = el;
+        glowRef.current = el;
+      }}
+    >
       <div className="grid-overlay"></div>
+      <div className="grid-glow"></div>
+      <div className="cursor-haze"></div>
       <div className="wrapper">
         <div className="head" data-reveal>
           <span className="eyebrow">How We Work</span>

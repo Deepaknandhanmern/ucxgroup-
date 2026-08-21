@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
 interface CapBlock {
   index: string;
@@ -116,45 +117,7 @@ function FrameworkMotif() {
 
 export default function Capabilities() {
   const sectRef = useRef<HTMLDivElement>(null);
-
-  // cursor spotlight
-  useEffect(() => {
-    const sect = sectRef.current;
-    if (!sect) return;
-
-    let pending = false;
-    let px = 0;
-    let py = 0;
-
-    function onPointerMove(e: PointerEvent) {
-      const b = sect!.getBoundingClientRect();
-      px = e.clientX - b.left;
-      py = e.clientY - b.top;
-      if (!pending) {
-        pending = true;
-        requestAnimationFrame(() => {
-          sect!.style.setProperty("--mx", px + "px");
-          sect!.style.setProperty("--my", py + "px");
-          pending = false;
-        });
-      }
-    }
-    function onPointerEnter() {
-      sect!.classList.add("is-hot");
-    }
-    function onPointerLeave() {
-      sect!.classList.remove("is-hot");
-    }
-
-    sect.addEventListener("pointermove", onPointerMove, { passive: true });
-    sect.addEventListener("pointerenter", onPointerEnter);
-    sect.addEventListener("pointerleave", onPointerLeave);
-    return () => {
-      sect.removeEventListener("pointermove", onPointerMove);
-      sect.removeEventListener("pointerenter", onPointerEnter);
-      sect.removeEventListener("pointerleave", onPointerLeave);
-    };
-  }, []);
+  const bodyGlowRef = useCursorGlow<HTMLDivElement>();
 
   // scroll reveal
   useEffect(() => {
@@ -185,13 +148,10 @@ export default function Capabilities() {
 
   return (
     <div className="ucx-caphub" ref={sectRef}>
-      <div className="grid-overlay"></div>
-      <div className="grid-glow"></div>
-      <div className="cursor-haze"></div>
-
-      <div className="wrapper">
-        {/* ---------- hero ---------- */}
-        <div className="hero" id="overview">
+      {/* ---------- hero: its own dark band, matching the home page Hero ---------- */}
+      <div className="cap-hero-band" id="overview">
+        <div className="grid-overlay"></div>
+        <div className="hero">
           <div className="hero-copy" data-reveal>
             <span className="eyebrow">Capabilities</span>
             <h1 className="heading">Connected expertise for better project delivery.</h1>
@@ -231,7 +191,14 @@ export default function Capabilities() {
             <FrameworkMotif />
           </div>
         </div>
+      </div>
 
+      <div className="cap-body" ref={bodyGlowRef}>
+        <div className="grid-overlay"></div>
+        <div className="grid-glow"></div>
+        <div className="cursor-haze"></div>
+
+        <div className="wrapper">
         {/* ---------- framework intro ---------- */}
         <div className="framework" id="framework" data-reveal>
           <span className="sub-eyebrow">One Framework</span>
@@ -341,6 +308,7 @@ export default function Capabilities() {
               </svg>
             </a>
           </div>
+        </div>
         </div>
       </div>
     </div>

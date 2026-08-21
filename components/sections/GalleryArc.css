@@ -1,21 +1,51 @@
 .ucx-gallery-arc {
-  --bg: #00352D;
+  --bg: #FFFFFF;
   --bg-deep: #00211B;
   --bg-2: #004538;
+  --dark: #00352D;
+  --muted: rgba(0,53,45,.58);
   --accent: #91F2B5;
   --accent-dim: rgba(145,242,181,0.55);
-  --line: rgba(145,242,181,0.18);
+  --line: rgba(0,53,45,0.18);
+  --line-soft: rgba(0,53,45,.08);
+  --line-glow: rgba(145,242,181,.45);
   --cream: #F3F1E6;
   --ease: cubic-bezier(.16,.84,.36,1);
 
   position: relative;
   background: var(--bg) !important;
-  color: var(--accent);
+  color: var(--dark);
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
   overflow: hidden;
+  isolation: isolate;
   padding: clamp(72px,9vw,120px) clamp(20px,6vw,80px) clamp(90px,10vw,140px);
 }
 .ucx-gallery-arc * { box-sizing: border-box; }
+
+.ucx-gallery-arc .grid-overlay {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-soft) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 120px);
+  opacity: .5;
+}
+.ucx-gallery-arc .grid-glow {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-glow) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, var(--line-glow) 0 1px, transparent 1px 120px);
+  opacity: 0;
+  transition: opacity .5s var(--ease);
+  -webkit-mask-image: radial-gradient(240px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
+          mask-image: radial-gradient(240px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
+}
+.ucx-gallery-arc.is-hot .grid-glow { opacity: 1; }
+.ucx-gallery-arc .cursor-haze {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  opacity: 0; transition: opacity .6s var(--ease);
+  background: radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.1), transparent 70%);
+}
+.ucx-gallery-arc.is-hot .cursor-haze { opacity: 1; }
 
 .ucx-gallery-arc .arc-content {
   position: relative; z-index: 1;
@@ -25,15 +55,15 @@
 .ucx-gallery-arc .eyebrow {
   display: inline-flex; align-items: center; gap: 10px;
   font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
-  color: var(--accent-dim); margin-bottom: 18px;
+  color: var(--muted); margin-bottom: 18px;
 }
-.ucx-gallery-arc .eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--accent-dim); }
+.ucx-gallery-arc .eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--accent); }
 .ucx-gallery-arc .heading {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   text-transform: uppercase; line-height: 1.05; letter-spacing: -.01em;
-  font-size: clamp(28px,4.4vw,48px); color: var(--cream); margin-bottom: 12px;
+  font-size: clamp(28px,4.4vw,48px); color: var(--dark); margin-bottom: 12px;
 }
-.ucx-gallery-arc .intro { font-size: 15px; color: var(--accent-dim); }
+.ucx-gallery-arc .intro { font-size: 15px; color: var(--muted); }
 
 /* ---- fan carousel: cards splayed from a hinge, image alone until hover ---- */
 .ucx-gallery-arc .fan-stage {
@@ -45,6 +75,7 @@
   --fan-card-w: clamp(118px,15vw,210px);
   --fan-card-h: calc(var(--fan-card-w) * 1.56);
   position: relative;
+  z-index: 1;
   height: calc(var(--fan-card-h) + 8rem);
 }
 .ucx-gallery-arc .fan-card {
@@ -95,12 +126,13 @@
 
 /* ---- controls: arrows + tap-to-jump dots ---- */
 .ucx-gallery-arc .arc-controls {
+  position: relative; z-index: 1;
   display: flex; align-items: center; justify-content: center; gap: 22px;
 }
 .ucx-gallery-arc .arc-arrow {
   flex: none; display: flex; align-items: center; justify-content: center;
   width: 44px; height: 44px; border-radius: 999px;
-  border: 1px solid var(--line); background: transparent; color: var(--accent);
+  border: 1px solid var(--line); background: transparent; color: var(--dark);
   cursor: pointer;
   transition: background .3s var(--ease), border-color .3s var(--ease), color .3s var(--ease);
 }
@@ -115,7 +147,7 @@
 .ucx-gallery-arc .arc-dots button:hover { background: var(--accent-dim); }
 .ucx-gallery-arc .arc-dots button.is-active { width: 22px; background: var(--accent); }
 
-.ucx-gallery-arc .arc-ctas { display: flex; justify-content: center; }
+.ucx-gallery-arc .arc-ctas { position: relative; z-index: 1; display: flex; justify-content: center; }
 .ucx-gallery-arc .arc-cta-primary {
   display: inline-flex; align-items: center; gap: 8px;
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
@@ -125,7 +157,7 @@
   transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
 }
 .ucx-gallery-arc .arc-cta-primary svg { width: 14px; height: 14px; transition: transform .3s var(--ease); }
-.ucx-gallery-arc .arc-cta-primary:hover { background: transparent; color: var(--accent); transform: translateY(-2px); }
+.ucx-gallery-arc .arc-cta-primary:hover { background: transparent; color: var(--dark); border-color: var(--dark); transform: translateY(-2px); }
 .ucx-gallery-arc .arc-cta-primary:hover svg { transform: translateX(3px); }
 
 @media (max-width: 560px) {

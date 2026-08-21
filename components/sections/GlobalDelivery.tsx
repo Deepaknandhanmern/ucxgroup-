@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Globe } from "@/components/ui/Globe";
+import { WorldMap } from "@/components/ui/WorldMap";
 
 const TAGS = ["International Delivery", "Remote Collaboration", "Dedicated Teams", "Scalable Capacity"];
 
@@ -11,16 +11,15 @@ const STEPS = [
   { n: "03", label: "Deliver", desc: "Consistent, quality-controlled output handed off on schedule." },
 ];
 
-const INDIA: [number, number] = [11.0168, 76.9558];
+const INDIA = { lat: 11.0168, lng: 76.9558, label: "India" };
 
 const NODES = [
-  { label: "GCC", caption: "UAE · Saudi · Qatar", location: [25.2048, 55.2708] as [number, number] },
-  { label: "Southeast Asia", caption: "Singapore · Malaysia", location: [1.3521, 103.8198] as [number, number] },
-  { label: "Global", caption: "UK · US · Australia", location: [51.5074, -0.1278] as [number, number] },
+  { label: "GCC", caption: "UAE · Saudi · Qatar", lat: 25.2048, lng: 55.2708 },
+  { label: "Southeast Asia", caption: "Singapore · Malaysia", lat: 1.3521, lng: 103.8198 },
+  { label: "Global", caption: "UK · US · Australia", lat: 51.5074, lng: -0.1278 },
 ];
 
-const GLOBE_MARKERS = [{ location: INDIA, size: 0.06 }, ...NODES.map((n) => ({ location: n.location, size: 0.035 }))];
-const GLOBE_ARCS = NODES.map((n) => ({ from: INDIA, to: n.location }));
+const MAP_DOTS = NODES.map((n) => ({ start: INDIA, end: n }));
 
 export default function GlobalDelivery() {
   const sectRef = useRef<HTMLDivElement>(null);
@@ -110,7 +109,7 @@ export default function GlobalDelivery() {
         <div className="map">
           <div className="map-grid" aria-hidden="true"></div>
           <div className="map-globe">
-            <Globe markers={GLOBE_MARKERS} arcs={GLOBE_ARCS} />
+            <WorldMap dots={MAP_DOTS} />
           </div>
           <div className="map-legend">
             <div className="legend-item legend-hub">

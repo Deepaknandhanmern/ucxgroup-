@@ -1,16 +1,18 @@
 .ucx-caphub {
-  --bg: #00352D;
+  --bg: #FFFFFF;
   --bg-deep: #00211B;
+  --dark: #00352D;
+  --muted: rgba(0,53,45,.58);
   --accent: #91F2B5;
   --accent-dim: rgba(145,242,181,0.55);
-  --line: rgba(145,242,181,0.18);
-  --line-soft: rgba(145,242,181,0.035);
-  --line-glow: rgba(145,242,181,0.30);
+  --line: rgba(0,53,45,0.2);
+  --line-soft: rgba(0,53,45,0.08);
+  --line-glow: rgba(145,242,181,0.45);
   --cream: #F3F1E6;
   --ease: cubic-bezier(.16,.84,.36,1);
 
   background: var(--bg) !important;
-  color: var(--accent);
+  color: var(--dark);
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
   position: relative;
   overflow: hidden;
@@ -42,25 +44,45 @@
   -webkit-mask-image: radial-gradient(240px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
           mask-image: radial-gradient(240px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
 }
-.ucx-caphub.is-hot .grid-glow { opacity: 1; }
+.ucx-caphub .cap-body.is-hot .grid-glow { opacity: 1; }
 .ucx-caphub .cursor-haze {
   position: absolute; inset: 0; pointer-events: none; z-index: 0;
   opacity: 0; transition: opacity .6s var(--ease);
-  background: radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.07), transparent 70%);
+  background: radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.1), transparent 70%);
 }
-.ucx-caphub.is-hot .cursor-haze { opacity: 1; }
+.ucx-caphub .cap-body.is-hot .cursor-haze { opacity: 1; }
+.ucx-caphub .cap-body { position: relative; isolation: isolate; }
+
+/* ---- hero band: kept as its own dark section, matching Hero.css ---- */
+.ucx-caphub .cap-hero-band {
+  --bg: #00352D;
+  --bg-deep: #00211B;
+  --accent: #91F2B5;
+  --accent-dim: rgba(145,242,181,0.55);
+  --line: rgba(145,242,181,0.18);
+  --line-soft: rgba(145,242,181,0.045);
+  --cream: #F3F1E6;
+
+  position: relative;
+  background: var(--bg);
+  color: var(--accent);
+  overflow: hidden;
+  padding: clamp(90px,9vw,140px) 0;
+}
 
 .ucx-caphub .wrapper {
   position: relative; z-index: 1;
   max-width: 1100px; margin: 0 auto;
-  padding: clamp(90px,9vw,140px) clamp(20px,6vw,80px) clamp(90px,10vw,150px);
+  padding: clamp(64px,7vw,96px) clamp(20px,6vw,80px) clamp(90px,10vw,150px);
 }
-
 /* ---- hero: split copy + framework motif ---- */
 .ucx-caphub .hero {
+  position: relative; z-index: 1;
+  max-width: 1100px; margin: 0 auto;
+  padding: 0 clamp(20px,6vw,80px);
   display: grid; grid-template-columns: 1.15fr .85fr;
   gap: clamp(32px,5vw,64px); align-items: center;
-  margin-bottom: clamp(72px,8vw,110px); scroll-margin-top: 96px;
+  scroll-margin-top: 96px;
 }
 .ucx-caphub .hero-copy { max-width: 640px; }
 .ucx-caphub .eyebrow {
@@ -155,18 +177,18 @@
 .ucx-caphub .sub-eyebrow {
   display: block;
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
-  font-size: 12.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+  font-size: 12.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--dark);
   margin-bottom: 16px;
 }
 .ucx-caphub .framework-title {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   text-transform: uppercase; line-height: 1.05; letter-spacing: -.01em;
-  font-size: clamp(26px,3.6vw,42px); color: var(--cream); margin-bottom: 24px;
+  font-size: clamp(26px,3.6vw,42px); color: var(--dark); margin-bottom: 24px;
   max-width: 22ch;
 }
 .ucx-caphub .framework-copy { max-width: 780px; }
-.ucx-caphub .framework-copy p { font-size: 16px; line-height: 1.75; color: var(--accent-dim); margin-bottom: 14px; }
-.ucx-caphub .framework-tagline { font-size: 15px; color: var(--accent); font-style: italic; margin-top: 10px; }
+.ucx-caphub .framework-copy p { font-size: 16px; line-height: 1.75; color: var(--muted); margin-bottom: 14px; }
+.ucx-caphub .framework-tagline { font-size: 15px; color: var(--dark); font-style: italic; margin-top: 10px; }
 
 /* ---- four connected capabilities: ultra-modular card grid ---- */
 .ucx-caphub .blocks {
@@ -189,7 +211,7 @@
   transform: translateY(-8px);
   border-color: var(--accent);
   background: linear-gradient(160deg, rgba(145,242,181,.1), rgba(145,242,181,.015) 65%);
-  box-shadow: 0 44px 80px -40px rgba(0,0,0,.65);
+  box-shadow: 0 44px 80px -40px rgba(0,0,0,.2);
 }
 .ucx-caphub .mod-index {
   position: absolute;
@@ -197,21 +219,21 @@
   right: clamp(22px,2.6vw,32px);
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   font-size: clamp(52px,6.4vw,80px); line-height: 1;
-  color: rgba(145,242,181,.09);
+  color: rgba(0,53,45,.06);
   transition: color .4s var(--ease);
   pointer-events: none;
 }
-.ucx-caphub .mod-card:hover .mod-index { color: rgba(145,242,181,.18); }
+.ucx-caphub .mod-card:hover .mod-index { color: rgba(0,53,45,.1); }
 .ucx-caphub .mod-title {
   position: relative; z-index: 1;
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   text-transform: uppercase; letter-spacing: -.01em; line-height: 1.15;
-  font-size: clamp(20px,2.2vw,26px); color: var(--cream); margin-bottom: 12px;
+  font-size: clamp(20px,2.2vw,26px); color: var(--dark); margin-bottom: 12px;
   max-width: 20ch;
 }
 .ucx-caphub .mod-desc {
   position: relative; z-index: 1;
-  font-size: 14.5px; line-height: 1.65; color: var(--accent-dim);
+  font-size: 14.5px; line-height: 1.65; color: var(--muted);
   margin-bottom: 22px; max-width: 42ch;
 }
 .ucx-caphub .mod-tags {
@@ -221,14 +243,14 @@
 .ucx-caphub .mod-tags span {
   font-size: 11px; letter-spacing: .04em;
   border: 1px solid var(--line); border-radius: 999px; padding: 7px 13px;
-  color: var(--accent-dim); background: rgba(0,53,45,.35);
+  color: var(--dark); background: rgba(145,242,181,.14);
 }
 .ucx-caphub .mod-cta {
   position: relative; z-index: 1; margin-top: auto;
   display: inline-flex; align-items: center; gap: 8px; width: fit-content;
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--accent); border-bottom: 1px solid var(--line); padding-bottom: 4px;
+  color: var(--dark); border-bottom: 1px solid var(--line); padding-bottom: 4px;
   transition: border-color .3s var(--ease);
 }
 .ucx-caphub .mod-cta svg { width: 12px; height: 12px; transition: transform .25s var(--ease); }
@@ -240,9 +262,9 @@
 .ucx-caphub .delivery-title {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   text-transform: uppercase; line-height: 1.05; letter-spacing: -.01em;
-  font-size: clamp(26px,3.6vw,42px); color: var(--cream); margin-bottom: 16px; max-width: 20ch;
+  font-size: clamp(26px,3.6vw,42px); color: var(--dark); margin-bottom: 16px; max-width: 20ch;
 }
-.ucx-caphub .delivery-intro { max-width: 62ch; font-size: 15.5px; line-height: 1.7; color: var(--accent-dim); margin-bottom: clamp(32px,4vw,48px); }
+.ucx-caphub .delivery-intro { max-width: 62ch; font-size: 15.5px; line-height: 1.7; color: var(--muted); margin-bottom: clamp(32px,4vw,48px); }
 .ucx-caphub .delivery-list { border-top: 1px solid var(--line); }
 .ucx-caphub .delivery-row {
   display: grid; grid-template-columns: 64px 1fr 1.4fr;
@@ -251,16 +273,16 @@
   border-bottom: 1px solid var(--line);
   transition: background .3s var(--ease);
 }
-.ucx-caphub .delivery-row:hover { background: rgba(145,242,181,.03); }
+.ucx-caphub .delivery-row:hover { background: rgba(145,242,181,.06); }
 .ucx-caphub .delivery-index {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
-  font-size: 13px; color: var(--accent-dim);
+  font-size: 13px; color: var(--muted);
 }
 .ucx-caphub .delivery-name {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
-  font-size: 16px; color: var(--cream); letter-spacing: -.005em;
+  font-size: 16px; color: var(--dark); letter-spacing: -.005em;
 }
-.ucx-caphub .delivery-desc { font-size: 14px; line-height: 1.6; color: var(--accent-dim); }
+.ucx-caphub .delivery-desc { font-size: 14px; line-height: 1.6; color: var(--muted); }
 .ucx-caphub .delivery-cta {
   display: inline-flex; align-items: center; gap: 10px; margin-top: clamp(28px,3.4vw,40px);
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
@@ -270,7 +292,7 @@
   transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
 }
 .ucx-caphub .delivery-cta svg { width: 14px; height: 14px; transition: transform .3s var(--ease); }
-.ucx-caphub .delivery-cta:hover { background: transparent; color: var(--accent); transform: translateY(-2px); }
+.ucx-caphub .delivery-cta:hover { background: transparent; color: var(--dark); border-color: var(--dark); transform: translateY(-2px); }
 .ucx-caphub .delivery-cta:hover svg { transform: translateX(3px); }
 
 /* ---- technology band: centered statement, flows straight into stats ---- */
@@ -281,10 +303,10 @@
 .ucx-caphub .tech-band h2 {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   text-transform: uppercase; line-height: 1.08; letter-spacing: -.01em;
-  font-size: clamp(24px,3.4vw,38px); color: var(--cream); margin-bottom: 16px;
+  font-size: clamp(24px,3.4vw,38px); color: var(--dark); margin-bottom: 16px;
 }
-.ucx-caphub .tech-band p { font-size: 15.5px; line-height: 1.7; color: var(--accent-dim); margin-bottom: 18px; }
-.ucx-caphub .tech-band .tech-tagline { font-size: 14.5px; color: var(--accent); font-style: italic; }
+.ucx-caphub .tech-band p { font-size: 15.5px; line-height: 1.7; color: var(--muted); margin-bottom: 18px; }
+.ucx-caphub .tech-band .tech-tagline { font-size: 14.5px; color: var(--dark); font-style: italic; }
 
 /* ---- stats ---- */
 .ucx-caphub .stats-block { text-align: center; margin-bottom: clamp(80px,9vw,120px); }
@@ -293,9 +315,9 @@
 .ucx-caphub .stat-value {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   font-variant-numeric: tabular-nums;
-  font-size: clamp(40px,5.4vw,64px); line-height: 1; color: var(--cream);
+  font-size: clamp(40px,5.4vw,64px); line-height: 1; color: var(--dark);
 }
-.ucx-caphub .stat-label { font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-dim); }
+.ucx-caphub .stat-label { font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 
 /* ---- closing: premium panel ---- */
 .ucx-caphub .closing {
@@ -308,9 +330,9 @@
 .ucx-caphub .closing-copy { max-width: 52ch; }
 .ucx-caphub .closing-copy h3 {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; text-transform: uppercase;
-  letter-spacing: -.01em; font-size: clamp(20px,2.6vw,30px); color: var(--cream); margin-bottom: 12px;
+  letter-spacing: -.01em; font-size: clamp(20px,2.6vw,30px); color: var(--dark); margin-bottom: 12px;
 }
-.ucx-caphub .closing-copy p { font-size: 14.5px; line-height: 1.65; color: var(--accent-dim); }
+.ucx-caphub .closing-copy p { font-size: 14.5px; line-height: 1.65; color: var(--muted); }
 .ucx-caphub .closing-actions { display: flex; flex-direction: column; gap: 12px; flex: none; }
 .ucx-caphub .closing-cta {
   display: inline-flex; align-items: center; gap: 10px; flex: none;
@@ -321,10 +343,10 @@
   transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
 }
 .ucx-caphub .closing-cta svg { width: 14px; height: 14px; transition: transform .3s var(--ease); }
-.ucx-caphub .closing-cta:hover { background: transparent; color: var(--accent); transform: translateY(-2px); }
+.ucx-caphub .closing-cta:hover { background: transparent; color: var(--dark); border-color: var(--dark); transform: translateY(-2px); }
 .ucx-caphub .closing-cta:hover svg { transform: translateX(3px); }
-.ucx-caphub .closing-cta--ghost { background: transparent; color: var(--accent); }
-.ucx-caphub .closing-cta--ghost:hover { background: var(--accent); color: var(--bg-deep); }
+.ucx-caphub .closing-cta--ghost { background: transparent; color: var(--dark); border-color: var(--dark); }
+.ucx-caphub .closing-cta--ghost:hover { background: var(--accent); color: var(--bg-deep); border-color: var(--accent); }
 
 @media (prefers-reduced-motion: reduce) {
   .ucx-caphub *, .ucx-caphub *::before, .ucx-caphub *::after {

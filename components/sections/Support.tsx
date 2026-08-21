@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { submitToSplitForms } from "@/lib/splitforms";
+import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
 interface SupportLine {
   href: string;
@@ -53,6 +54,7 @@ type QueryStatus = "idle" | "sending" | "sent" | "error";
 
 export default function Support() {
   const sectRef = useRef<HTMLElement>(null);
+  const glowRef = useCursorGlow<HTMLElement>();
   const [status, setStatus] = useState<QueryStatus>("idle");
 
   async function handleQuerySubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -103,13 +105,20 @@ export default function Support() {
   }, []);
 
   return (
-    <section className="ucx-support" ref={sectRef}>
+    <section
+      className="ucx-support"
+      ref={(el) => {
+        sectRef.current = el;
+        glowRef.current = el;
+      }}
+    >
       <div className="ucx-bg-grid"></div>
       <div className="ucx-bg-aurora">
         <span className="b1"></span>
         <span className="b2"></span>
         <span className="b3"></span>
       </div>
+      <div className="ucx-cursor-haze"></div>
       <div className="ucx-support__inner">
         <div className="ucx-support__lead">
           <span className="ucx-support__eyebrow">Support</span>

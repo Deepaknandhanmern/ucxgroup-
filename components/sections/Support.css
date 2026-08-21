@@ -12,7 +12,7 @@
   --ucx-display: "Getho","Atyp Display","Helvetica Neue",Arial,sans-serif;
   --ucx-body: "Atyp Display","Helvetica Neue",Arial,sans-serif;
 
-  background: #F3F1E6 !important;
+  background: #FFFFFF !important;
   color: var(--ucx-text);
   font-family: var(--ucx-body);
   font-weight: 400;
@@ -31,11 +31,17 @@
   z-index: 0;
   pointer-events: none;
   background-image:
-    repeating-linear-gradient(90deg, rgba(0,53,45,.05) 0 1px, transparent 1px 8.333%),
-    repeating-linear-gradient(0deg, rgba(0,53,45,.05) 0 1px, transparent 1px 90px);
+    repeating-linear-gradient(90deg, rgba(0,53,45,.08) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, rgba(0,53,45,.08) 0 1px, transparent 1px 90px);
   -webkit-mask-image: radial-gradient(ellipse 90% 85% at 50% 45%, #000 55%, transparent 100%);
           mask-image: radial-gradient(ellipse 90% 85% at 50% 45%, #000 55%, transparent 100%);
 }
+.ucx-support .ucx-cursor-haze {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  opacity: 0; transition: opacity .6s cubic-bezier(.16,.84,.36,1);
+  background: radial-gradient(320px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.16), transparent 70%);
+}
+.ucx-support.is-hot .ucx-cursor-haze { opacity: 1; }
 
 .ucx-support .ucx-bg-aurora { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
 .ucx-support .ucx-bg-aurora span {
@@ -64,7 +70,7 @@
   .ucx-support .ucx-bg-aurora span { animation: none; }
 }
 
-.ucx-support > *:not(.ucx-bg-grid):not(.ucx-bg-aurora) { position: relative; z-index: 1; }
+.ucx-support > *:not(.ucx-bg-grid):not(.ucx-bg-aurora):not(.ucx-cursor-haze) { position: relative; z-index: 1; }
 
 .ucx-support__inner {
   max-width: 1240px;

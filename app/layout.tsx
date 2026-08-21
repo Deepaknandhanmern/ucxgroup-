@@ -43,7 +43,7 @@ import "@/components/sections/ProjectLifecycle.css";
 import "@/components/sections/CapabilityPage.css";
 import "@/components/sections/Capabilities.css";
 import "@/components/ui/FileCard.css";
-import "@/components/ui/Globe.css";
+import "@/components/ui/WorldMap.css";
 import "@/components/sections/Resources.css";
 import "@/components/sections/FeaturedProjects.css";
 import "@/components/sections/ProjectDetail.css";

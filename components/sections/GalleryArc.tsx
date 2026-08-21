@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { PROJECTS } from "@/lib/projects";
+import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
 const FEATURED = PROJECTS.slice(0, 8);
 const MAX_VISIBLE = 7;
@@ -56,6 +57,7 @@ function ProjectImage({ src, alt, discipline }: { src: string; alt: string; disc
 }
 
 export default function GalleryArc() {
+  const glowRef = useCursorGlow<HTMLDivElement>();
   const total = FEATURED.length;
   const needsPagination = total > MAX_VISIBLE;
   const [center, setCenter] = useState(0);
@@ -96,7 +98,10 @@ export default function GalleryArc() {
   }
 
   return (
-    <div className="ucx-gallery-arc">
+    <div className="ucx-gallery-arc" ref={glowRef}>
+      <div className="grid-overlay"></div>
+      <div className="grid-glow"></div>
+      <div className="cursor-haze"></div>
       <div className="arc-content">
         <span className="eyebrow">Selected Work</span>
         <h2 className="heading">Selected Project Experience</h2>
