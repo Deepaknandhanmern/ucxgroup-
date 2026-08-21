@@ -1,10 +1,9 @@
-export type Cat = "bim" | "interiors" | "construction" | "asset";
+export type Cat = "commercial" | "residential" | "industrial" | "infrastructure" | "specialized";
 
 export interface Project {
   slug: string;
   cat: Cat;
   title: string;
-  sector: string;
   location: string;
   discipline: string;
   stage: string;
@@ -17,18 +16,26 @@ export interface Project {
 
 export const FILTERS: { cat: Cat | "all"; label: string }[] = [
   { cat: "all", label: "All Projects" },
-  { cat: "bim", label: "BIM & Digital Delivery" },
-  { cat: "interiors", label: "Design & Interiors" },
-  { cat: "construction", label: "Construction Support" },
-  { cat: "asset", label: "Asset Information" },
+  { cat: "commercial", label: "Commercial & Mixed-Use" },
+  { cat: "residential", label: "Residential" },
+  { cat: "industrial", label: "Industrial" },
+  { cat: "infrastructure", label: "Infrastructure" },
+  { cat: "specialized", label: "Specialized Projects" },
 ];
+
+export const CAT_LABELS: Record<Cat, string> = {
+  commercial: "Commercial & Mixed-Use",
+  residential: "Residential",
+  industrial: "Industrial",
+  infrastructure: "Infrastructure",
+  specialized: "Specialized Projects",
+};
 
 export const PROJECTS: Project[] = [
   {
     slug: "bim-coordination-cultural-campus",
-    cat: "bim",
+    cat: "specialized",
     title: "BIM Coordination for a Mixed-Use Cultural Campus",
-    sector: "Institutional",
     location: "India",
     discipline: "BIM & VDC",
     stage: "As-Built",
@@ -45,9 +52,8 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "hospitality-interior-design-documentation",
-    cat: "interiors",
+    cat: "specialized",
     title: "Interior Design & Documentation for a Hospitality Development",
-    sector: "Hospitality",
     location: "UAE",
     discipline: "Design & Interiors",
     stage: "Construction",
@@ -64,9 +70,8 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "construction-support-medical-campus",
-    cat: "construction",
+    cat: "specialized",
     title: "Construction Support for a Regional Medical Campus",
-    sector: "Healthcare",
     location: "India",
     discipline: "Construction Support",
     stage: "Construction",
@@ -83,9 +88,8 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "asset-information-infrastructure-corridor",
-    cat: "asset",
+    cat: "infrastructure",
     title: "Asset Information Delivery for an Urban Infrastructure Corridor",
-    sector: "Infrastructure",
     location: "United Kingdom",
     discipline: "Asset Information",
     stage: "As-Built",
@@ -102,9 +106,8 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "scan-to-bim-urban-development",
-    cat: "bim",
+    cat: "infrastructure",
     title: "Scan-to-BIM for a Multi-Zone Urban Development",
-    sector: "Infrastructural",
     location: "United States",
     discipline: "Scan-to-BIM",
     stage: "Design",
@@ -121,9 +124,8 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "workplace-interiors-corporate-hq",
-    cat: "interiors",
+    cat: "commercial",
     title: "Workplace Interiors for a Corporate Headquarters",
-    sector: "Commercial",
     location: "India",
     discipline: "Workplace & Office",
     stage: "Design",

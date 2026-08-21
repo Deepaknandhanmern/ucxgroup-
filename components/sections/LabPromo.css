@@ -5,7 +5,7 @@
   --accent: #00352D;
   --accent-dim: rgba(0,53,45,0.6);
   --line: rgba(0,53,45,0.2);
-  --line-soft: rgba(0,53,45,0.08);
+  --line-soft: rgba(0,53,45,.03);
   --line-glow: rgba(0,53,45,0.22);
   --cream: #00352D;
   --ease: cubic-bezier(.16,.84,.36,1);
@@ -25,7 +25,7 @@
   background-image:
     repeating-linear-gradient(90deg, var(--line-soft) 0 1px, transparent 1px 8.333%),
     repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 120px);
-  opacity: .5;
+  opacity: 1;
 }
 .ucx-labpromo .grid-glow {
   position: absolute; inset: 0; pointer-events: none; z-index: 0;

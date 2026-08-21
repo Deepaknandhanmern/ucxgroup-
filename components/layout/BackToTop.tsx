@@ -7,7 +7,7 @@ const THRESHOLD = 480;
 
 export default function BackToTop() {
   const pathname = usePathname();
-  const isInteriors = pathname?.startsWith("/interiors") ?? false;
+  const isInteriors = pathname?.startsWith("/design-interiors") ?? false;
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {

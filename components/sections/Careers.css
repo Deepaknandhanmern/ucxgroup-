@@ -1,16 +1,18 @@
 .ucx-careers {
-  --bg: #00352D;
+  --bg: #FFFFFF;
   --bg-deep: #00211B;
+  --dark: #00352D;
+  --muted: rgba(0,53,45,.58);
   --accent: #91F2B5;
   --accent-dim: rgba(145,242,181,0.55);
-  --line: rgba(145,242,181,0.18);
-  --line-soft: rgba(145,242,181,0.035);
-  --line-glow: rgba(145,242,181,0.30);
+  --line: rgba(0,53,45,0.2);
+  --line-soft: rgba(0,53,45,.03);
+  --line-glow: rgba(145,242,181,0.45);
   --cream: #F3F1E6;
   --ease: cubic-bezier(.16,.84,.36,1);
 
   background: var(--bg) !important;
-  color: var(--accent);
+  color: var(--dark);
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
   position: relative;
   overflow: hidden;
@@ -24,7 +26,7 @@
   background-image:
     repeating-linear-gradient(90deg, var(--line-soft) 0 1px, transparent 1px 8.333%),
     repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 120px);
-  opacity: .4;
+  opacity: 1;
 }
 .ucx-careers .grid-glow {
   position: absolute; inset: 0; pointer-events: none; z-index: 0;
@@ -36,22 +38,45 @@
   -webkit-mask-image: radial-gradient(240px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
           mask-image: radial-gradient(240px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
 }
-.ucx-careers.is-hot .grid-glow { opacity: 1; }
+.ucx-careers .cap-body.is-hot .grid-glow { opacity: 1; }
 .ucx-careers .cursor-haze {
   position: absolute; inset: 0; pointer-events: none; z-index: 0;
   opacity: 0; transition: opacity .6s var(--ease);
-  background: radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.07), transparent 70%);
+  background: radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.1), transparent 70%);
 }
-.ucx-careers.is-hot .cursor-haze { opacity: 1; }
+.ucx-careers .cap-body.is-hot .cursor-haze { opacity: 1; }
+.ucx-careers .cap-body { position: relative; isolation: isolate; }
+
+/* ---- hero band: kept as its own dark section, matching Hero.css ---- */
+.ucx-careers .hero-band {
+  --bg: #00352D;
+  --bg-deep: #00211B;
+  --accent: #91F2B5;
+  --accent-dim: rgba(145,242,181,0.55);
+  --line: rgba(145,242,181,0.18);
+  --line-soft: rgba(145,242,181,0.045);
+  --cream: #F3F1E6;
+
+  position: relative;
+  background: var(--bg);
+  color: var(--accent);
+  overflow: hidden;
+  padding: clamp(90px,9vw,140px) 0 clamp(56px,7vw,88px);
+}
 
 .ucx-careers .wrapper {
   position: relative; z-index: 1;
   max-width: 1200px; margin: 0 auto;
-  padding: clamp(90px,9vw,140px) clamp(20px,6vw,80px) clamp(70px,8vw,110px);
+  padding: clamp(56px,7vw,88px) clamp(20px,6vw,80px) clamp(70px,8vw,110px);
 }
 
 /* ---- hero ---- */
-.ucx-careers .head { max-width: 720px; margin-bottom: clamp(56px,7vw,88px); opacity: 0; animation: careersFadeUp .9s var(--ease) forwards; }
+.ucx-careers .head {
+  position: relative; z-index: 1;
+  max-width: 720px; margin: 0 auto;
+  padding: 0 clamp(20px,6vw,80px);
+  opacity: 0; animation: careersFadeUp .9s var(--ease) forwards;
+}
 .ucx-careers .eyebrow {
   display: inline-flex; align-items: center; gap: 10px;
   font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
@@ -89,13 +114,13 @@
 .ucx-careers .life h2 {
   font-family: 'Getho','Atyp Display',sans-serif;
   font-weight: 700; font-size: clamp(22px,2.6vw,30px);
-  color: var(--cream); line-height: 1.15;
+  color: var(--dark); line-height: 1.15;
 }
-.ucx-careers .life .body p { font-size: 15px; line-height: 1.75; color: var(--accent-dim); margin-bottom: 14px; }
+.ucx-careers .life .body p { font-size: 15px; line-height: 1.75; color: var(--muted); margin-bottom: 14px; }
 .ucx-careers .life .tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
 .ucx-careers .life .tags span {
   font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase;
-  border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px; color: var(--accent-dim);
+  border: 1px solid var(--line); border-radius: 999px; padding: 8px 16px; color: var(--muted);
 }
 
 /* ---- open positions ---- */
@@ -105,9 +130,9 @@
 }
 .ucx-careers .positions-head h2 {
   font-family: 'Getho','Atyp Display',sans-serif;
-  font-weight: 700; font-size: clamp(22px,2.6vw,30px); color: var(--accent);
+  font-weight: 700; font-size: clamp(22px,2.6vw,30px); color: var(--dark);
 }
-.ucx-careers .positions-head .count { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-dim); }
+.ucx-careers .positions-head .count { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
 
 .ucx-careers .positions { display: flex; flex-direction: column; }
 .ucx-careers .position {
@@ -117,29 +142,29 @@
   transition: background .35s var(--ease);
 }
 .ucx-careers .positions .position:last-child { border-bottom: 1px solid var(--line); }
-.ucx-careers .position:hover { background: rgba(145,242,181,.05); }
+.ucx-careers .position:hover { background: rgba(145,242,181,.08); }
 .ucx-careers .position:nth-child(1) { animation-delay: .15s; }
 .ucx-careers .position:nth-child(2) { animation-delay: .25s; }
 .ucx-careers .position:nth-child(3) { animation-delay: .35s; }
 
 .ucx-careers .position .role-title {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
-  font-size: clamp(18px,2vw,22px); color: var(--cream); margin-bottom: 8px;
+  font-size: clamp(18px,2vw,22px); color: var(--dark); margin-bottom: 8px;
 }
 .ucx-careers .position .meta {
   display: flex; flex-wrap: wrap; gap: 10px 16px;
-  font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent-dim);
+  font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
   margin-bottom: 10px;
 }
 .ucx-careers .position .meta span { display: inline-flex; align-items: center; gap: 6px; }
 .ucx-careers .position .meta span::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
-.ucx-careers .position .desc { font-size: 14px; line-height: 1.65; color: var(--accent-dim); max-width: 62ch; }
+.ucx-careers .position .desc { font-size: 14px; line-height: 1.65; color: var(--muted); max-width: 62ch; }
 
 .ucx-careers .apply {
   display: inline-flex; align-items: center; gap: 8px; flex: none;
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--accent); background: transparent; cursor: pointer;
+  color: var(--dark); background: transparent; cursor: pointer;
   border: 1px solid var(--line); border-radius: 999px;
   padding: 13px 22px;
   transition: background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
@@ -233,11 +258,11 @@
   padding-top: clamp(36px,4vw,52px); border-top: 1px solid var(--line);
   display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
 }
-.ucx-careers .closing p { font-size: 15px; color: var(--accent-dim); max-width: 52ch; line-height: 1.6; }
+.ucx-careers .closing p { font-size: 15px; color: var(--muted); max-width: 52ch; line-height: 1.6; }
 .ucx-careers .closing a {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   font-size: 12.5px; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--accent); white-space: nowrap;
+  color: var(--dark); white-space: nowrap;
 }
 
 @keyframes careersFadeUp {

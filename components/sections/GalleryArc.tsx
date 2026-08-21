@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { PROJECTS } from "@/lib/projects";
+import { CAT_LABELS, PROJECTS } from "@/lib/projects";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
 const FEATURED = PROJECTS.slice(0, 8);
@@ -168,7 +168,7 @@ export default function GalleryArc() {
                 <ProjectImage src={p.image} alt={p.title} discipline={p.discipline} />
                 <div className="fan-caption">
                   <span className="fan-sector">
-                    {p.sector} &middot; {p.location}
+                    {CAT_LABELS[p.cat]} &middot; {p.location}
                   </span>
                   <h3>{p.title}</h3>
                 </div>

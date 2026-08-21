@@ -6,7 +6,6 @@ export default function InteriorsHero() {
         <span className="ih-blob b2"></span>
         <span className="ih-blob b3"></span>
         <span className="ih-blob b4"></span>
-        <div className="ih-grid"></div>
         <div className="ih-vignette"></div>
       </div>
 

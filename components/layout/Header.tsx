@@ -49,9 +49,9 @@ interface MobileItem {
 
 const NAV_ITEMS: { key: PanelKey; label: string; iconOnly?: boolean; href?: string }[] = [
   { key: "capabilities", label: "Capabilities", href: "/capabilities" },
-  { key: "experience", label: "Experience" },
+  { key: "experience", label: "Experience", href: "/experience" },
   { key: "lab", label: "Collaboration Lab", iconOnly: true },
-  { key: "insights", label: "Insights" },
+  { key: "insights", label: "Insights", href: "/insights" },
   { key: "company", label: "Company" },
 ];
 
@@ -81,13 +81,13 @@ const PANELS: Panel[] = [
         desc: "Integrated design and interior delivery.",
         theme: "interiors",
         links: [
-          { href: "/interiors#architecture-planning", label: "Architecture & Planning" },
-          { href: "/interiors#interior-solutions", label: "Interior Solutions" },
-          { href: "/interiors#design-development", label: "Design Development" },
-          { href: "/interiors#construction-documentation", label: "Construction Documentation" },
-          { href: "/interiors#bim-integrated-interiors", label: "BIM-Integrated Interiors" },
+          { href: "/design-interiors#architecture-planning", label: "Architecture & Planning" },
+          { href: "/design-interiors#interior-solutions", label: "Interior Solutions" },
+          { href: "/design-interiors#design-development", label: "Design Development" },
+          { href: "/design-interiors#construction-documentation", label: "Construction Documentation" },
+          { href: "/design-interiors#bim-integrated-interiors", label: "BIM-Integrated Interiors" },
         ],
-        ctaHref: "/interiors",
+        ctaHref: "/design-interiors",
         ctaLabel: "Explore Design & Interiors",
       },
       {
@@ -162,11 +162,11 @@ const PANELS: Panel[] = [
         desc: "Design and delivery across diverse interior environments.",
         theme: "interiors",
         links: [
-          { href: "/interiors#workplace-office", label: "Workplace & Office" },
-          { href: "/interiors#hospitality-retail", label: "Hospitality & Retail" },
-          { href: "/interiors#residential-interiors", label: "Residential Interiors" },
-          { href: "/interiors#custom-furniture", label: "Custom Furniture" },
-          { href: "/interiors#modular-interiors", label: "Modular Interiors" },
+          { href: "#link-experience-workplace-and-office", label: "Workplace & Office" },
+          { href: "#link-experience-hospitality-and-retail", label: "Hospitality & Retail" },
+          { href: "#link-experience-residential-interiors", label: "Residential Interiors" },
+          { href: "#link-experience-custom-furniture", label: "Custom Furniture" },
+          { href: "#link-experience-modular-interiors", label: "Modular Interiors" },
         ],
         ctaHref: "/projects?filter=interiors",
         ctaLabel: "Explore Interior Projects",
@@ -176,13 +176,13 @@ const PANELS: Panel[] = [
         title: "Digital Project Experience",
         desc: "Technology-led delivery for complex project requirements.",
         links: [
-          { href: "#link-experience-bim-and-vdc", label: "BIM & VDC" },
-          { href: "#link-experience-scan-to-bim", label: "Scan-to-BIM" },
-          { href: "#link-experience-as-built-bim", label: "As-Built BIM" },
-          { href: "#link-experience-digital-engineering", label: "Digital Engineering" },
-          { href: "#link-experience-prefabrication", label: "Prefabrication" },
+          { href: "/digital-project-experience#bim-vdc", label: "BIM & VDC" },
+          { href: "/digital-project-experience#scan-to-bim", label: "Scan-to-BIM" },
+          { href: "/digital-project-experience#as-built-bim", label: "As-Built BIM" },
+          { href: "/digital-project-experience#digital-engineering", label: "Digital Engineering" },
+          { href: "/digital-project-experience#prefabrication", label: "Prefabrication" },
         ],
-        ctaHref: "/projects?filter=bim",
+        ctaHref: "/digital-project-experience",
         ctaLabel: "Explore Digital Projects",
       },
     ],
@@ -376,7 +376,7 @@ const MOBILE_ITEMS: MobileItem[] = [
     links: [
       { href: "/capabilities", label: "All Capabilities" },
       { href: "/bim-digital-delivery", label: "BIM & Digital Delivery" },
-      { href: "/interiors", label: "Design & Interiors" },
+      { href: "/design-interiors", label: "Design & Interiors" },
       { href: "/project-construction-support", label: "Project & Construction Support" },
       { href: "/asset-digital-information", label: "Asset & Digital Information" },
     ],
@@ -387,7 +387,7 @@ const MOBILE_ITEMS: MobileItem[] = [
     links: [
       { href: "/projects", label: "Built Environment" },
       { href: "/projects?filter=interiors", label: "Interiors" },
-      { href: "/projects?filter=bim", label: "Digital Project Experience" },
+      { href: "/digital-project-experience", label: "Digital Project Experience" },
     ],
   },
   {
@@ -450,7 +450,7 @@ export default function Header() {
     );
   }, [pathname]);
 
-  const isInteriors = (pathname?.startsWith("/interiors") ?? false) || isInteriorsFilter;
+  const isInteriors = (pathname?.startsWith("/design-interiors") ?? false) || isInteriorsFilter;
 
   const [openKey, setOpenKey] = useState<PanelKey | null>(null);
   const [mobileOpenKey, setMobileOpenKey] = useState<PanelKey | null>(null);
@@ -567,7 +567,7 @@ export default function Header() {
         <div className="ucxnav__inner">
           {/* ---------- Logo ---------- */}
           {isInteriors ? (
-            <a href="/interiors" className="ucxnav__logo ucxnav__logo--interiors" aria-label="SpayceX — Design & Interiors by UCX, home">
+            <a href="/design-interiors" className="ucxnav__logo ucxnav__logo--interiors" aria-label="SpayceX — Design & Interiors by UCX, home">
               <img className="ucxnav__logo-img" src="/brand/interiors/logo.png" alt="SpayceX" />
               <span className="ucxnav__spark s1" aria-hidden="true"></span>
               <span className="ucxnav__spark s2" aria-hidden="true"></span>

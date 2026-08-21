@@ -294,6 +294,7 @@ export default function Insights() {
 
   return (
     <div className="ucx-insights" ref={rootRef}>
+      <div className="ins-bg-grid" aria-hidden="true"></div>
       <div className="ins-wrapper">
         <div className="ins-head" data-reveal>
           <h1 className="ins-title">Ideas, Knowledge &amp; Perspectives for the Built Environment</h1>

@@ -1,18 +1,32 @@
 .ucx-approach {
-  --bg-deep: #00211B;
+  --bg-deep: #FFFFFF;
+  --dark: #00352D;
+  --muted: rgba(0,53,45,.58);
   --accent: #91F2B5;
   --accent-dim: rgba(145,242,181,0.55);
-  --line: rgba(145,242,181,0.18);
+  --line: rgba(0,53,45,0.2);
+  --line-soft: rgba(0,53,45,.03);
   --cream: #F3F1E6;
   --ease: cubic-bezier(.16,.84,.36,1);
 
   background: var(--bg-deep);
-  color: var(--accent);
+  color: var(--dark);
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
   border-top: 1px solid var(--line);
   scroll-margin-top: 80px;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
 }
 .ucx-approach * { box-sizing: border-box; }
+
+.ucx-approach .grid-overlay {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-soft) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 120px);
+  opacity: 1;
+}
 
 .ucx-approach [data-reveal] {
   opacity: 0; transform: translateY(24px);
@@ -21,6 +35,7 @@
 .ucx-approach [data-reveal].is-in { opacity: 1; transform: none; }
 
 .ucx-approach .wrapper {
+  position: relative; z-index: 1;
   max-width: 1280px; margin: 0 auto;
   padding: clamp(72px,9vw,120px) clamp(20px,6vw,80px);
   display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(40px,6vw,72px);
@@ -30,15 +45,15 @@
 .ucx-approach .eyebrow {
   display: inline-flex; align-items: center; gap: 10px;
   font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
-  color: var(--accent-dim); margin-bottom: 18px;
+  color: var(--muted); margin-bottom: 18px;
 }
-.ucx-approach .eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--accent-dim); }
+.ucx-approach .eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--accent); }
 .ucx-approach .heading {
   font-family: 'Getho','Atyp Display',sans-serif;
   font-weight: 700; text-transform: uppercase; line-height: 1.02; letter-spacing: -.01em;
-  font-size: clamp(28px,4vw,44px); color: var(--cream); margin-bottom: 20px; max-width: 16ch;
+  font-size: clamp(28px,4vw,44px); color: var(--dark); margin-bottom: 20px; max-width: 16ch;
 }
-.ucx-approach .intro { font-size: 15.5px; line-height: 1.75; color: var(--accent-dim); margin-bottom: 14px; max-width: 54ch; }
+.ucx-approach .intro { font-size: 15.5px; line-height: 1.75; color: var(--muted); margin-bottom: 14px; max-width: 54ch; }
 
 .ucx-approach .approach-words {
   display: flex; flex-direction: column; align-items: flex-end;
@@ -50,10 +65,10 @@
   font-weight: 700; text-transform: uppercase; letter-spacing: -.01em;
   line-height: 1.04;
   font-size: clamp(30px,4.6vw,58px);
-  color: var(--accent);
+  color: var(--dark);
   transition-property: opacity, transform, color;
 }
-.ucx-approach .approach-word:hover { color: var(--cream); }
+.ucx-approach .approach-word:hover { color: var(--accent); }
 
 @media (max-width: 860px) {
   .ucx-approach .wrapper { grid-template-columns: 1fr; }

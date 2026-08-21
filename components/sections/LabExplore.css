@@ -1,11 +1,11 @@
 .ucx-lab-explore {
   --dark: #00352D;
   --mint: #91F2B5;
-  --line: rgba(0,53,45,.14);
+  --line: rgba(0,53,45,0.2);
   --muted: rgba(0,53,45,.62);
   --ease: cubic-bezier(.22,.61,.36,1);
 
-  background: #F3F1E6 !important;
+  background: #FFFFFF !important;
   color: var(--dark);
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
   position: relative;
@@ -18,8 +18,8 @@
 .ucx-lab-explore .lx-bg-grid {
   position: absolute; inset: 0; pointer-events: none; z-index: 0;
   background-image:
-    repeating-linear-gradient(90deg, rgba(0,53,45,.045) 0 1px, transparent 1px 8.333%),
-    repeating-linear-gradient(0deg, rgba(0,53,45,.045) 0 1px, transparent 1px 90px);
+    repeating-linear-gradient(90deg, rgba(0,53,45,.03) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, rgba(0,53,45,.03) 0 1px, transparent 1px 90px);
 }
 
 .ucx-lab-explore .wrapper {
@@ -155,7 +155,7 @@
 }
 .ucx-lab-explore .li-category {
   display: block;
-  font-size: 11.5px; letter-spacing: .04em; color: var(--mint); margin-bottom: 14px;
+  font-size: 11.5px; letter-spacing: .04em; color: var(--dark); margin-bottom: 14px;
   font-weight: 600;
 }
 .ucx-lab-explore .li-desc { font-size: 13.5px; line-height: 1.6; color: var(--muted); margin-bottom: 20px; flex: 1; }

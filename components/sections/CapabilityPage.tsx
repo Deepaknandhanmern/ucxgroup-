@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
 export interface CapabilityItem {
   title: string;
@@ -24,46 +25,8 @@ export interface CapabilityPageProps {
 
 export default function CapabilityPage({ index, eyebrow, title, intro, items, process, heroMotif, heroImage }: CapabilityPageProps) {
   const sectRef = useRef<HTMLDivElement>(null);
+  const bodyGlowRef = useCursorGlow<HTMLDivElement>();
   const [imgOk, setImgOk] = useState(true);
-
-  // cursor spotlight
-  useEffect(() => {
-    const sect = sectRef.current;
-    if (!sect) return;
-
-    let pending = false;
-    let px = 0;
-    let py = 0;
-
-    function onPointerMove(e: PointerEvent) {
-      const b = sect!.getBoundingClientRect();
-      px = e.clientX - b.left;
-      py = e.clientY - b.top;
-      if (!pending) {
-        pending = true;
-        requestAnimationFrame(() => {
-          sect!.style.setProperty("--mx", px + "px");
-          sect!.style.setProperty("--my", py + "px");
-          pending = false;
-        });
-      }
-    }
-    function onPointerEnter() {
-      sect!.classList.add("is-hot");
-    }
-    function onPointerLeave() {
-      sect!.classList.remove("is-hot");
-    }
-
-    sect.addEventListener("pointermove", onPointerMove, { passive: true });
-    sect.addEventListener("pointerenter", onPointerEnter);
-    sect.addEventListener("pointerleave", onPointerLeave);
-    return () => {
-      sect.removeEventListener("pointermove", onPointerMove);
-      sect.removeEventListener("pointerenter", onPointerEnter);
-      sect.removeEventListener("pointerleave", onPointerLeave);
-    };
-  }, []);
 
   // scroll reveal
   useEffect(() => {
@@ -94,12 +57,9 @@ export default function CapabilityPage({ index, eyebrow, title, intro, items, pr
 
   return (
     <div className="ucx-cap" ref={sectRef}>
-      <div className="grid-overlay"></div>
-      <div className="grid-glow"></div>
-      <div className="cursor-haze"></div>
-
-      <div className="wrapper">
-        {/* ---------- hero ---------- */}
+      {/* ---------- hero: its own dark band, matching Hero.css ---------- */}
+      <div className="hero-band">
+        <div className="grid-overlay"></div>
         <div className="hero">
           <div className="hero-copy" data-reveal>
             <span className="ghost-index" aria-hidden="true">{index}</span>
@@ -122,7 +82,14 @@ export default function CapabilityPage({ index, eyebrow, title, intro, items, pr
             )}
           </div>
         </div>
+      </div>
 
+      <div className="cap-body" ref={bodyGlowRef}>
+        <div className="grid-overlay"></div>
+        <div className="grid-glow"></div>
+        <div className="cursor-haze"></div>
+
+        <div className="wrapper">
         {/* ---------- process band (full-bleed) ---------- */}
         <div className="band" data-reveal>
           <span className="band-step">{process[0]}</span>
@@ -169,6 +136,7 @@ export default function CapabilityPage({ index, eyebrow, title, intro, items, pr
               <path d="M5 12h13M13 6l6 6-6 6" />
             </svg>
           </a>
+        </div>
         </div>
       </div>
     </div>

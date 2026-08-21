@@ -40,8 +40,10 @@
 /* ---- interiors-only: glowing logo with a hover sparkle burst ---- */
 .ucxnav__logo--interiors { position: relative; }
 .ucxnav__logo--interiors .ucxnav__logo-img {
-  transition: transform .4s var(--ucx-ease), filter .4s ease;
+  height: 42px;
+  transition: transform .4s var(--ucx-ease), filter .4s ease, height .3s var(--ucx-ease);
 }
+.ucxnav.is-scrolled .ucxnav__logo--interiors .ucxnav__logo-img { height: 34px; }
 .ucxnav__logo--interiors:hover .ucxnav__logo-img {
   transform: scale(1.06) rotate(-1.5deg);
   filter: drop-shadow(0 0 10px color-mix(in srgb, var(--ucx-mint) 65%, transparent));

@@ -35,6 +35,7 @@ export default function OurApproach() {
 
   return (
     <div className="ucx-approach" id="approach" ref={sectRef}>
+      <div className="grid-overlay" aria-hidden="true"></div>
       <div className="wrapper">
         <div className="approach-copy" data-reveal>
           <span className="eyebrow">A Different Way to Deliver</span>

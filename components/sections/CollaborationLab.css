@@ -6,12 +6,12 @@
   --dark-soft: #0B4A3F;
   --mint: #91F2B5;
   --mint-soft: #DFFBEA;
-  --line: rgba(0,53,45,.14);
+  --line: rgba(0,53,45,0.2);
   --muted: rgba(0,53,45,.62);
   --card: #FFFFFF;
   --ease: cubic-bezier(.16,.84,.36,1);
 
-  background: #F3F1E6 !important;
+  background: #FFFFFF !important;
   color: var(--dark);
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
   position: relative;
@@ -27,8 +27,8 @@
   z-index: 0;
   pointer-events: none;
   background-image:
-    repeating-linear-gradient(90deg, rgba(0,53,45,.05) 0 1px, transparent 1px 8.333%),
-    repeating-linear-gradient(0deg, rgba(0,53,45,.05) 0 1px, transparent 1px 90px);
+    repeating-linear-gradient(90deg, rgba(0,53,45,.03) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, rgba(0,53,45,.03) 0 1px, transparent 1px 90px);
   -webkit-mask-image: radial-gradient(ellipse 90% 85% at 50% 45%, #000 55%, transparent 100%);
           mask-image: radial-gradient(ellipse 90% 85% at 50% 45%, #000 55%, transparent 100%);
 }

@@ -37,13 +37,6 @@
   0%, 100% { transform: translate(0,0) scale(1); }
   50% { transform: translate(34px,-26px) scale(1.08); }
 }
-.ih-grid {
-  position: absolute; inset: 0; pointer-events: none;
-  background-image:
-    repeating-linear-gradient(90deg, rgba(243,241,230,.035) 0 1px, transparent 1px 8.333%),
-    repeating-linear-gradient(0deg, rgba(243,241,230,.035) 0 1px, transparent 1px 120px);
-  opacity: .5;
-}
 .ih-vignette {
   position: absolute; inset: 0;
   background:

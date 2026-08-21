@@ -7,6 +7,6 @@ export const metadata: Metadata = {
     "SpayceX is UCX's design and interiors studio — workplace, hospitality and residential interior design carried through to buildable construction documentation.",
 };
 
-export default function InteriorsPage() {
+export default function DesignInteriorsPage() {
   return <Interiors />;
 }

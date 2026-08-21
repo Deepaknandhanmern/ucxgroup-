@@ -1,17 +1,31 @@
 .ucx-buildeco {
-  --bg-deep: #00211B;
+  --bg-deep: #FFFFFF;
+  --dark: #00352D;
+  --muted: rgba(0,53,45,.58);
   --accent: #91F2B5;
   --accent-dim: rgba(145,242,181,0.55);
-  --line: rgba(145,242,181,0.18);
+  --line: rgba(0,53,45,0.2);
+  --line-soft: rgba(0,53,45,.03);
   --cream: #F3F1E6;
   --ease: cubic-bezier(.16,.84,.36,1);
 
   background: var(--bg-deep);
-  color: var(--accent);
+  color: var(--dark);
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
   border-top: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
 }
 .ucx-buildeco * { box-sizing: border-box; }
+
+.ucx-buildeco .grid-overlay {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-soft) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 120px);
+  opacity: 1;
+}
 
 .ucx-buildeco [data-reveal] {
   opacity: 0; transform: translateY(20px);
@@ -20,6 +34,7 @@
 .ucx-buildeco [data-reveal].is-in { opacity: 1; transform: none; }
 
 .ucx-buildeco .wrapper {
+  position: relative; z-index: 1;
   max-width: 1280px; margin: 0 auto;
   padding: clamp(72px,9vw,120px) clamp(20px,6vw,80px);
 }
@@ -27,7 +42,7 @@
 .ucx-buildeco .heading {
   font-family: 'Getho','Atyp Display',sans-serif;
   font-weight: 700; text-transform: uppercase; line-height: 1.06; letter-spacing: -.01em;
-  font-size: clamp(26px,3.8vw,42px); color: var(--cream); max-width: 22ch;
+  font-size: clamp(26px,3.8vw,42px); color: var(--dark); max-width: 22ch;
   margin-bottom: clamp(56px,7vw,90px);
 }
 
@@ -45,17 +60,17 @@
 }
 .ucx-buildeco .pillar:hover {
   padding-left: 12px;
-  background: rgba(145,242,181,.03);
+  background: rgba(145,242,181,.08);
 }
 .ucx-buildeco .pillar-index {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
-  font-size: clamp(28px,3vw,36px); color: rgba(145,242,181,.28);
+  font-size: clamp(28px,3vw,36px); color: rgba(0,53,45,.15);
 }
 .ucx-buildeco .pillar-title {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; text-transform: uppercase;
-  font-size: clamp(19px,2.2vw,26px); color: var(--cream); margin: 0; letter-spacing: -.005em;
+  font-size: clamp(19px,2.2vw,26px); color: var(--dark); margin: 0; letter-spacing: -.005em;
 }
-.ucx-buildeco .pillar-desc { font-size: 15px; line-height: 1.65; color: var(--accent-dim); margin: 0; max-width: 52ch; }
+.ucx-buildeco .pillar-desc { font-size: 15px; line-height: 1.65; color: var(--muted); margin: 0; max-width: 52ch; }
 
 @media (max-width: 720px) {
   .ucx-buildeco .pillar { grid-template-columns: 48px 1fr; }

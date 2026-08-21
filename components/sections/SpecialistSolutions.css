@@ -6,7 +6,7 @@
   --accent-dim: rgba(145,242,181,0.55);
   --muted: rgba(0,53,45,.55);
   --line: rgba(0,53,45,.18);
-  --line-soft: rgba(0,53,45,.08);
+  --line-soft: rgba(0,53,45,.03);
   --line-glow: rgba(145,242,181,0.45);
   --cream: #F3F1E6;
   --ease: cubic-bezier(.16,.84,.36,1);
@@ -26,7 +26,7 @@
   background-image:
     repeating-linear-gradient(90deg, var(--line-soft) 0 1px, transparent 1px 8.333%),
     repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 120px);
-  opacity: .4;
+  opacity: 1;
 }
 .ucx-special .grid-glow {
   position: absolute; inset: 0; pointer-events: none; z-index: 0;

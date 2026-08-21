@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { submitFormDataToSplitForms } from "@/lib/splitforms";
+import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
 interface Position {
   title: string;
@@ -39,51 +40,13 @@ type ApplyStatus = "idle" | "sending" | "sent" | "error";
 
 export default function Careers() {
   const sectRef = useRef<HTMLDivElement>(null);
+  const bodyGlowRef = useCursorGlow<HTMLDivElement>();
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const lastFocusRef = useRef<HTMLElement | null>(null);
 
   const [applyPosition, setApplyPosition] = useState<Position | null>(null);
   const [applyOpen, setApplyOpen] = useState(false);
   const [status, setStatus] = useState<ApplyStatus>("idle");
-
-  // cursor spotlight (same pattern as About Us / Founders / Why Choose Us)
-  useEffect(() => {
-    const sect = sectRef.current;
-    if (!sect) return;
-
-    let pending = false;
-    let px = 0;
-    let py = 0;
-
-    function onPointerMove(e: PointerEvent) {
-      const b = sect!.getBoundingClientRect();
-      px = e.clientX - b.left;
-      py = e.clientY - b.top;
-      if (!pending) {
-        pending = true;
-        requestAnimationFrame(() => {
-          sect!.style.setProperty("--mx", px + "px");
-          sect!.style.setProperty("--my", py + "px");
-          pending = false;
-        });
-      }
-    }
-    function onPointerEnter() {
-      sect!.classList.add("is-hot");
-    }
-    function onPointerLeave() {
-      sect!.classList.remove("is-hot");
-    }
-
-    sect.addEventListener("pointermove", onPointerMove, { passive: true });
-    sect.addEventListener("pointerenter", onPointerEnter);
-    sect.addEventListener("pointerleave", onPointerLeave);
-    return () => {
-      sect.removeEventListener("pointermove", onPointerMove);
-      sect.removeEventListener("pointerenter", onPointerEnter);
-      sect.removeEventListener("pointerleave", onPointerLeave);
-    };
-  }, []);
 
   function openApply(p: Position, e: React.MouseEvent<HTMLButtonElement>) {
     lastFocusRef.current = e.currentTarget;
@@ -131,11 +94,9 @@ export default function Careers() {
 
   return (
     <div className="ucx-careers" ref={sectRef}>
-      <div className="grid-overlay"></div>
-      <div className="grid-glow"></div>
-      <div className="cursor-haze"></div>
-
-      <div className="wrapper">
+      {/* ---------- hero: its own dark band, matching Hero.css ---------- */}
+      <div className="hero-band">
+        <div className="grid-overlay"></div>
         <div className="head">
           <span className="eyebrow">Careers</span>
           <h1 className="heading">Build What Comes Next.</h1>
@@ -150,7 +111,14 @@ export default function Careers() {
             </svg>
           </a>
         </div>
+      </div>
 
+      <div className="cap-body" ref={bodyGlowRef}>
+        <div className="grid-overlay"></div>
+        <div className="grid-glow"></div>
+        <div className="cursor-haze"></div>
+
+        <div className="wrapper">
         <div className="life">
           <h2>Life at UCX</h2>
           <div className="body">
@@ -202,6 +170,7 @@ export default function Careers() {
         <div className="closing">
           <p>Don&rsquo;t see a role that fits? We&rsquo;re always open to hearing from people who want to build something different.</p>
           <a href="/contact">Get in touch &rarr;</a>
+        </div>
         </div>
       </div>
 

@@ -61,7 +61,6 @@ export default function InteriorsFooter() {
     <div className="ifoot-curtain" ref={wrapRef}>
       <footer className="ifoot">
         <div className="ifoot-aurora" aria-hidden="true"></div>
-        <div className="ifoot-grid" aria-hidden="true"></div>
         <div className="ifoot-giant" ref={giantRef} aria-hidden="true">
           SPAYCEX
         </div>
@@ -90,7 +89,7 @@ export default function InteriorsFooter() {
                 <path d="M5 12h13M13 6l6 6-6 6" />
               </svg>
             </a>
-            <a className="ifoot-pill" href="/interiors#categories">
+            <a className="ifoot-pill" href="/design-interiors">
               Explore Our Work
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 12h13M13 6l6 6-6 6" />

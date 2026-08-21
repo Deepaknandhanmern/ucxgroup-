@@ -14,7 +14,7 @@ export default function Footer() {
     );
   }, [pathname]);
 
-  const isInteriors = (pathname?.startsWith("/interiors") ?? false) || isInteriorsFilter;
+  const isInteriors = (pathname?.startsWith("/design-interiors") ?? false) || isInteriorsFilter;
 
   if (isInteriors) return <InteriorsFooter />;
 

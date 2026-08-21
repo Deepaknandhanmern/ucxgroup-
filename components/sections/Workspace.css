@@ -1,16 +1,18 @@
 .ucx-workspace {
-  --bg: #00352D;
+  --bg: #FFFFFF;
   --bg-deep: #00211B;
+  --dark: #00352D;
+  --muted: rgba(0,53,45,.58);
   --accent: #91F2B5;
   --accent-dim: rgba(145,242,181,0.55);
-  --line: rgba(145,242,181,0.18);
-  --line-soft: rgba(145,242,181,0.035);
-  --line-glow: rgba(145,242,181,0.30);
+  --line: rgba(0,53,45,0.2);
+  --line-soft: rgba(0,53,45,.03);
+  --line-glow: rgba(145,242,181,0.45);
   --cream: #F3F1E6;
   --ease: cubic-bezier(.16,.84,.36,1);
 
   background: var(--bg) !important;
-  color: var(--accent);
+  color: var(--dark);
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
   position: relative;
   overflow: hidden;
@@ -25,7 +27,7 @@
   background-image:
     repeating-linear-gradient(90deg, var(--line-soft) 0 1px, transparent 1px 8.333%),
     repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 120px);
-  opacity: .4;
+  opacity: 1;
 }
 .ucx-workspace .grid-glow {
   position: absolute; inset: 0; pointer-events: none; z-index: 0;
@@ -41,7 +43,7 @@
 .ucx-workspace .cursor-haze {
   position: absolute; inset: 0; pointer-events: none; z-index: 0;
   opacity: 0; transition: opacity .6s var(--ease);
-  background: radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.07), transparent 70%);
+  background: radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.1), transparent 70%);
 }
 .ucx-workspace.is-hot .cursor-haze { opacity: 1; }
 
@@ -60,13 +62,13 @@
   letter-spacing: -.01em;
   font-size: clamp(32px,4.6vw,58px);
   max-width: 16ch;
-  color: var(--accent);
+  color: var(--dark);
   margin-bottom: 22px;
   opacity: 0; animation: wsFadeUp 1s var(--ease) forwards; animation-delay: .08s;
 }
 
 .ucx-workspace .intro {
-  max-width: 62ch; font-size: 16px; line-height: 1.75; color: var(--accent-dim);
+  max-width: 62ch; font-size: 16px; line-height: 1.75; color: var(--muted);
   margin-bottom: 26px;
   opacity: 0; animation: wsFadeUp .9s var(--ease) forwards; animation-delay: .14s;
 }
@@ -78,7 +80,7 @@
 }
 .ucx-workspace .tags span {
   font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase;
-  border: 1px solid var(--line); border-radius: 999px; padding: 9px 18px; color: var(--accent-dim);
+  border: 1px solid var(--line); border-radius: 999px; padding: 9px 18px; color: var(--muted);
 }
 
 /* ---- gallery ---- */
@@ -93,11 +95,11 @@
   position: relative;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
   border: 1px dashed var(--line);
-  background: rgba(145,242,181,.03);
-  color: var(--accent-dim);
+  background: rgba(0,53,45,.02);
+  color: var(--muted);
   transition: border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease);
 }
-.ucx-workspace .ph:hover { border-color: var(--accent-dim); background: rgba(145,242,181,.06); color: var(--accent); }
+.ucx-workspace .ph:hover { border-color: var(--accent); background: rgba(145,242,181,.08); color: var(--dark); }
 .ucx-workspace .ph svg { width: 26px; height: 26px; opacity: .7; }
 .ucx-workspace .ph-label { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; text-align: center; padding: 0 10px; }
 

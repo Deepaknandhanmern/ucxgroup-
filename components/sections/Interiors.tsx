@@ -52,14 +52,6 @@ const SERVICES = [
   },
 ];
 
-const CATEGORIES = [
-  { id: "workplace-office", n: "01", name: "Workplace & Office", img: "/brand/interiors/cat-workplace.jpg" },
-  { id: "hospitality-retail", n: "02", name: "Hospitality & Retail", img: "/brand/interiors/cat-hospitality.jpg" },
-  { id: "residential-interiors", n: "03", name: "Residential Interiors", img: "/brand/interiors/cat-residential.jpg" },
-  { id: "custom-furniture", n: "04", name: "Custom Furniture", img: "/brand/interiors/cat-furniture.jpg" },
-  { id: "modular-interiors", n: "05", name: "Modular Interiors", img: "/brand/interiors/cat-modular.jpg" },
-];
-
 const MATERIALS = [
   { name: "Timber Veneer", img: "/brand/interiors/material-timber.jpg" },
   { name: "Natural Stone", img: "/brand/interiors/material-stone.jpg" },
@@ -229,22 +221,6 @@ export default function Interiors() {
           <span className="band-step">Documentation</span>
           <span className="band-arrow">&rarr;</span>
           <span className="band-step">Delivery</span>
-        </div>
-
-        {/* ---------- project categories ---------- */}
-        <div id="categories" className="cat-head" data-reveal>
-          <span className="sub-eyebrow">Project Categories</span>
-        </div>
-        <div className="categories">
-          {CATEGORIES.map((c) => (
-            <div id={c.id} className="cat-card" key={c.n} data-reveal>
-              <span className="cat-index">{c.n}</span>
-              <div className="cat-thumb">
-                <Ph src={c.img} alt={c.name} className="cat-thumb-img" />
-              </div>
-              <span className="cat-name">{c.name}</span>
-            </div>
-          ))}
         </div>
 
         {/* ---------- featured project ---------- */}

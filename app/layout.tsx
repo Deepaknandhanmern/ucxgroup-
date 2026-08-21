@@ -42,6 +42,7 @@ import "@/components/sections/Experience.css";
 import "@/components/sections/ProjectLifecycle.css";
 import "@/components/sections/CapabilityPage.css";
 import "@/components/sections/Capabilities.css";
+import "@/components/sections/DigitalProjectExperience.css";
 import "@/components/ui/FileCard.css";
 import "@/components/ui/WorldMap.css";
 import "@/components/sections/Resources.css";

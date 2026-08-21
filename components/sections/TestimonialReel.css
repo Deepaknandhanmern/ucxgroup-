@@ -2,7 +2,7 @@
   --dark: #00352D;
   --mint: #91F2B5;
   --line: rgba(0,53,45,.18);
-  --line-soft: rgba(0,53,45,.08);
+  --line-soft: rgba(0,53,45,.03);
   --line-glow: rgba(145,242,181,.45);
   --muted: rgba(0,53,45,.6);
   --ease: cubic-bezier(.22,.61,.36,1);
@@ -21,7 +21,7 @@
   background-image:
     repeating-linear-gradient(90deg, var(--line-soft) 0 1px, transparent 1px 8.333%),
     repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 120px);
-  opacity: .6;
+  opacity: 1;
 }
 .ucx-reel .grid-glow {
   position: absolute; inset: 0; pointer-events: none; z-index: 0;

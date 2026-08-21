@@ -5,7 +5,7 @@
   --g: #00352D;
   --mint: #91F2B5;
   --paper: #ffffff;
-  --bg: #F3F1E6;
+  --bg: #FFFFFF;
   --ink-60: rgba(0,53,45,.62);
   --ink-40: rgba(0,53,45,.40);
   --line: rgba(0,53,45,.14);
@@ -25,11 +25,9 @@
 .ucxres__bg-grid {
   position: absolute; inset: 0;
   background-image:
-    linear-gradient(rgba(0,53,45,.055) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,53,45,.055) 1px,transparent 1px);
-  background-size: 64px 64px;
-  -webkit-mask-image: radial-gradient(115% 78% at 78% 8%,#000 12%,transparent 74%);
-          mask-image: radial-gradient(115% 78% at 78% 8%,#000 12%,transparent 74%);
+    repeating-linear-gradient(90deg, rgba(0,53,45,.03) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, rgba(0,53,45,.03) 0 1px, transparent 1px 120px);
+  opacity: 1;
 }
 .ucxres__bg-wash {
   position: absolute; width: min(760px,88vw); aspect-ratio: 1;
@@ -67,7 +65,6 @@
 @media (max-width: 760px) {
   .ucxres__bg-word { display: none; }
   .ucxres__bg-rings { width: 340px; height: 340px; right: -110px; bottom: -120px; }
-  .ucxres__bg-grid { background-size: 44px 44px; }
 }
 
 /* ---------- HEAD ---------- */

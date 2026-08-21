@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { FILTERS, PROJECTS, type Cat, type Project } from "@/lib/projects";
+import { CAT_LABELS, FILTERS, PROJECTS, type Cat, type Project } from "@/lib/projects";
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const cardRef = useRef<HTMLAnchorElement>(null);
@@ -48,7 +48,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
         <div className="fp-meta">
           <div>
             <span className="k">Sector</span>
-            <span className="v">{project.sector}</span>
+            <span className="v">{CAT_LABELS[project.cat]}</span>
           </div>
           <div>
             <span className="k">Location</span>
@@ -71,13 +71,15 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
 export default function FeaturedProjects() {
   const [activeCat, setActiveCat] = useState<Cat | "all">("all");
+  const [isInteriorsFilter, setIsInteriorsFilter] = useState(false);
   const sectRef = useRef<HTMLDivElement>(null);
 
   const list = activeCat === "all" ? PROJECTS : PROJECTS.filter((p) => p.cat === activeCat);
 
   useEffect(() => {
-    const filter = new URLSearchParams(window.location.search).get("filter") as Cat | null;
-    if (filter && FILTERS.some((f) => f.cat === filter)) setActiveCat(filter);
+    const filter = new URLSearchParams(window.location.search).get("filter");
+    if (filter && FILTERS.some((f) => f.cat === filter)) setActiveCat(filter as Cat);
+    setIsInteriorsFilter(filter === "interiors");
   }, []);
 
   useEffect(() => {
@@ -104,15 +106,16 @@ export default function FeaturedProjects() {
 
   return (
     <div className="ucx-fp" ref={sectRef}>
+      {!isInteriorsFilter && <div className="fp-bg-grid" aria-hidden="true"></div>}
       <div className="fp-wrapper">
         <div className="fp-head" data-reveal>
-          <span className="fp-eyebrow">Projects</span>
+          <span className="fp-eyebrow">01 — Built Environment</span>
           <h2 className="fp-title">
             Featured <em>work</em>
           </h2>
           <p className="fp-sub">
-            A selection of projects across BIM, interiors, construction support and asset information — delivered
-            for teams working across sectors and geographies.
+            A selection of projects across commercial, residential, industrial and infrastructure environments —
+            delivered for teams working across sectors and geographies.
           </p>
 
           <div className="fp-filters">
@@ -129,9 +132,14 @@ export default function FeaturedProjects() {
         </div>
 
         <div className="fp-list">
-          {list.map((p, i) => (
-            <ProjectCard project={p} index={i} key={p.slug} />
-          ))}
+          {list.length > 0 ? (
+            list.map((p, i) => <ProjectCard project={p} index={i} key={p.slug} />)
+          ) : (
+            <p className="fp-empty" data-reveal>
+              No projects published in this category yet — check back soon, or{" "}
+              <a href="/contact">get in touch</a> about work in this space.
+            </p>
+          )}
         </div>
 
         <div className="fp-more" data-reveal>

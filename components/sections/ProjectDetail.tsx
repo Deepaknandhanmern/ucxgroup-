@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import type { Project } from "@/lib/projects";
+import { CAT_LABELS, type Project } from "@/lib/projects";
 
 export default function ProjectDetail({ project, more }: { project: Project; more: Project[] }) {
   const [imgOk, setImgOk] = useState(true);
 
   return (
     <div className="ucx-pd">
+      <div className="pd-bg-grid" aria-hidden="true"></div>
       <div className="pd-wrapper">
         <a className="pd-back" href="/projects">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -40,7 +41,7 @@ export default function ProjectDetail({ project, more }: { project: Project; mor
           <aside className="pd-side">
             <div className="pd-side-block">
               <span className="k">Sector</span>
-              <span className="v">{project.sector}</span>
+              <span className="v">{CAT_LABELS[project.cat]}</span>
             </div>
             <div className="pd-side-block">
               <span className="k">Location</span>

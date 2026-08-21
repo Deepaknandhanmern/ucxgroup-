@@ -26,7 +26,7 @@ const BLOCKS: CapBlock[] = [
     title: "Design & Interiors",
     desc: "Integrated design from concept to construction-ready documentation.",
     tags: ["Architecture", "Planning", "Interior Design", "Design Development", "Construction Documentation", "BIM-Integrated Interiors"],
-    ctaHref: "/interiors",
+    ctaHref: "/design-interiors",
     ctaLabel: "Explore Design & Interiors",
   },
   {

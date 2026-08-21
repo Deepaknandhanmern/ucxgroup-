@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
 interface Stat {
   value: number;
@@ -74,7 +75,7 @@ const AREAS: Area[] = [
     ),
     tags: ["BIM & VDC", "Scan-to-BIM", "As-Built BIM", "Digital Engineering", "Prefabrication"],
     ctaLabel: "Explore Digital Projects",
-    ctaHref: "/projects?filter=bim",
+    ctaHref: "/digital-project-experience",
   },
 ];
 
@@ -123,45 +124,7 @@ function StatCounter({ stat }: { stat: Stat }) {
 
 export default function Experience() {
   const sectRef = useRef<HTMLDivElement>(null);
-
-  // cursor spotlight
-  useEffect(() => {
-    const sect = sectRef.current;
-    if (!sect) return;
-
-    let pending = false;
-    let px = 0;
-    let py = 0;
-
-    function onPointerMove(e: PointerEvent) {
-      const b = sect!.getBoundingClientRect();
-      px = e.clientX - b.left;
-      py = e.clientY - b.top;
-      if (!pending) {
-        pending = true;
-        requestAnimationFrame(() => {
-          sect!.style.setProperty("--mx", px + "px");
-          sect!.style.setProperty("--my", py + "px");
-          pending = false;
-        });
-      }
-    }
-    function onPointerEnter() {
-      sect!.classList.add("is-hot");
-    }
-    function onPointerLeave() {
-      sect!.classList.remove("is-hot");
-    }
-
-    sect.addEventListener("pointermove", onPointerMove, { passive: true });
-    sect.addEventListener("pointerenter", onPointerEnter);
-    sect.addEventListener("pointerleave", onPointerLeave);
-    return () => {
-      sect.removeEventListener("pointermove", onPointerMove);
-      sect.removeEventListener("pointerenter", onPointerEnter);
-      sect.removeEventListener("pointerleave", onPointerLeave);
-    };
-  }, []);
+  const bodyGlowRef = useCursorGlow<HTMLDivElement>();
 
   // scroll reveal
   useEffect(() => {
@@ -192,13 +155,10 @@ export default function Experience() {
 
   return (
     <div className="ucx-experience" ref={sectRef}>
-      <div className="grid-overlay"></div>
-      <div className="grid-glow"></div>
-      <div className="cursor-haze"></div>
-
-      <div className="wrapper">
-        {/* ---------- hero ---------- */}
-        <div className="head" id="overview" data-reveal>
+      {/* ---------- hero: its own dark band, matching Hero.css ---------- */}
+      <div className="hero-band" id="overview">
+        <div className="grid-overlay"></div>
+        <div className="head" data-reveal>
           <span className="eyebrow">Experience</span>
           <h1 className="heading">Experience Built Through Collaboration</h1>
           <p className="intro">
@@ -216,7 +176,14 @@ export default function Experience() {
             </svg>
           </a>
         </div>
+      </div>
 
+      <div className="cap-body" ref={bodyGlowRef}>
+        <div className="grid-overlay"></div>
+        <div className="grid-glow"></div>
+        <div className="cursor-haze"></div>
+
+        <div className="wrapper">
         {/* ---------- stats ---------- */}
         <div className="stats-block" data-reveal>
           <span className="sub-eyebrow">Experience at a Glance</span>
@@ -276,6 +243,7 @@ export default function Experience() {
               <path d="M5 12h13M13 6l6 6-6 6" />
             </svg>
           </a>
+        </div>
         </div>
       </div>
     </div>

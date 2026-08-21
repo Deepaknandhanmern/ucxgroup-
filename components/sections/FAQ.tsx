@@ -67,6 +67,7 @@ export default function FAQ() {
 
   return (
     <section className="ucx-faq">
+      <div className="faq__bg-grid" aria-hidden="true"></div>
       <div className="faq__rings">
         <i></i>
       </div>

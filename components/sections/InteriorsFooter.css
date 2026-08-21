@@ -37,15 +37,6 @@
   border-radius: 50%; filter: blur(90px);
   background: radial-gradient(circle, rgba(116,198,162,.22), transparent 70%);
 }
-.ifoot-grid {
-  position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background-image:
-    repeating-linear-gradient(90deg, rgba(243,241,230,.035) 0 1px, transparent 1px 60px),
-    repeating-linear-gradient(0deg, rgba(243,241,230,.035) 0 1px, transparent 1px 60px);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, black 30%, black 75%, transparent);
-          mask-image: linear-gradient(to bottom, transparent, black 30%, black 75%, transparent);
-}
-
 .ifoot-giant {
   position: absolute; z-index: 0; pointer-events: none; left: 50%;
   bottom: -3vh;

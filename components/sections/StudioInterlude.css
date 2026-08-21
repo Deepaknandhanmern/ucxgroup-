@@ -1,7 +1,8 @@
 .ucx-interlude {
-  --bg-deep: #00211B;
+  --bg-deep: #FFFFFF;
+  --muted: rgba(0,53,45,.58);
   --accent-dim: rgba(145,242,181,0.5);
-  --line: rgba(145,242,181,0.14);
+  --line: rgba(0,53,45,0.2);
   --cream: #F3F1E6;
 
   background: var(--bg-deep);
@@ -25,17 +26,17 @@
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
   background:
-    repeating-linear-gradient(90deg, rgba(145,242,181,.035) 0 1px, transparent 1px 8.333%),
-    repeating-linear-gradient(0deg, rgba(145,242,181,.035) 0 1px, transparent 1px 120px),
-    linear-gradient(170deg, rgba(145,242,181,.05), transparent 60%);
+    repeating-linear-gradient(90deg, rgba(0,53,45,.03) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, rgba(0,53,45,.03) 0 1px, transparent 1px 120px),
+    linear-gradient(170deg, rgba(145,242,181,.06), transparent 60%);
 }
-.ucx-interlude .interlude-fallback svg { width: min(70%, 640px); color: var(--accent-dim); }
+.ucx-interlude .interlude-fallback svg { width: min(70%, 640px); color: var(--muted); }
 
 .ucx-interlude .interlude-caption {
   display: block;
   margin: clamp(16px,2vw,22px) clamp(20px,6vw,80px) 0;
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
-  font-size: 13px; letter-spacing: .01em; color: var(--accent-dim);
+  font-size: 13px; letter-spacing: .01em; color: var(--muted);
   max-width: 60ch;
 }
 
