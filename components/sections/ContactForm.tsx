@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Script from "next/script";
 import { submitToSplitForms } from "@/lib/splitforms";
 import { useMagnetic } from "@/components/ui/useMagnetic";
@@ -8,6 +8,93 @@ import Toast from "@/components/ui/Toast";
 import ContactMap from "./ContactMap";
 
 const CALENDLY_URL = "https://calendly.com/deepaknandhan25/30min";
+const DAY_NAMES = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+
+declare global {
+  interface Window {
+    Calendly?: { initPopupWidget: (opts: { url: string }) => void };
+  }
+}
+
+function openCalendlyPopup(url: string) {
+  if (typeof window !== "undefined" && window.Calendly) {
+    window.Calendly.initPopupWidget({ url });
+  } else {
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+}
+
+function BookingCalendarCard({ url }: { url: string }) {
+  const [openDays, setOpenDays] = useState<Set<number>>(new Set());
+
+  const now = new Date();
+  const month = now.toLocaleString("default", { month: "long" });
+  const year = now.getFullYear();
+  const firstWeekday = new Date(year, now.getMonth(), 1).getDay();
+  const daysInMonth = new Date(year, now.getMonth() + 1, 0).getDate();
+
+  // Populate "available" day highlights only after mount so server and
+  // first client render match (avoids a hydration mismatch from Math.random()).
+  useEffect(() => {
+    const set = new Set<number>();
+    for (let d = 1; d <= daysInMonth; d++) {
+      if (Math.random() < 0.22) set.add(d);
+    }
+    setOpenDays(set);
+  }, [daysInMonth]);
+
+  return (
+    <div className="booking-card">
+      <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
+
+      <div className="booking-card-copy">
+        <span className="office-label">Prefer to talk it through?</span>
+        <h2>Any questions about your project?</h2>
+        <p className="sub">Pick any date to book a free 30-minute call — you&rsquo;ll see real availability and get instant confirmation.</p>
+        <button type="button" className="booking-card-cta" onClick={() => openCalendlyPopup(url)}>
+          Book Now
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M7 17 17 7M8 7h9v9" />
+          </svg>
+        </button>
+      </div>
+
+      <div className="booking-mini-cal">
+        <div className="booking-mini-cal-head">
+          <span className="month">
+            {month}, {year}
+          </span>
+          <span className="dot" aria-hidden="true" />
+          <span className="duration">30 min call</span>
+        </div>
+        <div className="booking-mini-cal-grid">
+          {DAY_NAMES.map((d) => (
+            <span className="mc-cell mc-head" key={d}>
+              {d}
+            </span>
+          ))}
+          {Array.from({ length: firstWeekday }).map((_, i) => (
+            <span className="mc-cell mc-empty" key={`e${i}`} />
+          ))}
+          {Array.from({ length: daysInMonth }).map((_, i) => {
+            const day = i + 1;
+            return (
+              <button
+                type="button"
+                className={`mc-cell${openDays.has(day) ? " is-open" : ""}`}
+                key={day}
+                onClick={() => openCalendlyPopup(url)}
+                aria-label={`Book a call on ${month} ${day}, ${year}`}
+              >
+                {day}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 type QueryType = "bim" | "interior" | "training";
 
@@ -146,14 +233,7 @@ export default function ContactForm() {
 
         <ContactMap />
 
-        <div className="schedule-block">
-          <div className="schedule-copy">
-            <span className="office-label">Prefer to talk it through?</span>
-            <h2>Book a 30-minute call directly</h2>
-            <p className="sub">Skip the form below and grab a slot on our calendar — no back-and-forth over email.</p>
-          </div>
-          <div className="calendly-inline-widget" data-url={CALENDLY_URL} />
-        </div>
+        <BookingCalendarCard url={CALENDLY_URL} />
         <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="lazyOnload" />
 
         <div className="selector-label">1. Choose your query type</div>
