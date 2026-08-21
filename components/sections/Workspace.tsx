@@ -5,11 +5,12 @@ import { useEffect, useRef } from "react";
 const TAGS = ["Project Delivery", "Team Collaboration", "Knowledge Sharing"];
 
 const PLACEHOLDERS = [
-  { n: "01", size: "lg" },
-  { n: "02", size: "sm" },
-  { n: "03", size: "sm" },
-  { n: "04", size: "sm" },
-  { n: "05", size: "sm" },
+  { n: "01", label: "Studio Floor" },
+  { n: "02", label: "Design Review" },
+  { n: "03", label: "Coordination Room" },
+  { n: "04", label: "Team Collaboration" },
+  { n: "05", label: "Workshop Session" },
+  { n: "06", label: "Delivery Sync" },
 ];
 
 export default function Workspace() {
@@ -73,13 +74,14 @@ export default function Workspace() {
 
         <div className="gallery">
           {PLACEHOLDERS.map((p) => (
-            <div className={`ph ph-${p.size}`} key={p.n}>
+            <div className="ph" key={p.n}>
+              <span className="ph-index">{p.n}</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="3" width="18" height="18" rx="2" />
                 <circle cx="8.5" cy="8.5" r="1.5" />
                 <path d="M21 15l-5-5L5 21" />
               </svg>
-              <span className="ph-label">Workspace Photo {p.n}</span>
+              <span className="ph-label">{p.label}</span>
             </div>
           ))}
         </div>

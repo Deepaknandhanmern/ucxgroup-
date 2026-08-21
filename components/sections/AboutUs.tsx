@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import LinkPreview from "@/components/ui/LinkPreview";
 
 export default function AboutUs() {
   const sectRef = useRef<HTMLDivElement>(null);
@@ -80,10 +81,18 @@ export default function AboutUs() {
         <div className="copy">
           <h1 className="heading">
             <span className="line-mask">
-              <span className="line-inner">Projects Are Connected.</span>
+              <span className="line-inner">
+                <LinkPreview href="/capabilities" image="/brand/capabilities/bim-digital-delivery.jpg" className="heading-link">
+                  Projects Are Connected.
+                </LinkPreview>
+              </span>
             </span>
             <span className="line-mask">
-              <span className="line-inner accent">Delivery Should Be Too.</span>
+              <span className="line-inner accent">
+                <LinkPreview href="/capabilities" image="/brand/capabilities/bim-digital-delivery.jpg" className="heading-link">
+                  Delivery Should Be Too.
+                </LinkPreview>
+              </span>
             </span>
           </h1>
 

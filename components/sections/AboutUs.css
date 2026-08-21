@@ -56,6 +56,7 @@
 }
 
 /* ---------- kinetic type ---------- */
+.ucx-about .copy { text-align: center; }
 .ucx-about .heading {
   font-family: 'Getho','Atyp Display',sans-serif;
   font-weight: 700;
@@ -73,6 +74,7 @@
   transition: transform 1.05s var(--ease);
 }
 .ucx-about .line-inner.accent { color: transparent; -webkit-text-stroke: 1.5px var(--dark); }
+.ucx-about .heading-link { text-decoration: none; }
 .ucx-about .copy.is-in .line-mask:nth-of-type(1) .line-inner { transition-delay: .05s; }
 .ucx-about .copy.is-in .line-mask:nth-of-type(2) .line-inner { transition-delay: .2s; }
 .ucx-about .copy.is-in .line-inner { transform: translateY(0); }
@@ -83,8 +85,8 @@
   opacity: 0; transform: translateY(100%);
   transition: opacity .8s var(--ease), transform .8s var(--ease);
 }
-.ucx-about .lede { font-size: 16.5px; line-height: 1.6; color: var(--dark); max-width: 62ch; }
-.ucx-about .sub { font-size: 14.5px; line-height: 1.65; color: var(--muted); max-width: 58ch; }
+.ucx-about .lede { font-size: 16.5px; line-height: 1.6; color: var(--dark); max-width: 62ch; margin-left: auto; margin-right: auto; }
+.ucx-about .sub { font-size: 14.5px; line-height: 1.65; color: var(--muted); max-width: 58ch; margin-left: auto; margin-right: auto; }
 .ucx-about .copy.is-in .para-mask:nth-of-type(1) .lede { transition-delay: .4s; }
 .ucx-about .copy.is-in .para-mask:nth-of-type(2) .sub { transition-delay: .52s; }
 .ucx-about .copy.is-in .lede, .ucx-about .copy.is-in .sub { opacity: 1; transform: translateY(0); }
