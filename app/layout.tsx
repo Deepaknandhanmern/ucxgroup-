@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
+import "@/components/ui/Preloader.css";
 import "@/components/shared/fonts.css";
 import "@/components/layout/Header.css";
 import "@/components/layout/BackToTop.css";
@@ -45,6 +47,7 @@ import "@/components/sections/Capabilities.css";
 import "@/components/sections/DigitalProjectExperience.css";
 import "@/components/ui/FileCard.css";
 import "@/components/ui/Breadcrumbs.css";
+import "@/components/ui/SectionRail.css";
 import "@/components/ui/Toast.css";
 import "@/components/ui/LinkPreview.css";
 import "@/components/ui/WorldMap.css";
@@ -59,6 +62,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BackToTop from "@/components/layout/BackToTop";
 import TabTitleSwitcher from "@/components/ui/TabTitleSwitcher";
+import Preloader from "@/components/ui/Preloader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -122,6 +126,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <Script id="ucx-intro-check" strategy="beforeInteractive">
+          {"try{if(sessionStorage.getItem('ucx-intro-seen')){document.documentElement.classList.add('ucx-no-intro')}}catch(e){}"}
+        </Script>
+        <Preloader />
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:text-[#00352D] focus:shadow-lg"

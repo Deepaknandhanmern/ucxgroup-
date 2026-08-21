@@ -2,6 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
+import SectionRail from "@/components/ui/SectionRail";
+
+const RAIL_SECTIONS = [
+  { id: "overview", label: "Overview" },
+  { id: "stats", label: "At a Glance" },
+  { id: "areas", label: "Where We Apply" },
+  { id: "closing", label: "Get Started" },
+];
 
 interface Stat {
   value: number;
@@ -155,6 +163,7 @@ export default function Experience() {
 
   return (
     <div className="ucx-experience" ref={sectRef}>
+      <SectionRail sections={RAIL_SECTIONS} />
       {/* ---------- hero: its own dark band, matching Hero.css ---------- */}
       <div className="hero-band" id="overview">
         <div className="grid-overlay"></div>
@@ -185,7 +194,7 @@ export default function Experience() {
 
         <div className="wrapper">
         {/* ---------- stats ---------- */}
-        <div className="stats-block" data-reveal>
+        <div className="stats-block" id="stats" data-reveal>
           <span className="sub-eyebrow">Experience at a Glance</span>
           <div className="stats">
             {STATS.map((s) => (
@@ -229,7 +238,7 @@ export default function Experience() {
           ))}
         </div>
 
-        <div className="closing" data-reveal>
+        <div className="closing" id="closing" data-reveal>
           <div className="closing-copy">
             <h3>Different Projects. One Commitment to Delivery.</h3>
             <p>

@@ -2,6 +2,15 @@
 
 import { useEffect, useRef } from "react";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
+import SectionRail from "@/components/ui/SectionRail";
+
+const RAIL_SECTIONS = [
+  { id: "overview", label: "Overview" },
+  { id: "framework", label: "Framework" },
+  { id: "modules", label: "Capabilities" },
+  { id: "delivery", label: "Delivery Models" },
+  { id: "closing", label: "Get Started" },
+];
 
 interface CapBlock {
   index: string;
@@ -148,6 +157,7 @@ export default function Capabilities() {
 
   return (
     <div className="ucx-caphub" ref={sectRef}>
+      <SectionRail sections={RAIL_SECTIONS} />
       {/* ---------- hero: its own dark band, matching the home page Hero ---------- */}
       <div className="cap-hero-band" id="overview">
         <div className="grid-overlay"></div>
@@ -214,7 +224,7 @@ export default function Capabilities() {
         </div>
 
         {/* ---------- four connected capabilities: modular grid ---------- */}
-        <div className="blocks">
+        <div className="blocks" id="modules">
           {BLOCKS.map((b) => (
             <div className="mod-card" key={b.index} data-reveal>
               <span className="mod-index" aria-hidden="true">{b.index}</span>
@@ -236,7 +246,7 @@ export default function Capabilities() {
         </div>
 
         {/* ---------- delivery models ---------- */}
-        <div className="delivery" data-reveal>
+        <div className="delivery" id="delivery" data-reveal>
           <span className="sub-eyebrow">Engage UCX Around the Way Your Organisation Works</span>
           <h2 className="delivery-title">Capabilities That Adapt to Your Delivery Model</h2>
           <p className="delivery-intro">
@@ -285,7 +295,7 @@ export default function Capabilities() {
         </div>
 
         {/* ---------- final CTA ---------- */}
-        <div className="closing" data-reveal>
+        <div className="closing" id="closing" data-reveal>
           <div className="closing-copy">
             <h3>Need the Right Delivery Capability for Your Project?</h3>
             <p>
