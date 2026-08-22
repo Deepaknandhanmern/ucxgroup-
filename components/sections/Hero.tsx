@@ -325,7 +325,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <div className="ucx-hero" ref={heroRef}>
+    <div className="ucx-hero" id="hero" ref={heroRef}>
       <div className="grid-overlay"></div>
       <div className="aura"></div>
       <div className="vignette"></div>

@@ -1,5 +1,6 @@
 import Hero from "@/components/sections/Hero";
 import AnnouncementBanner from "@/components/ui/AnnouncementBanner";
+import SectionRail from "@/components/ui/SectionRail";
 import AboutUs from "@/components/sections/AboutUs";
 import Ecosystem from "@/components/sections/Ecosystem";
 import OurServices from "@/components/sections/OurServices";
@@ -13,9 +14,20 @@ import LabPromo from "@/components/sections/LabPromo";
 import Support from "@/components/sections/Support";
 import TestimonialReel from "@/components/sections/TestimonialReel";
 
+const RAIL_SECTIONS = [
+  { id: "hero", label: "Overview" },
+  { id: "about", label: "About" },
+  { id: "ecosystem", label: "Ecosystem" },
+  { id: "services", label: "Services" },
+  { id: "solutions", label: "Solutions" },
+  { id: "sectors", label: "Sectors" },
+  { id: "support", label: "Get Started" },
+];
+
 export default function Home() {
   return (
     <>
+      <SectionRail sections={RAIL_SECTIONS} />
       <AnnouncementBanner
         id="q4-2026-capacity"
         buttonText="Accepting New Projects for Q4"

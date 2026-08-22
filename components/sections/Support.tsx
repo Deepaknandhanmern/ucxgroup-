@@ -107,6 +107,7 @@ export default function Support() {
   return (
     <section
       className="ucx-support"
+      id="support"
       ref={(el) => {
         sectRef.current = el;
         glowRef.current = el;

@@ -44,7 +44,7 @@ export default function BuildingEcosystem() {
   }, []);
 
   return (
-    <div className="ucx-buildeco" ref={sectRef}>
+    <div className="ucx-buildeco" id="ecosystem" ref={sectRef}>
       <div className="grid-overlay" aria-hidden="true"></div>
       <div className="wrapper">
         <h2 className="heading" data-reveal>What We&apos;re Building: A Connected Delivery Ecosystem</h2>

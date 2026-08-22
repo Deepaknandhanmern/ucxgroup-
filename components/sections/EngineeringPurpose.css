@@ -17,6 +17,7 @@
   position: relative;
   overflow: hidden;
   isolation: isolate;
+  scroll-margin-top: 96px;
 }
 .ucx-purpose * { box-sizing: border-box; }
 

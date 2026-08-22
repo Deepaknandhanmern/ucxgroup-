@@ -3,6 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import { INSIGHT_FILTERS, type Post, type InsightCategory } from "@/lib/insights";
 import FileCard, { type FileFormat } from "@/components/ui/FileCard";
+import SectionRail from "@/components/ui/SectionRail";
+
+const RAIL_SECTIONS = [
+  { id: "overview", label: "Overview" },
+  { id: "ideas", label: "Insights" },
+  { id: "knowledge", label: "Project Knowledge" },
+  { id: "resources", label: "Resources" },
+  { id: "closing", label: "Get Started" },
+];
 
 function initials(name: string): string {
   return name
@@ -154,7 +163,7 @@ function ProjectKnowledgeSection() {
   const list = activeCat === "all" ? KNOWLEDGE_PREVIEW : KNOWLEDGE_PREVIEW.filter((k) => k.cat === activeCat);
 
   return (
-    <section className="ins-section">
+    <section className="ins-section" id="knowledge">
       <div className="ins-section-head" data-reveal>
         <h2>From Projects to Knowledge</h2>
         <p>Lessons learned from real project experiences, challenges and delivery decisions.</p>
@@ -219,7 +228,7 @@ function ResourcesSection() {
   const list = activeCat === "all" ? RESOURCE_PREVIEW : RESOURCE_PREVIEW.filter((r) => r.cat === activeCat);
 
   return (
-    <section className="ins-section">
+    <section className="ins-section" id="resources">
       <div className="ins-section-head" data-reveal>
         <h2>Practical Resources for Project Teams</h2>
         <p>Useful knowledge and reference material for professionals working across the built environment.</p>
@@ -294,9 +303,10 @@ export default function Insights({ posts }: { posts: Post[] }) {
 
   return (
     <div className="ucx-insights" ref={rootRef}>
+      <SectionRail sections={RAIL_SECTIONS} />
       <div className="ins-bg-grid" aria-hidden="true"></div>
       <div className="ins-wrapper">
-        <div className="ins-head" data-reveal>
+        <div className="ins-head" id="overview" data-reveal>
           <h1 className="ins-title">Ideas, Knowledge &amp; Perspectives for the Built Environment</h1>
           <p className="ins-sub">
             Practical perspectives, project lessons and emerging thinking across BIM, digital engineering, design
@@ -314,7 +324,7 @@ export default function Insights({ posts }: { posts: Post[] }) {
         <ProjectKnowledgeSection />
         <ResourcesSection />
 
-        <div className="ins-closing" data-reveal>
+        <div className="ins-closing" id="closing" data-reveal>
           <h3>Keep Building Your Knowledge.</h3>
           <p>Explore ideas, lessons and technologies shaping the future of the built environment.</p>
           <a className="ins-section-cta" href="/contact">

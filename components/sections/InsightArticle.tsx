@@ -1,7 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatPostDate, type Post } from "@/lib/insights";
+import { submitToSplitForms } from "@/lib/splitforms";
+
+const LEAD_POPUP_DELAY_MS = 20000;
+const LEAD_POPUP_SEEN_KEY = "ucx-insight-lead-seen";
 
 function initials(name: string): string {
   return name
@@ -12,10 +16,65 @@ function initials(name: string): string {
     .join("");
 }
 
+type LeadStatus = "idle" | "sending" | "sent" | "error";
+
 export default function InsightArticle({ post, more }: { post: Post; more: Post[] }) {
   const [imgOk, setImgOk] = useState(true);
   const [photoOk, setPhotoOk] = useState(true);
   const [linkCopied, setLinkCopied] = useState(false);
+  const [showLead, setShowLead] = useState(false);
+  const [leadStatus, setLeadStatus] = useState<LeadStatus>("idle");
+
+  // Show a lead-capture popup once a visitor has spent real time reading an
+  // article — 20s of engagement is a much stronger lead signal than a page
+  // view, and gating on sessionStorage keeps it from reappearing on every
+  // article they click through to during the same visit.
+  useEffect(() => {
+    let seen = false;
+    try {
+      seen = sessionStorage.getItem(LEAD_POPUP_SEEN_KEY) === "1";
+    } catch {
+      /* sessionStorage unavailable — popup will just show every visit */
+    }
+    if (seen) return;
+
+    const t = setTimeout(() => {
+      setShowLead(true);
+      try {
+        sessionStorage.setItem(LEAD_POPUP_SEEN_KEY, "1");
+      } catch {
+        /* sessionStorage unavailable — nothing to persist */
+      }
+    }, LEAD_POPUP_DELAY_MS);
+    return () => clearTimeout(t);
+  }, []);
+
+  function closeLead() {
+    setShowLead(false);
+  }
+
+  async function handleLeadSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLeadStatus("sending");
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const payload: Record<string, string> = {
+      subject: `Insight article lead — ${post.title}`,
+      article: post.title,
+      article_url: `https://ucx-group.com/insights/${post.slug}`,
+    };
+    formData.forEach((value, key) => {
+      payload[key] = String(value);
+    });
+    const { ok } = await submitToSplitForms(payload);
+    if (ok) {
+      setLeadStatus("sent");
+      form.reset();
+      setTimeout(() => setShowLead(false), 2600);
+    } else {
+      setLeadStatus("error");
+    }
+  }
 
   const articleUrl = `https://ucx-group.com/insights/${post.slug}`;
   const linkedInShareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(articleUrl)}`;
@@ -127,6 +186,37 @@ export default function InsightArticle({ post, more }: { post: Post; more: Post[
               ))}
             </div>
           </div>
+        )}
+      </div>
+
+      <div className={`art-lead${showLead ? " is-visible" : ""}`} role="dialog" aria-label="Talk to UCX about your project">
+        <button type="button" className="art-lead-close" onClick={closeLead} aria-label="Dismiss">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
+
+        {leadStatus === "sent" ? (
+          <div className="art-lead-done">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+            <p>Thanks — we&rsquo;ve got it and will be in touch shortly.</p>
+          </div>
+        ) : (
+          <>
+            <span className="art-lead-eyebrow">Still Reading?</span>
+            <h4 className="art-lead-title">Let&rsquo;s talk about your project.</h4>
+            <p className="art-lead-sub">Leave your details and a UCX specialist will reach out.</p>
+            <form onSubmit={handleLeadSubmit}>
+              <input required type="text" name="name" placeholder="Your name" disabled={leadStatus === "sending"} />
+              <input required type="email" name="email" placeholder="you@email.com" disabled={leadStatus === "sending"} />
+              <button type="submit" disabled={leadStatus === "sending"}>
+                {leadStatus === "sending" ? "Sending…" : "Get in Touch"}
+              </button>
+              {leadStatus === "error" && <p className="art-lead-error">Something went wrong — please try again.</p>}
+            </form>
+          </>
         )}
       </div>
     </div>

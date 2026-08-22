@@ -13,6 +13,7 @@
 
   position: relative;
   padding: clamp(72px, 11vw, 176px) clamp(20px, 6vw, 24px) clamp(90px, 12vw, 180px);
+  scroll-margin-top: 96px;
   overflow: hidden;
   font-family: 'Atyp Display', sans-serif;
   color: var(--ink);

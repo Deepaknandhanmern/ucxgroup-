@@ -76,7 +76,7 @@ export default function FAQ() {
   };
 
   return (
-    <section className="ucx-faq">
+    <section className="ucx-faq" id="faq">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="faq__bg-grid" aria-hidden="true"></div>
       <div className="faq__rings">

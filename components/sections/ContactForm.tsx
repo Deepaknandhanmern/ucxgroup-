@@ -9,6 +9,30 @@ import ContactMap from "./ContactMap";
 
 const CALENDLY_URL = "https://calendly.com/deepaknandhan25/30min";
 const DAY_NAMES = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+const CONTACT_EMAIL = "collaborate@ucx-group.com";
+
+function EmailCard({ email }: { email: string }) {
+  return (
+    <a className="email-card" href={`mailto:${email}`}>
+      <div className="email-grid" aria-hidden="true"></div>
+      <div className="email-content">
+        <div className="email-top">
+          <svg className="email-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="5" width="18" height="14" rx="2" />
+            <path d="m3 7 9 6 9-6" />
+          </svg>
+          <span className="email-live">
+            <i></i>Get in Touch
+          </span>
+        </div>
+        <div className="email-bottom">
+          <h3>{email}</h3>
+          <span className="email-underline"></span>
+        </div>
+      </div>
+    </a>
+  );
+}
 
 declare global {
   interface Window {
@@ -217,24 +241,13 @@ export default function ContactForm() {
           lands with the right expert straight away.
         </p>
 
-        <div className="office-strip">
-          <div className="office-item">
-            <span className="office-label">Visit us</span>
-            <p>
-              Part LCC Compound, 1-3, Trichy Rd, opposite Srivari Trisara, Singanallur,
-              Coimbatore, Tamil Nadu 641005
-            </p>
-          </div>
-          <div className="office-item">
-            <span className="office-label">Email</span>
-            <p><a href="mailto:collaborate@ucx-group.com">collaborate@ucx-group.com</a></p>
-          </div>
-        </div>
-
-        <ContactMap />
-
         <BookingCalendarCard url={CALENDLY_URL} />
         <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="lazyOnload" />
+
+        <div className="office-strip">
+          <EmailCard email={CONTACT_EMAIL} />
+          <ContactMap />
+        </div>
 
         <div className="selector-label">1. Choose your query type</div>
         <div className="selector">

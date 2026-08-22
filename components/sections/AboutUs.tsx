@@ -72,7 +72,7 @@ export default function AboutUs() {
   }, []);
 
   return (
-    <div className="ucx-about" ref={sectRef}>
+    <div className="ucx-about" id="about" ref={sectRef}>
       <div className="grid-overlay"></div>
       <div className="grid-glow"></div>
       <div className="cursor-haze"></div>

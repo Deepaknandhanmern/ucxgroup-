@@ -12,12 +12,12 @@ const AUTHORS: Record<string, Author> = {
   shangeeth: {
     name: "Shangeeth Raju",
     role: "Associate, Digital Engineering",
-    photo: "/brand/insights/authors/shangeeth-raju.jpg",
+    photo: "/brand/founders/shangeeth-raju.png",
   },
   bhuvaneshwari: {
     name: "Bhuvaneshwari",
     role: "Associate, Project & Construction Support",
-    photo: "/brand/insights/authors/bhuvaneshwari.jpg",
+    photo: "/brand/founders/bhuvaneshwari.png",
   },
 };
 

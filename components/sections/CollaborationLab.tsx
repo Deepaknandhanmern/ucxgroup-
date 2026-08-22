@@ -85,7 +85,7 @@ export default function CollaborationLab() {
   }
 
   return (
-    <div className="ucx-lab" id="open-challenges">
+    <div className="ucx-lab">
       <div className="ucx-bg-grid"></div>
       <div className="ucx-bg-aurora">
         <span className="b1"></span>
@@ -94,7 +94,7 @@ export default function CollaborationLab() {
       </div>
 
       <div className="wrapper">
-        <div className="head">
+        <div className="head" id="open-challenges">
           <h2 className="heading">Open Challenges</h2>
           <p className="intro">
             Industry problems looking for the right expertise, technology or collaboration.
@@ -138,7 +138,7 @@ export default function CollaborationLab() {
         </div>
 
         {/* ---------- ways to collaborate ---------- */}
-        <div className="ways">
+        <div className="ways" id="ways-to-collaborate">
           <h2 className="heading">Ways to Collaborate</h2>
           <div className="ways-list">
             {WAYS.map((w) => (
@@ -156,7 +156,7 @@ export default function CollaborationLab() {
         </div>
 
         {/* ---------- built through collaboration / closing ---------- */}
-        <div className="lab-closing">
+        <div className="lab-closing" id="get-started">
           <span className="lab-closing-kicker">Built Through Collaboration</span>
           <p className="lab-closing-lede">
             We collaborate with individuals, organisations and technology partners across the built environment.

@@ -74,7 +74,7 @@ export default function SpecialistSolutions() {
   }, []);
 
   return (
-    <div className="ucx-special" ref={sectRef}>
+    <div className="ucx-special" id="solutions" ref={sectRef}>
       <div className="grid-overlay"></div>
       <div className="grid-glow"></div>
       <div className="cursor-haze"></div>

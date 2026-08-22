@@ -45,7 +45,7 @@ export default function CompanyHero() {
   }, []);
 
   return (
-    <div className="ucx-companyhero" ref={sectRef}>
+    <div className="ucx-companyhero" id="overview" ref={sectRef}>
       <div className="grid-overlay"></div>
       <div className="grid-glow"></div>
 

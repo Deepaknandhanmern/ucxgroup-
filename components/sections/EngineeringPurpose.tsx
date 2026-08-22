@@ -34,7 +34,7 @@ export default function EngineeringPurpose() {
   }, []);
 
   return (
-    <div className="ucx-purpose" ref={sectRef}>
+    <div className="ucx-purpose" id="purpose" ref={sectRef}>
       <div className="grid-overlay" aria-hidden="true"></div>
       <div className="wrapper">
         <h2 className="heading" data-reveal>

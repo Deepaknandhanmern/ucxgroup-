@@ -45,6 +45,7 @@ import "@/components/sections/CollaborationLab.css";
 import "@/components/sections/Experience.css";
 import "@/components/sections/ProjectLifecycle.css";
 import "@/components/sections/CapabilityPage.css";
+import "@/components/sections/CapabilityTabs.css";
 import "@/components/sections/Capabilities.css";
 import "@/components/sections/DigitalProjectExperience.css";
 import "@/components/ui/FileCard.css";

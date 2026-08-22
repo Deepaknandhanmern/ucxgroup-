@@ -90,7 +90,7 @@ export default function Sectors() {
   }, []);
 
   return (
-    <div className="ucx-sectors" ref={sectRef}>
+    <div className="ucx-sectors" id="sectors" ref={sectRef}>
       <div className="grid-overlay"></div>
       <div className="grid-glow"></div>
       <div className="cursor-haze"></div>

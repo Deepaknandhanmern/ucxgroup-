@@ -139,7 +139,7 @@ export default function OurServices() {
   }
 
   return (
-    <div className="ucx-svc" ref={sectRef}>
+    <div className="ucx-svc" id="services" ref={sectRef}>
       <div className="grid-overlay"></div>
       <div className="grid-glow"></div>
       <div className="cursor-haze"></div>

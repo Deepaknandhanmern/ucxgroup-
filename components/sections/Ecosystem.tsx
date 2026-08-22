@@ -134,7 +134,7 @@ export default function Ecosystem() {
   }
 
   return (
-    <div className="ucx-ecosystem">
+    <div className="ucx-ecosystem" id="ecosystem">
       <div
         className={`ucx-eco-pin${pinned ? "" : " is-stacked"}`}
         ref={outerRef}
