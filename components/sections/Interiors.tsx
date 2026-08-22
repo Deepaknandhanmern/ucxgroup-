@@ -3,6 +3,7 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { submitToSplitForms } from "@/lib/splitforms";
 import InteriorsHero from "@/components/sections/InteriorsHero";
+import BeforeAfterSlider from "@/components/ui/BeforeAfterSlider";
 
 const SERVICES = [
   {
@@ -268,12 +269,17 @@ export default function Interiors() {
         {/* ---------- featured project ---------- */}
         <div className="featured" data-reveal>
           <div className="featured-media">
-            <Ph src="/brand/interiors/featured.jpg" alt="Featured SpayceX interior project" className="featured-img" />
+            <BeforeAfterSlider
+              beforeSrc="/brand/interiors/featured-before.jpg"
+              afterSrc="/brand/interiors/featured-after.jpg"
+              beforeAlt="The space before the fit-out"
+              afterAlt="The completed fit-out"
+            />
           </div>
           <div className="featured-copy">
             <span className="sub-eyebrow">Featured Project</span>
             <h3>A Fit-Out Delivered End to End</h3>
-            <p>From concept design through technical documentation to on-site execution &mdash; one connected team, one point of accountability.</p>
+            <p>From concept design through technical documentation to on-site execution &mdash; one connected team, one point of accountability. Drag the slider to compare before and after.</p>
             <div className="featured-tags">
               <span>Design</span>
               <span>Documentation</span>
