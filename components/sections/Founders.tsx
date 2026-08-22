@@ -110,19 +110,22 @@ export default function Founders() {
                 <h3 className="name">{f.name}</h3>
                 <span className="role">{f.role}</span>
 
-                <div className="photo-flip">
-                  <div className="photo-flip-inner">
-                    <div className="photo-flip-face photo-flip-front">
-                      <FounderPhoto src={f.image} alt={f.name} initials={f.initials} />
-                    </div>
-                    <div className="photo-flip-face photo-flip-back">
-                      <p className="bio">{f.bio}</p>
-                      <span className="focus-label">Focus</span>
-                      <div className="focus-tags">
-                        {f.focus.map((item) => (
-                          <span key={item}>{item}</span>
-                        ))}
-                      </div>
+                <div className="photo-flip" tabIndex={0}>
+                  <div className="photo-flip-front">
+                    <FounderPhoto src={f.image} alt={f.name} initials={f.initials} />
+                    <span className="photo-flip-cue" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M6 9l6 6 6-6" />
+                      </svg>
+                    </span>
+                  </div>
+                  <div className="photo-flip-overlay">
+                    <p className="bio">{f.bio}</p>
+                    <span className="focus-label">Focus</span>
+                    <div className="focus-tags">
+                      {f.focus.map((item) => (
+                        <span key={item}>{item}</span>
+                      ))}
                     </div>
                   </div>
                 </div>

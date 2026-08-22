@@ -9,24 +9,24 @@ interface FaqItem {
 
 const FAQ_ITEMS: FaqItem[] = [
   {
-    q: "How long does setup take?",
-    a: "Most teams are up and running within a day. There's no heavy onboarding process — connect your workspace, invite your team, and you're ready to go.",
+    q: "What does UCX do?",
+    a: "UCX provides BIM & Digital Delivery, Interior Solutions, Specialized Digital Solutions, and Training & Workshops. We help architects, consultants, contractors, developers and organizations improve how projects are designed, coordinated and delivered.",
   },
   {
-    q: "Can I change my plan later?",
-    a: "Yes, you can upgrade, downgrade, or cancel at any time from your account settings. Changes take effect at the start of your next billing cycle.",
+    q: "Can UCX work as an extension of our existing team?",
+    a: "Yes. UCX can integrate with your existing team through project-based support, dedicated BIM teams, white-label delivery, design collaboration or long-term strategic partnerships.",
   },
   {
-    q: "Do you offer support for teams?",
-    a: "Every plan includes priority support. Larger teams get a dedicated onboarding specialist and a shared workspace for tracking requests.",
+    q: "Can UCX work with our standards, software and project workflows?",
+    a: "Yes. We adapt our delivery approach to your BIM standards, project requirements, LOD, documentation protocols, CDE environment and preferred technology platforms.",
   },
   {
-    q: "Is my data kept private?",
-    a: "Your data is encrypted in transit and at rest, and it's never used to train external models. You can request a full export or deletion at any time.",
+    q: "Can UCX support international projects?",
+    a: "Yes. UCX is structured to collaborate with distributed project teams and support international projects through flexible digital delivery, design and BIM workflows aligned with client and project requirements.",
   },
   {
-    q: "What if I need a custom integration?",
-    a: "Our API covers most workflows out of the box. For anything bespoke, our team can scope a custom integration during onboarding.",
+    q: "How do we start a project or collaboration with UCX?",
+    a: "Share your project brief, requirements or available drawings/models with us. We begin with a discovery discussion to understand the scope, deliverables, timeline and objectives, then recommend the appropriate delivery and collaboration model.",
   },
 ];
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { submitToSplitForms } from "@/lib/splitforms";
 import InteriorsHero from "@/components/sections/InteriorsHero";
 
@@ -52,6 +52,19 @@ const SERVICES = [
   },
 ];
 
+const PROCESS_STEPS = [
+  { n: "01", label: "Design", desc: "Concept through coordinated design intent." },
+  { n: "02", label: "Documentation", desc: "Buildable, production-ready drawings." },
+  { n: "03", label: "Delivery", desc: "On-site coordination through completion." },
+];
+
+const CLOSING_STEPS = [
+  { n: "01", label: "Share Your Brief", desc: "Send your requirements, drawings or inspiration our way." },
+  { n: "02", label: "Discovery Call", desc: "We align on scope, style, timeline and objectives." },
+  { n: "03", label: "Proposal & Scope", desc: "A tailored plan covering design, documentation and delivery." },
+  { n: "04", label: "Project Kickoff", desc: "Our team gets to work bringing your space to life." },
+];
+
 const MATERIALS = [
   { name: "Timber Veneer", img: "/brand/interiors/material-timber.jpg" },
   { name: "Natural Stone", img: "/brand/interiors/material-stone.jpg" },
@@ -75,6 +88,15 @@ function Ph({ src, alt, className }: { src: string; alt: string; className?: str
     );
   }
   return <img className={className} src={src} alt={alt} loading="lazy" onError={() => setOk(false)} />;
+}
+
+function CheckDot() {
+  return (
+    <svg className="svc-check" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.1" opacity=".35" />
+      <path d="M5 8.2l2 2 4-4.4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
 }
 
 type LeadStatus = "idle" | "sending" | "sent" | "error";
@@ -190,37 +212,57 @@ export default function Interiors() {
         </div>
         <div className="services">
           {SERVICES.map((s) => (
-            <div id={s.id} className="svc-flip" key={s.n} data-reveal tabIndex={0}>
-              <div className="svc-flip-inner">
-                <div className="svc-card svc-flip-front">
-                  <span className="svc-index">{s.n}</span>
-                  <div className="svc-media">
-                    <Ph src={s.imgA} alt={s.name} className="svc-img svc-img-a" />
-                    <Ph src={s.imgB} alt={s.name} className="svc-img svc-img-b" />
-                  </div>
-                  <h3 className="svc-name">{s.name}</h3>
+            <div id={s.id} className="svc-tile" key={s.n} data-reveal tabIndex={0}>
+              <div className="svc-card svc-tile-front">
+                <span className="svc-index">{s.n}</span>
+                <div className="svc-media">
+                  <Ph src={s.imgA} alt={s.name} className="svc-img svc-img-a" />
+                  <Ph src={s.imgB} alt={s.name} className="svc-img svc-img-b" />
                 </div>
-                <div className="svc-card svc-flip-back">
-                  <span className="svc-index">{s.n}</span>
-                  <p className="svc-statement">{s.statement}</p>
-                  <ul className="svc-deliverables">
-                    {s.deliverables.map((d) => (
-                      <li key={d}>{d}</li>
-                    ))}
-                  </ul>
-                </div>
+                <h3 className="svc-name">{s.name}</h3>
+                <span className="svc-cue" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </span>
+              </div>
+              <div className="svc-tile-overlay">
+                <span className="svc-index">{s.n}</span>
+                <p className="svc-statement">{s.statement}</p>
+                <ul className="svc-deliverables">
+                  {s.deliverables.map((d) => (
+                    <li key={d}>
+                      <CheckDot />
+                      {d}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           ))}
         </div>
 
-        {/* ---------- process band (inverted) ---------- */}
-        <div className="band" data-reveal>
-          <span className="band-step">Design</span>
-          <span className="band-arrow">&rarr;</span>
-          <span className="band-step">Documentation</span>
-          <span className="band-arrow">&rarr;</span>
-          <span className="band-step">Delivery</span>
+        {/* ---------- process band: animated stage timeline ---------- */}
+        <div className="process-band" data-reveal>
+          <span className="process-eyebrow">How We Work</span>
+          <div className="process-track">
+            {PROCESS_STEPS.map((step, i) => (
+              <Fragment key={step.n}>
+                <div className="process-step">
+                  <div className="process-node">
+                    <span>{step.n}</span>
+                  </div>
+                  <h4 className="process-label">{step.label}</h4>
+                  <p className="process-desc">{step.desc}</p>
+                </div>
+                {i < PROCESS_STEPS.length - 1 && (
+                  <div className="process-connector" aria-hidden="true">
+                    <span className="process-connector-fill"></span>
+                  </div>
+                )}
+              </Fragment>
+            ))}
+          </div>
         </div>
 
         {/* ---------- featured project ---------- */}
@@ -273,7 +315,18 @@ export default function Interiors() {
           <div className="closing-copy">
             <span className="closing-eyebrow">Start a Project</span>
             <h3>Have an Interiors Project in Mind?</h3>
-            <p>From concept through delivery &mdash; let&rsquo;s bring your space to life.</p>
+            <p>From concept through delivery &mdash; let&rsquo;s bring your space to life. Here&rsquo;s what happens once you reach out.</p>
+            <ul className="closing-steps">
+              {CLOSING_STEPS.map((step) => (
+                <li key={step.n}>
+                  <span className="closing-step-badge">{step.n}</span>
+                  <span className="closing-step-copy">
+                    <strong>{step.label}</strong>
+                    <span>{step.desc}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
             <a className="closing-link" href="/contact">
               Or reach us directly
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -295,6 +348,7 @@ export default function Interiors() {
                 <input required type="text" name="name" placeholder="Your name" />
                 <input required type="email" name="email" placeholder="you@email.com" />
                 <input type="tel" name="phone" placeholder="Phone (optional)" />
+                <textarea name="message" placeholder="Tell us about your project (optional)" rows={4}></textarea>
                 <button type="submit" disabled={leadStatus === "sending"}>
                   {leadStatus === "sending" ? "Sending…" : "Start a Collaboration"}
                 </button>

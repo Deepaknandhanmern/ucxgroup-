@@ -5,6 +5,7 @@ import "@/components/ui/Preloader.css";
 import "@/components/shared/fonts.css";
 import "@/components/layout/Header.css";
 import "@/components/layout/BackToTop.css";
+import "@/components/ui/WhatsAppButton.css";
 import "@/components/sections/Hero.css";
 import "@/components/sections/AboutUs.css";
 import "@/components/sections/Ecosystem.css";
@@ -62,6 +63,7 @@ import "@/components/sections/LegalPage.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BackToTop from "@/components/layout/BackToTop";
+import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import TabTitleSwitcher from "@/components/ui/TabTitleSwitcher";
 import Preloader from "@/components/ui/Preloader";
 
@@ -137,6 +139,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main id="main-content">{children}</main>
         <Footer />
         <BackToTop />
+        <WhatsAppButton />
       </body>
     </html>
   );

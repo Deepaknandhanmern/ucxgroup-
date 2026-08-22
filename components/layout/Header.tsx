@@ -50,7 +50,7 @@ interface MobileItem {
 const NAV_ITEMS: { key: PanelKey; label: string; iconOnly?: boolean; href?: string }[] = [
   { key: "capabilities", label: "Capabilities", href: "/capabilities" },
   { key: "experience", label: "Experience", href: "/experience" },
-  { key: "lab", label: "Collaboration Lab", iconOnly: true },
+  { key: "lab", label: "Collaboration Lab", iconOnly: true, href: "/collaboration-lab" },
   { key: "insights", label: "Insights", href: "/insights" },
   { key: "company", label: "Company", href: "/about-us" },
 ];
@@ -567,7 +567,7 @@ export default function Header() {
         <div className="ucxnav__inner">
           {/* ---------- Logo ---------- */}
           {isInteriors ? (
-            <a href="/design-interiors" className="ucxnav__logo ucxnav__logo--interiors" aria-label="SpayceX — Design & Interiors by UCX, home">
+            <a href="/" className="ucxnav__logo ucxnav__logo--interiors" aria-label="UCX Group, home">
               <img className="ucxnav__logo-img" src="/brand/interiors/logo.png" alt="SpayceX" />
               <span className="ucxnav__spark s1" aria-hidden="true"></span>
               <span className="ucxnav__spark s2" aria-hidden="true"></span>
@@ -606,7 +606,24 @@ export default function Header() {
                   data-menu={item.key}
                   onMouseEnter={() => handleItemMouseEnter(item.key)}
                 >
-                  {item.href ? (
+                  {item.iconOnly ? (
+                    <a
+                      href={item.href}
+                      className="ucxnav__link ucxnav__link--icon"
+                      aria-label={item.label}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <img
+                        ref={xIconRef}
+                        id="ucxnavXIcon"
+                        className="ucxnav__xicon"
+                        src={XMARK_SRC}
+                        alt=""
+                        aria-hidden="true"
+                      />
+                      <span className="ucxnav__link-label ucxnav__visually-hidden">{item.label}</span>
+                    </a>
+                  ) : item.href ? (
                     <span className="ucxnav__link-group">
                       <a
                         href={item.href}
@@ -628,30 +645,13 @@ export default function Header() {
                     </span>
                   ) : (
                     <button
-                      className={`ucxnav__link${item.iconOnly ? " ucxnav__link--icon" : ""}`}
+                      className="ucxnav__link"
                       aria-expanded={openKey === item.key}
                       aria-controls={`panel-${item.key}`}
-                      aria-label={item.iconOnly ? item.label : undefined}
                       onClick={(e) => handleItemClick(e, item.key)}
                     >
-                      {item.iconOnly ? (
-                        <>
-                          <img
-                            ref={xIconRef}
-                            id="ucxnavXIcon"
-                            className="ucxnav__xicon"
-                            src={XMARK_SRC}
-                            alt=""
-                            aria-hidden="true"
-                          />
-                          <span className="ucxnav__link-label ucxnav__visually-hidden">{item.label}</span>
-                        </>
-                      ) : (
-                        <>
-                          {item.label}
-                          <Chevron className="ucxnav__chev" />
-                        </>
-                      )}
+                      {item.label}
+                      <Chevron className="ucxnav__chev" />
                     </button>
                   )}
                 </li>
