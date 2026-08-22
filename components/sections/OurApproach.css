@@ -37,7 +37,7 @@
 .ucx-approach .wrapper {
   position: relative; z-index: 1;
   max-width: 1280px; margin: 0 auto;
-  padding: clamp(72px,9vw,120px) clamp(20px,6vw,80px);
+  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
   display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(40px,6vw,72px);
   align-items: center;
 }

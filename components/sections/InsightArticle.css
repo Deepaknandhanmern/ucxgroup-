@@ -16,7 +16,7 @@
 
 .art-wrapper {
   max-width: 840px; margin: 0 auto;
-  padding: clamp(48px,6vw,96px) clamp(20px,5vw,64px) clamp(90px,9vw,140px);
+  padding: clamp(48px,6vw,96px) clamp(20px,5vw,64px) var(--ucx-section-gap);
 }
 
 .art-back {

@@ -65,7 +65,7 @@
 .ucx-contact .wrap {
   max-width: 960px;
   margin: 0 auto;
-  padding: 70px 24px 90px;
+  padding: 70px 24px var(--ucx-section-gap);
   position: relative;
   z-index: 1;
 }

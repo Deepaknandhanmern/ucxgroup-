@@ -221,7 +221,7 @@ export default function ContactForm() {
           <div className="office-item">
             <span className="office-label">Visit us</span>
             <p>
-              Door No. 653, Part LCC Compound, 1-3, Trichy Rd, opposite Srivari Trisara, Singanallur,
+              Part LCC Compound, 1-3, Trichy Rd, opposite Srivari Trisara, Singanallur,
               Coimbatore, Tamil Nadu 641005
             </p>
           </div>

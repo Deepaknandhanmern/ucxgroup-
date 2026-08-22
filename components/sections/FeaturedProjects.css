@@ -35,7 +35,7 @@
 .fp-wrapper {
   position: relative; z-index: 1;
   max-width: 1360px; margin: 0 auto;
-  padding: clamp(72px,9vw,130px) clamp(20px,4vw,64px) clamp(90px,10vw,150px);
+  padding: clamp(72px,9vw,130px) clamp(20px,4vw,64px) var(--ucx-section-gap);
 }
 
 /* ---- head ---- */

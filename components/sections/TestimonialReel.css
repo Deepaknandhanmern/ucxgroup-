@@ -44,7 +44,7 @@
 .ucx-reel .wrapper {
   position: relative; z-index: 1;
   max-width: 1200px; margin: 0 auto;
-  padding: clamp(70px,8vw,120px) clamp(20px,6vw,80px);
+  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
 }
 
 .ucx-reel .reel-head { max-width: 640px; margin-bottom: clamp(40px,5vw,60px); }

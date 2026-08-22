@@ -13,7 +13,6 @@
   --line: rgba(4,22,44,.12);
   --cream: #F3F1E6;
   --ease: cubic-bezier(.16,.84,.36,1);
-  --wrap-pad-top: clamp(70px,8vw,120px);
 
   background: #FFFFFF !important;
   color: var(--bg);
@@ -42,7 +41,7 @@
 .ucx-interiors .wrapper {
   position: relative; z-index: 1;
   max-width: 1200px; margin: 0 auto;
-  padding: var(--wrap-pad-top) clamp(20px,6vw,80px) clamp(90px,10vw,150px);
+  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
 }
 
 /* ---- shared image placeholder (drop real photos into public/brand/interiors/) ---- */

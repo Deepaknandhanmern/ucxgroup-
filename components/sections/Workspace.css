@@ -50,7 +50,7 @@
 .ucx-workspace .wrapper {
   position: relative; z-index: 1;
   max-width: 1440px; margin: 0 auto;
-  padding: clamp(70px,8vw,110px) clamp(20px,6vw,80px) clamp(80px,9vw,130px);
+  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
 }
 
 /* ---- head ---- */

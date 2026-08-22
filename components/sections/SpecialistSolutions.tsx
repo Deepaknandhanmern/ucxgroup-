@@ -14,6 +14,7 @@ const CARDS: Card[] = [
   { index: "02", title: "Prefabrication", flow: "BIM → Fabrication → Modular delivery", img: "/brand/specialist/prefabrication.png" },
   { index: "03", title: "Heritage", flow: "Existing assets → Structured digital information", img: "/brand/specialist/heritage.png" },
   { index: "04", title: "Automation & AI", flow: "Smarter workflows → Better delivery", img: "/brand/specialist/automation-ai.png" },
+  { index: "05", title: "Parametric Systems", flow: "Design → Logic → Adaptability", img: "/brand/specialist/parametric-systems.png" },
 ];
 
 function CardImage({ src, alt }: { src: string; alt: string }) {
@@ -87,19 +88,21 @@ export default function SpecialistSolutions() {
           </div>
         </div>
 
-        <div className="grid">
-          {CARDS.map((c) => (
-            <article className="card" key={c.index}>
-              <div className="card-image">
-                <CardImage src={c.img} alt={c.title} />
-              </div>
-              <div className="card-body">
-                <span className="card-index">{c.index}</span>
-                <h3>{c.title}</h3>
-                <p className="card-flow">{c.flow}</p>
-              </div>
-            </article>
-          ))}
+        <div className="slider">
+          <div className="track">
+            {[...CARDS, ...CARDS].map((c, i) => (
+              <article className="card" key={`${c.index}-${i}`}>
+                <div className="card-image">
+                  <CardImage src={c.img} alt={c.title} />
+                </div>
+                <div className="card-body">
+                  <span className="card-index">{c.index}</span>
+                  <h3>{c.title}</h3>
+                  <p className="card-flow">{c.flow}</p>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
 
         <div className="closing">

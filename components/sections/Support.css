@@ -16,8 +16,7 @@
   color: var(--ucx-text);
   font-family: var(--ucx-body);
   font-weight: 400;
-  padding: clamp(60px,8vw,128px) clamp(20px,5vw,64px);
-  margin-bottom: 100px;
+  padding: var(--ucx-section-gap) clamp(20px,5vw,64px);
   border-radius: var(--ucx-radius-section);
   -webkit-font-smoothing: antialiased;
   overflow: hidden;

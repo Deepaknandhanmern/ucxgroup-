@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 
 const ADDRESS =
-  "Door No. 653, Part LCC Compound, 1-3, Trichy Rd, opposite Srivari Trisara, Singanallur, Coimbatore, Tamil Nadu 641005";
+  "Part LCC Compound, 1-3, Trichy Rd, opposite Srivari Trisara, Singanallur, Coimbatore, Tamil Nadu 641005";
 const DIRECTIONS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADDRESS)}`;
 
 export default function ContactMap() {

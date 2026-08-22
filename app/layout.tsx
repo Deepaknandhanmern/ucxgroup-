@@ -106,7 +106,7 @@ const ORGANIZATION_JSON_LD = {
   email: "collaborate@ucx-group.com",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Door No. 653, Part LCC Compound, 1-3, Trichy Rd, opposite Srivari Trisara, Singanallur",
+    streetAddress: "Part LCC Compound, 1-3, Trichy Rd, opposite Srivari Trisara, Singanallur",
     addressLocality: "Coimbatore",
     addressRegion: "Tamil Nadu",
     postalCode: "641005",

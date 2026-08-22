@@ -35,7 +35,7 @@
 
 .ins-wrapper {
   max-width: 1280px; margin: 0 auto;
-  padding: clamp(56px,7vw,110px) clamp(20px,5vw,64px) clamp(90px,9vw,140px);
+  padding: clamp(56px,7vw,110px) clamp(20px,5vw,64px) var(--ucx-section-gap);
 }
 
 .ins-head { max-width: 680px; margin-bottom: clamp(64px,8vw,100px); }

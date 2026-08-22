@@ -63,7 +63,7 @@
 .ucx-why2 .wrapper {
   position: relative; z-index: 1;
   max-width: 1440px; margin: 0 auto;
-  padding: 90px clamp(20px,6vw,80px) 110px;
+  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
 }
 
 /* ---- head ---- */

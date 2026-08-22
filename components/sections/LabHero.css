@@ -20,7 +20,7 @@
 
 .ucx-labhero .wrapper {
   max-width: 1200px; margin: 0 auto;
-  padding: clamp(120px,14vw,168px) clamp(20px,6vw,80px) clamp(72px,8vw,110px);
+  padding: clamp(120px,14vw,168px) clamp(20px,6vw,80px) var(--ucx-section-gap);
 }
 
 /* ---- hero ---- */

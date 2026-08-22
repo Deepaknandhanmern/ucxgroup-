@@ -9,6 +9,9 @@
   /* Minimal shadcn/ui tokens — only what components/ui pieces need */
   --border: #e5e5e5;
   --muted-foreground: #737373;
+  /* Shared vertical rhythm for section wrappers site-wide, so gaps between
+     stacked sections read as equal instead of drifting per-component. */
+  --ucx-section-gap: clamp(80px, 9vw, 130px);
 }
 
 @theme inline {

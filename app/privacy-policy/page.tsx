@@ -57,7 +57,7 @@ export default function PrivacyPolicyPage() {
         {
           heading: "Contact",
           body: [
-            "UCX Engineering Technologies, Door No. 653, Part LCC Compound, 1-3, Trichy Rd, opposite Srivari Trisara, Singanallur, Coimbatore, Tamil Nadu 641005, India.",
+            "UCX Engineering Technologies, Part LCC Compound, 1-3, Trichy Rd, opposite Srivari Trisara, Singanallur, Coimbatore, Tamil Nadu 641005, India.",
             "Email: collaborate@ucx-group.com",
           ],
         },

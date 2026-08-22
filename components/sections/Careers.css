@@ -61,13 +61,13 @@
   background: var(--bg);
   color: var(--accent);
   overflow: hidden;
-  padding: clamp(90px,9vw,140px) 0 clamp(56px,7vw,88px);
+  padding: clamp(90px,9vw,140px) 0 var(--ucx-section-gap);
 }
 
 .ucx-careers .wrapper {
   position: relative; z-index: 1;
   max-width: 1200px; margin: 0 auto;
-  padding: clamp(56px,7vw,88px) clamp(20px,6vw,80px) clamp(70px,8vw,110px);
+  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
 }
 
 /* ---- hero ---- */

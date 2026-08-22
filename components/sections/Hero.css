@@ -171,7 +171,7 @@
   margin-top: clamp(20px,2.6vw,30px);
   max-width: 46ch;
   font-size: clamp(14px,1.15vw,16px); line-height: 1.8;
-  color: var(--accent-dim);
+  color: #FFFFFF;
   opacity: 0; animation: heroFade .9s var(--ease) .75s forwards;
 }
 

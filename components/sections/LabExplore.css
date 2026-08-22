@@ -25,7 +25,7 @@
 .ucx-lab-explore .wrapper {
   position: relative; z-index: 1;
   max-width: 1160px; margin: 0 auto;
-  padding: clamp(70px,8vw,110px) clamp(20px,6vw,80px);
+  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
 }
 
 .ucx-lab-explore .head { max-width: 680px; margin-bottom: clamp(32px,4vw,44px); }

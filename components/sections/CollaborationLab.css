@@ -62,7 +62,7 @@
 .ucx-lab .wrapper {
   position: relative; z-index: 1;
   max-width: 1100px; margin: 0 auto;
-  padding: clamp(90px,9vw,140px) clamp(20px,6vw,80px) clamp(70px,8vw,110px);
+  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
 }
 
 /* ---- head ---- */

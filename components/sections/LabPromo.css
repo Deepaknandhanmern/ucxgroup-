@@ -62,7 +62,7 @@
 .ucx-labpromo .wrapper {
   position: relative; z-index: 1;
   max-width: 1160px; margin: 0 auto;
-  padding: clamp(80px,9vw,120px) clamp(20px,6vw,80px);
+  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
   display: grid;
   grid-template-columns: 1.15fr .85fr;
   align-items: center;

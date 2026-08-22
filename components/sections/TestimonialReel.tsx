@@ -77,6 +77,7 @@ const EXIT_MS = 240;
 const SLIDE_MS = 800;
 const CHAR_STAGGER_MS = 4;
 const EASE = "cubic-bezier(.65,0,.35,1)";
+const AUTO_MS = 3000;
 
 function initials(name: string): string {
   return name
@@ -139,6 +140,7 @@ export default function TestimonialReel() {
   const [displayIndex, setDisplayIndex] = useState(0);
   const [exiting, setExiting] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [paused, setPaused] = useState(false);
   const animating = useRef(false);
   const timeouts = useRef<ReturnType<typeof setTimeout>[]>([]);
 
@@ -152,30 +154,44 @@ export default function TestimonialReel() {
     };
   }, []);
 
+  const goTo = useCallback((next: number) => {
+    if (animating.current) return;
+    animating.current = true;
+
+    setIndex(next);
+    setExiting(true);
+
+    timeouts.current.push(
+      setTimeout(() => {
+        setDisplayIndex(next);
+        setExiting(false);
+      }, EXIT_MS)
+    );
+    timeouts.current.push(
+      setTimeout(() => {
+        animating.current = false;
+      }, SLIDE_MS)
+    );
+  }, []);
+
   const paginate = useCallback(
     (dir: 1 | -1) => {
-      if (animating.current) return;
       const next = index + dir;
       if (next < 0 || next >= count) return;
-      animating.current = true;
-
-      setIndex(next);
-      setExiting(true);
-
-      timeouts.current.push(
-        setTimeout(() => {
-          setDisplayIndex(next);
-          setExiting(false);
-        }, EXIT_MS)
-      );
-      timeouts.current.push(
-        setTimeout(() => {
-          animating.current = false;
-        }, SLIDE_MS)
-      );
+      goTo(next);
     },
-    [index, count]
+    [index, count, goTo]
   );
+
+  // auto-advance every 3s, looping back to the first testimonial; pauses on hover/focus
+  useEffect(() => {
+    if (paused) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = setTimeout(() => {
+      goTo((index + 1) % count);
+    }, AUTO_MS);
+    return () => clearTimeout(id);
+  }, [paused, count, goTo, index]);
 
   function onKeyDown(e: KeyboardEvent) {
     if (e.key === "ArrowRight") {
@@ -234,6 +250,10 @@ export default function TestimonialReel() {
           aria-label="Testimonials"
           tabIndex={0}
           onKeyDown={onKeyDown}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onFocus={() => setPaused(true)}
+          onBlur={() => setPaused(false)}
           className="reel-shell"
         >
           <div className="reel-stage" aria-hidden="true">

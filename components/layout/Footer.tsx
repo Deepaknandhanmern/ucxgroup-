@@ -83,7 +83,7 @@ export default function Footer() {
           <h2 className="headline">One connected delivery ecosystem</h2>
           <p className="services-line">DESIGN &middot; DIGITAL ENGINEERING &middot; PROJECT DELIVERY &middot; ASSET INFORMATION</p>
           <p className="location-line">
-            Door No. 653, Part LCC Compound, 1-3, Trichy Rd, opposite Srivari Trisara, Singanallur, Coimbatore,
+            Part LCC Compound, 1-3, Trichy Rd, opposite Srivari Trisara, Singanallur, Coimbatore,
             Tamil Nadu 641005 &middot; Global collaboration
           </p>
         </div>
