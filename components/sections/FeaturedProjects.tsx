@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CAT_LABELS, FILTERS, PROJECTS, type Cat, type Project } from "@/lib/projects";
+import { CAT_LABELS, FILTERS, INTERIOR_FILTERS, PROJECTS, type Cat, type InteriorCat, type Project } from "@/lib/projects";
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const cardRef = useRef<HTMLAnchorElement>(null);
@@ -71,10 +71,18 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
 export default function FeaturedProjects() {
   const [activeCat, setActiveCat] = useState<Cat | "all">("all");
+  const [activeInteriorCat, setActiveInteriorCat] = useState<InteriorCat | "all">("all");
   const [isInteriorsFilter, setIsInteriorsFilter] = useState(false);
   const sectRef = useRef<HTMLDivElement>(null);
 
-  const list = activeCat === "all" ? PROJECTS : PROJECTS.filter((p) => p.cat === activeCat);
+  const interiorProjects = PROJECTS.filter((p) => p.interiorCategory);
+  const list = isInteriorsFilter
+    ? activeInteriorCat === "all"
+      ? interiorProjects
+      : interiorProjects.filter((p) => p.interiorCategory === activeInteriorCat)
+    : activeCat === "all"
+      ? PROJECTS
+      : PROJECTS.filter((p) => p.cat === activeCat);
 
   useEffect(() => {
     const filter = new URLSearchParams(window.location.search).get("filter");
@@ -109,26 +117,53 @@ export default function FeaturedProjects() {
       {!isInteriorsFilter && <div className="fp-bg-grid" aria-hidden="true"></div>}
       <div className="fp-wrapper">
         <div className="fp-head" data-reveal>
-          <span className="fp-eyebrow">01 — Built Environment</span>
-          <h2 className="fp-title">
-            Featured <em>work</em>
-          </h2>
-          <p className="fp-sub">
-            A selection of projects across commercial, residential, industrial and infrastructure environments —
-            delivered for teams working across sectors and geographies.
-          </p>
+          {isInteriorsFilter ? (
+            <>
+              <span className="fp-eyebrow">02 — Interiors</span>
+              <h2 className="fp-title">
+                Design, Documentation &amp; <em>Delivery</em>
+              </h2>
+              <p className="fp-sub">
+                UCX combines interior design expertise with BIM, technical documentation, coordination and execution
+                support to connect design intent with project delivery.
+              </p>
 
-          <div className="fp-filters">
-            {FILTERS.map((f) => (
-              <button
-                key={f.cat}
-                className={`fp-chip${activeCat === f.cat ? " is-active" : ""}`}
-                onClick={() => setActiveCat(f.cat)}
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
+              <div className="fp-filters">
+                {INTERIOR_FILTERS.map((f) => (
+                  <button
+                    key={f.cat}
+                    className={`fp-chip${activeInteriorCat === f.cat ? " is-active" : ""}`}
+                    onClick={() => setActiveInteriorCat(f.cat)}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <span className="fp-eyebrow">01 — Built Environment</span>
+              <h2 className="fp-title">
+                Featured <em>work</em>
+              </h2>
+              <p className="fp-sub">
+                A selection of projects across commercial, residential, industrial and infrastructure environments —
+                delivered for teams working across sectors and geographies.
+              </p>
+
+              <div className="fp-filters">
+                {FILTERS.map((f) => (
+                  <button
+                    key={f.cat}
+                    className={`fp-chip${activeCat === f.cat ? " is-active" : ""}`}
+                    onClick={() => setActiveCat(f.cat)}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
         </div>
 
         <div className="fp-list">

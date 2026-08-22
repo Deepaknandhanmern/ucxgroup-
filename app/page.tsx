@@ -2,17 +2,16 @@ import Hero from "@/components/sections/Hero";
 import AnnouncementBanner from "@/components/ui/AnnouncementBanner";
 import AboutUs from "@/components/sections/AboutUs";
 import Ecosystem from "@/components/sections/Ecosystem";
-import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import OurServices from "@/components/sections/OurServices";
 import SpecialistSolutions from "@/components/sections/SpecialistSolutions";
-import CapabilitiesRail from "@/components/sections/CapabilitiesRail";
+import DeliveryModel from "@/components/sections/DeliveryModel";
+import GalleryArc from "@/components/sections/GalleryArc";
 import Sectors from "@/components/sections/Sectors";
 import GlobalReach from "@/components/sections/GlobalReach";
-import GalleryArc from "@/components/sections/GalleryArc";
-import DeliveryModel from "@/components/sections/DeliveryModel";
-import TestimonialReel from "@/components/sections/TestimonialReel";
+import WhyChooseUs from "@/components/sections/WhyChooseUs";
 import LabPromo from "@/components/sections/LabPromo";
 import Support from "@/components/sections/Support";
+import TestimonialReel from "@/components/sections/TestimonialReel";
 
 export default function Home() {
   return (
@@ -26,17 +25,16 @@ export default function Home() {
       <Hero />
       <AboutUs />
       <Ecosystem />
-      <WhyChooseUs />
       <OurServices />
       <SpecialistSolutions />
-      <CapabilitiesRail />
+      <DeliveryModel />
+      <GalleryArc />
       <Sectors />
       <GlobalReach />
-      <GalleryArc />
-      <DeliveryModel />
-      <TestimonialReel />
+      <WhyChooseUs />
       <LabPromo />
       <Support />
+      <TestimonialReel />
     </>
   );
 }

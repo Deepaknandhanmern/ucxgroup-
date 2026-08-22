@@ -1,8 +1,16 @@
 export type Cat = "commercial" | "residential" | "industrial" | "infrastructure" | "specialized";
 
+export type InteriorCat =
+  | "workplace-office"
+  | "hospitality-retail"
+  | "residential-interiors"
+  | "custom-furniture"
+  | "modular-interiors";
+
 export interface Project {
   slug: string;
   cat: Cat;
+  interiorCategory?: InteriorCat;
   title: string;
   location: string;
   discipline: string;
@@ -31,6 +39,23 @@ export const CAT_LABELS: Record<Cat, string> = {
   specialized: "Specialized Projects",
 };
 
+export const INTERIOR_FILTERS: { cat: InteriorCat | "all"; label: string }[] = [
+  { cat: "all", label: "All Categories" },
+  { cat: "workplace-office", label: "Workplace & Office" },
+  { cat: "hospitality-retail", label: "Hospitality & Retail" },
+  { cat: "residential-interiors", label: "Residential Interiors" },
+  { cat: "custom-furniture", label: "Custom Furniture" },
+  { cat: "modular-interiors", label: "Modular Interiors" },
+];
+
+export const INTERIOR_CAT_LABELS: Record<InteriorCat, string> = {
+  "workplace-office": "Workplace & Office",
+  "hospitality-retail": "Hospitality & Retail",
+  "residential-interiors": "Residential Interiors",
+  "custom-furniture": "Custom Furniture",
+  "modular-interiors": "Modular Interiors",
+};
+
 export const PROJECTS: Project[] = [
   {
     slug: "bim-coordination-cultural-campus",
@@ -53,6 +78,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "hospitality-interior-design-documentation",
     cat: "specialized",
+    interiorCategory: "hospitality-retail",
     title: "Interior Design & Documentation for a Hospitality Development",
     location: "UAE",
     discipline: "Design & Interiors",
@@ -125,6 +151,7 @@ export const PROJECTS: Project[] = [
   {
     slug: "workplace-interiors-corporate-hq",
     cat: "commercial",
+    interiorCategory: "workplace-office",
     title: "Workplace Interiors for a Corporate Headquarters",
     location: "India",
     discipline: "Workplace & Office",
