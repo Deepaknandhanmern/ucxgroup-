@@ -1,19 +1,37 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Card {
   index: string;
   title: string;
   flow: string;
+  img: string;
 }
 
 const CARDS: Card[] = [
-  { index: "01", title: "Scan-to-BIM", flow: "Existing conditions → Digital environments" },
-  { index: "02", title: "Prefabrication", flow: "BIM → Fabrication → Modular delivery" },
-  { index: "03", title: "Heritage", flow: "Existing assets → Structured digital information" },
-  { index: "04", title: "Automation & AI", flow: "Smarter workflows → Better delivery" },
+  { index: "01", title: "Scan-to-BIM", flow: "Existing conditions → Digital environments", img: "/brand/specialist/scan-to-bim.png" },
+  { index: "02", title: "Prefabrication", flow: "BIM → Fabrication → Modular delivery", img: "/brand/specialist/prefabrication.png" },
+  { index: "03", title: "Heritage", flow: "Existing assets → Structured digital information", img: "/brand/specialist/heritage.png" },
+  { index: "04", title: "Automation & AI", flow: "Smarter workflows → Better delivery", img: "/brand/specialist/automation-ai.png" },
 ];
+
+function CardImage({ src, alt }: { src: string; alt: string }) {
+  const [ok, setOk] = useState(true);
+  if (ok) {
+    return <img className="card-image-photo" src={src} alt={alt} loading="lazy" onError={() => setOk(false)} />;
+  }
+  return (
+    <>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <circle cx="8.5" cy="8.5" r="1.5" />
+        <path d="M21 15l-5-5L5 21" />
+      </svg>
+      <span>Image placeholder</span>
+    </>
+  );
+}
 
 export default function SpecialistSolutions() {
   const sectRef = useRef<HTMLDivElement>(null);
@@ -73,12 +91,7 @@ export default function SpecialistSolutions() {
           {CARDS.map((c) => (
             <article className="card" key={c.index}>
               <div className="card-image">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="3" y="3" width="18" height="18" rx="2" />
-                  <circle cx="8.5" cy="8.5" r="1.5" />
-                  <path d="M21 15l-5-5L5 21" />
-                </svg>
-                <span>Image placeholder</span>
+                <CardImage src={c.img} alt={c.title} />
               </div>
               <div className="card-body">
                 <span className="card-index">{c.index}</span>
