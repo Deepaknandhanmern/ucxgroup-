@@ -1,0 +1,27 @@
+.tetl {
+  display: grid;
+  gap: 2px;
+  padding: 6px;
+  border: 1px solid rgba(145,242,181,.3);
+  border-radius: 6px;
+  background: rgba(0,0,0,.15);
+  box-shadow: 0 0 24px rgba(145,242,181,.08);
+}
+.tetl-cell {
+  width: 7px; height: 7px;
+  border-radius: 1px;
+  background: rgba(145,242,181,.08);
+  transition: background .1s ease, box-shadow .1s ease;
+}
+.tetl-cell.is-filled {
+  background: #91F2B5;
+  box-shadow: 0 0 6px rgba(145,242,181,.7);
+}
+.tetl-cell.is-clearing {
+  background: #F3F1E6;
+  box-shadow: 0 0 8px rgba(243,241,230,.8);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tetl-cell { transition: none; }
+}

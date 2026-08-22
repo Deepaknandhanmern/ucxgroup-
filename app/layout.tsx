@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
 import "@/components/ui/Preloader.css";
+import "@/components/ui/TetrisLoader.css";
 import "@/components/shared/fonts.css";
 import "@/components/layout/Header.css";
 import "@/components/layout/BackToTop.css";

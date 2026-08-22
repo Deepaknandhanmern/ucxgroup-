@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import TetrisLoader from "@/components/ui/TetrisLoader";
 
 const LOADING_STATES = ["Loading...", "Fetching Data..", "Syncing...", "Processing..", "Optimizing..."];
 
@@ -18,17 +19,7 @@ function CoreSpinLoader() {
 
   return (
     <div className="pl-loader">
-      <div className="pl-spinner">
-        <div className="pl-ring pl-ring-glow" />
-        <div className="pl-ring pl-ring-dashed" />
-        <div className="pl-ring pl-ring-arc" />
-        <div className="pl-ring pl-ring-arc-rev" />
-        <div className="pl-ring pl-ring-fast" />
-        <div className="pl-orbit">
-          <span className="pl-orbit-dot" />
-        </div>
-        <span className="pl-core" />
-      </div>
+      <TetrisLoader cols={8} rows={14} fallSpeed={45} />
       <span className="pl-label" key={loadingText}>
         {loadingText}
       </span>
