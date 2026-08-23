@@ -438,6 +438,30 @@ function ArrowRight({ width, height, viewBox, d }: { width: string; height: stri
   );
 }
 
+const CTA_CHEVRON_DOTS = [
+  { cx: 2, cy: 2, d: 0 },
+  { cx: 5, cy: 5, d: 0.05 },
+  { cx: 8, cy: 8, d: 0.1 },
+  { cx: 5, cy: 11, d: 0.15 },
+  { cx: 2, cy: 14, d: 0.2 },
+  { cx: 6, cy: 2, d: 0.05 },
+  { cx: 9, cy: 5, d: 0.1 },
+  { cx: 12, cy: 8, d: 0.15 },
+  { cx: 9, cy: 11, d: 0.2 },
+  { cx: 6, cy: 14, d: 0.25 },
+];
+
+function CtaDotChevron({ index }: { index: number }) {
+  const base = index * 0.12;
+  return (
+    <svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true" className="ucxnav__cta-chevron">
+      {CTA_CHEVRON_DOTS.map((p, i) => (
+        <circle key={i} cx={p.cx} cy={p.cy} r="1" className="ucxnav__cta-dot" style={{ animationDelay: `${base + p.d}s` }} />
+      ))}
+    </svg>
+  );
+}
+
 export default function Header() {
   const rootRef = useRef<HTMLElement>(null);
   const xIconRef = useRef<HTMLImageElement>(null);
@@ -661,14 +685,16 @@ export default function Header() {
 
           {/* ---------- Contact CTA ---------- */}
           {isInteriors ? (
-            <div className="ucxnav__cta-gooey">
-              <a href="/contact" className="ucxnav__cta ucxnav__cta--arrow" aria-hidden="true" tabIndex={-1}>
-                <ArrowRight width="13" height="12" viewBox="0 0 13 12" d="M1 6H12M12 6L7.5 1M12 6L7.5 11" />
-              </a>
-              <a href="/contact" className="ucxnav__cta ucxnav__cta--main">
-                Contact
-              </a>
-            </div>
+            <a href="/contact" className="ucxnav__cta ucxnav__cta--metal">
+              <span className="ucxnav__cta-label">Contact</span>
+              <span className="ucxnav__cta-chip" aria-hidden="true">
+                <CtaDotChevron index={0} />
+                <CtaDotChevron index={1} />
+                <CtaDotChevron index={2} />
+                <CtaDotChevron index={3} />
+                <CtaDotChevron index={4} />
+              </span>
+            </a>
           ) : (
             <a href="/contact" className="ucxnav__cta">
               Contact

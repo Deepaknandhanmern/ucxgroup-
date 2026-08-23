@@ -4,7 +4,6 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { submitToSplitForms } from "@/lib/splitforms";
 import InteriorsHero from "@/components/sections/InteriorsHero";
 import BeforeAfterSlider from "@/components/ui/BeforeAfterSlider";
-import InteriorsCursor from "@/components/ui/InteriorsCursor";
 
 const SERVICES = [
   {
@@ -190,7 +189,6 @@ export default function Interiors() {
 
   return (
     <div className="ucx-interiors" ref={sectRef}>
-      <InteriorsCursor />
       <div className="cursor-haze"></div>
 
       {/* ---------- hero ----------

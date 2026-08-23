@@ -1,6 +1,6 @@
 .ucx-whatsapp {
   position: fixed;
-  right: clamp(16px, 3vw, 32px);
+  right: clamp(4px, 1vw, 10px);
   top: 50%;
   margin-top: -28px;
   z-index: 500;

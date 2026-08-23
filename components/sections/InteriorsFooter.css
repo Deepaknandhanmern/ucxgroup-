@@ -109,18 +109,18 @@
 
 .ifoot-bottom {
   position: relative; z-index: 1;
-  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 16px;
   padding: 22px clamp(20px,6vw,48px);
   border-top: 1px solid var(--line);
 }
-.ifoot-copy { font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-dim); order: 2; }
+.ifoot-copy { font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-dim); text-align: center; }
 .ifoot-copy-credit {
   font-style: normal;
   padding-left: 10px; margin-left: 10px;
   border-left: 1px solid var(--line);
 }
 .ifoot-top {
-  order: 3;
+  position: absolute; right: clamp(20px,6vw,48px); top: 50%; transform: translateY(-50%);
   width: 42px; height: 42px; border-radius: 50%;
   border: 1px solid var(--line); background: transparent; color: var(--accent-dim);
   display: flex; align-items: center; justify-content: center; cursor: pointer;
@@ -132,8 +132,7 @@
 
 @media (max-width: 700px) {
   .ifoot-giant { font-size: 22vw; }
-  .ifoot-bottom { justify-content: center; text-align: center; }
-  .ifoot-copy, .ifoot-top { order: initial; }
+  .ifoot-top { position: static; transform: none; margin: 0 auto; }
 }
 
 @media (prefers-reduced-motion: reduce) {
