@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
 import SectionRail from "@/components/ui/SectionRail";
+import CardThumb from "@/components/ui/CardThumb";
 
 const RAIL_SECTIONS = [
   { id: "overview", label: "Overview" },
@@ -16,6 +17,7 @@ interface CapBlock {
   index: string;
   title: string;
   desc: string;
+  img: string;
   tags: string[];
   ctaHref: string;
   ctaLabel: string;
@@ -26,6 +28,7 @@ const BLOCKS: CapBlock[] = [
     index: "01",
     title: "BIM & Digital Delivery",
     desc: "Digital engineering from design through construction.",
+    img: "/brand/services/bim-digital-delivery.png",
     tags: ["BIM & VDC", "Digital Engineering", "BIM Coordination", "Digital Construction", "Automation", "4D/5D"],
     ctaHref: "/bim-digital-delivery",
     ctaLabel: "Explore BIM & Digital Delivery",
@@ -34,6 +37,7 @@ const BLOCKS: CapBlock[] = [
     index: "02",
     title: "Design & Interiors",
     desc: "Integrated design from concept to construction-ready documentation.",
+    img: "/brand/services/design-interiors.png",
     tags: ["Architecture", "Planning", "Interior Design", "Design Development", "Construction Documentation", "BIM-Integrated Interiors"],
     ctaHref: "/design-interiors",
     ctaLabel: "Explore Design & Interiors",
@@ -42,6 +46,7 @@ const BLOCKS: CapBlock[] = [
     index: "03",
     title: "Project & Construction Support",
     desc: "Connecting project information with coordinated execution.",
+    img: "/brand/services/project-construction-support.png",
     tags: ["Project Documentation", "Project Controls", "Quantity & Data", "QA/QC", "Procurement", "Execution Support"],
     ctaHref: "/project-construction-support",
     ctaLabel: "Explore Project Support",
@@ -50,9 +55,38 @@ const BLOCKS: CapBlock[] = [
     index: "04",
     title: "Asset & Digital Information",
     desc: "Structuring information for handover, operations and long-term value.",
+    img: "/brand/services/asset-digital-information.png",
     tags: ["As-Built BIM", "Asset Information", "COBie", "FM Models", "Digital Handover", "Digital Twin"],
     ctaHref: "/asset-digital-information",
     ctaLabel: "Explore Asset Information",
+  },
+];
+
+interface ExtraBlock {
+  index: string;
+  eyebrow: string;
+  title: string;
+  desc: string;
+  ctaHref: string;
+  ctaLabel: string;
+}
+
+const EXTRA_BLOCKS: ExtraBlock[] = [
+  {
+    index: "05",
+    eyebrow: "Specialist Solutions",
+    title: "Engineering Beyond the Standard",
+    desc: "Advanced solutions that solve complex project and delivery challenges.",
+    ctaHref: "/specialist-solutions",
+    ctaLabel: "Explore Specialist Solutions",
+  },
+  {
+    index: "06",
+    eyebrow: "Training & Workshop",
+    title: "Build Capability for the Digital Future",
+    desc: "Industry-focused BIM and digital delivery training for professionals and project teams.",
+    ctaHref: "/training-workshop",
+    ctaLabel: "Explore Our Programs",
   },
 ];
 
@@ -227,15 +261,42 @@ export default function Capabilities() {
         <div className="blocks" id="modules">
           {BLOCKS.map((b) => (
             <div className="mod-card" key={b.index} data-reveal>
-              <span className="mod-index" aria-hidden="true">{b.index}</span>
-              <h3 className="mod-title">{b.title}</h3>
-              <p className="mod-desc">{b.desc}</p>
-              <div className="mod-tags">
-                {b.tags.map((t) => (
-                  <span key={t}>{t}</span>
-                ))}
+              <div className="mod-media">
+                <CardThumb src={b.img} alt={b.title} />
               </div>
-              <a className="mod-cta" href={b.ctaHref}>
+              <div className="mod-scrim" aria-hidden="true"></div>
+              <span className="mod-index" aria-hidden="true">{b.index}</span>
+              <div className="mod-content">
+                <h3 className="mod-title">{b.title}</h3>
+                <p className="mod-desc">{b.desc}</p>
+                <div className="mod-reveal">
+                  <div className="mod-reveal-inner">
+                    <div className="mod-tags">
+                      {b.tags.map((t) => (
+                        <span key={t}>{t}</span>
+                      ))}
+                    </div>
+                    <a className="mod-cta" href={b.ctaHref}>
+                      {b.ctaLabel}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M5 12h13M13 6l6 6-6 6" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="blocks-extra">
+          {EXTRA_BLOCKS.map((b) => (
+            <div className="mod-card-sm" key={b.index} data-reveal>
+              <span className="mod-sm-index" aria-hidden="true">{b.index}</span>
+              <span className="mod-sm-eyebrow">{b.eyebrow}</span>
+              <h3 className="mod-sm-title">{b.title}</h3>
+              <p className="mod-sm-desc">{b.desc}</p>
+              <a className="mod-sm-cta" href={b.ctaHref}>
                 {b.ctaLabel}
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h13M13 6l6 6-6 6" />
