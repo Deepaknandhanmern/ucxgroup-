@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import CapabilityPage from "@/components/sections/CapabilityPage";
+import CapabilityPage, { type CapabilityItem } from "@/components/sections/CapabilityPage";
+import CapabilityTabs from "@/components/sections/CapabilityTabs";
 import { IconDocument, IconGauge, IconBars, IconShieldCheck, IconWrench } from "@/components/sections/capabilityIcons";
 
 export const metadata: Metadata = {
@@ -7,6 +8,79 @@ export const metadata: Metadata = {
   description:
     "Structured project documentation, QA/QC, project controls and execution support — helping teams manage demanding delivery schedules with coordinated information.",
 };
+
+const ITEMS: CapabilityItem[] = [
+  {
+    title: "Project Documentation",
+    statement: "Structured Information for Project Delivery",
+    desc: "Develop and manage coordinated project information for construction and delivery requirements.",
+    deliverables: [
+      "Construction documentation",
+      "Drawing production",
+      "Drawing management",
+      "Model documentation",
+      "Revision management",
+      "Project information",
+    ],
+    icon: IconDocument,
+  },
+  {
+    title: "Project Controls",
+    statement: "Better Visibility Across Project Information",
+    desc: "Support teams with structured tracking of project progress, information and deliverables.",
+    deliverables: [
+      "Progress tracking",
+      "Information tracking",
+      "Model and drawing status",
+      "Coordination tracking",
+      "Reporting",
+      "Dashboard support",
+    ],
+    icon: IconGauge,
+  },
+  {
+    title: "Quantity & Data Extraction",
+    statement: "Turning Digital Models Into Usable Project Data",
+    desc: "Extract structured quantities and project information from digital models for informed decision-making.",
+    deliverables: [
+      "Quantity extraction",
+      "Model-based quantities",
+      "Schedules",
+      "Data structuring",
+      "Material information",
+      "Reporting",
+    ],
+    icon: IconBars,
+  },
+  {
+    title: "QA/QC",
+    statement: "Quality Built Into the Delivery Workflow",
+    desc: "Apply structured quality checks to improve accuracy, consistency and compliance across project outputs.",
+    deliverables: [
+      "BIM QA/QC",
+      "Drawing checks",
+      "Standards compliance",
+      "Information validation",
+      "Coordination checks",
+      "Deliverable review",
+    ],
+    icon: IconShieldCheck,
+  },
+  {
+    title: "Execution & Coordination Support",
+    statement: "Supporting Teams Beyond Documentation",
+    desc: "Support project teams beyond documentation through coordinated execution and delivery workflows.",
+    deliverables: [
+      "Construction coordination",
+      "Vendor coordination",
+      "Procurement support",
+      "Site information support",
+      "Fabrication coordination",
+      "Execution documentation",
+    ],
+    icon: IconWrench,
+  },
+];
 
 export default function ProjectConstructionSupportPage() {
   return (
@@ -22,78 +96,15 @@ export default function ProjectConstructionSupportPage() {
         { label: "BIM & Digital Delivery", href: "/bim-digital-delivery" },
         { label: "Asset & Digital Information", href: "/asset-digital-information" },
       ]}
-      items={[
-        {
-          title: "Project Documentation",
-          statement: "Structured Information for Project Delivery",
-          desc: "Develop and manage coordinated project information for construction and delivery requirements.",
-          deliverables: [
-            "Construction documentation",
-            "Drawing production",
-            "Drawing management",
-            "Model documentation",
-            "Revision management",
-            "Project information",
-          ],
-          icon: IconDocument,
-        },
-        {
-          title: "Project Controls",
-          statement: "Better Visibility Across Project Information",
-          desc: "Support teams with structured tracking of project progress, information and deliverables.",
-          deliverables: [
-            "Progress tracking",
-            "Information tracking",
-            "Model and drawing status",
-            "Coordination tracking",
-            "Reporting",
-            "Dashboard support",
-          ],
-          icon: IconGauge,
-        },
-        {
-          title: "Quantity & Data Extraction",
-          statement: "Turning Digital Models Into Usable Project Data",
-          desc: "Extract structured quantities and project information from digital models for informed decision-making.",
-          deliverables: [
-            "Quantity extraction",
-            "Model-based quantities",
-            "Schedules",
-            "Data structuring",
-            "Material information",
-            "Reporting",
-          ],
-          icon: IconBars,
-        },
-        {
-          title: "QA/QC",
-          statement: "Quality Built Into the Delivery Workflow",
-          desc: "Apply structured quality checks to improve accuracy, consistency and compliance across project outputs.",
-          deliverables: [
-            "BIM QA/QC",
-            "Drawing checks",
-            "Standards compliance",
-            "Information validation",
-            "Coordination checks",
-            "Deliverable review",
-          ],
-          icon: IconShieldCheck,
-        },
-        {
-          title: "Execution & Coordination Support",
-          statement: "Supporting Teams Beyond Documentation",
-          desc: "Support project teams beyond documentation through coordinated execution and delivery workflows.",
-          deliverables: [
-            "Construction coordination",
-            "Vendor coordination",
-            "Procurement support",
-            "Site information support",
-            "Fabrication coordination",
-            "Execution documentation",
-          ],
-          icon: IconWrench,
-        },
-      ]}
-    />
+      items={ITEMS}
+    >
+      <CapabilityTabs
+        embedded
+        eyebrow="Project & Construction Support"
+        heading="Explore Each Capability"
+        description="Five coordinated workflows that keep documentation, controls and quality aligned through delivery."
+        items={ITEMS}
+      />
+    </CapabilityPage>
   );
 }

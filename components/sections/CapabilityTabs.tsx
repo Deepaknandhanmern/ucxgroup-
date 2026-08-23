@@ -2,20 +2,23 @@
 
 import { useState } from "react";
 import type { CapabilityItem } from "@/components/sections/CapabilityPage";
+import CardThumb from "@/components/ui/CardThumb";
 
 export interface CapabilityTabsProps {
   eyebrow?: string;
   heading: string;
   description?: string;
   items: CapabilityItem[];
+  /** Render without its own outer padding/max-width — for nesting inside another section's wrapper (e.g. CapabilityPage's capabilitiesSlot). */
+  embedded?: boolean;
 }
 
-export default function CapabilityTabs({ eyebrow = "Capabilities", heading, description, items }: CapabilityTabsProps) {
+export default function CapabilityTabs({ eyebrow = "Capabilities", heading, description, items, embedded }: CapabilityTabsProps) {
   const [active, setActive] = useState(0);
   const current = items[active];
 
   return (
-    <div className="ucx-captabs">
+    <div className={`ucx-captabs${embedded ? " ucx-captabs--embedded" : ""}`} id="capabilities">
       <div className="wrapper">
         <div className="head">
           <span className="eyebrow">{eyebrow}</span>
@@ -54,12 +57,17 @@ export default function CapabilityTabs({ eyebrow = "Capabilities", heading, desc
             </a>
           </div>
 
-          <div className="panel-tags">
-            <span className="panel-tags-label">Typical Deliverables</span>
-            <div className="tag-list">
-              {current.deliverables.map((d) => (
-                <span key={d}>{d}</span>
-              ))}
+          <div className="panel-side">
+            <div className="panel-thumb">
+              <CardThumb src={current.image} alt={current.title} />
+            </div>
+            <div className="panel-tags">
+              <span className="panel-tags-label">Typical Deliverables</span>
+              <div className="tag-list">
+                {current.deliverables.map((d) => (
+                  <span key={d}>{d}</span>
+                ))}
+              </div>
             </div>
           </div>
         </div>

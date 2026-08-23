@@ -89,28 +89,28 @@ const ITEMS: CapabilityItem[] = [
 
 export default function BimDigitalDeliveryPage() {
   return (
-    <>
-      <CapabilityPage
-        index="01"
-        eyebrow="Capabilities"
-        title="BIM & Digital Delivery"
-        intro="Building coordinated digital environments for complex projects. UCX supports architects, engineers, contractors and developers with BIM services, digital engineering and VDC workflows that improve coordination, documentation and construction readiness."
-        process={["Model", "Coordinate", "Deliver"]}
-        heroMotif={IconCube}
-        heroImage="/brand/capabilities/bim-digital-delivery.jpg"
-        related={[
-          { label: "Design & Interiors", href: "/design-interiors" },
-          { label: "Asset & Digital Information", href: "/asset-digital-information" },
-          { label: "Specialist Solutions", href: "/specialist-solutions" },
-        ]}
-        items={ITEMS}
-      />
+    <CapabilityPage
+      index="01"
+      eyebrow="Capabilities"
+      title="BIM & Digital Delivery"
+      intro="Building coordinated digital environments for complex projects. UCX supports architects, engineers, contractors and developers with BIM services, digital engineering and VDC workflows that improve coordination, documentation and construction readiness."
+      process={["Model", "Coordinate", "Deliver"]}
+      heroMotif={IconCube}
+      heroImage="/brand/capabilities/bim-digital-delivery.jpg"
+      related={[
+        { label: "Design & Interiors", href: "/design-interiors" },
+        { label: "Asset & Digital Information", href: "/asset-digital-information" },
+        { label: "Specialist Solutions", href: "/specialist-solutions" },
+      ]}
+      items={ITEMS}
+    >
       <CapabilityTabs
+        embedded
         eyebrow="BIM & Digital Delivery"
         heading="Explore Each Capability"
-        description="Four connected workflows that take a project from coordinated model to construction-ready information."
-        items={ITEMS.slice(0, 4)}
+        description="Five connected workflows that take a project from coordinated model to construction-ready information."
+        items={ITEMS}
       />
-    </>
+    </CapabilityPage>
   );
 }

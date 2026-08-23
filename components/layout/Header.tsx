@@ -131,7 +131,7 @@ const PANELS: Panel[] = [
         eyebrow: "02 — Training & Workshop",
         title: "Build Capability for the Digital Future",
         desc: "Industry-focused BIM and digital delivery training for professionals and project teams.",
-        ctaHref: "#link-capabilities-explore-our-programs",
+        ctaHref: "/training-workshop",
         ctaLabel: "Explore Our Programs",
       },
     ],
@@ -236,13 +236,13 @@ const PANELS: Panel[] = [
         title: "How We Collaborate",
         desc: "Flexible pathways to turn ideas into real-world solutions.",
         links: [
-          { href: "#link-lab-project-collaboration", label: "Project Collaboration" },
-          { href: "#link-lab-strategic-partnerships", label: "Strategic Partnerships" },
-          { href: "#link-lab-co-innovation-and-pilots", label: "Co-Innovation & Pilots" },
-          { href: "#link-lab-dedicated-delivery-teams", label: "Dedicated Delivery Teams" },
-          { href: "#link-lab-specialist-partnerships", label: "Specialist Partnerships" },
+          { href: "/collaboration-lab#ways-to-collaborate", label: "Project Collaboration" },
+          { href: "/collaboration-lab#ways-to-collaborate", label: "Strategic Partnerships" },
+          { href: "/collaboration-lab#ways-to-collaborate", label: "Co-Innovation & Pilots" },
+          { href: "/collaboration-lab#ways-to-collaborate", label: "Dedicated Delivery Teams" },
+          { href: "/collaboration-lab#ways-to-collaborate", label: "Specialist Partnerships" },
         ],
-        ctaHref: "#link-lab-explore-collaboration-models",
+        ctaHref: "/collaboration-lab#ways-to-collaborate",
         ctaLabel: "Explore Collaboration Models",
       },
     ],
@@ -696,7 +696,7 @@ export default function Header() {
               </span>
             </a>
           ) : (
-            <a href="/contact" className="ucxnav__cta">
+            <a href="/contact" className="ucxnav__cta ucxnav__cta--liquid">
               Contact
               <ArrowRight width="13" height="12" viewBox="0 0 13 12" d="M1 6H12M12 6L7.5 1M12 6L7.5 11" />
             </a>

@@ -236,6 +236,39 @@
 .ucxnav__cta:hover { background: var(--ucx-mint); color: var(--ucx-green); transform: translateY(-1px); }
 .ucxnav__cta:hover svg { transform: translateX(2px); }
 
+/* ---- main-site nav CTA: a frosted "liquid glass" pill — translucent,
+   blurred, bevelled with inset highlights, scaling up on hover. ---- */
+.ucxnav__cta--liquid {
+  position: relative;
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.28);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  box-shadow:
+    inset 1px 1px 1px -.5px rgba(255,255,255,.65),
+    inset -1px -1px 1px -.5px rgba(255,255,255,.3),
+    inset 0 0 6px 6px rgba(255,255,255,.05),
+    0 4px 14px rgba(0,0,0,.25),
+    0 0 12px rgba(255,255,255,.08);
+  transition: transform .3s cubic-bezier(.16,.84,.36,1), background .3s ease, box-shadow .3s ease, border-color .3s ease;
+}
+.ucxnav__cta.ucxnav__cta--liquid:hover {
+  background: rgba(255,255,255,.16);
+  color: var(--ucx-white);
+  border-color: rgba(255,255,255,.4);
+  transform: scale(1.05);
+  box-shadow:
+    inset 1px 1px 1px -.5px rgba(255,255,255,.75),
+    inset -1px -1px 1px -.5px rgba(255,255,255,.35),
+    inset 0 0 6px 6px rgba(255,255,255,.08),
+    0 6px 18px rgba(0,0,0,.3),
+    0 0 16px rgba(145,242,181,.3);
+}
+.ucxnav__cta--liquid:hover svg { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .ucxnav__cta--liquid { transition: none; }
+}
+
 /* ---- interiors-only nav CTA: an "anti-metal" chip-reveal button — a lit
    accent chip rests on the left with a wave of animated dots, and sweeps
    across to cover the label on hover. */

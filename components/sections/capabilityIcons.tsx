@@ -139,6 +139,38 @@ export const IconSpark = (
   </svg>
 );
 
+export const IconGraduate = (
+  <svg viewBox="0 0 48 48">
+    <path d="M4 18 24 9l20 9-20 9-20-9Z" />
+    <path d="M14 22.5V33c0 3 4.5 6 10 6s10-3 10-6V22.5" />
+    <path d="M40 18v13" />
+  </svg>
+);
+
+export const IconPresentation = (
+  <svg viewBox="0 0 48 48">
+    <rect x="6" y="8" width="36" height="24" rx="2" />
+    <path d="M17 40h14M24 32v8" />
+    <path d="M13 24l7-8 6 6 9-10" />
+  </svg>
+);
+
+export const IconUsers = (
+  <svg viewBox="0 0 48 48">
+    <circle cx="17" cy="16" r="6" />
+    <circle cx="34" cy="18" r="5" />
+    <path d="M5 42v-3c0-6.6 5.4-12 12-12s12 5.4 12 12v3" />
+    <path d="M31 27.5c5 .6 9 4.8 9 9.9V42" />
+  </svg>
+);
+
+export const IconBook = (
+  <svg viewBox="0 0 48 48">
+    <path d="M24 12c-3-3-9-4-16-4v29c7 0 13 1 16 4 3-3 9-4 16-4V8c-7 0-13 1-16 4Z" />
+    <path d="M24 12v29" />
+  </svg>
+);
+
 export const IconParametric = (
   <svg viewBox="0 0 48 48">
     <path d="M10 13v22M38 13v22M13 10h22M13 38h22M12 12l10 10M36 12 26 22M12 36l10-10M36 36 26 26" />

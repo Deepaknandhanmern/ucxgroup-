@@ -20,6 +20,18 @@
   padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
 }
 
+/* ---- embedded mode: nested inside another section's own wrapper (e.g.
+   CapabilityPage's capabilitiesSlot), so the horizontal padding and
+   max-width here would double up with the parent's — drop them and let
+   the parent's rhythm carry the spacing instead. ---- */
+.ucx-captabs--embedded {
+  margin-bottom: clamp(64px,8vw,100px);
+}
+.ucx-captabs--embedded .wrapper {
+  max-width: none; margin: 0;
+  padding: clamp(36px,4vw,52px) 0 0;
+}
+
 .ucx-captabs .head {
   max-width: 640px; margin: 0 auto clamp(40px,5vw,56px);
   text-align: center;
@@ -93,6 +105,17 @@
 }
 .ucx-captabs .panel-cta svg { width: 14px; height: 14px; }
 .ucx-captabs .panel-cta:hover { gap: 14px; border-color: var(--dark); }
+
+.ucx-captabs .panel-side { display: flex; flex-direction: column; gap: 24px; }
+.ucx-captabs .panel-thumb {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--bg);
+}
 
 .ucx-captabs .panel-tags-label {
   display: block; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase;

@@ -11,6 +11,7 @@ export interface CapabilityItem {
   desc: string;
   deliverables: string[];
   icon: React.ReactNode;
+  image?: string;
 }
 
 export interface RelatedCapability {
@@ -30,9 +31,11 @@ export interface CapabilityPageProps {
   heroImage?: string;
   /** Other capabilities to cross-link at the bottom of the page. */
   related?: RelatedCapability[];
+  /** Replaces the default capability card grid — e.g. a <CapabilityTabs embedded /> explorer over the same items. */
+  children?: React.ReactNode;
 }
 
-export default function CapabilityPage({ index, eyebrow, title, intro, items, process, heroMotif, heroImage, related }: CapabilityPageProps) {
+export default function CapabilityPage({ index, eyebrow, title, intro, items, process, heroMotif, heroImage, related, children }: CapabilityPageProps) {
   const sectRef = useRef<HTMLDivElement>(null);
   const bodyGlowRef = useCursorGlow<HTMLDivElement>();
   const closingCtaRef = useMagnetic<HTMLAnchorElement>();
@@ -132,32 +135,36 @@ export default function CapabilityPage({ index, eyebrow, title, intro, items, pr
         </div>
 
         {/* ---------- services ---------- */}
-        <div className="cap-head" id="capabilities" data-reveal>
-          <span className="sub-eyebrow">Capabilities</span>
-        </div>
-        <div className="services">
-          {items.map((it, i) => (
-            <div className="service" key={it.title} data-reveal>
-              <div className="service-head">
-                <span className="service-index">{String(i + 1).padStart(2, "0")}</span>
-                <span className="service-icon">{it.icon}</span>
-              </div>
-              <div className="service-body">
-                <h3 className="service-title">{it.title}</h3>
-                <p className="service-statement">{it.statement}</p>
-                <p className="service-desc">{it.desc}</p>
-                <div className="service-deliverables">
-                  <span className="deliverables-label">Typical Deliverables</span>
-                  <ul>
-                    {it.deliverables.map((d) => (
-                      <li key={d}>{d}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+        {children ?? (
+          <>
+            <div className="cap-head" id="capabilities" data-reveal>
+              <span className="sub-eyebrow">Capabilities</span>
             </div>
-          ))}
-        </div>
+            <div className="services">
+              {items.map((it, i) => (
+                <div className="service" key={it.title} data-reveal>
+                  <div className="service-head">
+                    <span className="service-index">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="service-icon">{it.icon}</span>
+                  </div>
+                  <div className="service-body">
+                    <h3 className="service-title">{it.title}</h3>
+                    <p className="service-statement">{it.statement}</p>
+                    <p className="service-desc">{it.desc}</p>
+                    <div className="service-deliverables">
+                      <span className="deliverables-label">Typical Deliverables</span>
+                      <ul>
+                        {it.deliverables.map((d) => (
+                          <li key={d}>{d}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
 
         {/* ---------- related capabilities ---------- */}
         {related && related.length > 0 && (
