@@ -56,6 +56,7 @@ import "@/components/ui/Toast.css";
 import "@/components/ui/AnnouncementBanner.css";
 import "@/components/ui/LinkPreview.css";
 import "@/components/ui/WorldMap.css";
+import "@/components/ui/InteriorsCursor.css";
 import "@/components/sections/Resources.css";
 import "@/components/sections/FeaturedProjects.css";
 import "@/components/sections/ProjectDetail.css";

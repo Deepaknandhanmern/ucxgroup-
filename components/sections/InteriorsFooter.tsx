@@ -115,13 +115,6 @@ export default function InteriorsFooter() {
             &copy; {new Date().getFullYear()} SpayceX by UCX. All rights reserved.
             <i className="ifoot-copy-credit">Designed &amp; Developed by Agape Works</i>
           </span>
-          <span className="ifoot-credit">
-            <i>Design &amp; Delivery</i>
-            <b className="ifoot-heart" aria-hidden="true">
-              &#10084;
-            </b>
-            <i>by UCX</i>
-          </span>
           <button type="button" className="ifoot-top" onClick={scrollToTop} aria-label="Back to top">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 10l7-7m0 0l7 7m-7-7v18" />

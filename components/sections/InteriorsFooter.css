@@ -119,18 +119,6 @@
   padding-left: 10px; margin-left: 10px;
   border-left: 1px solid var(--line);
 }
-.ifoot-credit {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 9px 16px; border-radius: 999px; border: 1px solid var(--line);
-  order: 1;
-}
-.ifoot-credit i { font-style: normal; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; color: var(--accent-dim); }
-.ifoot-heart { color: #e8654f; font-size: 13px; animation: ifootHeartbeat 2.2s ease-in-out infinite; }
-@keyframes ifootHeartbeat {
-  0%, 100% { transform: scale(1); }
-  15%, 45% { transform: scale(1.22); }
-  30% { transform: scale(1); }
-}
 .ifoot-top {
   order: 3;
   width: 42px; height: 42px; border-radius: 50%;
@@ -145,10 +133,10 @@
 @media (max-width: 700px) {
   .ifoot-giant { font-size: 22vw; }
   .ifoot-bottom { justify-content: center; text-align: center; }
-  .ifoot-copy, .ifoot-credit, .ifoot-top { order: initial; }
+  .ifoot-copy, .ifoot-top { order: initial; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ifoot-marquee-track, .ifoot-heart { animation: none; }
+  .ifoot-marquee-track { animation: none; }
   .ifoot-giant, .ifoot-main { transform: none !important; opacity: 1 !important; }
 }

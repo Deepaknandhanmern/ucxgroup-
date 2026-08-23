@@ -6,10 +6,17 @@
   --cream: #F3F1E6;
   --ease: cubic-bezier(.16,.84,.36,1);
 
-  position: relative;
-  /* 100svh measures the viewport, but the sticky header (76px / 66px below
-     640px) sits above this section and eats into that same viewport — without
-     subtracting it, bottom-anchored content lands below the fold. */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Pin state (fixed/absolute + top offset) is driven by InteriorsHero.tsx's
+     scroll listener, not CSS position:sticky — a `.ucx-interiors` ancestor
+     sets overflow:hidden for its aurora/isolation effects, which silently
+     breaks native sticky for any descendant. 100svh measures the viewport,
+     but the sticky header (76px / 66px below 640px) sits above this section
+     and eats into that same viewport — without subtracting it, bottom-
+     anchored content lands below the fold. */
   min-height: calc(100svh - 76px);
   display: flex;
   align-items: flex-end;
@@ -20,6 +27,28 @@
   isolation: isolate;
 }
 .ih-hero * { box-sizing: border-box; }
+
+/* ---- scroll room for the media-expand effect: the hero pins via
+   position:sticky while this taller wrapper scrolls underneath it, driving
+   --expand from 0 to 1 on .ih-media (see InteriorsHero.tsx) ---- */
+.ih-hero-wrap { position: relative; height: 220vh; }
+
+/* ---- hero video: starts as an inset rounded card over the aurora blobs,
+   expands to a full-bleed background as the wrapper scrolls past ---- */
+.ih-media {
+  position: absolute;
+  inset: calc(clamp(20px,5vw,56px) * (1 - var(--expand, 0)));
+  border-radius: calc(28px * (1 - var(--expand, 0)));
+  overflow: hidden;
+  z-index: 1;
+  box-shadow: 0 40px 90px -24px rgba(2,13,26,.65);
+}
+.ih-media-video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ih-media-veil {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(0deg, rgba(2,13,26,.82) 0%, rgba(2,13,26,.15) 48%, rgba(2,13,26,.4) 100%);
+}
 
 /* ---- animated gradient backdrop: drifting blurred blobs, the site's
    established "aurora" technique (see ContactForm.css), tuned to the
@@ -37,13 +66,6 @@
   0%, 100% { transform: translate(0,0) scale(1); }
   50% { transform: translate(34px,-26px) scale(1.08); }
 }
-.ih-vignette {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 90% 70% at 28% 100%, rgba(2,13,26,.6), transparent 60%),
-    linear-gradient(0deg, rgba(2,13,26,.55), transparent 42%);
-}
-
 /* ---- content, anchored bottom-left ----
    Note: Interiors.css defines `.ucx-interiors * { margin:0; padding:0; }`,
    which matches every element in this hero (it's rendered inside
@@ -51,7 +73,7 @@
    below that sets margin/padding is scoped as `.ih-hero .foo` instead of
    `.foo` so it wins on specificity rather than depending on import order. */
 .ih-hero .ih-content {
-  position: relative; z-index: 1;
+  position: relative; z-index: 2;
   max-width: 760px;
   padding: clamp(40px,5vw,64px) clamp(20px,6vw,80px) clamp(32px,4vw,48px);
 }
@@ -105,7 +127,7 @@
 /* ---- rotating mark, bottom-right — same ring/textPath + beacon-pulse
    technique already used for the footer badge and global-delivery hub ---- */
 .ih-mark {
-  position: absolute; right: clamp(20px,4vw,48px); bottom: clamp(20px,4vw,48px); z-index: 2;
+  position: absolute; right: clamp(20px,4vw,48px); bottom: clamp(20px,4vw,48px); z-index: 3;
   width: clamp(72px,8vw,96px); height: clamp(72px,8vw,96px);
 }
 .ih-mark svg { width: 100%; height: 100%; overflow: visible; }

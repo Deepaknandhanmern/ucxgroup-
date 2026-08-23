@@ -1,0 +1,49 @@
+/* Replaces the OS arrow with a themed arrow cursor on the Design & Interiors
+   page only — scoped to .ucx-interiors, mounted by InteriorsCursor.tsx
+   (which itself no-ops on coarse/touch pointers, matching useMagnetic's
+   convention). !important mirrors Interiors.css's own .ucx-interiors
+   background override: this must win over any cursor:pointer declared
+   deeper in the page regardless of stylesheet order. */
+.ucx-interiors,
+.ucx-interiors * {
+  cursor: none !important;
+}
+
+.ih-cursor-arrow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+  z-index: 10000;
+  opacity: 0;
+  will-change: transform;
+  filter: drop-shadow(0 2px 4px rgba(2,13,26,.45));
+  transition: opacity .2s ease, filter .25s ease;
+}
+.ih-cursor-arrow svg {
+  width: 100%;
+  height: 100%;
+  transform-origin: 4px 4px;
+  transition: transform .25s cubic-bezier(.16,.84,.36,1);
+}
+.ih-cursor-arrow svg path {
+  fill: #74C6A2;
+  stroke: #04162C;
+  stroke-width: 1.1;
+  transition: fill .25s ease;
+}
+.ih-cursor-arrow.is-active svg { transform: scale(1.3); }
+.ih-cursor-arrow.is-active svg path { fill: #F3F1E6; }
+.ih-cursor-arrow.is-active { filter: drop-shadow(0 3px 7px rgba(116,198,162,.55)); }
+
+@media (pointer: coarse) {
+  .ucx-interiors,
+  .ucx-interiors * {
+    cursor: auto !important;
+  }
+  .ih-cursor-arrow {
+    display: none;
+  }
+}

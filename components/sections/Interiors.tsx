@@ -4,6 +4,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { submitToSplitForms } from "@/lib/splitforms";
 import InteriorsHero from "@/components/sections/InteriorsHero";
 import BeforeAfterSlider from "@/components/ui/BeforeAfterSlider";
+import InteriorsCursor from "@/components/ui/InteriorsCursor";
 
 const SERVICES = [
   {
@@ -189,6 +190,7 @@ export default function Interiors() {
 
   return (
     <div className="ucx-interiors" ref={sectRef}>
+      <InteriorsCursor />
       <div className="cursor-haze"></div>
 
       {/* ---------- hero ----------
@@ -241,6 +243,13 @@ export default function Interiors() {
               </div>
             </div>
           ))}
+          <div className="svc-tile svc-tile--placeholder" data-reveal aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 8v8M8 12h8" />
+            </svg>
+            <span>More Services Coming Soon</span>
+          </div>
         </div>
 
         {/* ---------- process band: animated stage timeline ---------- */}
@@ -294,26 +303,14 @@ export default function Interiors() {
         </div>
         <div className="materials">
           {MATERIALS.map((m) => (
-            <div className="mat-card" key={m.name} data-reveal>
-              <Ph src={m.img} alt={m.name} className="mat-img" />
+            <div className="mat-card" key={m.name} data-reveal tabIndex={0}>
+              <div className="mat-swatch">
+                <Ph src={m.img} alt={m.name} className="mat-img" />
+                <span className="mat-beam" aria-hidden="true"></span>
+              </div>
               <span className="mat-name">{m.name}</span>
             </div>
           ))}
-        </div>
-
-        {/* ---------- client quote ---------- */}
-        <div className="quote-block" data-reveal>
-          <svg className="quote-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M7.17 6C4.87 6 3 7.87 3 10.17c0 2.02 1.44 3.7 3.35 4.08-.13.9-.6 1.7-1.35 2.25a.5.5 0 00.3.9c2.9 0 5.3-2.34 5.3-5.5V10.17C10.6 7.87 8.73 6 7.17 6zm10 0c-2.3 0-4.17 1.87-4.17 4.17 0 2.02 1.44 3.7 3.35 4.08-.13.9-.6 1.7-1.35 2.25a.5.5 0 00.3.9c2.9 0 5.3-2.34 5.3-5.5V10.17C20.6 7.87 18.73 6 17.17 6z" />
-          </svg>
-          <p className="quote-text">
-            &ldquo;UCX delivered an outstanding interior design solution with a strong understanding of our requirements,
-            professionalism and commitment to quality.&rdquo;
-          </p>
-          <div className="quote-meta">
-            <span className="quote-name">Abishek</span>
-            <span className="quote-role">Interior Design &middot; Singapore</span>
-          </div>
         </div>
 
         {/* ---------- closing: copy + inline enquiry form ---------- */}
@@ -363,6 +360,21 @@ export default function Interiors() {
                 )}
               </form>
             )}
+          </div>
+        </div>
+
+        {/* ---------- client quote: closes the page, right before the footer ---------- */}
+        <div className="quote-block" data-reveal>
+          <svg className="quote-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M7.17 6C4.87 6 3 7.87 3 10.17c0 2.02 1.44 3.7 3.35 4.08-.13.9-.6 1.7-1.35 2.25a.5.5 0 00.3.9c2.9 0 5.3-2.34 5.3-5.5V10.17C10.6 7.87 8.73 6 7.17 6zm10 0c-2.3 0-4.17 1.87-4.17 4.17 0 2.02 1.44 3.7 3.35 4.08-.13.9-.6 1.7-1.35 2.25a.5.5 0 00.3.9c2.9 0 5.3-2.34 5.3-5.5V10.17C20.6 7.87 18.73 6 17.17 6z" />
+          </svg>
+          <p className="quote-text">
+            &ldquo;UCX delivered an outstanding interior design solution with a strong understanding of our requirements,
+            professionalism and commitment to quality.&rdquo;
+          </p>
+          <div className="quote-meta">
+            <span className="quote-name">Abishek</span>
+            <span className="quote-role">Interior Design &middot; Singapore</span>
           </div>
         </div>
       </div>

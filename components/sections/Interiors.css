@@ -108,9 +108,15 @@
 .ucx-interiors .svc-head { margin-bottom: 24px; }
 .ucx-interiors .services {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 14px;
   margin-bottom: clamp(64px,8vw,100px);
+}
+@media (max-width: 900px) {
+  .ucx-interiors .services { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .ucx-interiors .services { grid-template-columns: 1fr; }
 }
 .ucx-interiors .svc-tile {
   position: relative;
@@ -126,6 +132,16 @@
   border-color: var(--accent);
   transform: translateY(-5px);
   box-shadow: 0 26px 44px -22px rgba(4,22,44,.4);
+}
+.ucx-interiors .svc-tile--placeholder {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+  border-style: dashed;
+  background: rgba(116,198,162,.03);
+  color: var(--accent-ink);
+}
+.ucx-interiors .svc-tile--placeholder svg { width: 30px; height: 30px; opacity: .5; }
+.ucx-interiors .svc-tile--placeholder span {
+  font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-muted); text-align: center; padding: 0 24px;
 }
 .ucx-interiors .svc-card {
   position: absolute; inset: 0;
@@ -357,7 +373,8 @@
   gap: 12px;
   margin-bottom: clamp(64px,8vw,100px);
 }
-.ucx-interiors .mat-card { display: flex; flex-direction: column; gap: 10px; }
+.ucx-interiors .mat-card { display: flex; flex-direction: column; gap: 10px; outline: none; }
+.ucx-interiors .mat-swatch { position: relative; border-radius: 10px; }
 .ucx-interiors .mat-img,
 .ucx-interiors .mat-card .ph-fallback {
   aspect-ratio: 1 / 1;
@@ -367,9 +384,52 @@
 }
 .ucx-interiors .mat-name { font-size: 11px; letter-spacing: .04em; color: var(--ink-muted); text-align: center; }
 
+/* ---- material swatch border-beam: a comet travels the swatch edge on a
+   rotating conic gradient, cut to a ring via a two-layer alpha mask
+   (content-box excluded from border-box); speeds up on hover/focus. Pure
+   CSS — no per-frame JS, no physics, no extra dependencies. ---- */
+@property --mat-beam-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+.ucx-interiors .mat-beam {
+  position: absolute;
+  inset: -2px;
+  border-radius: 12px;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--mat-beam-angle),
+    transparent 0deg,
+    transparent 296deg,
+    color-mix(in srgb, var(--accent) 60%, transparent) 330deg,
+    #ffffff 344deg,
+    var(--accent) 350deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: .85;
+  animation: matBeamSpin 7s linear infinite;
+}
+.ucx-interiors .mat-card:hover .mat-beam,
+.ucx-interiors .mat-card:focus-visible .mat-beam {
+  animation-duration: 1.6s;
+  opacity: 1;
+}
+@keyframes matBeamSpin {
+  to { --mat-beam-angle: 360deg; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ucx-interiors .mat-beam { animation: none; --mat-beam-angle: 40deg; }
+}
+
 /* ---- client quote ---- */
 .ucx-interiors .quote-block {
-  max-width: 680px; margin: 0 auto clamp(64px,8vw,100px);
+  max-width: 680px; margin: clamp(64px,8vw,100px) auto 0;
   text-align: center;
   display: flex; flex-direction: column; align-items: center; gap: 18px;
 }
@@ -452,7 +512,7 @@
   padding: clamp(24px,3vw,32px);
   box-shadow: 0 30px 60px -24px rgba(0,0,0,.5);
 }
-.ucx-interiors .closing-logo { display: block; height: 22px; width: auto; margin-bottom: 18px; }
+.ucx-interiors .closing-logo { display: block; height: 38px; width: auto; margin-bottom: 18px; }
 .ucx-interiors .closing-form-card form { display: flex; flex-direction: column; gap: 12px; }
 .ucx-interiors .closing-form-card input,
 .ucx-interiors .closing-form-card textarea {

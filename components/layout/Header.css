@@ -32,11 +32,6 @@
   --ucx-green: #04162C;
   --ucx-mint: #74C6A2;
 }
-.ucxnav.ucxnav--interiors.is-scrolled .ucxnav__bar {
-  background: color-mix(in srgb, var(--ucx-green) 78%, transparent);
-  backdrop-filter: blur(16px) saturate(150%);
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-}
 /* ---- interiors-only: glowing logo with a hover sparkle burst ---- */
 .ucxnav__logo--interiors { position: relative; }
 .ucxnav__logo--interiors .ucxnav__logo-img {
