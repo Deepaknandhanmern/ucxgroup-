@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import SearchPalette from "@/components/ui/SearchPalette";
 
 type PanelKey = "capabilities" | "experience" | "lab" | "insights" | "company";
 
@@ -327,7 +328,7 @@ const PANELS: Panel[] = [
         links: [
           { href: "/about-us", label: "Our Story" },
           { href: "/about-us#approach", label: "Our Approach" },
-          { href: "/about-us#founders", label: "Leadership & Team" },
+          { href: "/team", label: "Leadership & Team" },
           { href: "/global-delivery#workspace", label: "Our Workspace" },
         ],
         ctaHref: "/about-us",
@@ -361,7 +362,7 @@ const PANELS: Panel[] = [
       {
         eyebrow: "Built Around Collaboration",
         title: "People, technology and expertise working together to deliver better.",
-        ctaHref: "#link-company-meet-our-team",
+        ctaHref: "/team",
         ctaLabel: "Meet Our Team",
         feature: true,
       },
@@ -414,6 +415,7 @@ const MOBILE_ITEMS: MobileItem[] = [
     label: "Company",
     links: [
       { href: "/about-us", label: "About UCX" },
+      { href: "/team", label: "Team" },
       { href: "/global-delivery", label: "Global Delivery" },
       { href: "/careers", label: "Careers" },
     ],
@@ -682,6 +684,8 @@ export default function Header() {
               ))}
             </ul>
           </nav>
+
+          <SearchPalette />
 
           {/* ---------- Contact CTA ---------- */}
           {isInteriors ? (

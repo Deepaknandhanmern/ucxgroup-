@@ -52,6 +52,8 @@ export default function Resources({ resources }: { resources: ResourceItem[] }) 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [modalOpen]);
 
+  const isLightGate = modalItem?.cat === "templates";
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSending(true);
@@ -162,26 +164,39 @@ export default function Resources({ resources }: { resources: ResourceItem[] }) 
             </div>
           </div>
           <div className="ucxres__form">
-            <h2>Get notified when this is ready</h2>
-            <p className="sub">This resource is still in progress — leave your details and we&rsquo;ll email you the moment it&rsquo;s available to download.</p>
+            <h2>{isLightGate ? "Quick unlock" : "Get notified when this is ready"}</h2>
+            <p className="sub">
+              {isLightGate
+                ? "Templates are a fast, low-commitment download — just leave your email and we'll send it the moment it's ready."
+                : "This resource is still in progress — leave your details and we’ll email you the moment it’s available to download."}
+            </p>
             <form onSubmit={handleSubmit}>
               <div className="ucxres__fields">
-                <div className="ucxres__field">
-                  <label>Full name*</label>
-                  <input ref={firstFieldRef} required type="text" name="name" placeholder="Jordan Ellis" />
-                </div>
-                <div className="ucxres__field">
-                  <label>Job title*</label>
-                  <input required type="text" name="role" placeholder="Project manager" />
-                </div>
-                <div className="ucxres__field">
-                  <label>Company*</label>
-                  <input required type="text" name="company" placeholder="Acme Studio" />
-                </div>
-                <div className="ucxres__field">
-                  <label>Work email*</label>
-                  <input required type="email" name="email" placeholder="jordan@acme.com" />
-                </div>
+                {isLightGate ? (
+                  <div className="ucxres__field full">
+                    <label>Work email*</label>
+                    <input ref={firstFieldRef} required type="email" name="email" placeholder="jordan@acme.com" />
+                  </div>
+                ) : (
+                  <>
+                    <div className="ucxres__field">
+                      <label>Full name*</label>
+                      <input ref={firstFieldRef} required type="text" name="name" placeholder="Jordan Ellis" />
+                    </div>
+                    <div className="ucxres__field">
+                      <label>Job title*</label>
+                      <input required type="text" name="role" placeholder="Project manager" />
+                    </div>
+                    <div className="ucxres__field">
+                      <label>Company*</label>
+                      <input required type="text" name="company" placeholder="Acme Studio" />
+                    </div>
+                    <div className="ucxres__field">
+                      <label>Work email*</label>
+                      <input required type="email" name="email" placeholder="jordan@acme.com" />
+                    </div>
+                  </>
+                )}
                 <label className="ucxres__consent">
                   <input required type="checkbox" name="consent" />
                   <span>

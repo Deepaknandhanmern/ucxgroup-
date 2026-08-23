@@ -1,37 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-
-interface Founder {
-  index: string;
-  initials: string;
-  name: string;
-  role: string;
-  bio: string;
-  focus: string[];
-  image: string;
-}
-
-const FOUNDERS: Founder[] = [
-  {
-    index: "01",
-    initials: "SR",
-    name: "Shangeeth Raju",
-    role: "Co-Founder | BIM & Digital Delivery",
-    bio: "Leads UCX's BIM, digital delivery and technology strategy, with a focus on coordinated project workflows and scalable digital delivery.",
-    focus: ["BIM", "Digital Delivery", "Technology", "Project Strategy"],
-    image: "/brand/founders/shangeeth-raju.png",
-  },
-  {
-    index: "02",
-    initials: "BH",
-    name: "Bhuvaneshwari",
-    role: "Co-Founder | Interiors & Business",
-    bio: "Leads UCX's interiors and business development direction, connecting design capability with client requirements and commercial growth.",
-    focus: ["Interiors", "Business Development", "Client Strategy", "Growth"],
-    image: "/brand/founders/bhuvaneshwari.png",
-  },
-];
+import Link from "next/link";
+import { TEAM } from "@/lib/team";
 
 function FounderPhoto({ src, alt, initials }: { src: string; alt: string; initials: string }) {
   const [ok, setOk] = useState(true);
@@ -103,11 +74,13 @@ export default function Founders() {
         </p>
 
         <div className="roster">
-          {FOUNDERS.map((f) => (
+          {TEAM.map((f) => (
             <div className="founder" key={f.index}>
               <span className="founder-index" aria-hidden="true">{f.index}</span>
               <div className="founder-body">
-                <h3 className="name">{f.name}</h3>
+                <h3 className="name">
+                  <Link href={`/team/${f.slug}`}>{f.name}</Link>
+                </h3>
                 <span className="role">{f.role}</span>
 
                 <div className="photo-flip" tabIndex={0}>
@@ -127,6 +100,12 @@ export default function Founders() {
                         <span key={item}>{item}</span>
                       ))}
                     </div>
+                    <Link className="profile-link" href={`/team/${f.slug}`}>
+                      View Full Profile
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M5 12h13M13 6l6 6-6 6" />
+                      </svg>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -135,13 +114,13 @@ export default function Founders() {
         </div>
 
         <div className="team-cta-row">
-          <a href="#link-company-leadership-and-team" className="team-cta">
+          <Link href="/team" className="team-cta">
             Meet the UCX Team
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
     </div>

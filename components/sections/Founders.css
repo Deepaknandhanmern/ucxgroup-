@@ -147,6 +147,11 @@
   color: var(--dark);
   margin-bottom: 6px;
 }
+.ucx-founders .name a {
+  color: inherit; text-decoration: none;
+  transition: color .25s var(--ease);
+}
+.ucx-founders .name a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 .ucx-founders .role {
   font-size: 12.5px;
@@ -270,6 +275,17 @@
   border-color: var(--accent);
   color: var(--bg-deep);
 }
+
+.ucx-founders .profile-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 20px;
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent); text-decoration: none;
+  transition: gap .3s var(--ease);
+}
+.ucx-founders .profile-link svg { width: 13px; height: 13px; }
+.ucx-founders .profile-link:hover { gap: 12px; }
 
 /* ---- CTA ---- */
 .ucx-founders .team-cta-row {

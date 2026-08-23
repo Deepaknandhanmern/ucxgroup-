@@ -52,7 +52,7 @@
 .ucx-about .wrapper {
   position: relative; z-index: 1;
   max-width: 980px; margin: 0 auto;
-  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
+  padding: clamp(56px,6vw,90px) clamp(20px,6vw,80px);
 }
 
 /* ---------- kinetic type ---------- */
