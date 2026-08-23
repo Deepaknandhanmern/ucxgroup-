@@ -1,5 +1,5 @@
 // SplitForms access key — public by design (identifies the form/inbox, not a secret credential)
-export const SPLITFORMS_ACCESS_KEY = "96ce3dfdd5fb445485af725b9133398b";
+export const SPLITFORMS_ACCESS_KEY = "e7000758ec7e493f9685a75d116a8f1e";
 
 export async function submitToSplitForms(
   payload: Record<string, string>
