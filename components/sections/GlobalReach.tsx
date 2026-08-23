@@ -4,14 +4,17 @@ import { useEffect, useRef } from "react";
 import { WorldMap } from "@/components/ui/WorldMap";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
-const REGIONS = ["India", "GCC", "Southeast Asia", "Global"];
+const REGIONS = ["India", "GCC", "Southeast Asia", "UK", "USA", "Australia"];
 const TAGS = ["International Delivery", "Remote Collaboration", "Dedicated Teams"];
 
+// Coimbatore, Tamil Nadu — every delivery connection on the map originates here.
 const INDIA = { lat: 11.0168, lng: 76.9558, label: "India" };
 const NODES = [
   { lat: 25.2048, lng: 55.2708, label: "GCC" },
   { lat: 1.3521, lng: 103.8198, label: "Southeast Asia" },
-  { lat: 51.5074, lng: -0.1278, label: "Global" }, // UK · US · Australia
+  { lat: 51.5074, lng: -0.1278, label: "UK" },
+  { lat: 40.7128, lng: -74.006, label: "USA" },
+  { lat: -33.8688, lng: 151.2093, label: "Australia" },
 ];
 const MAP_DOTS = NODES.map((n) => ({ start: INDIA, end: n }));
 
@@ -67,7 +70,9 @@ export default function GlobalReach() {
 
           <div className="regions">
             {REGIONS.map((r) => (
-              <span key={r}>{r}</span>
+              <span key={r} className={r === "India" ? "is-origin" : undefined}>
+                {r}
+              </span>
             ))}
           </div>
           <div className="tags">

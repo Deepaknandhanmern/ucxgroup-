@@ -49,6 +49,7 @@ import "@/components/sections/CapabilityTabs.css";
 import "@/components/sections/Capabilities.css";
 import "@/components/sections/DigitalProjectExperience.css";
 import "@/components/ui/FileCard.css";
+import "@/components/ui/CardThumb.css";
 import "@/components/ui/Breadcrumbs.css";
 import "@/components/ui/SectionRail.css";
 import "@/components/ui/Toast.css";

@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { INSIGHT_FILTERS, type Post, type InsightCategory } from "@/lib/insights";
-import FileCard, { type FileFormat } from "@/components/ui/FileCard";
+import { CASE_STUDY_FILTERS, type CaseStudy, type CaseStudyCategory } from "@/lib/case-studies";
+import { RESOURCE_FILTERS, type ResourceItem, type ResourceCategory } from "@/lib/resources";
+import CardThumb from "@/components/ui/CardThumb";
 import SectionRail from "@/components/ui/SectionRail";
 
 const RAIL_SECTIONS = [
@@ -12,6 +14,8 @@ const RAIL_SECTIONS = [
   { id: "resources", label: "Resources" },
   { id: "closing", label: "Get Started" },
 ];
+
+const PREVIEW_COUNT = 3;
 
 function initials(name: string): string {
   return name
@@ -85,10 +89,48 @@ function BlogCard({ post }: { post: Post }) {
   );
 }
 
+/* ---------- shared preview card, used by Project Knowledge + Resources ---------- */
+function PreviewCard({
+  href,
+  refLabel,
+  badge,
+  image,
+  title,
+  category,
+}: {
+  href: string;
+  refLabel: string;
+  badge: string;
+  image?: string;
+  title: string;
+  category: string;
+}) {
+  return (
+    <a className="ins-preview-card" href={href} data-reveal>
+      <div className="ins-preview-thumb">
+        <div className="ins-preview-row">
+          <span className="ins-preview-ref">{refLabel}</span>
+          <span className="ins-preview-badge">{badge}</span>
+        </div>
+        <CardThumb src={image} alt={title} />
+        <span className="ins-preview-cat">{category}</span>
+      </div>
+      <h4>{title}</h4>
+    </a>
+  );
+}
+
 /* ---------- Ideas That Move Projects Forward ---------- */
 function IdeasSection({ posts }: { posts: Post[] }) {
   const [activeCat, setActiveCat] = useState<InsightCategory | "all">("all");
+  const [showAll, setShowAll] = useState(false);
   const list = activeCat === "all" ? posts : posts.filter((p) => p.category === activeCat);
+  const visible = showAll ? list : list.slice(0, PREVIEW_COUNT);
+
+  function selectCat(cat: InsightCategory | "all") {
+    setActiveCat(cat);
+    setShowAll(false);
+  }
 
   return (
     <section className="ins-section" id="ideas">
@@ -105,16 +147,16 @@ function IdeasSection({ posts }: { posts: Post[] }) {
           <button
             key={f.cat}
             className={`ins-chip${activeCat === f.cat ? " is-active" : ""}`}
-            onClick={() => setActiveCat(f.cat)}
+            onClick={() => selectCat(f.cat)}
           >
             {f.label}
           </button>
         ))}
       </div>
 
-      {list.length > 0 ? (
+      {visible.length > 0 ? (
         <div className="ins-grid">
-          {list.map((p) => (
+          {visible.map((p) => (
             <BlogCard post={p} key={p.slug} />
           ))}
         </div>
@@ -123,44 +165,24 @@ function IdeasSection({ posts }: { posts: Post[] }) {
           No articles in this category yet — check back soon.
         </p>
       )}
+
+      {!showAll && list.length > PREVIEW_COUNT && (
+        <button type="button" className="ins-section-cta" onClick={() => setShowAll(true)} data-reveal>
+          See More
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </button>
+      )}
     </section>
   );
 }
 
 /* ---------- From Projects to Knowledge ---------- */
-type KnowledgeCat = "case-studies" | "project-lessons" | "delivery-insights";
-
-const KNOWLEDGE_FILTERS: { cat: KnowledgeCat | "all"; label: string }[] = [
-  { cat: "all", label: "All" },
-  { cat: "case-studies", label: "Case Studies" },
-  { cat: "project-lessons", label: "Project Lessons" },
-  { cat: "delivery-insights", label: "Delivery Insights" },
-];
-
-const KNOWLEDGE_PREVIEW: { cat: KnowledgeCat; ref: string; label: string; title: string }[] = [
-  {
-    cat: "case-studies",
-    ref: "CS-01",
-    label: "Institutional",
-    title: "Structural documentation & multidisciplinary coordination for a mixed-use cultural campus",
-  },
-  {
-    cat: "case-studies",
-    ref: "CS-02",
-    label: "Infrastructural",
-    title: "Landscape modeling & streetscape coordination for an urban infrastructure corridor",
-  },
-  {
-    cat: "case-studies",
-    ref: "CS-04",
-    label: "Hospitality",
-    title: "Facade documentation with multidisciplinary coordination for a hospitality development",
-  },
-];
-
-function ProjectKnowledgeSection() {
-  const [activeCat, setActiveCat] = useState<KnowledgeCat | "all">("all");
-  const list = activeCat === "all" ? KNOWLEDGE_PREVIEW : KNOWLEDGE_PREVIEW.filter((k) => k.cat === activeCat);
+function ProjectKnowledgeSection({ items }: { items: CaseStudy[] }) {
+  const [activeCat, setActiveCat] = useState<CaseStudyCategory | "all">("all");
+  const filtered = activeCat === "all" ? items : items.filter((c) => c.cat === activeCat);
+  const visible = filtered.slice(0, PREVIEW_COUNT);
 
   return (
     <section className="ins-section" id="knowledge">
@@ -170,7 +192,7 @@ function ProjectKnowledgeSection() {
       </div>
 
       <div className="ins-filters" data-reveal>
-        {KNOWLEDGE_FILTERS.map((f) => (
+        {CASE_STUDY_FILTERS.map((f) => (
           <button
             key={f.cat}
             className={`ins-chip${activeCat === f.cat ? " is-active" : ""}`}
@@ -181,14 +203,18 @@ function ProjectKnowledgeSection() {
         ))}
       </div>
 
-      {list.length > 0 ? (
-        <div className="ins-teaser-grid">
-          {list.map((k) => (
-            <a className="ins-teaser-card" href="/case-studies" key={k.ref} data-reveal>
-              <span className="ref">{k.ref}</span>
-              <h4>{k.title}</h4>
-              <span className="cat">{k.label}</span>
-            </a>
+      {visible.length > 0 ? (
+        <div className="ins-preview-grid">
+          {visible.map((c) => (
+            <PreviewCard
+              key={c.ref}
+              href="/case-studies"
+              refLabel={c.ref}
+              badge={c.pages}
+              image={c.image}
+              title={c.title}
+              category={c.label}
+            />
           ))}
         </div>
       ) : (
@@ -198,7 +224,7 @@ function ProjectKnowledgeSection() {
       )}
 
       <a className="ins-section-cta" href="/case-studies" data-reveal>
-        Explore Case Studies
+        See More
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M5 12h13M13 6l6 6-6 6" />
         </svg>
@@ -208,24 +234,10 @@ function ProjectKnowledgeSection() {
 }
 
 /* ---------- Practical Resources for Project Teams ---------- */
-type ResourceCat = "guides" | "templates" | "reports";
-
-const RESOURCE_FILTERS: { cat: ResourceCat | "all"; label: string }[] = [
-  { cat: "all", label: "All" },
-  { cat: "guides", label: "Guides" },
-  { cat: "templates", label: "Templates" },
-  { cat: "reports", label: "Reports" },
-];
-
-const RESOURCE_PREVIEW: { cat: ResourceCat; ref: string; title: string; format: FileFormat }[] = [
-  { cat: "guides", ref: "RS-01", title: "BIM Standards Guide for project teams", format: "pdf" },
-  { cat: "templates", ref: "RS-04", title: "Project Documentation Template", format: "doc" },
-  { cat: "reports", ref: "RS-07", title: "Annual Delivery Report", format: "pdf" },
-];
-
-function ResourcesSection() {
-  const [activeCat, setActiveCat] = useState<ResourceCat | "all">("all");
-  const list = activeCat === "all" ? RESOURCE_PREVIEW : RESOURCE_PREVIEW.filter((r) => r.cat === activeCat);
+function ResourcesSection({ items }: { items: ResourceItem[] }) {
+  const [activeCat, setActiveCat] = useState<ResourceCategory | "all">("all");
+  const filtered = activeCat === "all" ? items : items.filter((r) => r.cat === activeCat);
+  const visible = filtered.slice(0, PREVIEW_COUNT);
 
   return (
     <section className="ins-section" id="resources">
@@ -246,13 +258,18 @@ function ResourcesSection() {
         ))}
       </div>
 
-      {list.length > 0 ? (
-        <div className="ins-resource-grid">
-          {list.map((r) => (
-            <a className="ins-resource-card" href="/resources" key={r.ref} data-reveal>
-              <FileCard format={r.format} />
-              <span className="title">{r.title}</span>
-            </a>
+      {visible.length > 0 ? (
+        <div className="ins-preview-grid">
+          {visible.map((r) => (
+            <PreviewCard
+              key={r.ref}
+              href="/resources"
+              refLabel={r.ref}
+              badge={r.format}
+              image={r.image}
+              title={r.title}
+              category={r.label}
+            />
           ))}
         </div>
       ) : (
@@ -262,7 +279,7 @@ function ResourcesSection() {
       )}
 
       <a className="ins-section-cta" href="/resources" data-reveal>
-        Explore Resources
+        See More
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M5 12h13M13 6l6 6-6 6" />
         </svg>
@@ -271,7 +288,15 @@ function ResourcesSection() {
   );
 }
 
-export default function Insights({ posts }: { posts: Post[] }) {
+export default function Insights({
+  posts,
+  caseStudies,
+  resources,
+}: {
+  posts: Post[];
+  caseStudies: CaseStudy[];
+  resources: ResourceItem[];
+}) {
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -321,8 +346,8 @@ export default function Insights({ posts }: { posts: Post[] }) {
         </div>
 
         <IdeasSection posts={posts} />
-        <ProjectKnowledgeSection />
-        <ResourcesSection />
+        <ProjectKnowledgeSection items={caseStudies} />
+        <ResourcesSection items={resources} />
 
         <div className="ins-closing" id="closing" data-reveal>
           <h3>Keep Building Your Knowledge.</h3>

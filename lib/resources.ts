@@ -8,6 +8,8 @@ export interface ResourceItem {
   ref: string;
   format: FileFormat;
   title: string;
+  /** Optional thumbnail — falls back to a placeholder until real cover images exist. */
+  image?: string;
 }
 
 export const RESOURCE_FILTERS: { cat: ResourceCategory | "all"; label: string }[] = [

@@ -11,12 +11,15 @@ const STEPS = [
   { n: "03", label: "Deliver", desc: "Consistent, quality-controlled output handed off on schedule." },
 ];
 
+// Coimbatore, Tamil Nadu — every delivery connection on the map originates here.
 const INDIA = { lat: 11.0168, lng: 76.9558, label: "India" };
 
 const NODES = [
   { label: "GCC", caption: "UAE · Saudi · Qatar", lat: 25.2048, lng: 55.2708 },
   { label: "Southeast Asia", caption: "Singapore · Malaysia", lat: 1.3521, lng: 103.8198 },
-  { label: "Global", caption: "UK · US · Australia", lat: 51.5074, lng: -0.1278 },
+  { label: "UK", caption: "United Kingdom", lat: 51.5074, lng: -0.1278 },
+  { label: "USA", caption: "United States", lat: 40.7128, lng: -74.006 },
+  { label: "Australia", caption: "Australia", lat: -33.8688, lng: 151.2093 },
 ];
 
 const MAP_DOTS = NODES.map((n) => ({ start: INDIA, end: n }));
@@ -115,8 +118,8 @@ export default function GlobalDelivery() {
             <div className="legend-item legend-hub">
               <span className="legend-dot"></span>
               <div>
-                <strong>India</strong>
-                <em>Delivery Origin</em>
+                <strong>Tamil Nadu, India</strong>
+                <em>Delivery Origin &middot; Coimbatore</em>
               </div>
             </div>
             {NODES.map((n) => (

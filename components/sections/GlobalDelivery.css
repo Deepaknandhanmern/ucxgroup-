@@ -116,7 +116,6 @@
   width: 7px; height: 7px; border-radius: 50%; flex: none;
   background: var(--accent-dim); box-shadow: 0 0 0 3px var(--line);
 }
-.ucx-global .legend-hub .legend-dot { width: 9px; height: 9px; background: var(--mint); box-shadow: 0 0 0 4px rgba(145,242,181,0.3); }
 .ucx-global .legend-item strong {
   display: block;
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; font-size: 14px;
@@ -125,6 +124,21 @@
 .ucx-global .legend-item em {
   display: block; font-style: normal; font-size: 11.5px; color: var(--accent-dim); margin-top: 2px;
 }
+
+/* India — the delivery origin — highlighted in the flag's saffron/green */
+.ucx-global .legend-hub {
+  align-items: center;
+  padding: 10px 18px 10px 14px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255,153,51,.12), rgba(19,136,8,.1));
+  border: 1px solid rgba(255,153,51,.35);
+}
+.ucx-global .legend-hub .legend-dot {
+  width: 9px; height: 9px;
+  background: linear-gradient(180deg, #FF9933 34%, #FFFFFF 34% 66%, #138808 66%);
+  box-shadow: 0 0 0 4px rgba(255,153,51,.22);
+}
+.ucx-global .legend-hub strong { color: #B15900; }
 
 @media (max-width: 760px) {
   .ucx-global .map-globe { width: min(440px,92vw); }

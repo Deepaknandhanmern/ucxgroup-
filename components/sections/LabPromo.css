@@ -91,6 +91,11 @@
   transition: background .3s var(--ease), transform .3s var(--ease);
 }
 .ucx-labpromo .tags span:hover { background: rgba(255,255,255,.55); transform: translateY(-2px); }
+.ucx-labpromo .tags span { cursor: pointer; outline: none; }
+.ucx-labpromo .tags span.is-active {
+  background: var(--accent); color: var(--white); border-color: var(--accent);
+  transform: translateY(-2px);
+}
 
 .ucx-labpromo .cta {
   display: inline-flex; align-items: center; gap: 12px;
@@ -117,7 +122,7 @@
 .ucx-labpromo .orbit-ring { fill: none; stroke: rgba(0,53,45,.22); stroke-width: 1; stroke-dasharray: 2 6; }
 .ucx-labpromo .orbit-spin-slow { transform-origin: 160px 160px; animation: lpSpin 34s linear infinite; }
 .ucx-labpromo .orbit-spin-rev { transform-origin: 160px 160px; animation: lpSpin 26s linear infinite reverse; }
-.ucx-labpromo .node { fill: var(--accent); animation: lpNodePulse 2.6s ease-in-out infinite; }
+.ucx-labpromo .node { fill: var(--accent); animation: lpNodePulse 2.6s ease-in-out infinite; transition: r .3s var(--ease), fill .3s var(--ease); }
 .ucx-labpromo .orbit-core {
   fill: var(--accent);
   filter: drop-shadow(0 12px 24px rgba(0,53,45,.35));
@@ -131,6 +136,21 @@
   0%, 100% { opacity: .55; transform: scale(1); }
   50% { opacity: 1; transform: scale(1.35); }
 }
+
+/* ---- interactive orbit nodes, synced with the tags on the left ---- */
+.ucx-labpromo .orbit-node { cursor: pointer; outline: none; }
+.ucx-labpromo .node-hit { fill: transparent; }
+.ucx-labpromo .orbit-node .node { animation: none; opacity: .7; }
+.ucx-labpromo .orbit-node.is-active .node,
+.ucx-labpromo .orbit-node:focus-visible .node { r: 9; fill: var(--white); opacity: 1; }
+.ucx-labpromo .node-label {
+  font-family: 'Atyp Display',sans-serif; font-weight: 600;
+  font-size: 10.5px; letter-spacing: .02em;
+  fill: var(--accent); opacity: .55;
+  transition: opacity .3s var(--ease);
+}
+.ucx-labpromo .orbit-node.is-active .node-label,
+.ucx-labpromo .orbit-node:focus-visible .node-label { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
   .ucx-labpromo *, .ucx-labpromo *::before, .ucx-labpromo *::after {

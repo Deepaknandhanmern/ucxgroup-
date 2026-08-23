@@ -6,6 +6,8 @@ export interface CaseStudy {
   ref: string;
   pages: string;
   title: string;
+  /** Optional thumbnail — falls back to a placeholder until real cover images exist. */
+  image?: string;
 }
 
 export const CASE_STUDY_FILTERS: { cat: CaseStudyCategory | "all"; label: string }[] = [

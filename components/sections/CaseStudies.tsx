@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { submitToSplitForms } from "@/lib/splitforms";
 import FileCard from "@/components/ui/FileCard";
+import CardThumb from "@/components/ui/CardThumb";
 import { CASE_STUDY_FILTERS, type CaseStudy } from "@/lib/case-studies";
 
 type CaseItem = CaseStudy;
@@ -131,16 +132,7 @@ export default function CaseStudies({ cases }: { cases: CaseItem[] }) {
                   <span className="ucxcs__ref">{c.ref}</span>
                   <span className="ucxcs__pages">{c.pages}</span>
                 </div>
-                <div className="ucxcs__filewrap ucxcs__filewrap--locked">
-                  <FileCard format="pdf" />
-                </div>
-                <span className="ucxcs__lock" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="5" y="11" width="14" height="9" rx="2" />
-                    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
-                  </svg>
-                  Preview locked
-                </span>
+                <CardThumb src={c.image} alt={c.title} />
                 <span className="ucxcs__cat">{c.label}</span>
               </div>
               <div className="ucxcs__body">
