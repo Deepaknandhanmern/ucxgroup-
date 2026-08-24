@@ -2,61 +2,79 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
-import { DIGITAL_EXPERIENCE_CATEGORIES } from "@/lib/digital-experience";
+import { DIGITAL_FILTERS, type DigitalCat, type Project } from "@/lib/projects";
 
-interface Cat {
-  id: string;
-  n: string;
-  name: string;
-  img: string;
-}
-
-const FILTERS = [{ id: "all", label: "All" }, ...DIGITAL_EXPERIENCE_CATEGORIES.map((c) => ({ id: c.id, label: c.name }))];
-
-function CatCard({ cat, index }: { cat: Cat; index: number }) {
+function ProjectCard({ project, index }: { project: Project; index: number }) {
+  const cardRef = useRef<HTMLAnchorElement>(null);
   const [imgOk, setImgOk] = useState(true);
+  const pending = useRef(false);
+
+  function onPointerMove(e: React.PointerEvent<HTMLAnchorElement>) {
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    if (!pending.current) {
+      pending.current = true;
+      requestAnimationFrame(() => {
+        el.style.setProperty("--cx", `${x}px`);
+        el.style.setProperty("--cy", `${y}px`);
+        pending.current = false;
+      });
+    }
+  }
 
   return (
-    <div id={cat.id} className="dpe-card" data-reveal style={{ transitionDelay: `${(index % 6) * 60}ms` }}>
+    <a
+      className="dpe-card"
+      href={`/projects/${project.slug}`}
+      ref={cardRef}
+      data-reveal
+      style={{ transitionDelay: `${(index % 6) * 60}ms` }}
+      onPointerMove={onPointerMove}
+    >
       <div className="dpe-media">
         {imgOk ? (
-          <img src={cat.img} alt={cat.name} loading="lazy" onError={() => setImgOk(false)} />
+          <img src={project.image} alt={project.title} loading="lazy" onError={() => setImgOk(false)} />
         ) : (
           <div className="dpe-media-fallback" aria-hidden="true">
-            <span>{cat.name}</span>
+            <span>{project.discipline}</span>
           </div>
         )}
+        <span className="dpe-cursor">View</span>
       </div>
 
       <div className="dpe-content">
         <div className="dpe-meta">
           <div>
-            <span className="k">Category</span>
-            <span className="v">{cat.n}</span>
+            <span className="k">Discipline</span>
+            <span className="v">{project.discipline}</span>
+          </div>
+          <div>
+            <span className="k">Location</span>
+            <span className="v">{project.location}</span>
           </div>
         </div>
 
         <div className="dpe-bottom">
-          <h3>{cat.name}</h3>
+          <h3>{project.title}</h3>
+          <span className="dpe-tag">View project</span>
         </div>
       </div>
-    </div>
+    </a>
   );
 }
 
-export default function DigitalProjectExperience({ images }: { images: Record<string, string> }) {
+export default function DigitalProjectExperience({ projects }: { projects: Project[] }) {
   const sectRef = useRef<HTMLDivElement>(null);
   const bodyGlowRef = useCursorGlow<HTMLDivElement>();
-  const [activeCat, setActiveCat] = useState("all");
+  const [activeCat, setActiveCat] = useState<DigitalCat | "all">("all");
 
-  const categories: Cat[] = useMemo(
-    () => DIGITAL_EXPERIENCE_CATEGORIES.map((c) => ({ id: c.id, n: c.n, name: c.name, img: images[c.id] ?? c.defaultImage })),
-    [images]
-  );
-
+  const digitalProjects = useMemo(() => projects.filter((p) => p.digitalCategory), [projects]);
   const filtered = useMemo(
-    () => (activeCat === "all" ? categories : categories.filter((c) => c.id === activeCat)),
-    [activeCat, categories]
+    () => (activeCat === "all" ? digitalProjects : digitalProjects.filter((p) => p.digitalCategory === activeCat)),
+    [activeCat, digitalProjects]
   );
 
   // scroll reveal
@@ -107,11 +125,11 @@ export default function DigitalProjectExperience({ images }: { images: Record<st
             </p>
 
             <div className="dpe-filters">
-              {FILTERS.map((f) => (
+              {DIGITAL_FILTERS.map((f) => (
                 <button
-                  key={f.id}
-                  className={`dpe-chip${activeCat === f.id ? " is-active" : ""}`}
-                  onClick={() => setActiveCat(f.id)}
+                  key={f.cat}
+                  className={`dpe-chip${activeCat === f.cat ? " is-active" : ""}`}
+                  onClick={() => setActiveCat(f.cat)}
                 >
                   {f.label}
                 </button>
@@ -121,10 +139,10 @@ export default function DigitalProjectExperience({ images }: { images: Record<st
 
           <div className="dpe-list">
             {filtered.length > 0 ? (
-              filtered.map((c, i) => <CatCard cat={c} index={i} key={c.id} />)
+              filtered.map((p, i) => <ProjectCard project={p} index={i} key={p.slug} />)
             ) : (
               <p className="dpe-empty" data-reveal>
-                No categories match this filter yet — check back soon, or{" "}
+                No projects published in this category yet — check back soon, or{" "}
                 <a href="/contact">get in touch</a> about work in this space.
               </p>
             )}

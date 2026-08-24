@@ -3,8 +3,14 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { ProjectRow } from "@/lib/projects-db";
-import { CAT_LABELS, INTERIOR_CAT_LABELS, type Cat, type InteriorCat } from "@/lib/projects";
-import DigitalExperiencePanel from "@/components/dashboard/DigitalExperiencePanel";
+import {
+  CAT_LABELS,
+  INTERIOR_CAT_LABELS,
+  DIGITAL_CAT_LABELS,
+  type Cat,
+  type InteriorCat,
+  type DigitalCat,
+} from "@/lib/projects";
 
 type Tab = "built" | "interiors" | "digital";
 
@@ -86,6 +92,7 @@ export default function ProjectsListPage() {
   const [search, setSearch] = useState("");
   const [catFilter, setCatFilter] = useState<"all" | Cat>("all");
   const [interiorCatFilter, setInteriorCatFilter] = useState<"all" | InteriorCat>("all");
+  const [digitalCatFilter, setDigitalCatFilter] = useState<"all" | DigitalCat>("all");
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [bulkWorking, setBulkWorking] = useState(false);
 
@@ -113,26 +120,32 @@ export default function ProjectsListPage() {
     setDeletingId(null);
   }
 
-  // Interiors isn't a separate list — it's the subset of Projects that also
-  // carries an interior_category, same as the site's own /projects?filter=interiors view.
+  // Interiors and Digital Project Experience aren't separate lists — they're
+  // subsets of Projects that also carry an interior_category / digital_category,
+  // same as the site's own /projects?filter=interiors view and the
+  // /digital-project-experience page.
   const interiorProjects = useMemo(() => (projects ?? []).filter((p) => p.interior_category), [projects]);
+  const digitalProjects = useMemo(() => (projects ?? []).filter((p) => p.digital_category), [projects]);
 
   const filtered = useMemo(() => {
     if (!projects) return null;
     const q = search.trim().toLowerCase();
-    const source = tab === "interiors" ? interiorProjects : projects;
+    const source = tab === "interiors" ? interiorProjects : tab === "digital" ? digitalProjects : projects;
     return source.filter((p) => {
       if (tab === "interiors") {
         if (interiorCatFilter !== "all" && p.interior_category !== interiorCatFilter) return false;
-      } else if (tab === "built") {
+      } else if (tab === "digital") {
+        if (digitalCatFilter !== "all" && p.digital_category !== digitalCatFilter) return false;
+      } else {
         if (catFilter !== "all" && p.cat !== catFilter) return false;
       }
       if (q && !p.title.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [projects, interiorProjects, tab, search, catFilter, interiorCatFilter]);
+  }, [projects, interiorProjects, digitalProjects, tab, search, catFilter, interiorCatFilter, digitalCatFilter]);
 
-  const totalForTab = tab === "interiors" ? interiorProjects.length : projects?.length ?? 0;
+  const totalForTab =
+    tab === "interiors" ? interiorProjects.length : tab === "digital" ? digitalProjects.length : projects?.length ?? 0;
 
   function toggleOne(id: number) {
     setSelected((prev) => {
@@ -164,19 +177,15 @@ export default function ProjectsListPage() {
         <div>
           <h1 className="font-getho text-2xl font-bold text-neutral-900">Projects</h1>
           <p className="mt-1 text-sm text-neutral-500">
-            {tab === "digital"
-              ? "The 5 fixed Digital Project Experience categories."
-              : "New projects can be tagged with an interiors category to also appear on that tab."}
+            One shared list — a project shows on the Interiors or Digital Project Experience tab whenever it&apos;s tagged with that category.
           </p>
         </div>
-        {tab !== "digital" && (
-          <Link
-            href="/dashboard/projects/new"
-            className="rounded-lg bg-[#00352d] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#00473d]"
-          >
-            + New Project
-          </Link>
-        )}
+        <Link
+          href="/dashboard/projects/new"
+          className="rounded-lg bg-[#00352d] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#00473d]"
+        >
+          + New Project
+        </Link>
       </div>
 
       <div className="mt-5 flex overflow-hidden rounded-lg border border-neutral-300 w-fit">
@@ -209,101 +218,114 @@ export default function ProjectsListPage() {
         </button>
       </div>
 
-      {tab === "digital" ? (
-        <DigitalExperiencePanel />
+      {projects !== null && totalForTab > 0 && (
+        <div className="mt-4 flex flex-wrap items-center gap-3">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by title…"
+            className="w-full max-w-xs rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
+          />
+          {tab === "built" && (
+            <select
+              value={catFilter}
+              onChange={(e) => setCatFilter(e.target.value as "all" | Cat)}
+              className="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
+            >
+              <option value="all">All categories</option>
+              {(Object.keys(CAT_LABELS) as Cat[]).map((c) => (
+                <option key={c} value={c}>
+                  {CAT_LABELS[c]}
+                </option>
+              ))}
+            </select>
+          )}
+          {tab === "interiors" && (
+            <select
+              value={interiorCatFilter}
+              onChange={(e) => setInteriorCatFilter(e.target.value as "all" | InteriorCat)}
+              className="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
+            >
+              <option value="all">All interior categories</option>
+              {(Object.keys(INTERIOR_CAT_LABELS) as InteriorCat[]).map((c) => (
+                <option key={c} value={c}>
+                  {INTERIOR_CAT_LABELS[c]}
+                </option>
+              ))}
+            </select>
+          )}
+          {tab === "digital" && (
+            <select
+              value={digitalCatFilter}
+              onChange={(e) => setDigitalCatFilter(e.target.value as "all" | DigitalCat)}
+              className="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
+            >
+              <option value="all">All digital categories</option>
+              {(Object.keys(DIGITAL_CAT_LABELS) as DigitalCat[]).map((c) => (
+                <option key={c} value={c}>
+                  {DIGITAL_CAT_LABELS[c]}
+                </option>
+              ))}
+            </select>
+          )}
+          {filtered && (
+            <span className="text-sm text-neutral-500">
+              {filtered.length} of {totalForTab}
+            </span>
+          )}
+        </div>
+      )}
+
+      {selected.size > 0 && (
+        <div className="mt-3 flex items-center gap-3 rounded-lg border border-[#00352d]/20 bg-[#00352d]/[0.03] px-4 py-2.5">
+          <span className="text-sm font-medium text-neutral-700">{selected.size} selected</span>
+          <button
+            type="button"
+            disabled={bulkWorking}
+            onClick={bulkDelete}
+            className="text-sm font-medium text-red-600 hover:underline disabled:opacity-50"
+          >
+            Delete
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelected(new Set())}
+            className="ml-auto text-sm font-medium text-neutral-400 hover:text-neutral-700"
+          >
+            Clear
+          </button>
+        </div>
+      )}
+
+      {projects === null ? (
+        <p className="mt-8 text-sm text-neutral-500">Loading…</p>
+      ) : totalForTab === 0 ? (
+        <p className="mt-8 text-sm text-neutral-500">
+          {tab === "interiors"
+            ? "No projects tagged with an interiors category yet — set one when editing a project."
+            : tab === "digital"
+              ? "No projects tagged with a digital experience category yet — set one when editing a project."
+              : "No projects yet — add the first one."}
+        </p>
+      ) : filtered && filtered.length === 0 ? (
+        <p className="mt-8 text-sm text-neutral-500">No projects match your search/filters.</p>
       ) : (
-        <>
-          {projects !== null && totalForTab > 0 && (
-            <div className="mt-4 flex flex-wrap items-center gap-3">
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search by title…"
-                className="w-full max-w-xs rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
-              />
-              {tab === "built" ? (
-                <select
-                  value={catFilter}
-                  onChange={(e) => setCatFilter(e.target.value as "all" | Cat)}
-                  className="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
-                >
-                  <option value="all">All categories</option>
-                  {(Object.keys(CAT_LABELS) as Cat[]).map((c) => (
-                    <option key={c} value={c}>
-                      {CAT_LABELS[c]}
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <select
-                  value={interiorCatFilter}
-                  onChange={(e) => setInteriorCatFilter(e.target.value as "all" | InteriorCat)}
-                  className="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
-                >
-                  <option value="all">All interior categories</option>
-                  {(Object.keys(INTERIOR_CAT_LABELS) as InteriorCat[]).map((c) => (
-                    <option key={c} value={c}>
-                      {INTERIOR_CAT_LABELS[c]}
-                    </option>
-                  ))}
-                </select>
-              )}
-              {filtered && (
-                <span className="text-sm text-neutral-500">
-                  {filtered.length} of {totalForTab}
-                </span>
-              )}
-            </div>
-          )}
-
-          {selected.size > 0 && (
-            <div className="mt-3 flex items-center gap-3 rounded-lg border border-[#00352d]/20 bg-[#00352d]/[0.03] px-4 py-2.5">
-              <span className="text-sm font-medium text-neutral-700">{selected.size} selected</span>
-              <button
-                type="button"
-                disabled={bulkWorking}
-                onClick={bulkDelete}
-                className="text-sm font-medium text-red-600 hover:underline disabled:opacity-50"
-              >
-                Delete
-              </button>
-              <button
-                type="button"
-                onClick={() => setSelected(new Set())}
-                className="ml-auto text-sm font-medium text-neutral-400 hover:text-neutral-700"
-              >
-                Clear
-              </button>
-            </div>
-          )}
-
-          {projects === null ? (
-            <p className="mt-8 text-sm text-neutral-500">Loading…</p>
-          ) : totalForTab === 0 ? (
-            <p className="mt-8 text-sm text-neutral-500">
-              {tab === "interiors"
-                ? "No projects tagged with an interiors category yet — set one when editing a project."
-                : "No projects yet — add the first one."}
-            </p>
-          ) : filtered && filtered.length === 0 ? (
-            <p className="mt-8 text-sm text-neutral-500">No projects match your search/filters.</p>
-          ) : (
-            <ProjectTable
-              rows={filtered ?? []}
-              categoryLabel={(p) =>
-                tab === "interiors"
-                  ? (INTERIOR_CAT_LABELS[p.interior_category as InteriorCat] ?? p.interior_category ?? "")
-                  : (CAT_LABELS[p.cat as Cat] ?? p.cat)
-              }
-              selected={selected}
-              toggleOne={toggleOne}
-              toggleAll={toggleAll}
-              deletingId={deletingId}
-              onDelete={handleDelete}
-            />
-          )}
-        </>
+        <ProjectTable
+          rows={filtered ?? []}
+          categoryLabel={(p) =>
+            tab === "interiors"
+              ? (INTERIOR_CAT_LABELS[p.interior_category as InteriorCat] ?? p.interior_category ?? "")
+              : tab === "digital"
+                ? (DIGITAL_CAT_LABELS[p.digital_category as DigitalCat] ?? p.digital_category ?? "")
+                : (CAT_LABELS[p.cat as Cat] ?? p.cat)
+          }
+          selected={selected}
+          toggleOne={toggleOne}
+          toggleAll={toggleAll}
+          deletingId={deletingId}
+          onDelete={handleDelete}
+        />
       )}
     </div>
   );

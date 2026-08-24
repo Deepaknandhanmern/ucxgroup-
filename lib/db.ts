@@ -118,6 +118,7 @@ function runMigrations(conn: DatabaseSync) {
       slug TEXT UNIQUE NOT NULL,
       cat TEXT NOT NULL,
       interior_category TEXT,
+      digital_category TEXT,
       title TEXT NOT NULL,
       location TEXT NOT NULL,
       discipline TEXT NOT NULL,
@@ -130,15 +131,6 @@ function runMigrations(conn: DatabaseSync) {
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL
     );
-
-    -- Only holds a row per category the client has actually customized —
-    -- the public page falls back to each category's built-in default image
-    -- for any category with no row here.
-    CREATE TABLE IF NOT EXISTS digital_experience_images (
-      category_id TEXT PRIMARY KEY,
-      image TEXT NOT NULL,
-      updated_at TEXT NOT NULL
-    );
   `);
 
   // Existing databases created before these columns existed won't get them
@@ -146,6 +138,7 @@ function runMigrations(conn: DatabaseSync) {
   ensureColumn(conn, "blog_posts", "status", "status TEXT NOT NULL DEFAULT 'published'");
   ensureColumn(conn, "blog_posts", "publish_at", "publish_at TEXT");
   ensureColumn(conn, "enquiries", "read", "read INTEGER NOT NULL DEFAULT 0");
+  ensureColumn(conn, "projects", "digital_category", "digital_category TEXT");
 
   // One-time migration: seed the DB from the existing markdown posts the
   // first time this ever runs, so the switchover to DB-backed content
@@ -419,6 +412,23 @@ function runMigrations(conn: DatabaseSync) {
         now
       );
     }
+  }
+
+  // One-time backfill: give the 3 seed projects with an obvious discipline
+  // match a Digital Project Experience category, so that page isn't empty
+  // right after this feature ships. Guarded on "no project has one yet" so
+  // it never overwrites a category an admin has since changed.
+  const digitalCatCount = conn
+    .prepare("SELECT COUNT(*) as n FROM projects WHERE digital_category IS NOT NULL")
+    .get() as { n: number };
+  if (digitalCatCount.n === 0) {
+    const backfill: [string, string][] = [
+      ["bim-coordination-cultural-campus", "bim-vdc"],
+      ["scan-to-bim-urban-development", "scan-to-bim"],
+      ["asset-information-infrastructure-corridor", "as-built-bim"],
+    ];
+    const update = conn.prepare("UPDATE projects SET digital_category = ? WHERE slug = ?");
+    for (const [slug, cat] of backfill) update.run(cat, slug);
   }
 }
 

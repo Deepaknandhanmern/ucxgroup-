@@ -7,10 +7,13 @@ export type InteriorCat =
   | "custom-furniture"
   | "modular-interiors";
 
+export type DigitalCat = "bim-vdc" | "scan-to-bim" | "as-built-bim" | "digital-engineering" | "prefabrication";
+
 export interface Project {
   slug: string;
   cat: Cat;
   interiorCategory?: InteriorCat;
+  digitalCategory?: DigitalCat;
   title: string;
   location: string;
   discipline: string;
@@ -54,6 +57,23 @@ export const INTERIOR_CAT_LABELS: Record<InteriorCat, string> = {
   "residential-interiors": "Residential Interiors",
   "custom-furniture": "Custom Furniture",
   "modular-interiors": "Modular Interiors",
+};
+
+export const DIGITAL_FILTERS: { cat: DigitalCat | "all"; label: string }[] = [
+  { cat: "all", label: "All" },
+  { cat: "bim-vdc", label: "BIM & VDC" },
+  { cat: "scan-to-bim", label: "Scan-to-BIM" },
+  { cat: "as-built-bim", label: "As-Built BIM" },
+  { cat: "digital-engineering", label: "Digital Engineering" },
+  { cat: "prefabrication", label: "Prefabrication" },
+];
+
+export const DIGITAL_CAT_LABELS: Record<DigitalCat, string> = {
+  "bim-vdc": "BIM & VDC",
+  "scan-to-bim": "Scan-to-BIM",
+  "as-built-bim": "As-Built BIM",
+  "digital-engineering": "Digital Engineering",
+  prefabrication: "Prefabrication",
 };
 
 // Individual project data now lives in the dashboard's database (see

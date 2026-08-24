@@ -6,6 +6,7 @@ export interface ProjectRow {
   slug: string;
   cat: string;
   interior_category: string | null;
+  digital_category: string | null;
   title: string;
   location: string;
   discipline: string;
@@ -23,6 +24,7 @@ export interface ProjectInput {
   slug: string;
   cat: string;
   interiorCategory: string | null;
+  digitalCategory: string | null;
   title: string;
   location: string;
   discipline: string;
@@ -70,13 +72,14 @@ export function createProject(input: ProjectInput): ProjectRow {
   const now = new Date().toISOString();
   const result = db
     .prepare(
-      `INSERT INTO projects (slug, cat, interior_category, title, location, discipline, stage, technology, image, summary, body, scope, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO projects (slug, cat, interior_category, digital_category, title, location, discipline, stage, technology, image, summary, body, scope, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       input.slug,
       input.cat,
       input.interiorCategory,
+      input.digitalCategory,
       input.title,
       input.location,
       input.discipline,
@@ -95,12 +98,13 @@ export function createProject(input: ProjectInput): ProjectRow {
 export function updateProject(id: number, input: ProjectInput): ProjectRow | undefined {
   const now = new Date().toISOString();
   db.prepare(
-    `UPDATE projects SET slug = ?, cat = ?, interior_category = ?, title = ?, location = ?, discipline = ?, stage = ?, technology = ?, image = ?, summary = ?, body = ?, scope = ?, updated_at = ?
+    `UPDATE projects SET slug = ?, cat = ?, interior_category = ?, digital_category = ?, title = ?, location = ?, discipline = ?, stage = ?, technology = ?, image = ?, summary = ?, body = ?, scope = ?, updated_at = ?
      WHERE id = ?`
   ).run(
     input.slug,
     input.cat,
     input.interiorCategory,
+    input.digitalCategory,
     input.title,
     input.location,
     input.discipline,

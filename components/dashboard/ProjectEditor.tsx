@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FILTERS, INTERIOR_FILTERS } from "@/lib/projects";
+import { FILTERS, INTERIOR_FILTERS, DIGITAL_FILTERS } from "@/lib/projects";
 import type { ProjectRow } from "@/lib/projects-db";
 import UploadField from "@/components/dashboard/UploadField";
 
 const CATEGORIES = FILTERS.filter((f) => f.cat !== "all");
 const INTERIOR_CATEGORIES = INTERIOR_FILTERS.filter((f) => f.cat !== "all");
+const DIGITAL_CATEGORIES = DIGITAL_FILTERS.filter((f) => f.cat !== "all");
 
 export default function ProjectEditor({ project }: { project?: ProjectRow }) {
   const router = useRouter();
@@ -16,6 +17,7 @@ export default function ProjectEditor({ project }: { project?: ProjectRow }) {
   const [image, setImage] = useState(project?.image ?? "");
   const [cat, setCat] = useState(project?.cat ?? "commercial");
   const [interiorCategory, setInteriorCategory] = useState(project?.interior_category ?? "");
+  const [digitalCategory, setDigitalCategory] = useState(project?.digital_category ?? "");
   const [location, setLocation] = useState(project?.location ?? "");
   const [discipline, setDiscipline] = useState(project?.discipline ?? "");
   const [stage, setStage] = useState(project?.stage ?? "");
@@ -37,6 +39,7 @@ export default function ProjectEditor({ project }: { project?: ProjectRow }) {
       image,
       cat,
       interiorCategory: interiorCategory || null,
+      digitalCategory: digitalCategory || null,
       location,
       discipline,
       stage,
@@ -84,7 +87,7 @@ export default function ProjectEditor({ project }: { project?: ProjectRow }) {
 
       <UploadField label="Cover image" kind="image" value={image} onChange={setImage} />
 
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-3 gap-5">
         <label className={labelClass}>
           Category
           <select className={inputClass} value={cat} onChange={(e) => setCat(e.target.value as typeof cat)}>
@@ -107,6 +110,18 @@ export default function ProjectEditor({ project }: { project?: ProjectRow }) {
             ))}
           </select>
           <p className="mt-1 text-xs text-neutral-400">Set this too if it should also show under Interiors.</p>
+        </label>
+        <label className={labelClass}>
+          Digital experience category (optional)
+          <select className={inputClass} value={digitalCategory} onChange={(e) => setDigitalCategory(e.target.value)}>
+            <option value="">Not a digital experience project</option>
+            {DIGITAL_CATEGORIES.map((c) => (
+              <option key={c.cat} value={c.cat}>
+                {c.label}
+              </option>
+            ))}
+          </select>
+          <p className="mt-1 text-xs text-neutral-400">Set this too if it should also show under Digital Project Experience.</p>
         </label>
       </div>
 

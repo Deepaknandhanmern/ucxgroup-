@@ -1,5 +1,5 @@
 import "server-only";
-import type { Cat, InteriorCat, Project } from "@/lib/projects";
+import type { Cat, DigitalCat, InteriorCat, Project } from "@/lib/projects";
 import { listProjects, getProjectBySlug, type ProjectRow } from "@/lib/projects-db";
 
 function toProject(row: ProjectRow): Project {
@@ -7,6 +7,7 @@ function toProject(row: ProjectRow): Project {
     slug: row.slug,
     cat: row.cat as Cat,
     interiorCategory: row.interior_category ? (row.interior_category as InteriorCat) : undefined,
+    digitalCategory: row.digital_category ? (row.digital_category as DigitalCat) : undefined,
     title: row.title,
     location: row.location,
     discipline: row.discipline,

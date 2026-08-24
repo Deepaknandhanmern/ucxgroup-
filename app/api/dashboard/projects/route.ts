@@ -16,6 +16,7 @@ export async function POST(req: Request) {
     slug,
     cat: body.cat ?? "commercial",
     interiorCategory: body.interiorCategory ?? null,
+    digitalCategory: body.digitalCategory ?? null,
     title: body.title,
     location: body.location ?? "",
     discipline: body.discipline ?? "",

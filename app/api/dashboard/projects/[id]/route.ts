@@ -26,6 +26,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     slug,
     cat: body.cat ?? existing.cat,
     interiorCategory: body.interiorCategory ?? null,
+    digitalCategory: body.digitalCategory ?? null,
     title: body.title,
     location: body.location ?? "",
     discipline: body.discipline ?? "",
