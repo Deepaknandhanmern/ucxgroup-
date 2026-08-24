@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { GradientWave } from "@/components/ui/GradientWave";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -27,8 +28,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="relative isolate min-h-screen bg-white font-atyp">
-      <div className="absolute inset-0 -z-10 h-full w-full bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_100%_200px,#d4f5e2,transparent)]"></div>
+      <div className="absolute inset-0 -z-10 h-full w-full overflow-hidden">
+        <GradientWave
+          colors={["#ffffff", "#eafaf1", "#ffffff", "#d4f5e2", "#ffffff"]}
+          shadowPower={4}
+          deform={{ incline: 0.15, noiseAmp: 140, noiseFlow: 3, noiseSpeed: 6 }}
+        />
       </div>
       <header className="flex items-center justify-between border-b border-neutral-200 bg-white/80 px-6 py-4 backdrop-blur-sm">
         <div className="flex items-center gap-8">
