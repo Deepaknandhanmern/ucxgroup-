@@ -151,6 +151,7 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
               onChange={handleUpload}
               className="hidden"
             />
+            <p className="mt-1.5 text-xs text-neutral-400">Recommended: landscape 16:9, at least 1600×900px. JPG, PNG, WEBP or GIF, under 8MB.</p>
           </div>
         </div>
       </div>

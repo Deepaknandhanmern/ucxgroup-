@@ -70,6 +70,9 @@ export default function UploadField({
         )}
         <input ref={fileInputRef} type="file" accept={accept} onChange={handleUpload} className="hidden" />
       </div>
+      {kind === "image" && (
+        <p className="mt-1 text-xs text-neutral-400">Recommended: square, at least 1200×1200px. JPG, PNG, WEBP or GIF, under 15MB.</p>
+      )}
       {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
     </div>
   );
