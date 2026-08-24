@@ -35,7 +35,7 @@ export default function StatCard({
       />
       <div className="relative">
         <p className="text-sm font-medium text-neutral-500">{label}</p>
-        <p className="mt-1 text-3xl font-bold text-neutral-900">{value}</p>
+        <p className="mt-1 font-getho text-3xl font-bold text-neutral-900">{value}</p>
         <p className="mt-1 text-xs text-neutral-400">{detail}</p>
       </div>
     </Link>

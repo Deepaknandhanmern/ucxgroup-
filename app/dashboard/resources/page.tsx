@@ -69,7 +69,7 @@ export default function ResourcesDashboardPage() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-neutral-900">Resources</h1>
+        <h1 className="font-getho text-2xl font-bold text-neutral-900">Resources</h1>
         {editingId === null && (
           <button
             type="button"

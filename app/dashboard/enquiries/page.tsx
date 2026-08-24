@@ -47,7 +47,7 @@ export default function EnquiriesPage() {
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-neutral-900">Enquiries</h1>
+          <h1 className="font-getho text-2xl font-bold text-neutral-900">Enquiries</h1>
           {unreadCount > 0 && <p className="mt-1 text-sm text-neutral-500">{unreadCount} unread</p>}
         </div>
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- CSV file download, not a page */}

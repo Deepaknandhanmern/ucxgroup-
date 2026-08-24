@@ -31,7 +31,7 @@ export default function DashboardHome() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-neutral-900">Overview</h1>
+      <h1 className="font-getho text-2xl font-bold text-neutral-900">Overview</h1>
       <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3">
         {cards.map((c) => (
           <StatCard key={c.href} href={c.href} label={c.label} value={c.value} detail={c.detail} highlight={c.highlight} />

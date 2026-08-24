@@ -21,6 +21,11 @@
   --color-brand-secondary: var(--brand-secondary);
   --color-border: var(--border);
   --color-muted-foreground: var(--muted-foreground);
+  /* Site brand fonts (declared in components/shared/fonts.css, loaded via
+     the root layout) — exposed as font-getho / font-atyp utilities so
+     non-marketing UI (e.g. the dashboard) can match the site's typefaces. */
+  --font-getho: 'Getho', 'Atyp Display', Arial, sans-serif;
+  --font-atyp: 'Atyp Display', 'Helvetica Neue', Arial, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {

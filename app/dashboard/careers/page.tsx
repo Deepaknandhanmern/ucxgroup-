@@ -72,7 +72,7 @@ export default function CareersDashboardPage() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-neutral-900">Careers — Open Positions</h1>
+        <h1 className="font-getho text-2xl font-bold text-neutral-900">Careers — Open Positions</h1>
         {editingId === null && (
           <button
             type="button"

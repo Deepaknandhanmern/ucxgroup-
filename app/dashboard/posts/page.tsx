@@ -25,7 +25,7 @@ export default function PostsListPage() {
   return (
     <div>
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-neutral-900">Blog Posts</h1>
+        <h1 className="font-getho text-2xl font-bold text-neutral-900">Blog Posts</h1>
         <Link
           href="/dashboard/posts/new"
           className="rounded-lg bg-[#00352d] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#00473d]"

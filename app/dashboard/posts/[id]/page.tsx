@@ -13,7 +13,7 @@ export default async function EditPostPage({ params }: { params: Promise<{ id: s
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-neutral-900">Edit Post</h1>
+      <h1 className="mb-6 font-getho text-2xl font-bold text-neutral-900">Edit Post</h1>
       <PostEditor post={post} />
     </div>
   );
