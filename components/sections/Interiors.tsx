@@ -12,8 +12,7 @@ const SERVICES = [
     name: "Architecture & Planning",
     statement: "From Concept to Coordinated Design",
     deliverables: ["Concept development", "Space planning", "Architectural design", "Design development", "Planning support", "Design documentation"],
-    imgA: "/brand/interiors/svc-architecture-planning-a.jpg",
-    imgB: "/brand/interiors/svc-architecture-planning-b.jpg",
+    img: "/brand/interiors/svc-architecture-planning-a.jpg",
   },
   {
     id: "interior-solutions",
@@ -21,8 +20,7 @@ const SERVICES = [
     name: "Interior Solutions",
     statement: "Interior Design With Delivery in Mind",
     deliverables: ["Workplace interiors", "Commercial interiors", "Residential interiors", "Hospitality & retail", "Space planning", "Interior detailing"],
-    imgA: "/brand/interiors/svc-interior-solutions-a.jpg",
-    imgB: "/brand/interiors/svc-interior-solutions-b.jpg",
+    img: "/brand/interiors/svc-interior-solutions-a.jpg",
   },
   {
     id: "design-development",
@@ -30,8 +28,7 @@ const SERVICES = [
     name: "Design Development",
     statement: "Developing Ideas Into Buildable Solutions",
     deliverables: ["Design development", "Material coordination", "Technical detailing", "Design coordination", "Constructability considerations"],
-    imgA: "/brand/interiors/svc-design-development-a.jpg",
-    imgB: "/brand/interiors/svc-design-development-b.jpg",
+    img: "/brand/interiors/svc-design-development-a.jpg",
   },
   {
     id: "construction-documentation",
@@ -39,8 +36,7 @@ const SERVICES = [
     name: "Construction Documentation",
     statement: "Information That Can Be Built",
     deliverables: ["Working drawings", "Detailed drawings", "BIM documentation", "Interior documentation", "Schedules", "Drawing coordination"],
-    imgA: "/brand/interiors/svc-construction-documentation-a.jpg",
-    imgB: "/brand/interiors/svc-construction-documentation-b.jpg",
+    img: "/brand/interiors/svc-construction-documentation-a.jpg",
   },
   {
     id: "bim-integrated-interiors",
@@ -48,8 +44,7 @@ const SERVICES = [
     name: "BIM-Integrated Interiors",
     statement: "Where Interior Design Meets Digital Delivery",
     deliverables: ["Interior BIM", "Furniture modelling", "Finish schedules", "Detailed interiors", "Coordination", "Fabrication-ready information"],
-    imgA: "/brand/interiors/svc-bim-integrated-interiors-a.jpg",
-    imgB: "/brand/interiors/svc-bim-integrated-interiors-b.jpg",
+    img: "/brand/interiors/svc-bim-integrated-interiors-a.jpg",
   },
 ];
 
@@ -214,30 +209,26 @@ export default function Interiors() {
         <div className="services">
           {SERVICES.map((s) => (
             <div id={s.id} className="svc-tile" key={s.n} data-reveal tabIndex={0}>
-              <div className="svc-card svc-tile-front">
-                <span className="svc-index">{s.n}</span>
-                <div className="svc-media">
-                  <Ph src={s.imgA} alt={s.name} className="svc-img svc-img-a" />
-                  <Ph src={s.imgB} alt={s.name} className="svc-img svc-img-b" />
-                </div>
-                <h3 className="svc-name">{s.name}</h3>
-                <span className="svc-cue" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </span>
+              <div className="svc-media">
+                <Ph src={s.img} alt={s.name} className="svc-img" />
               </div>
-              <div className="svc-tile-overlay">
-                <span className="svc-index">{s.n}</span>
-                <p className="svc-statement">{s.statement}</p>
-                <ul className="svc-deliverables">
-                  {s.deliverables.map((d) => (
-                    <li key={d}>
-                      <CheckDot />
-                      {d}
-                    </li>
-                  ))}
-                </ul>
+              <div className="svc-scrim" aria-hidden="true"></div>
+              <span className="svc-index" aria-hidden="true">{s.n}</span>
+              <div className="svc-content">
+                <h3 className="svc-name">{s.name}</h3>
+                <div className="svc-reveal">
+                  <div className="svc-reveal-inner">
+                    <p className="svc-statement">{s.statement}</p>
+                    <ul className="svc-deliverables">
+                      {s.deliverables.map((d) => (
+                        <li key={d}>
+                          <CheckDot />
+                          {d}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
