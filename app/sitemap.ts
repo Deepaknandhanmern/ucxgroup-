@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { PROJECTS } from "@/lib/projects";
+import { getAllProjects } from "@/lib/projects-content";
 import { getAllInsightPosts } from "@/lib/insights-content";
 
 // Reads posts from the dashboard's database — force-dynamic keeps this out
@@ -44,7 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: route.priority,
   }));
 
-  const projectEntries: MetadataRoute.Sitemap = PROJECTS.map((p) => ({
+  const projectEntries: MetadataRoute.Sitemap = getAllProjects().map((p) => ({
     url: `${BASE_URL}/projects/${p.slug}`,
     lastModified: now,
     changeFrequency: "monthly",

@@ -1,10 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { CAT_LABELS, PROJECTS } from "@/lib/projects";
+import { CAT_LABELS, type Project } from "@/lib/projects";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
-const FEATURED = PROJECTS.slice(0, 8);
 const MAX_VISIBLE = 7;
 const HALF = 3;
 
@@ -58,11 +57,21 @@ function ProjectImage({ src, alt, discipline }: { src: string; alt: string; disc
 
 export default function GalleryArc() {
   const glowRef = useCursorGlow<HTMLDivElement>();
-  const total = FEATURED.length;
+  // Fetched client-side (rather than passed as a server prop) so the
+  // homepage itself can stay statically generated instead of becoming
+  // force-dynamic just for this one decorative section.
+  const [featured, setFeatured] = useState<Project[]>([]);
+  const total = featured.length;
   const needsPagination = total > MAX_VISIBLE;
   const [center, setCenter] = useState(0);
   const [hovered, setHovered] = useState<number | null>(null);
   const [spread, setSpread] = useState(1);
+
+  useEffect(() => {
+    fetch("/api/projects")
+      .then((r) => r.json())
+      .then((data: { projects: Project[] }) => setFeatured(data.projects.slice(0, 8)));
+  }, []);
 
   useEffect(() => {
     function onResize() {
@@ -110,7 +119,7 @@ export default function GalleryArc() {
 
       <div className="fan-stage">
         <div className="fan-track" onMouseLeave={() => setHovered(null)}>
-          {FEATURED.map((p, i) => {
+          {featured.map((p, i) => {
             const slot = slotFor(i);
             let style: React.CSSProperties;
 
@@ -186,7 +195,7 @@ export default function GalleryArc() {
             </svg>
           </button>
           <div className="arc-dots">
-            {FEATURED.map((p, i) => (
+            {featured.map((p, i) => (
               <button
                 type="button"
                 key={p.slug}

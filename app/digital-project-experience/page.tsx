@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
 import DigitalProjectExperience from "@/components/sections/DigitalProjectExperience";
+import { getDigitalExperienceImages } from "@/lib/digital-experience-db";
+
+// Reads category images straight from the dashboard's database on every
+// request — never statically prerendered, so edits show up live.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Digital Project Experience",
@@ -8,5 +13,5 @@ export const metadata: Metadata = {
 };
 
 export default function DigitalProjectExperiencePage() {
-  return <DigitalProjectExperience />;
+  return <DigitalProjectExperience images={getDigitalExperienceImages()} />;
 }

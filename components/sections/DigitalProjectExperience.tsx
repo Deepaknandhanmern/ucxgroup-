@@ -2,18 +2,18 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
+import { DIGITAL_EXPERIENCE_CATEGORIES } from "@/lib/digital-experience";
 
-const CATEGORIES = [
-  { id: "bim-vdc", n: "01", name: "BIM & VDC", img: "/brand/digital/cat-bim-vdc.jpg" },
-  { id: "scan-to-bim", n: "02", name: "Scan-to-BIM", img: "/brand/digital/cat-scan-to-bim.jpg" },
-  { id: "as-built-bim", n: "03", name: "As-Built BIM", img: "/brand/digital/cat-as-built-bim.jpg" },
-  { id: "digital-engineering", n: "04", name: "Digital Engineering", img: "/brand/digital/cat-digital-engineering.jpg" },
-  { id: "prefabrication", n: "05", name: "Prefabrication", img: "/brand/digital/cat-prefabrication.jpg" },
-];
+interface Cat {
+  id: string;
+  n: string;
+  name: string;
+  img: string;
+}
 
-const FILTERS = [{ id: "all", label: "All" }, ...CATEGORIES.map((c) => ({ id: c.id, label: c.name }))];
+const FILTERS = [{ id: "all", label: "All" }, ...DIGITAL_EXPERIENCE_CATEGORIES.map((c) => ({ id: c.id, label: c.name }))];
 
-function CatCard({ cat, index }: { cat: (typeof CATEGORIES)[number]; index: number }) {
+function CatCard({ cat, index }: { cat: Cat; index: number }) {
   const [imgOk, setImgOk] = useState(true);
 
   return (
@@ -44,14 +44,19 @@ function CatCard({ cat, index }: { cat: (typeof CATEGORIES)[number]; index: numb
   );
 }
 
-export default function DigitalProjectExperience() {
+export default function DigitalProjectExperience({ images }: { images: Record<string, string> }) {
   const sectRef = useRef<HTMLDivElement>(null);
   const bodyGlowRef = useCursorGlow<HTMLDivElement>();
   const [activeCat, setActiveCat] = useState("all");
 
+  const categories: Cat[] = useMemo(
+    () => DIGITAL_EXPERIENCE_CATEGORIES.map((c) => ({ id: c.id, n: c.n, name: c.name, img: images[c.id] ?? c.defaultImage })),
+    [images]
+  );
+
   const filtered = useMemo(
-    () => (activeCat === "all" ? CATEGORIES : CATEGORIES.filter((c) => c.id === activeCat)),
-    [activeCat]
+    () => (activeCat === "all" ? categories : categories.filter((c) => c.id === activeCat)),
+    [activeCat, categories]
   );
 
   // scroll reveal

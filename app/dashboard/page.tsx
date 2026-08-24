@@ -4,6 +4,7 @@ import { listJobOpenings } from "@/lib/job-openings-db";
 import { listCaseStudies } from "@/lib/case-studies-db";
 import { listResources } from "@/lib/resources-db";
 import { listEnquiries } from "@/lib/enquiries-db";
+import { listProjects } from "@/lib/projects-db";
 
 // Reads counts straight from the database on every visit — never
 // statically prerendered, so it never gets baked into the build output.
@@ -15,6 +16,8 @@ export default function DashboardHome() {
   const drafts = posts.filter((p) => p.status === "draft").length;
   const scheduled = posts.filter((p) => p.status === "scheduled").length;
   const jobs = listJobOpenings().length;
+  const projects = listProjects();
+  const interiorProjects = projects.filter((p) => p.interior_category).length;
   const caseStudies = listCaseStudies().length;
   const resources = listResources().length;
   const enquiries = listEnquiries();
@@ -26,6 +29,12 @@ export default function DashboardHome() {
       label: "Blog Posts",
       value: posts.length,
       detail: `${published} published · ${drafts} draft${scheduled > 0 ? ` · ${scheduled} scheduled` : ""}`,
+    },
+    {
+      href: "/dashboard/projects",
+      label: "Projects",
+      value: projects.length,
+      detail: `Built Environment · ${interiorProjects} in Interiors`,
     },
     { href: "/dashboard/case-studies", label: "Case Studies", value: caseStudies, detail: "in Project Knowledge" },
     { href: "/dashboard/resources", label: "Resources", value: resources, detail: "guides, templates, reports" },

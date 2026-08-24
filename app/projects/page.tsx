@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
 import FeaturedProjects from "@/components/sections/FeaturedProjects";
+import { getAllProjects } from "@/lib/projects-content";
+
+// Reads projects straight from the dashboard's database on every request —
+// never statically prerendered, so edits show up live.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Built Environment",
@@ -15,5 +20,5 @@ export const metadata: Metadata = {
 };
 
 export default function ProjectsPage() {
-  return <FeaturedProjects />;
+  return <FeaturedProjects projects={getAllProjects()} />;
 }

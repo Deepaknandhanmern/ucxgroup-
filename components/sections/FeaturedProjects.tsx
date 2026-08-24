@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CAT_LABELS, FILTERS, INTERIOR_FILTERS, PROJECTS, type Cat, type InteriorCat, type Project } from "@/lib/projects";
+import { CAT_LABELS, FILTERS, INTERIOR_FILTERS, type Cat, type InteriorCat, type Project } from "@/lib/projects";
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const cardRef = useRef<HTMLAnchorElement>(null);
@@ -69,20 +69,20 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   );
 }
 
-export default function FeaturedProjects() {
+export default function FeaturedProjects({ projects }: { projects: Project[] }) {
   const [activeCat, setActiveCat] = useState<Cat | "all">("all");
   const [activeInteriorCat, setActiveInteriorCat] = useState<InteriorCat | "all">("all");
   const [isInteriorsFilter, setIsInteriorsFilter] = useState(false);
   const sectRef = useRef<HTMLDivElement>(null);
 
-  const interiorProjects = PROJECTS.filter((p) => p.interiorCategory);
+  const interiorProjects = projects.filter((p) => p.interiorCategory);
   const list = isInteriorsFilter
     ? activeInteriorCat === "all"
       ? interiorProjects
       : interiorProjects.filter((p) => p.interiorCategory === activeInteriorCat)
     : activeCat === "all"
-      ? PROJECTS
-      : PROJECTS.filter((p) => p.cat === activeCat);
+      ? projects
+      : projects.filter((p) => p.cat === activeCat);
 
   useEffect(() => {
     const filter = new URLSearchParams(window.location.search).get("filter");
