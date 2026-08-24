@@ -49,13 +49,23 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             })}
           </nav>
         </div>
-        <button
-          type="button"
-          onClick={handleLogout}
-          className="text-sm font-medium text-neutral-500 hover:text-neutral-800"
-        >
-          Sign out
-        </button>
+        <div className="flex items-center gap-5">
+          <Link
+            href="/dashboard/settings"
+            className={`text-sm font-medium ${
+              pathname === "/dashboard/settings" ? "text-[#00352d]" : "text-neutral-500 hover:text-neutral-800"
+            }`}
+          >
+            Settings
+          </Link>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="text-sm font-medium text-neutral-500 hover:text-neutral-800"
+          >
+            Sign out
+          </button>
+        </div>
       </header>
       <main className="mx-auto max-w-5xl px-6 py-8">{children}</main>
     </div>

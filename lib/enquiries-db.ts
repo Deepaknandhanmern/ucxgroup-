@@ -1,6 +1,8 @@
 import "server-only";
 import db from "@/lib/db";
 
+export type EnquiryStatus = "new" | "contacted" | "closed";
+
 export interface EnquiryRow {
   id: number;
   created_at: string;
@@ -12,6 +14,7 @@ export interface EnquiryRow {
   message: string | null;
   data: string; // JSON blob of the full submitted payload
   read: number; // 0 or 1 — SQLite has no native boolean
+  status: EnquiryStatus;
 }
 
 export interface EnquiryInput {
@@ -46,6 +49,10 @@ export function createEnquiry(input: EnquiryInput): void {
 
 export function markEnquiryRead(id: number, read: boolean): void {
   db.prepare("UPDATE enquiries SET read = ? WHERE id = ?").run(read ? 1 : 0, id);
+}
+
+export function setEnquiryStatus(id: number, status: EnquiryStatus): void {
+  db.prepare("UPDATE enquiries SET status = ? WHERE id = ?").run(status, id);
 }
 
 export function deleteEnquiry(id: number): void {

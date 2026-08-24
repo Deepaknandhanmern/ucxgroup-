@@ -131,6 +131,17 @@ function runMigrations(conn: DatabaseSync) {
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL
     );
+
+    -- Single row (id always 1). Only exists once the client has changed the
+    -- password in-app — until then, checkPassword() falls back to the
+    -- DASHBOARD_PASSWORD env var, so nothing breaks for installs that never
+    -- use the change-password screen.
+    CREATE TABLE IF NOT EXISTS dashboard_auth (
+      id INTEGER PRIMARY KEY CHECK (id = 1),
+      password_hash TEXT NOT NULL,
+      salt TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
   `);
 
   // Existing databases created before these columns existed won't get them
@@ -138,6 +149,7 @@ function runMigrations(conn: DatabaseSync) {
   ensureColumn(conn, "blog_posts", "status", "status TEXT NOT NULL DEFAULT 'published'");
   ensureColumn(conn, "blog_posts", "publish_at", "publish_at TEXT");
   ensureColumn(conn, "enquiries", "read", "read INTEGER NOT NULL DEFAULT 0");
+  ensureColumn(conn, "enquiries", "status", "status TEXT NOT NULL DEFAULT 'new'");
   ensureColumn(conn, "projects", "digital_category", "digital_category TEXT");
 
   // One-time migration: seed the DB from the existing markdown posts the

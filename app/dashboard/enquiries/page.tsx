@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import type { EnquiryRow } from "@/lib/enquiries-db";
+import type { EnquiryRow, EnquiryStatus } from "@/lib/enquiries-db";
 
 const SOURCE_LABELS: Record<string, string> = {
   contact: "Contact Form",
@@ -15,12 +15,25 @@ const SOURCE_LABELS: Record<string, string> = {
   "collaboration-challenge": "Collaboration Lab",
 };
 
+const STATUS_LABELS: Record<EnquiryStatus, string> = {
+  new: "New",
+  contacted: "Contacted",
+  closed: "Closed",
+};
+
+const STATUS_BADGE: Record<EnquiryStatus, string> = {
+  new: "bg-blue-100 text-blue-800",
+  contacted: "bg-amber-100 text-amber-800",
+  closed: "bg-neutral-200 text-neutral-600",
+};
+
 export default function EnquiriesPage() {
   const [enquiries, setEnquiries] = useState<EnquiryRow[] | null>(null);
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [search, setSearch] = useState("");
   const [sourceFilter, setSourceFilter] = useState("all");
   const [readFilter, setReadFilter] = useState<"all" | "unread" | "read">("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | EnquiryStatus>("all");
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [bulkWorking, setBulkWorking] = useState(false);
 
@@ -42,13 +55,14 @@ export default function EnquiriesPage() {
       if (sourceFilter !== "all" && e.source !== sourceFilter) return false;
       if (readFilter === "unread" && e.read) return false;
       if (readFilter === "read" && !e.read) return false;
+      if (statusFilter !== "all" && e.status !== statusFilter) return false;
       if (q) {
         const haystack = [e.name, e.email, e.subject, e.message].filter(Boolean).join(" ").toLowerCase();
         if (!haystack.includes(q)) return false;
       }
       return true;
     });
-  }, [enquiries, search, sourceFilter, readFilter]);
+  }, [enquiries, search, sourceFilter, readFilter, statusFilter]);
 
   async function setRead(id: number, read: boolean) {
     setEnquiries((prev) => prev?.map((e) => (e.id === id ? { ...e, read: read ? 1 : 0 } : e)) ?? null);
@@ -56,6 +70,15 @@ export default function EnquiriesPage() {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ read }),
+    });
+  }
+
+  async function setStatus(id: number, status: EnquiryStatus) {
+    setEnquiries((prev) => prev?.map((e) => (e.id === id ? { ...e, status } : e)) ?? null);
+    await fetch(`/api/dashboard/enquiries/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
     });
   }
 
@@ -103,6 +126,23 @@ export default function EnquiriesPage() {
       )
     );
     setEnquiries((prev) => prev?.map((e) => (selected.has(e.id) ? { ...e, read: read ? 1 : 0 } : e)) ?? null);
+    setSelected(new Set());
+    setBulkWorking(false);
+  }
+
+  async function bulkSetStatus(status: EnquiryStatus) {
+    setBulkWorking(true);
+    const ids = Array.from(selected);
+    await Promise.all(
+      ids.map((id) =>
+        fetch(`/api/dashboard/enquiries/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status }),
+        })
+      )
+    );
+    setEnquiries((prev) => prev?.map((e) => (selected.has(e.id) ? { ...e, status } : e)) ?? null);
     setSelected(new Set());
     setBulkWorking(false);
   }
@@ -165,6 +205,16 @@ export default function EnquiriesPage() {
             <option value="unread">Unread</option>
             <option value="read">Read</option>
           </select>
+          <select
+            value={statusFilter}
+            onChange={(ev) => setStatusFilter(ev.target.value as "all" | EnquiryStatus)}
+            className="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
+          >
+            <option value="all">All statuses</option>
+            <option value="new">New</option>
+            <option value="contacted">Contacted</option>
+            <option value="closed">Closed</option>
+          </select>
           {filtered && filtered.length > 0 && (
             <label className="flex items-center gap-1.5 text-sm text-neutral-500">
               <input
@@ -198,6 +248,22 @@ export default function EnquiriesPage() {
           >
             Mark unread
           </button>
+          <select
+            disabled={bulkWorking}
+            defaultValue=""
+            onChange={(ev) => {
+              if (ev.target.value) bulkSetStatus(ev.target.value as EnquiryStatus);
+              ev.target.value = "";
+            }}
+            className="rounded-lg border border-neutral-300 bg-white px-2 py-1 text-sm font-medium text-neutral-600 disabled:opacity-50"
+          >
+            <option value="" disabled>
+              Set status…
+            </option>
+            <option value="new">New</option>
+            <option value="contacted">Contacted</option>
+            <option value="closed">Closed</option>
+          </select>
           <button
             type="button"
             disabled={bulkWorking}
@@ -227,6 +293,7 @@ export default function EnquiriesPage() {
           {(filtered ?? []).map((e) => {
             const data = JSON.parse(e.data) as Record<string, unknown>;
             const expanded = expandedId === e.id;
+            const resumeUrl = typeof data.resume_url === "string" ? data.resume_url : null;
             return (
               <div
                 key={e.id}
@@ -247,6 +314,17 @@ export default function EnquiriesPage() {
                       <span className="rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-semibold text-neutral-600">
                         {SOURCE_LABELS[e.source] ?? e.source}
                       </span>
+                      <select
+                        value={e.status}
+                        onChange={(ev) => setStatus(e.id, ev.target.value as EnquiryStatus)}
+                        className={`rounded-full border-none px-2.5 py-0.5 text-xs font-semibold ${STATUS_BADGE[e.status]}`}
+                      >
+                        {(Object.keys(STATUS_LABELS) as EnquiryStatus[]).map((s) => (
+                          <option key={s} value={s}>
+                            {STATUS_LABELS[s]}
+                          </option>
+                        ))}
+                      </select>
                       <span className="text-xs text-neutral-400">
                         {new Date(e.created_at).toLocaleString()}
                       </span>
@@ -277,12 +355,27 @@ export default function EnquiriesPage() {
 
                 {expanded && (
                   <dl className="mt-4 grid grid-cols-2 gap-x-6 gap-y-2 border-t border-neutral-100 pt-4 text-sm">
-                    {Object.entries(data).map(([key, value]) => (
-                      <div key={key} className="min-w-0">
-                        <dt className="text-xs font-semibold uppercase tracking-wide text-neutral-400">{key}</dt>
-                        <dd className="break-words text-neutral-700">{String(value)}</dd>
+                    {resumeUrl && (
+                      <div className="col-span-2">
+                        <a
+                          href={resumeUrl}
+                          download
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1.5 rounded-lg bg-[#00352d] px-3 py-1.5 text-xs font-semibold text-white hover:bg-[#00473d]"
+                        >
+                          Download Resume
+                        </a>
                       </div>
-                    ))}
+                    )}
+                    {Object.entries(data)
+                      .filter(([key]) => key !== "resume_url")
+                      .map(([key, value]) => (
+                        <div key={key} className="min-w-0">
+                          <dt className="text-xs font-semibold uppercase tracking-wide text-neutral-400">{key}</dt>
+                          <dd className="break-words text-neutral-700">{String(value)}</dd>
+                        </div>
+                      ))}
                   </dl>
                 )}
               </div>

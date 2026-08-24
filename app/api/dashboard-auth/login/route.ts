@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { checkPassword, createSessionToken, SESSION_COOKIE } from "@/lib/auth";
+import { createSessionToken, SESSION_COOKIE } from "@/lib/auth";
+import { verifyPassword } from "@/lib/auth-db";
 
 export async function POST(req: Request) {
   const { password } = (await req.json().catch(() => ({}))) as { password?: string };
 
-  if (!password || !checkPassword(password)) {
+  if (!password || !verifyPassword(password)) {
     return NextResponse.json({ error: "Incorrect password" }, { status: 401 });
   }
 
