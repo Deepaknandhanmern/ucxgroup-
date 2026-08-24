@@ -1,25 +1,18 @@
 import "server-only";
-import fs from "fs";
-import path from "path";
-import matter from "gray-matter";
-import type { CaseStudy } from "@/lib/case-studies";
+import { CASE_STUDY_FILTERS, type CaseStudy, type CaseStudyCategory } from "@/lib/case-studies";
+import { listCaseStudies } from "@/lib/case-studies-db";
 
-const CONTENT_DIR = path.join(process.cwd(), "content", "case-studies");
-
-let cache: CaseStudy[] | null = null;
+const LABELS: Record<string, string> = Object.fromEntries(
+  CASE_STUDY_FILTERS.filter((f) => f.cat !== "all").map((f) => [f.cat, f.label])
+);
 
 export function getAllCaseStudies(): CaseStudy[] {
-  if (cache) return cache;
-
-  const files = fs.readdirSync(CONTENT_DIR).filter((f) => f.endsWith(".md"));
-
-  const studies = files.map((file) => {
-    const raw = fs.readFileSync(path.join(CONTENT_DIR, file), "utf8");
-    const { data } = matter(raw);
-    return data as CaseStudy;
-  });
-
-  studies.sort((a, b) => a.ref.localeCompare(b.ref));
-  cache = studies;
-  return studies;
+  return listCaseStudies().map((row) => ({
+    cat: row.cat as CaseStudyCategory,
+    label: LABELS[row.cat] ?? row.cat,
+    ref: row.ref,
+    pages: row.pages,
+    title: row.title,
+    image: row.image ?? undefined,
+  }));
 }

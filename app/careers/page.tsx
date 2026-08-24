@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Careers from "@/components/sections/Careers";
+import { listJobOpenings } from "@/lib/job-openings-db";
 
 export const metadata: Metadata = {
   title: "Careers",
@@ -8,5 +9,13 @@ export const metadata: Metadata = {
 };
 
 export default function CareersPage() {
-  return <Careers />;
+  const positions = listJobOpenings().map((row) => ({
+    title: row.title,
+    department: row.department,
+    location: row.location,
+    type: row.type,
+    desc: row.description,
+  }));
+
+  return <Careers positions={positions} />;
 }

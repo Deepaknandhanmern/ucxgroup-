@@ -13,19 +13,10 @@ interface Position {
   desc: string;
 }
 
-const POSITIONS: Position[] = [
-  {
-    title: "Interior Designer",
-    department: "Design & Interiors",
-    location: "Coimbatore / Remote",
-    type: "Full-time",
-    desc: "Develop interior design solutions from concept through construction documentation, working closely with our BIM-integrated workflow.",
-  },
-];
-
 type ApplyStatus = "idle" | "sending" | "sent" | "error";
 
-export default function Careers() {
+export default function Careers({ positions }: { positions: Position[] }) {
+  const POSITIONS = positions;
   const sectRef = useRef<HTMLDivElement>(null);
   const bodyGlowRef = useCursorGlow<HTMLDivElement>();
   const closeBtnRef = useRef<HTMLButtonElement>(null);

@@ -40,6 +40,41 @@ db.exec(`
     message TEXT,
     data TEXT NOT NULL
   );
+
+  CREATE TABLE IF NOT EXISTS job_openings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    department TEXT NOT NULL,
+    location TEXT NOT NULL,
+    type TEXT NOT NULL,
+    description TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS case_studies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ref TEXT UNIQUE NOT NULL,
+    cat TEXT NOT NULL,
+    pages TEXT NOT NULL,
+    title TEXT NOT NULL,
+    image TEXT,
+    pdf_url TEXT,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS resources (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ref TEXT UNIQUE NOT NULL,
+    cat TEXT NOT NULL,
+    format TEXT NOT NULL,
+    title TEXT NOT NULL,
+    image TEXT,
+    pdf_url TEXT,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+  );
 `);
 
 // One-time migration: seed the DB from the existing markdown posts the
@@ -71,6 +106,81 @@ if (postCount.n === 0) {
         JSON.stringify(data.tags ?? []),
         String(data.author ?? "shangeeth"),
         content.trim(),
+        now,
+        now
+      );
+    }
+  }
+}
+
+// One-time migration: seed the one job opening that was still hardcoded in
+// the component, so switching Careers to DB-backed data doesn't drop it.
+const jobCount = db.prepare("SELECT COUNT(*) as n FROM job_openings").get() as { n: number };
+if (jobCount.n === 0) {
+  const now = new Date().toISOString();
+  db.prepare(
+    `INSERT INTO job_openings (title, department, location, type, description, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?)`
+  ).run(
+    "Interior Designer",
+    "Design & Interiors",
+    "Coimbatore / Remote",
+    "Full-time",
+    "Develop interior design solutions from concept through construction documentation, working closely with our BIM-integrated workflow.",
+    now,
+    now
+  );
+}
+
+// One-time migration: seed case studies and resources from their existing
+// markdown content the first time this runs.
+const caseStudyCount = db.prepare("SELECT COUNT(*) as n FROM case_studies").get() as { n: number };
+if (caseStudyCount.n === 0) {
+  const dir = path.join(process.cwd(), "content", "case-studies");
+  if (fs.existsSync(dir)) {
+    const files = fs.readdirSync(dir).filter((f) => f.endsWith(".md"));
+    const insert = db.prepare(
+      `INSERT INTO case_studies (ref, cat, pages, title, image, pdf_url, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+    );
+    const now = new Date().toISOString();
+    for (const file of files) {
+      const raw = fs.readFileSync(path.join(dir, file), "utf8");
+      const { data } = matter(raw);
+      insert.run(
+        String(data.ref ?? ""),
+        String(data.cat ?? ""),
+        String(data.pages ?? ""),
+        String(data.title ?? ""),
+        data.image ? String(data.image) : null,
+        null,
+        now,
+        now
+      );
+    }
+  }
+}
+
+const resourceCount = db.prepare("SELECT COUNT(*) as n FROM resources").get() as { n: number };
+if (resourceCount.n === 0) {
+  const dir = path.join(process.cwd(), "content", "resources");
+  if (fs.existsSync(dir)) {
+    const files = fs.readdirSync(dir).filter((f) => f.endsWith(".md"));
+    const insert = db.prepare(
+      `INSERT INTO resources (ref, cat, format, title, image, pdf_url, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+    );
+    const now = new Date().toISOString();
+    for (const file of files) {
+      const raw = fs.readFileSync(path.join(dir, file), "utf8");
+      const { data } = matter(raw);
+      insert.run(
+        String(data.ref ?? ""),
+        String(data.cat ?? ""),
+        String(data.format ?? "pdf"),
+        String(data.title ?? ""),
+        data.image ? String(data.image) : null,
+        null,
         now,
         now
       );
