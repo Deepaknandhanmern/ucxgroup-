@@ -1,12 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { BlogPostRow } from "@/lib/blog-posts-db";
 
 export default function PostsListPage() {
   const [posts, setPosts] = useState<BlogPostRow[] | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"all" | "published" | "draft">("all");
+  const [categoryFilter, setCategoryFilter] = useState("all");
 
   useEffect(() => {
     fetch("/api/dashboard/posts")
@@ -22,6 +25,22 @@ export default function PostsListPage() {
     setDeletingId(null);
   }
 
+  const categories = useMemo(
+    () => Array.from(new Set((posts ?? []).map((p) => p.category))).sort(),
+    [posts]
+  );
+
+  const filtered = useMemo(() => {
+    if (!posts) return null;
+    const q = search.trim().toLowerCase();
+    return posts.filter((p) => {
+      if (statusFilter !== "all" && p.status !== statusFilter) return false;
+      if (categoryFilter !== "all" && p.category !== categoryFilter) return false;
+      if (q && !p.title.toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }, [posts, search, statusFilter, categoryFilter]);
+
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -34,10 +53,46 @@ export default function PostsListPage() {
         </Link>
       </div>
 
+      {posts !== null && posts.length > 0 && (
+        <div className="mt-4 flex flex-wrap items-center gap-3">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by title…"
+            className="w-full max-w-xs rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
+          />
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value as "all" | "published" | "draft")}
+            className="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
+          >
+            <option value="all">All statuses</option>
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
+          </select>
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
+          >
+            <option value="all">All categories</option>
+            {categories.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+          {filtered && <span className="text-sm text-neutral-500">{filtered.length} of {posts.length}</span>}
+        </div>
+      )}
+
       {posts === null ? (
         <p className="mt-8 text-sm text-neutral-500">Loading…</p>
       ) : posts.length === 0 ? (
         <p className="mt-8 text-sm text-neutral-500">No posts yet — create the first one.</p>
+      ) : filtered && filtered.length === 0 ? (
+        <p className="mt-8 text-sm text-neutral-500">No posts match your search/filters.</p>
       ) : (
         <div className="mt-6 overflow-hidden rounded-xl border border-neutral-200 bg-white">
           <table className="w-full text-left text-sm">
@@ -51,7 +106,7 @@ export default function PostsListPage() {
               </tr>
             </thead>
             <tbody>
-              {posts.map((p) => (
+              {(filtered ?? []).map((p) => (
                 <tr key={p.id} className="border-b border-neutral-100 last:border-0">
                   <td className="px-4 py-3 font-medium text-neutral-900">{p.title}</td>
                   <td className="px-4 py-3">

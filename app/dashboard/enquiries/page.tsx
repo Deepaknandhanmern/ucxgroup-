@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { EnquiryRow } from "@/lib/enquiries-db";
 
 const SOURCE_LABELS: Record<string, string> = {
@@ -13,12 +13,35 @@ const SOURCE_LABELS: Record<string, string> = {
 export default function EnquiriesPage() {
   const [enquiries, setEnquiries] = useState<EnquiryRow[] | null>(null);
   const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [search, setSearch] = useState("");
+  const [sourceFilter, setSourceFilter] = useState("all");
+  const [readFilter, setReadFilter] = useState<"all" | "unread" | "read">("all");
 
   useEffect(() => {
     fetch("/api/dashboard/enquiries")
       .then((r) => r.json())
       .then((data) => setEnquiries(data.enquiries));
   }, []);
+
+  const sources = useMemo(
+    () => Array.from(new Set((enquiries ?? []).map((e) => e.source))).sort(),
+    [enquiries]
+  );
+
+  const filtered = useMemo(() => {
+    if (!enquiries) return null;
+    const q = search.trim().toLowerCase();
+    return enquiries.filter((e) => {
+      if (sourceFilter !== "all" && e.source !== sourceFilter) return false;
+      if (readFilter === "unread" && e.read) return false;
+      if (readFilter === "read" && !e.read) return false;
+      if (q) {
+        const haystack = [e.name, e.email, e.subject, e.message].filter(Boolean).join(" ").toLowerCase();
+        if (!haystack.includes(q)) return false;
+      }
+      return true;
+    });
+  }, [enquiries, search, sourceFilter, readFilter]);
 
   async function setRead(id: number, read: boolean) {
     setEnquiries((prev) => prev?.map((e) => (e.id === id ? { ...e, read: read ? 1 : 0 } : e)) ?? null);
@@ -59,13 +82,49 @@ export default function EnquiriesPage() {
         </a>
       </div>
 
+      {enquiries !== null && enquiries.length > 0 && (
+        <div className="mt-4 flex flex-wrap items-center gap-3">
+          <input
+            type="text"
+            value={search}
+            onChange={(ev) => setSearch(ev.target.value)}
+            placeholder="Search name, email, subject, message…"
+            className="w-full max-w-xs rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
+          />
+          <select
+            value={sourceFilter}
+            onChange={(ev) => setSourceFilter(ev.target.value)}
+            className="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
+          >
+            <option value="all">All sources</option>
+            {sources.map((s) => (
+              <option key={s} value={s}>
+                {SOURCE_LABELS[s] ?? s}
+              </option>
+            ))}
+          </select>
+          <select
+            value={readFilter}
+            onChange={(ev) => setReadFilter(ev.target.value as "all" | "unread" | "read")}
+            className="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
+          >
+            <option value="all">All</option>
+            <option value="unread">Unread</option>
+            <option value="read">Read</option>
+          </select>
+          {filtered && <span className="text-sm text-neutral-500">{filtered.length} of {enquiries.length}</span>}
+        </div>
+      )}
+
       {enquiries === null ? (
         <p className="mt-8 text-sm text-neutral-500">Loading…</p>
       ) : enquiries.length === 0 ? (
         <p className="mt-8 text-sm text-neutral-500">No enquiries yet.</p>
+      ) : filtered && filtered.length === 0 ? (
+        <p className="mt-8 text-sm text-neutral-500">No enquiries match your search/filters.</p>
       ) : (
         <div className="mt-6 space-y-3">
-          {enquiries.map((e) => {
+          {(filtered ?? []).map((e) => {
             const data = JSON.parse(e.data) as Record<string, unknown>;
             const expanded = expandedId === e.id;
             return (
