@@ -5,6 +5,10 @@ import { listCaseStudies } from "@/lib/case-studies-db";
 import { listResources } from "@/lib/resources-db";
 import { listEnquiries } from "@/lib/enquiries-db";
 
+// Reads counts straight from the database on every visit — never
+// statically prerendered, so it never gets baked into the build output.
+export const dynamic = "force-dynamic";
+
 export default function DashboardHome() {
   const posts = listPosts();
   const published = posts.filter((p) => p.status === "published").length;

@@ -1,5 +1,10 @@
 import { getAllInsightPosts } from "@/lib/insights-content";
 
+// Reads posts from the dashboard's database on every request — Route
+// Handlers with no dynamic API usage are otherwise eligible for Next's
+// static optimization, which would freeze this feed at build time.
+export const dynamic = "force-dynamic";
+
 const BASE_URL = "https://ucx-group.com";
 
 function escapeXml(s: string): string {

@@ -2,6 +2,11 @@ import type { MetadataRoute } from "next";
 import { PROJECTS } from "@/lib/projects";
 import { getAllInsightPosts } from "@/lib/insights-content";
 
+// Reads posts from the dashboard's database — force-dynamic keeps this out
+// of Next's static generation pass entirely (sitemap.ts can otherwise be
+// prerendered at build time like a page).
+export const dynamic = "force-dynamic";
+
 const BASE_URL = "https://ucx-group.com";
 
 const STATIC_ROUTES = [

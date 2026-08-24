@@ -2,6 +2,10 @@ import { notFound } from "next/navigation";
 import PostEditor from "@/components/dashboard/PostEditor";
 import { getPostById } from "@/lib/blog-posts-db";
 
+// No generateStaticParams here, so this is already an on-demand dynamic
+// route by default — force-dynamic just makes that explicit.
+export const dynamic = "force-dynamic";
+
 export default async function EditPostPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const row = getPostById(Number(id));

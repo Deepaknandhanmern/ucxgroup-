@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import Careers from "@/components/sections/Careers";
 import { listJobOpenings } from "@/lib/job-openings-db";
 
+// Reads job openings straight from the dashboard's database on every
+// request — never statically prerendered, so edits show up live.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Careers",
   description:

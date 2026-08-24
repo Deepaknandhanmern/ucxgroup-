@@ -4,6 +4,10 @@ import { getAllInsightPosts } from "@/lib/insights-content";
 import { getAllCaseStudies } from "@/lib/case-studies-content";
 import { getAllResources } from "@/lib/resources-content";
 
+// Reads posts/case studies/resources straight from the dashboard's database
+// on every request — never statically prerendered, so edits show up live.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Insights",
   description:

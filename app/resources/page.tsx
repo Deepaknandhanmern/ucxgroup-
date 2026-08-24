@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import Resources from "@/components/sections/Resources";
 import { getAllResources } from "@/lib/resources-content";
 
+// Reads resources straight from the dashboard's database on every request —
+// never statically prerendered, so edits show up live.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Resources",
   description:

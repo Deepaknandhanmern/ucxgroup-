@@ -3,9 +3,10 @@ import { notFound } from "next/navigation";
 import { getAllInsightPosts, getInsightPost } from "@/lib/insights-content";
 import InsightArticle from "@/components/sections/InsightArticle";
 
-export function generateStaticParams() {
-  return getAllInsightPosts().map((p) => ({ slug: p.slug }));
-}
+// Reads the post straight from the dashboard's database on every request —
+// never statically prerendered (no generateStaticParams), so a newly
+// published or edited post is live immediately without a rebuild.
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
