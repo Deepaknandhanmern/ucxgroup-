@@ -101,44 +101,6 @@
 }
 .ucx-why2 .head-text { flex: 1 1 380px; min-width: 280px; }
 
-/* ---- compass ---- */
-.ucx-why2 .compass {
-  position: relative;
-  width: 128px; height: 128px;
-  flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-}
-.ucx-why2 .compass-svg { width: 100%; height: 100%; }
-.ucx-why2 .compass-ring { fill: none; stroke: var(--line); stroke-width: 1; }
-.ucx-why2 .compass-tick { stroke: var(--muted); stroke-width: 1.2; }
-.ucx-why2 .compass-tick.minor { stroke: var(--line); stroke-width: 1; }
-.ucx-why2 .compass-label { font-family: 'Atyp Display',sans-serif; font-size: 9px; letter-spacing: .06em; fill: var(--muted); }
-.ucx-why2 .compass-n { font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; font-size: 11px; fill: var(--dark); }
-.ucx-why2 .compass-needle {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: w2NeedleSettle 5s ease-in-out infinite;
-}
-.ucx-why2 .needle-north { fill: var(--dark); }
-.ucx-why2 .needle-south { fill: var(--muted); }
-.ucx-why2 .compass-pivot { fill: var(--bg); stroke: var(--dark); stroke-width: 1.2; }
-.ucx-why2 .compass-caption {
-  position: absolute;
-  bottom: -22px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 9.5px;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--muted);
-  white-space: nowrap;
-}
-
-@keyframes w2NeedleSettle {
-  0%,100% { transform: rotate(-4deg); }
-  50% { transform: rotate(4deg); }
-}
-
 /* ---- why-stage: interactive spec-sheet tabs with auto-advance ---- */
 .ucx-why2 [data-reveal] {
   opacity: 0; transform: translateY(24px);
@@ -283,6 +245,4 @@
 @media (max-width: 560px) {
   .ucx-why2 .wrapper { padding: 60px 20px 70px; }
   .ucx-why2 .why-nav-title { font-size: 12.5px; }
-  .ucx-why2 .compass { width: 92px; height: 92px; }
-  .ucx-why2 .compass-caption { font-size: 8.5px; }
 }
