@@ -125,13 +125,27 @@ export default function CapabilityPage({ index, eyebrow, title, intro, items, pr
         <div className="cursor-haze"></div>
 
         <div className="wrapper">
-        {/* ---------- process band (full-bleed) ---------- */}
+        {/* ---------- process band: full-bleed scrolling marquee, same
+            mechanic as the homepage hero's marquee (duplicated track,
+            translateX(-50%) loop, pause on hover). The animated track is
+            aria-hidden since a screen reader shouldn't read a scrolling,
+            duplicated list — the plain sr-only text carries the content. */}
         <div className="band" data-reveal>
-          <span className="band-step">{process[0]}</span>
-          <span className="band-arrow">&rarr;</span>
-          <span className="band-step">{process[1]}</span>
-          <span className="band-arrow">&rarr;</span>
-          <span className="band-step">{process[2]}</span>
+          <span className="sr-only">
+            Process: {process[0]} &rarr; {process[1]} &rarr; {process[2]}
+          </span>
+          <div className="band-track" aria-hidden="true">
+            {[0, 1].map((rep) => (
+              <span className="band-group" key={rep}>
+                <span className="band-step">{process[0]}</span>
+                <span className="band-arrow">&rarr;</span>
+                <span className="band-step">{process[1]}</span>
+                <span className="band-arrow">&rarr;</span>
+                <span className="band-step">{process[2]}</span>
+                <span className="band-arrow">&rarr;</span>
+              </span>
+            ))}
+          </div>
         </div>
 
         {/* ---------- services ---------- */}
