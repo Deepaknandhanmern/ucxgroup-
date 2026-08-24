@@ -117,6 +117,7 @@ function runMigrations(conn: DatabaseSync) {
   // Existing databases created before these columns existed won't get them
   // from CREATE TABLE IF NOT EXISTS — add them explicitly, once.
   ensureColumn(conn, "blog_posts", "status", "status TEXT NOT NULL DEFAULT 'published'");
+  ensureColumn(conn, "blog_posts", "publish_at", "publish_at TEXT");
   ensureColumn(conn, "enquiries", "read", "read INTEGER NOT NULL DEFAULT 0");
 
   // One-time migration: seed the DB from the existing markdown posts the

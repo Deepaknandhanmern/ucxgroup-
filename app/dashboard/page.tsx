@@ -13,6 +13,7 @@ export default function DashboardHome() {
   const posts = listPosts();
   const published = posts.filter((p) => p.status === "published").length;
   const drafts = posts.filter((p) => p.status === "draft").length;
+  const scheduled = posts.filter((p) => p.status === "scheduled").length;
   const jobs = listJobOpenings().length;
   const caseStudies = listCaseStudies().length;
   const resources = listResources().length;
@@ -20,7 +21,12 @@ export default function DashboardHome() {
   const unread = enquiries.filter((e) => !e.read).length;
 
   const cards = [
-    { href: "/dashboard/posts", label: "Blog Posts", value: posts.length, detail: `${published} published · ${drafts} draft` },
+    {
+      href: "/dashboard/posts",
+      label: "Blog Posts",
+      value: posts.length,
+      detail: `${published} published · ${drafts} draft${scheduled > 0 ? ` · ${scheduled} scheduled` : ""}`,
+    },
     { href: "/dashboard/case-studies", label: "Case Studies", value: caseStudies, detail: "in Project Knowledge" },
     { href: "/dashboard/resources", label: "Resources", value: resources, detail: "guides, templates, reports" },
     { href: "/dashboard/careers", label: "Open Positions", value: jobs, detail: "on the careers page" },

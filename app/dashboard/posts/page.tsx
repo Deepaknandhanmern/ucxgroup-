@@ -2,14 +2,28 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import type { BlogPostRow } from "@/lib/blog-posts-db";
+import type { BlogPostRow, PostStatus } from "@/lib/blog-posts-db";
+
+const STATUS_BADGE: Record<PostStatus, string> = {
+  published: "bg-emerald-100 text-emerald-800",
+  draft: "bg-amber-100 text-amber-800",
+  scheduled: "bg-blue-100 text-blue-800",
+};
+
+const STATUS_LABEL: Record<PostStatus, string> = {
+  published: "Published",
+  draft: "Draft",
+  scheduled: "Scheduled",
+};
 
 export default function PostsListPage() {
   const [posts, setPosts] = useState<BlogPostRow[] | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"all" | "published" | "draft">("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | PostStatus>("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [selected, setSelected] = useState<Set<number>>(new Set());
+  const [bulkWorking, setBulkWorking] = useState(false);
 
   useEffect(() => {
     fetch("/api/dashboard/posts")
@@ -22,6 +36,11 @@ export default function PostsListPage() {
     setDeletingId(id);
     await fetch(`/api/dashboard/posts/${id}`, { method: "DELETE" });
     setPosts((prev) => prev?.filter((p) => p.id !== id) ?? null);
+    setSelected((prev) => {
+      const next = new Set(prev);
+      next.delete(id);
+      return next;
+    });
     setDeletingId(null);
   }
 
@@ -40,6 +59,47 @@ export default function PostsListPage() {
       return true;
     });
   }, [posts, search, statusFilter, categoryFilter]);
+
+  function toggleOne(id: number) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function toggleAll() {
+    if (!filtered) return;
+    setSelected((prev) => (prev.size === filtered.length ? new Set() : new Set(filtered.map((p) => p.id))));
+  }
+
+  async function bulkSetStatus(status: "draft" | "published") {
+    setBulkWorking(true);
+    const ids = Array.from(selected);
+    await Promise.all(
+      ids.map((id) =>
+        fetch(`/api/dashboard/posts/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status }),
+        })
+      )
+    );
+    setPosts((prev) => prev?.map((p) => (selected.has(p.id) ? { ...p, status } : p)) ?? null);
+    setSelected(new Set());
+    setBulkWorking(false);
+  }
+
+  async function bulkDelete() {
+    if (!confirm(`Delete ${selected.size} post${selected.size === 1 ? "" : "s"}? This can't be undone.`)) return;
+    setBulkWorking(true);
+    const ids = Array.from(selected);
+    await Promise.all(ids.map((id) => fetch(`/api/dashboard/posts/${id}`, { method: "DELETE" })));
+    setPosts((prev) => prev?.filter((p) => !selected.has(p.id)) ?? null);
+    setSelected(new Set());
+    setBulkWorking(false);
+  }
 
   return (
     <div>
@@ -64,12 +124,13 @@ export default function PostsListPage() {
           />
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value as "all" | "published" | "draft")}
+            onChange={(e) => setStatusFilter(e.target.value as "all" | PostStatus)}
             className="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
           >
             <option value="all">All statuses</option>
             <option value="published">Published</option>
             <option value="draft">Draft</option>
+            <option value="scheduled">Scheduled</option>
           </select>
           <select
             value={categoryFilter}
@@ -87,6 +148,43 @@ export default function PostsListPage() {
         </div>
       )}
 
+      {selected.size > 0 && (
+        <div className="mt-3 flex items-center gap-3 rounded-lg border border-[#00352d]/20 bg-[#00352d]/[0.03] px-4 py-2.5">
+          <span className="text-sm font-medium text-neutral-700">{selected.size} selected</span>
+          <button
+            type="button"
+            disabled={bulkWorking}
+            onClick={() => bulkSetStatus("published")}
+            className="text-sm font-medium text-emerald-700 hover:underline disabled:opacity-50"
+          >
+            Publish
+          </button>
+          <button
+            type="button"
+            disabled={bulkWorking}
+            onClick={() => bulkSetStatus("draft")}
+            className="text-sm font-medium text-amber-700 hover:underline disabled:opacity-50"
+          >
+            Unpublish
+          </button>
+          <button
+            type="button"
+            disabled={bulkWorking}
+            onClick={bulkDelete}
+            className="text-sm font-medium text-red-600 hover:underline disabled:opacity-50"
+          >
+            Delete
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelected(new Set())}
+            className="ml-auto text-sm font-medium text-neutral-400 hover:text-neutral-700"
+          >
+            Clear
+          </button>
+        </div>
+      )}
+
       {posts === null ? (
         <p className="mt-8 text-sm text-neutral-500">Loading…</p>
       ) : posts.length === 0 ? (
@@ -98,6 +196,14 @@ export default function PostsListPage() {
           <table className="w-full text-left text-sm">
             <thead className="border-b border-neutral-200 bg-neutral-50 text-xs uppercase tracking-wide text-neutral-500">
               <tr>
+                <th className="w-10 px-4 py-3">
+                  <input
+                    type="checkbox"
+                    checked={filtered !== null && filtered.length > 0 && selected.size === filtered.length}
+                    onChange={toggleAll}
+                    aria-label="Select all"
+                  />
+                </th>
                 <th className="px-4 py-3">Title</th>
                 <th className="px-4 py-3">Status</th>
                 <th className="px-4 py-3">Category</th>
@@ -108,14 +214,21 @@ export default function PostsListPage() {
             <tbody>
               {(filtered ?? []).map((p) => (
                 <tr key={p.id} className="border-b border-neutral-100 last:border-0">
+                  <td className="px-4 py-3">
+                    <input
+                      type="checkbox"
+                      checked={selected.has(p.id)}
+                      onChange={() => toggleOne(p.id)}
+                      aria-label={`Select ${p.title}`}
+                    />
+                  </td>
                   <td className="px-4 py-3 font-medium text-neutral-900">{p.title}</td>
                   <td className="px-4 py-3">
-                    <span
-                      className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
-                        p.status === "published" ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"
-                      }`}
-                    >
-                      {p.status === "published" ? "Published" : "Draft"}
+                    <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${STATUS_BADGE[p.status]}`}>
+                      {STATUS_LABEL[p.status]}
+                      {p.status === "scheduled" && p.publish_at && (
+                        <span className="font-normal"> · {new Date(p.publish_at).toLocaleString()}</span>
+                      )}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-neutral-500">{p.category}</td>

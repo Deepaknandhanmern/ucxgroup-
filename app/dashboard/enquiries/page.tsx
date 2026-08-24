@@ -16,6 +16,8 @@ export default function EnquiriesPage() {
   const [search, setSearch] = useState("");
   const [sourceFilter, setSourceFilter] = useState("all");
   const [readFilter, setReadFilter] = useState<"all" | "unread" | "read">("all");
+  const [selected, setSelected] = useState<Set<number>>(new Set());
+  const [bulkWorking, setBulkWorking] = useState(false);
 
   useEffect(() => {
     fetch("/api/dashboard/enquiries")
@@ -62,6 +64,52 @@ export default function EnquiriesPage() {
     if (!confirm("Delete this enquiry?")) return;
     await fetch(`/api/dashboard/enquiries/${id}`, { method: "DELETE" });
     setEnquiries((prev) => prev?.filter((e) => e.id !== id) ?? null);
+    setSelected((prev) => {
+      const next = new Set(prev);
+      next.delete(id);
+      return next;
+    });
+  }
+
+  function toggleOne(id: number) {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function toggleAll() {
+    if (!filtered) return;
+    setSelected((prev) => (prev.size === filtered.length ? new Set() : new Set(filtered.map((e) => e.id))));
+  }
+
+  async function bulkSetRead(read: boolean) {
+    setBulkWorking(true);
+    const ids = Array.from(selected);
+    await Promise.all(
+      ids.map((id) =>
+        fetch(`/api/dashboard/enquiries/${id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ read }),
+        })
+      )
+    );
+    setEnquiries((prev) => prev?.map((e) => (selected.has(e.id) ? { ...e, read: read ? 1 : 0 } : e)) ?? null);
+    setSelected(new Set());
+    setBulkWorking(false);
+  }
+
+  async function bulkDelete() {
+    if (!confirm(`Delete ${selected.size} enquir${selected.size === 1 ? "y" : "ies"}? This can't be undone.`)) return;
+    setBulkWorking(true);
+    const ids = Array.from(selected);
+    await Promise.all(ids.map((id) => fetch(`/api/dashboard/enquiries/${id}`, { method: "DELETE" })));
+    setEnquiries((prev) => prev?.filter((e) => !selected.has(e.id)) ?? null);
+    setSelected(new Set());
+    setBulkWorking(false);
   }
 
   const unreadCount = enquiries?.filter((e) => !e.read).length ?? 0;
@@ -112,7 +160,54 @@ export default function EnquiriesPage() {
             <option value="unread">Unread</option>
             <option value="read">Read</option>
           </select>
+          {filtered && filtered.length > 0 && (
+            <label className="flex items-center gap-1.5 text-sm text-neutral-500">
+              <input
+                type="checkbox"
+                checked={selected.size === filtered.length}
+                onChange={toggleAll}
+              />
+              Select all
+            </label>
+          )}
           {filtered && <span className="text-sm text-neutral-500">{filtered.length} of {enquiries.length}</span>}
+        </div>
+      )}
+
+      {selected.size > 0 && (
+        <div className="mt-3 flex items-center gap-3 rounded-lg border border-[#00352d]/20 bg-[#00352d]/[0.03] px-4 py-2.5">
+          <span className="text-sm font-medium text-neutral-700">{selected.size} selected</span>
+          <button
+            type="button"
+            disabled={bulkWorking}
+            onClick={() => bulkSetRead(true)}
+            className="text-sm font-medium text-[#00352d] hover:underline disabled:opacity-50"
+          >
+            Mark read
+          </button>
+          <button
+            type="button"
+            disabled={bulkWorking}
+            onClick={() => bulkSetRead(false)}
+            className="text-sm font-medium text-neutral-600 hover:underline disabled:opacity-50"
+          >
+            Mark unread
+          </button>
+          <button
+            type="button"
+            disabled={bulkWorking}
+            onClick={bulkDelete}
+            className="text-sm font-medium text-red-600 hover:underline disabled:opacity-50"
+          >
+            Delete
+          </button>
+          <button
+            type="button"
+            onClick={() => setSelected(new Set())}
+            className="ml-auto text-sm font-medium text-neutral-400 hover:text-neutral-700"
+          >
+            Clear
+          </button>
         </div>
       )}
 
@@ -133,7 +228,15 @@ export default function EnquiriesPage() {
                 className={`rounded-xl border bg-white p-4 ${e.read ? "border-neutral-200" : "border-[#00352d]/30 bg-[#00352d]/[0.02]"}`}
               >
                 <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0">
+                  <div className="flex min-w-0 items-start gap-3">
+                    <input
+                      type="checkbox"
+                      checked={selected.has(e.id)}
+                      onChange={() => toggleOne(e.id)}
+                      aria-label={`Select enquiry from ${e.name ?? e.email ?? "unknown"}`}
+                      className="mt-1.5 flex-none"
+                    />
+                    <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
                       {!e.read && <span className="h-2 w-2 flex-none rounded-full bg-[#00352d]" aria-label="Unread" />}
                       <span className="rounded-full bg-neutral-100 px-2.5 py-0.5 text-xs font-semibold text-neutral-600">
@@ -148,6 +251,7 @@ export default function EnquiriesPage() {
                     </p>
                     {e.subject && <p className="mt-0.5 text-sm text-neutral-600">{e.subject}</p>}
                     {e.message && <p className="mt-1 line-clamp-2 text-sm text-neutral-500">{e.message}</p>}
+                    </div>
                   </div>
                   <div className="flex flex-none items-center gap-3">
                     <button type="button" onClick={() => toggleExpand(e)} className="text-sm font-medium text-[#00352d] hover:underline">

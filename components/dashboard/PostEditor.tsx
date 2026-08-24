@@ -1,10 +1,12 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { remark } from "remark";
 import remarkHtml from "remark-html";
 import type { BlogPostRow, PostStatus } from "@/lib/blog-posts-db";
+
+const AUTOSAVE_INTERVAL_MS = 20_000;
 
 const CATEGORIES = [
   { value: "bim-digital", label: "BIM & Digital" },
@@ -17,10 +19,27 @@ const AUTHORS = [
   { value: "bhuvaneshwari", label: "Bhuvaneshwari" },
 ];
 
+// <input type="datetime-local"> both reads and writes local time with no
+// timezone info, while the DB stores/compares UTC ISO strings — these
+// convert between the two so a picked time actually fires at that wall-clock
+// moment instead of drifting by the browser's UTC offset.
+function isoToDatetimeLocal(iso: string): string {
+  const d = new Date(iso);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+function datetimeLocalToIso(value: string): string | null {
+  if (!value) return null;
+  const d = new Date(value);
+  return Number.isNaN(d.getTime()) ? null : d.toISOString();
+}
+
 export default function PostEditor({ post }: { post?: BlogPostRow }) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const [postId, setPostId] = useState<number | undefined>(post?.id);
   const [title, setTitle] = useState(post?.title ?? "");
   const [excerpt, setExcerpt] = useState(post?.excerpt ?? "");
   const [image, setImage] = useState(post?.image ?? "");
@@ -32,10 +51,14 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
   const [authorKey, setAuthorKey] = useState(post?.author_key ?? "shangeeth");
   const [bodyMarkdown, setBodyMarkdown] = useState(post?.body_markdown ?? "");
   const [status, setStatus] = useState<PostStatus>(post?.status ?? "draft");
+  const [publishAt, setPublishAt] = useState(post?.publish_at ? isoToDatetimeLocal(post.publish_at) : "");
 
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [lastAutosaved, setLastAutosaved] = useState<Date | null>(null);
+  const [autosaving, setAutosaving] = useState(false);
+  const lastSavedSnapshot = useRef("");
 
   const previewHtml = useMemo(() => {
     try {
@@ -64,12 +87,8 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
     setUploading(false);
   }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setSaving(true);
-    setError("");
-
-    const payload = {
+  function buildPayload() {
+    return {
       title,
       excerpt,
       image,
@@ -84,10 +103,18 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
       authorKey,
       bodyMarkdown,
       status,
+      publishAt: status === "scheduled" ? datetimeLocalToIso(publishAt) : null,
     };
+  }
 
-    const res = await fetch(post ? `/api/dashboard/posts/${post.id}` : "/api/dashboard/posts", {
-      method: post ? "PUT" : "POST",
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSaving(true);
+    setError("");
+
+    const payload = buildPayload();
+    const res = await fetch(postId ? `/api/dashboard/posts/${postId}` : "/api/dashboard/posts", {
+      method: postId ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
@@ -101,6 +128,50 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
       setSaving(false);
     }
   }
+
+  // Kept in sync after every render (in an effect, not during render itself —
+  // writing to a ref mid-render isn't safe) so the interval below always sees
+  // the latest form state without needing to reset itself on every keystroke.
+  const latestRef = useRef({ postId, status, title, bodyMarkdown, buildPayload });
+  useEffect(() => {
+    latestRef.current = { postId, status, title, bodyMarkdown, buildPayload };
+  });
+
+  // Autosave: only while working on a draft, and only if something actually
+  // changed since the last save — so it never fires on an untouched post or
+  // silently overwrites a post someone has already published.
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const { postId: currentPostId, status: currentStatus, title: currentTitle, bodyMarkdown: currentBody, buildPayload: currentBuildPayload } =
+        latestRef.current;
+      if (currentStatus !== "draft") return;
+      if (!currentTitle.trim() || !currentBody.trim()) return;
+
+      const snapshot = JSON.stringify(currentBuildPayload());
+      if (snapshot === lastSavedSnapshot.current) return;
+
+      setAutosaving(true);
+      const res = await fetch(currentPostId ? `/api/dashboard/posts/${currentPostId}` : "/api/dashboard/posts", {
+        method: currentPostId ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: snapshot,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (!currentPostId) {
+          setPostId(data.post.id);
+          router.replace(`/dashboard/posts/${data.post.id}`);
+        }
+        lastSavedSnapshot.current = snapshot;
+        setLastAutosaved(new Date());
+      }
+      setAutosaving(false);
+    }, AUTOSAVE_INTERVAL_MS);
+
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- interval reads state via latestRef, not deps
+  }, []);
 
   const inputClass =
     "mt-1.5 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm outline-none focus:border-[#00352d] focus:ring-1 focus:ring-[#00352d]";
@@ -220,7 +291,25 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
             >
               Published
             </button>
+            <button
+              type="button"
+              onClick={() => setStatus("scheduled")}
+              className={`flex-1 py-2 text-sm font-medium transition ${
+                status === "scheduled" ? "bg-blue-100 text-blue-800" : "bg-white text-neutral-500 hover:bg-neutral-50"
+              }`}
+            >
+              Scheduled
+            </button>
           </div>
+          {status === "scheduled" && (
+            <input
+              type="datetime-local"
+              className={`${inputClass} mt-2`}
+              value={publishAt}
+              onChange={(e) => setPublishAt(e.target.value)}
+              required
+            />
+          )}
         </div>
       </div>
 
@@ -256,7 +345,13 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
           disabled={saving}
           className="rounded-lg bg-[#00352d] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#00473d] disabled:opacity-60"
         >
-          {saving ? "Saving…" : status === "published" ? "Publish post" : "Save draft"}
+          {saving
+            ? "Saving…"
+            : status === "published"
+              ? "Publish post"
+              : status === "scheduled"
+                ? "Schedule post"
+                : "Save draft"}
         </button>
         <button
           type="button"
@@ -265,6 +360,11 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
         >
           Cancel
         </button>
+        {status === "draft" && (
+          <span className="text-xs text-neutral-400">
+            {autosaving ? "Autosaving…" : lastAutosaved ? `Autosaved at ${lastAutosaved.toLocaleTimeString()}` : ""}
+          </span>
+        )}
       </div>
     </form>
   );

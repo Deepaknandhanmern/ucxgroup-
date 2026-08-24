@@ -12,6 +12,8 @@ export async function POST(req: Request) {
   }
 
   const slug = makeUniqueSlug(body.title);
+  const status: BlogPostInput["status"] =
+    body.status === "published" || body.status === "scheduled" ? body.status : "draft";
   const post = createPost({
     slug,
     title: body.title,
@@ -24,7 +26,8 @@ export async function POST(req: Request) {
     tags: Array.isArray(body.tags) ? body.tags : [],
     authorKey: body.authorKey ?? "shangeeth",
     bodyMarkdown: body.bodyMarkdown,
-    status: body.status === "published" ? "published" : "draft",
+    status,
+    publishAt: status === "scheduled" ? body.publishAt ?? null : null,
   });
 
   return NextResponse.json({ post }, { status: 201 });
