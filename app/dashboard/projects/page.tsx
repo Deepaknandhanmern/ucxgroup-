@@ -4,8 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { ProjectRow } from "@/lib/projects-db";
 import { CAT_LABELS, type Cat } from "@/lib/projects";
+import DigitalExperiencePanel from "@/components/dashboard/DigitalExperiencePanel";
 
 export default function ProjectsListPage() {
+  const [tab, setTab] = useState<"list" | "digital">("list");
   const [projects, setProjects] = useState<ProjectRow[] | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [search, setSearch] = useState("");
@@ -71,16 +73,45 @@ export default function ProjectsListPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-getho text-2xl font-bold text-neutral-900">Projects</h1>
-          <p className="mt-1 text-sm text-neutral-500">Shows under both Built Environment and Interiors on the site.</p>
+          <p className="mt-1 text-sm text-neutral-500">
+            Covers Built Environment, Interiors and Digital Project Experience on the site.
+          </p>
         </div>
-        <Link
-          href="/dashboard/projects/new"
-          className="rounded-lg bg-[#00352d] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#00473d]"
-        >
-          + New Project
-        </Link>
+        {tab === "list" && (
+          <Link
+            href="/dashboard/projects/new"
+            className="rounded-lg bg-[#00352d] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#00473d]"
+          >
+            + New Project
+          </Link>
+        )}
       </div>
 
+      <div className="mt-5 flex overflow-hidden rounded-lg border border-neutral-300 w-fit">
+        <button
+          type="button"
+          onClick={() => setTab("list")}
+          className={`px-4 py-2 text-sm font-medium transition ${
+            tab === "list" ? "bg-[#00352d] text-white" : "bg-white text-neutral-600 hover:bg-neutral-50"
+          }`}
+        >
+          Built Environment &amp; Interiors
+        </button>
+        <button
+          type="button"
+          onClick={() => setTab("digital")}
+          className={`px-4 py-2 text-sm font-medium transition ${
+            tab === "digital" ? "bg-[#00352d] text-white" : "bg-white text-neutral-600 hover:bg-neutral-50"
+          }`}
+        >
+          Digital Project Experience
+        </button>
+      </div>
+
+      {tab === "digital" ? (
+        <DigitalExperiencePanel />
+      ) : (
+        <>
       {projects !== null && projects.length > 0 && (
         <div className="mt-4 flex flex-wrap items-center gap-3">
           <input
@@ -189,6 +220,8 @@ export default function ProjectsListPage() {
             </tbody>
           </table>
         </div>
+      )}
+        </>
       )}
     </div>
   );

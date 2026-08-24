@@ -10,7 +10,7 @@ interface Category {
   image: string;
 }
 
-export default function DigitalExperiencePage() {
+export default function DigitalExperiencePanel() {
   const [categories, setCategories] = useState<Category[] | null>(null);
   const [savingId, setSavingId] = useState<string | null>(null);
 
@@ -35,8 +35,7 @@ export default function DigitalExperiencePage() {
 
   return (
     <div>
-      <h1 className="font-getho text-2xl font-bold text-neutral-900">Digital Project Experience</h1>
-      <p className="mt-1 text-sm text-neutral-500">
+      <p className="mt-4 text-sm text-neutral-500">
         These 5 categories are fixed — you can only replace each one&apos;s image below.
       </p>
 

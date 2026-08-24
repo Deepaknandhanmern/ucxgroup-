@@ -22,7 +22,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     { href: "/dashboard/case-studies", label: "Case Studies" },
     { href: "/dashboard/resources", label: "Resources" },
     { href: "/dashboard/careers", label: "Careers" },
-    { href: "/dashboard/digital-experience", label: "Digital Experience" },
     { href: "/dashboard/enquiries", label: "Enquiries" },
   ];
 
