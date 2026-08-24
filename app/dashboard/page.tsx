@@ -1,4 +1,4 @@
-import Link from "next/link";
+import StatCard from "@/components/dashboard/StatCard";
 import { listPosts } from "@/lib/blog-posts-db";
 import { listJobOpenings } from "@/lib/job-openings-db";
 import { listCaseStudies } from "@/lib/case-studies-db";
@@ -34,17 +34,7 @@ export default function DashboardHome() {
       <h1 className="text-2xl font-bold text-neutral-900">Overview</h1>
       <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3">
         {cards.map((c) => (
-          <Link
-            key={c.href}
-            href={c.href}
-            className={`rounded-xl border bg-white p-5 transition hover:shadow-sm ${
-              c.highlight ? "border-[#00352d]/40" : "border-neutral-200"
-            }`}
-          >
-            <p className="text-sm font-medium text-neutral-500">{c.label}</p>
-            <p className="mt-1 text-3xl font-bold text-neutral-900">{c.value}</p>
-            <p className="mt-1 text-xs text-neutral-400">{c.detail}</p>
-          </Link>
+          <StatCard key={c.href} href={c.href} label={c.label} value={c.value} detail={c.detail} highlight={c.highlight} />
         ))}
       </div>
     </div>
