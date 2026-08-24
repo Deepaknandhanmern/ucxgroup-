@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import InteriorsFooter from "@/components/sections/InteriorsFooter";
-import { submitToSplitForms } from "@/lib/splitforms";
-import Toast from "@/components/ui/Toast";
 
 const EMAIL = "collaborate@ucx-group.com";
 
@@ -17,14 +15,10 @@ const QUICK_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
-type NewsletterStatus = "idle" | "submitting" | "error";
-
 export default function Footer() {
   const pathname = usePathname();
   const [isInteriorsFilter, setIsInteriorsFilter] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [newsletterStatus, setNewsletterStatus] = useState<NewsletterStatus>("idle");
-  const [toastShow, setToastShow] = useState(false);
 
   async function copyEmail() {
     try {
@@ -33,26 +27,6 @@ export default function Footer() {
       setTimeout(() => setCopied(false), 1800);
     } catch {
       /* clipboard unavailable — the mailto link still works */
-    }
-  }
-
-  async function handleNewsletterSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setNewsletterStatus("submitting");
-
-    const form = e.currentTarget;
-    const email = new FormData(form).get("email");
-    const { ok } = await submitToSplitForms({
-      subject: "Newsletter signup",
-      email: String(email ?? ""),
-    });
-
-    if (ok) {
-      form.reset();
-      setNewsletterStatus("idle");
-      setToastShow(true);
-    } else {
-      setNewsletterStatus("error");
     }
   }
 
@@ -117,31 +91,6 @@ export default function Footer() {
           <p className="eyebrow">UCX Engineering Technologies</p>
           <h2 className="headline">One connected delivery ecosystem</h2>
           <p className="services-line">DESIGN &middot; DIGITAL ENGINEERING &middot; PROJECT DELIVERY &middot; ASSET INFORMATION</p>
-
-          <form className="newsletter-form" onSubmit={handleNewsletterSubmit}>
-            <label className="newsletter-label" htmlFor="footer-newsletter-email">
-              Stay connected — join our newsletter
-            </label>
-            <div className="newsletter-field">
-              <input
-                id="footer-newsletter-email"
-                name="email"
-                type="email"
-                placeholder="Enter your email"
-                required
-                disabled={newsletterStatus === "submitting"}
-              />
-              <button type="submit" aria-label="Subscribe" disabled={newsletterStatus === "submitting"}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="m22 2-7 20-4-9-9-4Z" />
-                  <path d="M22 2 11 13" />
-                </svg>
-              </button>
-            </div>
-            {newsletterStatus === "error" && (
-              <span className="newsletter-error">Something went wrong — please try again.</span>
-            )}
-          </form>
         </div>
       </div>
 
@@ -184,7 +133,11 @@ export default function Footer() {
         <div>
           <p className="col-title">Follow</p>
           <div className="social-row">
-            <a href="#" aria-label="LinkedIn"><img src="/brand/social.png" alt="" loading="lazy" /></a>
+            <a href="#" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
+            </a>
             <a href="#" aria-label="Instagram"><img src="/brand/instagram.png" alt="" loading="lazy" /></a>
             <a href="#" aria-label="YouTube"><img src="/brand/youtube.png" alt="" loading="lazy" /></a>
             <a href="#" aria-label="X (Twitter)">
@@ -206,8 +159,6 @@ export default function Footer() {
           <li><a href="/cookies">Cookies</a></li>
         </ul>
       </div>
-
-      <Toast show={toastShow} message="You're subscribed — thanks for joining." onDismiss={() => setToastShow(false)} />
     </footer>
   );
 }

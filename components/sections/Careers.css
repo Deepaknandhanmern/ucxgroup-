@@ -102,7 +102,9 @@
   padding: 15px 26px; border-radius: 999px; border: 1px solid var(--accent);
   transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
 }
+.ucx-careers .head-cta svg { width: 14px; height: 14px; transition: transform .3s var(--ease); }
 .ucx-careers .head-cta:hover { background: transparent; color: var(--accent); transform: translateY(-2px); }
+.ucx-careers .head-cta:hover svg { transform: translateX(3px); }
 
 /* ---- life at ucx ---- */
 .ucx-careers .life {
