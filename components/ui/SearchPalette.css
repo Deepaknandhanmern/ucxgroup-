@@ -1,7 +1,7 @@
 /* ---- nav trigger ---- */
 .ucx-search-trigger {
-  display: inline-flex; align-items: center; gap: 8px;
-  height: 38px; padding: 0 12px;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; padding: 0;
   border-radius: 999px; border: 1px solid rgba(255,255,255,.18);
   background: rgba(255,255,255,.04);
   color: rgba(255,255,255,.75);
@@ -10,12 +10,6 @@
 }
 .ucx-search-trigger svg { width: 15px; height: 15px; flex: none; }
 .ucx-search-trigger:hover { border-color: rgba(255,255,255,.4); background: rgba(255,255,255,.08); color: #fff; }
-.ucx-search-trigger-kbd {
-  font-size: 10.5px; font-weight: 700; letter-spacing: .04em;
-  color: rgba(255,255,255,.5);
-  border: 1px solid rgba(255,255,255,.18); border-radius: 5px;
-  padding: 2px 5px; line-height: 1;
-}
 
 /* ---- overlay / panel ---- */
 .ucx-search-overlay {
@@ -118,7 +112,6 @@
 
 @media (max-width: 640px) {
   .ucx-search-overlay { padding: 8vh 12px 24px; }
-  .ucx-search-trigger-kbd { display: none; }
   .ucx-search-footer span:nth-child(2) { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {

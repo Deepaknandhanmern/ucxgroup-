@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { ReactNode } from "react";
 
 interface Domain {
@@ -122,7 +122,7 @@ const STATUS_CLASS: Record<Status, string> = {
 
 type Mode = "explore" | "ideas";
 
-function ToggleRow({ mode, setMode, position = "top" }: { mode: Mode; setMode: React.Dispatch<React.SetStateAction<Mode>>; position?: "top" | "bottom" }) {
+function ToggleRow({ mode, onToggle, position = "top" }: { mode: Mode; onToggle: () => void; position?: "top" | "bottom" }) {
   return (
     <div className={`lx-toggle-row${position === "bottom" ? " lx-toggle-row--bottom" : ""}`}>
       <span className={`lx-toggle-label${mode === "explore" ? " is-active" : ""}`}>Where We Explore</span>
@@ -132,7 +132,7 @@ function ToggleRow({ mode, setMode, position = "top" }: { mode: Mode; setMode: R
         aria-checked={mode === "ideas"}
         aria-label="Switch between Where We Explore and Ideas in the Lab"
         className={`lx-switch${mode === "ideas" ? " is-on" : ""}`}
-        onClick={() => setMode((m) => (m === "explore" ? "ideas" : "explore"))}
+        onClick={onToggle}
       >
         <span className="lx-switch-thumb"></span>
       </button>
@@ -143,9 +143,15 @@ function ToggleRow({ mode, setMode, position = "top" }: { mode: Mode; setMode: R
 
 export default function LabExplore() {
   const [mode, setMode] = useState<Mode>("explore");
+  const sectRef = useRef<HTMLDivElement>(null);
+
+  function handleToggle() {
+    setMode((m) => (m === "explore" ? "ideas" : "explore"));
+    sectRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 
   return (
-    <div className="ucx-lab-explore" id="domains">
+    <div className="ucx-lab-explore" id="domains" ref={sectRef}>
       <div className="lx-bg-grid" aria-hidden="true"></div>
 
       <div className="wrapper">
@@ -159,7 +165,7 @@ export default function LabExplore() {
           </p>
         </div>
 
-        <ToggleRow mode={mode} setMode={setMode} />
+        <ToggleRow mode={mode} onToggle={handleToggle} />
 
         {mode === "explore" ? (
           <div className="lx-fade" key="explore">
@@ -187,7 +193,7 @@ export default function LabExplore() {
                 </div>
               ))}
             </div>
-            <ToggleRow mode={mode} setMode={setMode} position="bottom" />
+            <ToggleRow mode={mode} onToggle={handleToggle} position="bottom" />
           </div>
         ) : (
           <div className="lx-fade" key="ideas" id="ideas">
@@ -210,7 +216,7 @@ export default function LabExplore() {
                 </div>
               ))}
             </div>
-            <ToggleRow mode={mode} setMode={setMode} position="bottom" />
+            <ToggleRow mode={mode} onToggle={handleToggle} position="bottom" />
           </div>
         )}
       </div>

@@ -3,11 +3,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
 import SectionRail from "@/components/ui/SectionRail";
+import ModelViewer from "@/components/ui/ModelViewer";
 
 const RAIL_SECTIONS = [
   { id: "overview", label: "Overview" },
   { id: "stats", label: "At a Glance" },
   { id: "areas", label: "Where We Apply" },
+  { id: "model", label: "3D Preview" },
   { id: "closing", label: "Get Started" },
 ];
 
@@ -236,6 +238,20 @@ export default function Experience() {
               </a>
             </div>
           ))}
+        </div>
+
+        {/* ---------- 3D preview ---------- */}
+        <div className="model-block" id="model" data-reveal>
+          <span className="sub-eyebrow">See It In 3D</span>
+          <p className="model-intro">
+            Drag to rotate, scroll to zoom — an interactive preview of how UCX's project models come to life.
+          </p>
+          <div className="model-frame">
+            <ModelViewer src="/brand/models/demo-bim-model.glb" alt="Interactive 3D building model" />
+          </div>
+          <span className="model-note">
+            Demo model shown while a real project export is prepared.
+          </span>
         </div>
 
         <div className="closing" id="closing" data-reveal>

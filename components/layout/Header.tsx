@@ -396,9 +396,9 @@ const MOBILE_ITEMS: MobileItem[] = [
     label: "Collaboration Lab",
     icon: true,
     links: [
-      { href: "#link-experience-about-the-lab", label: "About the Lab" },
-      { href: "#link-experience-collaboration-domains", label: "Collaboration Domains" },
-      { href: "#link-experience-how-we-collaborate", label: "How We Collaborate" },
+      { href: "/collaboration-lab", label: "About the Lab" },
+      { href: "/collaboration-lab#domains", label: "Collaboration Domains" },
+      { href: "/collaboration-lab#ways-to-collaborate", label: "How We Collaborate" },
     ],
   },
   {
