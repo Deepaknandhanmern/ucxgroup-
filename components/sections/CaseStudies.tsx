@@ -212,7 +212,16 @@ export default function CaseStudies({ cases }: { cases: CaseItem[] }) {
             </form>
             <div className="ucxcs__done">
               <span>&#10003;</span>
-              <span>Thanks — the PDF is on its way to your inbox. Check spam if it hasn&apos;t landed in a few minutes.</span>
+              {modalCase?.pdfUrl ? (
+                <>
+                  <span>Thanks — your download is ready.</span>
+                  <a className="ucxcs__submit" href={modalCase.pdfUrl} download style={{ display: "inline-flex", marginTop: 14, textDecoration: "none" }}>
+                    Download PDF
+                  </a>
+                </>
+              ) : (
+                <span>Thanks — the PDF is on its way to your inbox. Check spam if it hasn&apos;t landed in a few minutes.</span>
+              )}
             </div>
           </div>
         </div>

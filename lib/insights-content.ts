@@ -2,7 +2,7 @@ import "server-only";
 import { remark } from "remark";
 import remarkHtml from "remark-html";
 import type { Author, InsightCategory, Post } from "@/lib/insights";
-import { listPosts, getPostBySlug, type BlogPostRow } from "@/lib/blog-posts-db";
+import { listPublishedPosts, getPublishedPostBySlug, type BlogPostRow } from "@/lib/blog-posts-db";
 
 const AUTHORS: Record<string, Author> = {
   shangeeth: {
@@ -38,11 +38,14 @@ function toPost(row: BlogPostRow): Post {
   };
 }
 
+// Only published posts are ever exposed here — this is the public-facing
+// read layer. The dashboard reads drafts too, but via lib/blog-posts-db.ts
+// directly, never through this module.
 export function getAllInsightPosts(): Post[] {
-  return listPosts().map(toPost);
+  return listPublishedPosts().map(toPost);
 }
 
 export function getInsightPost(slug: string): Post | undefined {
-  const row = getPostBySlug(slug);
+  const row = getPublishedPostBySlug(slug);
   return row ? toPost(row) : undefined;
 }

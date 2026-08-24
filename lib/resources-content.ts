@@ -15,5 +15,6 @@ export function getAllResources(): ResourceItem[] {
     format: row.format as FileFormat,
     title: row.title,
     image: row.image ?? undefined,
+    pdfUrl: row.pdf_url ?? undefined,
   }));
 }

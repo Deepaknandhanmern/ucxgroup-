@@ -44,6 +44,7 @@ export default function PostsListPage() {
             <thead className="border-b border-neutral-200 bg-neutral-50 text-xs uppercase tracking-wide text-neutral-500">
               <tr>
                 <th className="px-4 py-3">Title</th>
+                <th className="px-4 py-3">Status</th>
                 <th className="px-4 py-3">Category</th>
                 <th className="px-4 py-3">Date</th>
                 <th className="px-4 py-3"></th>
@@ -53,6 +54,15 @@ export default function PostsListPage() {
               {posts.map((p) => (
                 <tr key={p.id} className="border-b border-neutral-100 last:border-0">
                   <td className="px-4 py-3 font-medium text-neutral-900">{p.title}</td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                        p.status === "published" ? "bg-emerald-100 text-emerald-800" : "bg-amber-100 text-amber-800"
+                      }`}
+                    >
+                      {p.status === "published" ? "Published" : "Draft"}
+                    </span>
+                  </td>
                   <td className="px-4 py-3 text-neutral-500">{p.category}</td>
                   <td className="px-4 py-3 text-neutral-500">{p.date}</td>
                   <td className="px-4 py-3 text-right">

@@ -11,6 +11,13 @@ if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 
 const db = new DatabaseSync(DB_PATH);
 
+function ensureColumn(table: string, column: string, ddl: string) {
+  const cols = db.prepare(`PRAGMA table_info(${table})`).all() as { name: string }[];
+  if (!cols.some((c) => c.name === column)) {
+    db.exec(`ALTER TABLE ${table} ADD COLUMN ${ddl}`);
+  }
+}
+
 db.exec(`
   CREATE TABLE IF NOT EXISTS blog_posts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -25,6 +32,7 @@ db.exec(`
     tags TEXT NOT NULL,
     author_key TEXT NOT NULL,
     body_markdown TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'published',
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
   );
@@ -38,7 +46,8 @@ db.exec(`
     phone TEXT,
     subject TEXT,
     message TEXT,
-    data TEXT NOT NULL
+    data TEXT NOT NULL,
+    read INTEGER NOT NULL DEFAULT 0
   );
 
   CREATE TABLE IF NOT EXISTS job_openings (
@@ -76,6 +85,11 @@ db.exec(`
     updated_at TEXT NOT NULL
   );
 `);
+
+// Existing databases created before these columns existed won't get them
+// from CREATE TABLE IF NOT EXISTS — add them explicitly, once.
+ensureColumn("blog_posts", "status", "status TEXT NOT NULL DEFAULT 'published'");
+ensureColumn("enquiries", "read", "read INTEGER NOT NULL DEFAULT 0");
 
 // One-time migration: seed the DB from the existing markdown posts the
 // first time this ever runs, so the switchover to DB-backed content

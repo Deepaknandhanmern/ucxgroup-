@@ -1,8 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { BlogPostRow } from "@/lib/blog-posts-db";
+import { remark } from "remark";
+import remarkHtml from "remark-html";
+import type { BlogPostRow, PostStatus } from "@/lib/blog-posts-db";
 
 const CATEGORIES = [
   { value: "bim-digital", label: "BIM & Digital" },
@@ -29,10 +31,19 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
   const [tags, setTags] = useState(post ? (JSON.parse(post.tags) as string[]).join(", ") : "");
   const [authorKey, setAuthorKey] = useState(post?.author_key ?? "shangeeth");
   const [bodyMarkdown, setBodyMarkdown] = useState(post?.body_markdown ?? "");
+  const [status, setStatus] = useState<PostStatus>(post?.status ?? "draft");
 
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+
+  const previewHtml = useMemo(() => {
+    try {
+      return remark().use(remarkHtml).processSync(bodyMarkdown).toString();
+    } catch {
+      return "<p><em>Couldn't render preview.</em></p>";
+    }
+  }, [bodyMarkdown]);
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -72,6 +83,7 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
         .filter(Boolean),
       authorKey,
       bodyMarkdown,
+      status,
     };
 
     const res = await fetch(post ? `/api/dashboard/posts/${post.id}` : "/api/dashboard/posts", {
@@ -181,22 +193,59 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
         </label>
       </div>
 
-      <label className={labelClass}>
-        Tags (comma-separated)
-        <input className={inputClass} value={tags} onChange={(e) => setTags(e.target.value)} placeholder="BIM, Coordination" />
-      </label>
+      <div className="grid grid-cols-2 gap-5">
+        <label className={labelClass}>
+          Tags (comma-separated)
+          <input className={inputClass} value={tags} onChange={(e) => setTags(e.target.value)} placeholder="BIM, Coordination" />
+        </label>
+        <div>
+          <span className={labelClass}>Status</span>
+          <div className="mt-1.5 flex overflow-hidden rounded-lg border border-neutral-300">
+            <button
+              type="button"
+              onClick={() => setStatus("draft")}
+              className={`flex-1 py-2 text-sm font-medium transition ${
+                status === "draft" ? "bg-amber-100 text-amber-800" : "bg-white text-neutral-500 hover:bg-neutral-50"
+              }`}
+            >
+              Draft
+            </button>
+            <button
+              type="button"
+              onClick={() => setStatus("published")}
+              className={`flex-1 py-2 text-sm font-medium transition ${
+                status === "published" ? "bg-emerald-100 text-emerald-800" : "bg-white text-neutral-500 hover:bg-neutral-50"
+              }`}
+            >
+              Published
+            </button>
+          </div>
+        </div>
+      </div>
 
-      <label className={labelClass}>
-        Content (Markdown)
-        <textarea
-          className={`${inputClass} font-mono`}
-          rows={16}
-          value={bodyMarkdown}
-          onChange={(e) => setBodyMarkdown(e.target.value)}
-          required
-          placeholder="Write the post body in Markdown — paragraphs, **bold**, *italic*, etc."
-        />
-      </label>
+      <div>
+        <span className={labelClass}>Content (Markdown)</span>
+        <div className="mt-1.5 grid grid-cols-2 gap-4">
+          <textarea
+            className={`${inputClass} mt-0 font-mono`}
+            rows={20}
+            value={bodyMarkdown}
+            onChange={(e) => setBodyMarkdown(e.target.value)}
+            required
+            placeholder="Write the post body in Markdown — paragraphs, **bold**, *italic*, etc."
+          />
+          <div
+            className="space-y-3 overflow-y-auto rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-sm leading-relaxed text-neutral-800 [&_h1]:text-lg [&_h1]:font-bold [&_h2]:text-base [&_h2]:font-bold [&_strong]:font-semibold [&_a]:text-[#00352d] [&_a]:underline"
+            style={{ maxHeight: 420 }}
+          >
+            {bodyMarkdown.trim() ? (
+              <div dangerouslySetInnerHTML={{ __html: previewHtml }} />
+            ) : (
+              <span className="text-neutral-400">Preview will appear here as you type…</span>
+            )}
+          </div>
+        </div>
+      </div>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
@@ -206,7 +255,7 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
           disabled={saving}
           className="rounded-lg bg-[#00352d] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#00473d] disabled:opacity-60"
         >
-          {saving ? "Saving…" : post ? "Save changes" : "Publish post"}
+          {saving ? "Saving…" : status === "published" ? "Publish post" : "Save draft"}
         </button>
         <button
           type="button"

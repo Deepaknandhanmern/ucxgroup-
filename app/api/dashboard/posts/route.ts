@@ -24,6 +24,7 @@ export async function POST(req: Request) {
     tags: Array.isArray(body.tags) ? body.tags : [],
     authorKey: body.authorKey ?? "shangeeth",
     bodyMarkdown: body.bodyMarkdown,
+    status: body.status === "published" ? "published" : "draft",
   });
 
   return NextResponse.json({ post }, { status: 201 });

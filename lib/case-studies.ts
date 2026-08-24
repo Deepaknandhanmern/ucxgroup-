@@ -8,6 +8,8 @@ export interface CaseStudy {
   title: string;
   /** Optional thumbnail — falls back to a placeholder until real cover images exist. */
   image?: string;
+  /** Optional PDF, uploaded from the dashboard — offered as a direct download once set. */
+  pdfUrl?: string;
 }
 
 export const CASE_STUDY_FILTERS: { cat: CaseStudyCategory | "all"; label: string }[] = [

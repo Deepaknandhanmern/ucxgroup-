@@ -1,6 +1,8 @@
 import "server-only";
 import db from "@/lib/db";
 
+export type PostStatus = "draft" | "published";
+
 export interface BlogPostRow {
   id: number;
   slug: string;
@@ -14,6 +16,7 @@ export interface BlogPostRow {
   tags: string; // JSON array string
   author_key: string;
   body_markdown: string;
+  status: PostStatus;
   created_at: string;
   updated_at: string;
 }
@@ -30,6 +33,7 @@ export interface BlogPostInput {
   tags: string[];
   authorKey: string;
   bodyMarkdown: string;
+  status: PostStatus;
 }
 
 function slugify(title: string): string {
@@ -44,12 +48,24 @@ export function listPosts(): BlogPostRow[] {
   return db.prepare("SELECT * FROM blog_posts ORDER BY date DESC, id DESC").all() as BlogPostRow[];
 }
 
+export function listPublishedPosts(): BlogPostRow[] {
+  return db
+    .prepare("SELECT * FROM blog_posts WHERE status = 'published' ORDER BY date DESC, id DESC")
+    .all() as BlogPostRow[];
+}
+
 export function getPostById(id: number): BlogPostRow | undefined {
   return db.prepare("SELECT * FROM blog_posts WHERE id = ?").get(id) as BlogPostRow | undefined;
 }
 
 export function getPostBySlug(slug: string): BlogPostRow | undefined {
   return db.prepare("SELECT * FROM blog_posts WHERE slug = ?").get(slug) as BlogPostRow | undefined;
+}
+
+export function getPublishedPostBySlug(slug: string): BlogPostRow | undefined {
+  return db.prepare("SELECT * FROM blog_posts WHERE slug = ? AND status = 'published'").get(slug) as
+    | BlogPostRow
+    | undefined;
 }
 
 export function makeUniqueSlug(title: string, ignoreId?: number): string {
@@ -68,8 +84,8 @@ export function createPost(input: BlogPostInput): BlogPostRow {
   const now = new Date().toISOString();
   const result = db
     .prepare(
-      `INSERT INTO blog_posts (slug, title, excerpt, image, team, category, date, read_time, tags, author_key, body_markdown, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO blog_posts (slug, title, excerpt, image, team, category, date, read_time, tags, author_key, body_markdown, status, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       input.slug,
@@ -83,6 +99,7 @@ export function createPost(input: BlogPostInput): BlogPostRow {
       JSON.stringify(input.tags),
       input.authorKey,
       input.bodyMarkdown,
+      input.status,
       now,
       now
     );
@@ -92,7 +109,7 @@ export function createPost(input: BlogPostInput): BlogPostRow {
 export function updatePost(id: number, input: BlogPostInput): BlogPostRow | undefined {
   const now = new Date().toISOString();
   db.prepare(
-    `UPDATE blog_posts SET slug = ?, title = ?, excerpt = ?, image = ?, team = ?, category = ?, date = ?, read_time = ?, tags = ?, author_key = ?, body_markdown = ?, updated_at = ?
+    `UPDATE blog_posts SET slug = ?, title = ?, excerpt = ?, image = ?, team = ?, category = ?, date = ?, read_time = ?, tags = ?, author_key = ?, body_markdown = ?, status = ?, updated_at = ?
      WHERE id = ?`
   ).run(
     input.slug,
@@ -106,6 +123,7 @@ export function updatePost(id: number, input: BlogPostInput): BlogPostRow | unde
     JSON.stringify(input.tags),
     input.authorKey,
     input.bodyMarkdown,
+    input.status,
     now,
     id
   );

@@ -34,6 +34,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     tags: Array.isArray(body.tags) ? body.tags : [],
     authorKey: body.authorKey ?? existing.author_key,
     bodyMarkdown: body.bodyMarkdown,
+    status: body.status === "published" ? "published" : "draft",
   });
 
   return NextResponse.json({ post });

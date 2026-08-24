@@ -16,6 +16,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }
 
   const navItems = [
+    { href: "/dashboard", label: "Overview", exact: true },
     { href: "/dashboard/posts", label: "Blog Posts" },
     { href: "/dashboard/case-studies", label: "Case Studies" },
     { href: "/dashboard/resources", label: "Resources" },
@@ -27,21 +28,24 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div className="min-h-screen bg-neutral-50">
       <header className="flex items-center justify-between border-b border-neutral-200 bg-white px-6 py-4">
         <div className="flex items-center gap-8">
-          <span className="text-sm font-bold tracking-wide text-[#00352d]">UCX DASHBOARD</span>
+          <Link href="/dashboard" className="text-sm font-bold tracking-wide text-[#00352d]">
+            UCX DASHBOARD
+          </Link>
           <nav className="flex gap-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`rounded-md px-3 py-1.5 text-sm font-medium transition ${
-                  pathname.startsWith(item.href)
-                    ? "bg-[#00352d] text-white"
-                    : "text-neutral-600 hover:bg-neutral-100"
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`rounded-md px-3 py-1.5 text-sm font-medium transition ${
+                    active ? "bg-[#00352d] text-white" : "text-neutral-600 hover:bg-neutral-100"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
         <button

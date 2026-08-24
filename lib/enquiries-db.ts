@@ -11,6 +11,7 @@ export interface EnquiryRow {
   subject: string | null;
   message: string | null;
   data: string; // JSON blob of the full submitted payload
+  read: number; // 0 or 1 — SQLite has no native boolean
 }
 
 export interface EnquiryInput {
@@ -29,8 +30,8 @@ export function listEnquiries(): EnquiryRow[] {
 
 export function createEnquiry(input: EnquiryInput): void {
   db.prepare(
-    `INSERT INTO enquiries (created_at, source, name, email, phone, subject, message, data)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT INTO enquiries (created_at, source, name, email, phone, subject, message, data, read)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)`
   ).run(
     new Date().toISOString(),
     input.source,
@@ -41,6 +42,10 @@ export function createEnquiry(input: EnquiryInput): void {
     input.message ?? null,
     JSON.stringify(input.data)
   );
+}
+
+export function markEnquiryRead(id: number, read: boolean): void {
+  db.prepare("UPDATE enquiries SET read = ? WHERE id = ?").run(read ? 1 : 0, id);
 }
 
 export function deleteEnquiry(id: number): void {

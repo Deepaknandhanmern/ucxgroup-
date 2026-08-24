@@ -217,7 +217,16 @@ export default function Resources({ resources }: { resources: ResourceItem[] }) 
             </form>
             <div className="ucxres__done">
               <span>&#10003;</span>
-              <span>Thanks — we&apos;ll email you the moment this resource is ready to download.</span>
+              {modalItem?.pdfUrl ? (
+                <>
+                  <span>Thanks — your download is ready.</span>
+                  <a className="ucxres__submit" href={modalItem.pdfUrl} download style={{ display: "inline-flex", marginTop: 14, textDecoration: "none" }}>
+                    Download File
+                  </a>
+                </>
+              ) : (
+                <span>Thanks — we&apos;ll email you the moment this resource is ready to download.</span>
+              )}
             </div>
           </div>
         </div>

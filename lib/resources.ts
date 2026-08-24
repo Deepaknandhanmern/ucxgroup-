@@ -10,6 +10,8 @@ export interface ResourceItem {
   title: string;
   /** Optional thumbnail — falls back to a placeholder until real cover images exist. */
   image?: string;
+  /** Optional file, uploaded from the dashboard — offered as a direct download once set. */
+  pdfUrl?: string;
 }
 
 export const RESOURCE_FILTERS: { cat: ResourceCategory | "all"; label: string }[] = [

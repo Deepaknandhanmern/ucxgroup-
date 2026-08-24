@@ -14,5 +14,6 @@ export function getAllCaseStudies(): CaseStudy[] {
     pages: row.pages,
     title: row.title,
     image: row.image ?? undefined,
+    pdfUrl: row.pdf_url ?? undefined,
   }));
 }
