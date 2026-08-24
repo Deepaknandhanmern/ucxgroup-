@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export default function CompanyHero() {
   const sectRef = useRef<HTMLDivElement>(null);
-  const [imgOk, setImgOk] = useState(true);
 
   useEffect(() => {
     const sect = sectRef.current;
@@ -54,7 +53,7 @@ export default function CompanyHero() {
           <h1 className="heading">
             Built on Collaboration.
             <br />
-            Driven by <em>Possibility.</em>
+            Driven by Possibility.
           </h1>
 
           <p className="intro">
@@ -69,22 +68,6 @@ export default function CompanyHero() {
               <path d="M5 12h13M13 6l6 6-6 6" />
             </svg>
           </a>
-        </div>
-
-        <div className="hero-frame">
-          {imgOk ? (
-            <img src="/brand/about/hero.jpg" alt="UCX studio" onError={() => setImgOk(false)} />
-          ) : (
-            <div className="hero-frame-fallback" aria-hidden="true">
-              <svg viewBox="0 0 120 150" fill="none" stroke="currentColor" strokeWidth="1">
-                <path d="M14 140V56L60 18l46 38v84" />
-                <path d="M14 140h92" />
-                <path d="M40 140V88h40v52" />
-                <path d="M24 66h10M24 80h10M24 94h10M86 66h10M86 80h10" />
-              </svg>
-            </div>
-          )}
-          <span className="hero-frame-caption">Design &amp; Delivery, India</span>
         </div>
       </div>
     </div>

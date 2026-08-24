@@ -93,7 +93,7 @@
   font-weight: 700; text-transform: uppercase; line-height: .96; letter-spacing: -.01em;
   font-size: clamp(36px,5.4vw,66px); color: var(--accent); margin-bottom: 22px; max-width: 16ch;
 }
-.ucx-experience .intro { max-width: 62ch; font-size: 16px; line-height: 1.75; color: var(--accent-dim); margin-bottom: 14px; }
+.ucx-experience .intro { max-width: 62ch; font-size: 16px; line-height: 1.75; color: #fff; margin-bottom: 14px; }
 .ucx-experience .head-cta {
   display: inline-flex; align-items: center; gap: 10px;
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;

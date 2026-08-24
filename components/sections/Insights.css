@@ -35,25 +35,34 @@
 
 .ins-wrapper {
   max-width: 1280px; margin: 0 auto;
-  padding: clamp(56px,7vw,110px) clamp(20px,5vw,64px) var(--ucx-section-gap);
+  padding: 0 clamp(20px,5vw,64px) var(--ucx-section-gap);
 }
 
-.ins-head { max-width: 680px; margin-bottom: clamp(64px,8vw,100px); scroll-margin-top: 96px; }
+.ins-head {
+  margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
+  margin-bottom: clamp(64px,8vw,100px); scroll-margin-top: 96px;
+  background: var(--g);
+}
+.ins-head-inner {
+  max-width: 1280px; margin: 0 auto;
+  padding: clamp(64px,8vw,96px) clamp(20px,5vw,64px) clamp(56px,7vw,80px);
+}
 .ins-title {
   font-family: 'UCXGetho','Getho',sans-serif;
   font-weight: 700; line-height: 1.05; letter-spacing: -.01em;
-  font-size: clamp(32px,5vw,52px); color: var(--g); margin: 0 0 18px;
+  font-size: clamp(32px,5vw,52px); color: var(--mint); margin: 0 0 18px;
+  max-width: 680px;
 }
-.ins-sub { font-size: 16px; line-height: 1.65; color: var(--ink-60); margin: 0 0 28px; }
+.ins-sub { font-size: 16px; line-height: 1.65; color: #fff; margin: 0 0 28px; max-width: 680px; }
 .ins-hero-cta {
   display: inline-flex; align-items: center; gap: 9px;
   font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
-  color: var(--g); text-decoration: none;
-  padding-bottom: 2px; border-bottom: 1px solid var(--line);
+  color: var(--mint); text-decoration: none;
+  padding-bottom: 2px; border-bottom: 1px solid rgba(145,242,181,.4);
   transition: gap .25s var(--ease), border-color .25s var(--ease);
 }
 .ins-hero-cta svg { width: 15px; height: 15px; }
-.ins-hero-cta:hover { gap: 13px; border-color: var(--g); }
+.ins-hero-cta:hover { gap: 13px; border-color: var(--mint); }
 
 /* ---- sections (Ideas / Project Knowledge / Resources) ---- */
 .ins-section {

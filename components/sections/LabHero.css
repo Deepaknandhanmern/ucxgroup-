@@ -81,7 +81,7 @@
   display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 0 .28em;
   font-family: 'UCXGetho','Getho',sans-serif; font-weight: 700;
   line-height: 1.02; letter-spacing: -.01em;
-  font-size: clamp(32px,5.4vw,62px); color: #fff; margin-bottom: 24px;
+  font-size: clamp(32px,5.4vw,62px); color: var(--accent); margin-bottom: 24px;
 }
 .ucx-labhero .word-mask { display: inline-block; overflow: hidden; padding-bottom: .08em; }
 .ucx-labhero .word-inner {
@@ -92,7 +92,7 @@
 .ucx-labhero .word-inner.is-in { transform: translateY(0); opacity: 1; }
 
 .ucx-labhero .subtitle {
-  font-size: clamp(15px,1.6vw,18px); line-height: 1.6; color: var(--accent-dim);
+  font-size: clamp(15px,1.6vw,18px); line-height: 1.6; color: #fff;
   max-width: 46ch; margin-bottom: 30px;
   opacity: 0; transform: translateY(14px);
   transition: opacity .7s var(--ease), transform .7s var(--ease);

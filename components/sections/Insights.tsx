@@ -332,17 +332,19 @@ export default function Insights({
       <div className="ins-bg-grid" aria-hidden="true"></div>
       <div className="ins-wrapper">
         <div className="ins-head" id="overview" data-reveal>
-          <h1 className="ins-title">Ideas, Knowledge &amp; Perspectives for the Built Environment</h1>
-          <p className="ins-sub">
-            Practical perspectives, project lessons and emerging thinking across BIM, digital engineering, design
-            and construction technology.
-          </p>
-          <a className="ins-hero-cta" href="#ideas">
-            Explore Insights
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 5v13M6 13l6 6 6-6" />
-            </svg>
-          </a>
+          <div className="ins-head-inner">
+            <h1 className="ins-title">Ideas, Knowledge &amp; Perspectives for the Built Environment</h1>
+            <p className="ins-sub">
+              Practical perspectives, project lessons and emerging thinking across BIM, digital engineering, design
+              and construction technology.
+            </p>
+            <a className="ins-hero-cta" href="#ideas">
+              Explore Insights
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 5v13M6 13l6 6 6-6" />
+              </svg>
+            </a>
+          </div>
         </div>
 
         <IdeasSection posts={posts} />
