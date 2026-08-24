@@ -3,15 +3,89 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { ProjectRow } from "@/lib/projects-db";
-import { CAT_LABELS, type Cat } from "@/lib/projects";
+import { CAT_LABELS, INTERIOR_CAT_LABELS, type Cat, type InteriorCat } from "@/lib/projects";
 import DigitalExperiencePanel from "@/components/dashboard/DigitalExperiencePanel";
 
+type Tab = "built" | "interiors" | "digital";
+
+function ProjectTable({
+  rows,
+  categoryLabel,
+  selected,
+  toggleOne,
+  toggleAll,
+  deletingId,
+  onDelete,
+}: {
+  rows: ProjectRow[];
+  categoryLabel: (row: ProjectRow) => string;
+  selected: Set<number>;
+  toggleOne: (id: number) => void;
+  toggleAll: () => void;
+  deletingId: number | null;
+  onDelete: (id: number, title: string) => void;
+}) {
+  return (
+    <div className="mt-6 overflow-hidden rounded-xl border border-neutral-200 bg-white">
+      <table className="w-full text-left text-sm">
+        <thead className="border-b border-neutral-200 bg-neutral-50 text-xs uppercase tracking-wide text-neutral-500">
+          <tr>
+            <th className="w-10 px-4 py-3">
+              <input
+                type="checkbox"
+                checked={rows.length > 0 && selected.size === rows.length}
+                onChange={toggleAll}
+                aria-label="Select all"
+              />
+            </th>
+            <th className="px-4 py-3">Title</th>
+            <th className="px-4 py-3">Category</th>
+            <th className="px-4 py-3">Location</th>
+            <th className="px-4 py-3"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((p) => (
+            <tr key={p.id} className="border-b border-neutral-100 last:border-0">
+              <td className="px-4 py-3">
+                <input
+                  type="checkbox"
+                  checked={selected.has(p.id)}
+                  onChange={() => toggleOne(p.id)}
+                  aria-label={`Select ${p.title}`}
+                />
+              </td>
+              <td className="px-4 py-3 font-medium text-neutral-900">{p.title}</td>
+              <td className="px-4 py-3 text-neutral-500">{categoryLabel(p)}</td>
+              <td className="px-4 py-3 text-neutral-500">{p.location}</td>
+              <td className="px-4 py-3 text-right">
+                <Link href={`/dashboard/projects/${p.id}`} className="mr-3 font-medium text-[#00352d] hover:underline">
+                  Edit
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => onDelete(p.id, p.title)}
+                  disabled={deletingId === p.id}
+                  className="font-medium text-red-600 hover:underline disabled:opacity-50"
+                >
+                  {deletingId === p.id ? "Deleting…" : "Delete"}
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 export default function ProjectsListPage() {
-  const [tab, setTab] = useState<"list" | "digital">("list");
+  const [tab, setTab] = useState<Tab>("built");
   const [projects, setProjects] = useState<ProjectRow[] | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [search, setSearch] = useState("");
   const [catFilter, setCatFilter] = useState<"all" | Cat>("all");
+  const [interiorCatFilter, setInteriorCatFilter] = useState<"all" | InteriorCat>("all");
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [bulkWorking, setBulkWorking] = useState(false);
 
@@ -20,6 +94,11 @@ export default function ProjectsListPage() {
       .then((r) => r.json())
       .then((data) => setProjects(data.projects));
   }, []);
+
+  function switchTab(next: Tab) {
+    setTab(next);
+    setSelected(new Set());
+  }
 
   async function handleDelete(id: number, title: string) {
     if (!confirm(`Delete "${title}"? This can't be undone.`)) return;
@@ -34,15 +113,26 @@ export default function ProjectsListPage() {
     setDeletingId(null);
   }
 
+  // Interiors isn't a separate list — it's the subset of Projects that also
+  // carries an interior_category, same as the site's own /projects?filter=interiors view.
+  const interiorProjects = useMemo(() => (projects ?? []).filter((p) => p.interior_category), [projects]);
+
   const filtered = useMemo(() => {
     if (!projects) return null;
     const q = search.trim().toLowerCase();
-    return projects.filter((p) => {
-      if (catFilter !== "all" && p.cat !== catFilter) return false;
+    const source = tab === "interiors" ? interiorProjects : projects;
+    return source.filter((p) => {
+      if (tab === "interiors") {
+        if (interiorCatFilter !== "all" && p.interior_category !== interiorCatFilter) return false;
+      } else if (tab === "built") {
+        if (catFilter !== "all" && p.cat !== catFilter) return false;
+      }
       if (q && !p.title.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [projects, search, catFilter]);
+  }, [projects, interiorProjects, tab, search, catFilter, interiorCatFilter]);
+
+  const totalForTab = tab === "interiors" ? interiorProjects.length : projects?.length ?? 0;
 
   function toggleOne(id: number) {
     setSelected((prev) => {
@@ -74,10 +164,12 @@ export default function ProjectsListPage() {
         <div>
           <h1 className="font-getho text-2xl font-bold text-neutral-900">Projects</h1>
           <p className="mt-1 text-sm text-neutral-500">
-            Covers Built Environment, Interiors and Digital Project Experience on the site.
+            {tab === "digital"
+              ? "The 5 fixed Digital Project Experience categories."
+              : "New projects can be tagged with an interiors category to also appear on that tab."}
           </p>
         </div>
-        {tab === "list" && (
+        {tab !== "digital" && (
           <Link
             href="/dashboard/projects/new"
             className="rounded-lg bg-[#00352d] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#00473d]"
@@ -90,16 +182,25 @@ export default function ProjectsListPage() {
       <div className="mt-5 flex overflow-hidden rounded-lg border border-neutral-300 w-fit">
         <button
           type="button"
-          onClick={() => setTab("list")}
+          onClick={() => switchTab("built")}
           className={`px-4 py-2 text-sm font-medium transition ${
-            tab === "list" ? "bg-[#00352d] text-white" : "bg-white text-neutral-600 hover:bg-neutral-50"
+            tab === "built" ? "bg-[#00352d] text-white" : "bg-white text-neutral-600 hover:bg-neutral-50"
           }`}
         >
-          Built Environment &amp; Interiors
+          Built Environment
         </button>
         <button
           type="button"
-          onClick={() => setTab("digital")}
+          onClick={() => switchTab("interiors")}
+          className={`px-4 py-2 text-sm font-medium transition ${
+            tab === "interiors" ? "bg-[#00352d] text-white" : "bg-white text-neutral-600 hover:bg-neutral-50"
+          }`}
+        >
+          Interiors
+        </button>
+        <button
+          type="button"
+          onClick={() => switchTab("digital")}
           className={`px-4 py-2 text-sm font-medium transition ${
             tab === "digital" ? "bg-[#00352d] text-white" : "bg-white text-neutral-600 hover:bg-neutral-50"
           }`}
@@ -112,115 +213,96 @@ export default function ProjectsListPage() {
         <DigitalExperiencePanel />
       ) : (
         <>
-      {projects !== null && projects.length > 0 && (
-        <div className="mt-4 flex flex-wrap items-center gap-3">
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by title…"
-            className="w-full max-w-xs rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
-          />
-          <select
-            value={catFilter}
-            onChange={(e) => setCatFilter(e.target.value as "all" | Cat)}
-            className="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
-          >
-            <option value="all">All categories</option>
-            {(Object.keys(CAT_LABELS) as Cat[]).map((c) => (
-              <option key={c} value={c}>
-                {CAT_LABELS[c]}
-              </option>
-            ))}
-          </select>
-          {filtered && <span className="text-sm text-neutral-500">{filtered.length} of {projects.length}</span>}
-        </div>
-      )}
+          {projects !== null && totalForTab > 0 && (
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search by title…"
+                className="w-full max-w-xs rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
+              />
+              {tab === "built" ? (
+                <select
+                  value={catFilter}
+                  onChange={(e) => setCatFilter(e.target.value as "all" | Cat)}
+                  className="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
+                >
+                  <option value="all">All categories</option>
+                  {(Object.keys(CAT_LABELS) as Cat[]).map((c) => (
+                    <option key={c} value={c}>
+                      {CAT_LABELS[c]}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <select
+                  value={interiorCatFilter}
+                  onChange={(e) => setInteriorCatFilter(e.target.value as "all" | InteriorCat)}
+                  className="rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-[#00352d] focus:outline-none"
+                >
+                  <option value="all">All interior categories</option>
+                  {(Object.keys(INTERIOR_CAT_LABELS) as InteriorCat[]).map((c) => (
+                    <option key={c} value={c}>
+                      {INTERIOR_CAT_LABELS[c]}
+                    </option>
+                  ))}
+                </select>
+              )}
+              {filtered && (
+                <span className="text-sm text-neutral-500">
+                  {filtered.length} of {totalForTab}
+                </span>
+              )}
+            </div>
+          )}
 
-      {selected.size > 0 && (
-        <div className="mt-3 flex items-center gap-3 rounded-lg border border-[#00352d]/20 bg-[#00352d]/[0.03] px-4 py-2.5">
-          <span className="text-sm font-medium text-neutral-700">{selected.size} selected</span>
-          <button
-            type="button"
-            disabled={bulkWorking}
-            onClick={bulkDelete}
-            className="text-sm font-medium text-red-600 hover:underline disabled:opacity-50"
-          >
-            Delete
-          </button>
-          <button
-            type="button"
-            onClick={() => setSelected(new Set())}
-            className="ml-auto text-sm font-medium text-neutral-400 hover:text-neutral-700"
-          >
-            Clear
-          </button>
-        </div>
-      )}
+          {selected.size > 0 && (
+            <div className="mt-3 flex items-center gap-3 rounded-lg border border-[#00352d]/20 bg-[#00352d]/[0.03] px-4 py-2.5">
+              <span className="text-sm font-medium text-neutral-700">{selected.size} selected</span>
+              <button
+                type="button"
+                disabled={bulkWorking}
+                onClick={bulkDelete}
+                className="text-sm font-medium text-red-600 hover:underline disabled:opacity-50"
+              >
+                Delete
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelected(new Set())}
+                className="ml-auto text-sm font-medium text-neutral-400 hover:text-neutral-700"
+              >
+                Clear
+              </button>
+            </div>
+          )}
 
-      {projects === null ? (
-        <p className="mt-8 text-sm text-neutral-500">Loading…</p>
-      ) : projects.length === 0 ? (
-        <p className="mt-8 text-sm text-neutral-500">No projects yet — add the first one.</p>
-      ) : filtered && filtered.length === 0 ? (
-        <p className="mt-8 text-sm text-neutral-500">No projects match your search/filters.</p>
-      ) : (
-        <div className="mt-6 overflow-hidden rounded-xl border border-neutral-200 bg-white">
-          <table className="w-full text-left text-sm">
-            <thead className="border-b border-neutral-200 bg-neutral-50 text-xs uppercase tracking-wide text-neutral-500">
-              <tr>
-                <th className="w-10 px-4 py-3">
-                  <input
-                    type="checkbox"
-                    checked={filtered !== null && filtered.length > 0 && selected.size === filtered.length}
-                    onChange={toggleAll}
-                    aria-label="Select all"
-                  />
-                </th>
-                <th className="px-4 py-3">Title</th>
-                <th className="px-4 py-3">Category</th>
-                <th className="px-4 py-3">Interiors</th>
-                <th className="px-4 py-3">Location</th>
-                <th className="px-4 py-3"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {(filtered ?? []).map((p) => (
-                <tr key={p.id} className="border-b border-neutral-100 last:border-0">
-                  <td className="px-4 py-3">
-                    <input
-                      type="checkbox"
-                      checked={selected.has(p.id)}
-                      onChange={() => toggleOne(p.id)}
-                      aria-label={`Select ${p.title}`}
-                    />
-                  </td>
-                  <td className="px-4 py-3 font-medium text-neutral-900">{p.title}</td>
-                  <td className="px-4 py-3 text-neutral-500">{CAT_LABELS[p.cat as Cat] ?? p.cat}</td>
-                  <td className="px-4 py-3 text-neutral-500">{p.interior_category ? "Yes" : "—"}</td>
-                  <td className="px-4 py-3 text-neutral-500">{p.location}</td>
-                  <td className="px-4 py-3 text-right">
-                    <Link
-                      href={`/dashboard/projects/${p.id}`}
-                      className="mr-3 font-medium text-[#00352d] hover:underline"
-                    >
-                      Edit
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(p.id, p.title)}
-                      disabled={deletingId === p.id}
-                      className="font-medium text-red-600 hover:underline disabled:opacity-50"
-                    >
-                      {deletingId === p.id ? "Deleting…" : "Delete"}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+          {projects === null ? (
+            <p className="mt-8 text-sm text-neutral-500">Loading…</p>
+          ) : totalForTab === 0 ? (
+            <p className="mt-8 text-sm text-neutral-500">
+              {tab === "interiors"
+                ? "No projects tagged with an interiors category yet — set one when editing a project."
+                : "No projects yet — add the first one."}
+            </p>
+          ) : filtered && filtered.length === 0 ? (
+            <p className="mt-8 text-sm text-neutral-500">No projects match your search/filters.</p>
+          ) : (
+            <ProjectTable
+              rows={filtered ?? []}
+              categoryLabel={(p) =>
+                tab === "interiors"
+                  ? (INTERIOR_CAT_LABELS[p.interior_category as InteriorCat] ?? p.interior_category ?? "")
+                  : (CAT_LABELS[p.cat as Cat] ?? p.cat)
+              }
+              selected={selected}
+              toggleOne={toggleOne}
+              toggleAll={toggleAll}
+              deletingId={deletingId}
+              onDelete={handleDelete}
+            />
+          )}
         </>
       )}
     </div>
