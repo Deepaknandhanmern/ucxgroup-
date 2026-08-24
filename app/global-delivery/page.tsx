@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import GlobalDelivery from "@/components/sections/GlobalDelivery";
-import Workspace from "@/components/sections/Workspace";
 
 export const metadata: Metadata = {
   title: "Global Delivery",
@@ -12,7 +11,6 @@ export default function GlobalDeliveryPage() {
   return (
     <>
       <GlobalDelivery />
-      <Workspace />
     </>
   );
 }
