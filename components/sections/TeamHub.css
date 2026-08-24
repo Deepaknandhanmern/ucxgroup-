@@ -41,7 +41,7 @@
   line-height: 1.02; letter-spacing: -.01em;
   font-size: clamp(30px,4.4vw,50px); color: var(--accent); margin-bottom: 18px;
 }
-.ucx-team-hub .intro { font-size: 15.5px; line-height: 1.7; color: var(--accent-dim); }
+.ucx-team-hub .intro { font-size: 15.5px; line-height: 1.7; color: #fff; }
 
 .ucx-team-hub .wrapper { max-width: 1000px; margin: 0 auto; padding: var(--ucx-section-gap) clamp(20px,6vw,80px); }
 

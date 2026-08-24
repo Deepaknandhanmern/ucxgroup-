@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
 import SectionRail from "@/components/ui/SectionRail";
 import ModelViewer from "@/components/ui/ModelViewer";
+import CardThumb from "@/components/ui/CardThumb";
 
 const RAIL_SECTIONS = [
   { id: "overview", label: "Overview" },
@@ -31,6 +32,7 @@ interface Area {
   title: string;
   statement: string;
   desc: string;
+  img: string;
   icon: React.ReactNode;
   tags: string[];
   ctaLabel: string;
@@ -43,6 +45,7 @@ const AREAS: Area[] = [
     title: "Built Environment",
     statement: "Coordinated Delivery Across Complex Project Environments",
     desc: "UCX supports building, development, industrial and infrastructure projects through integrated design, BIM, digital engineering and project delivery capabilities.",
+    img: "/brand/experience/built-environment.jpg",
     icon: (
       <svg viewBox="0 0 48 48">
         <path d="M8 40V14l10-6 10 6v26" />
@@ -60,6 +63,7 @@ const AREAS: Area[] = [
     title: "Interiors",
     statement: "Design, Documentation & Delivery for Interior Environments",
     desc: "UCX combines interior design expertise with BIM, technical documentation, coordination and execution support to connect design intent with project delivery.",
+    img: "/brand/experience/interiors.jpg",
     icon: (
       <svg viewBox="0 0 48 48">
         <path d="M6 40V17.5L24 6l18 11.5V40H6Z" />
@@ -76,6 +80,7 @@ const AREAS: Area[] = [
     title: "Digital Project Experience",
     statement: "Technology-Led Delivery for Complex Project Requirements",
     desc: "Digital delivery is at the core of UCX's approach. We use BIM, digital engineering, coordination, automation and structured information workflows to connect project teams and improve delivery certainty.",
+    img: "/brand/experience/digital-project-experience.jpg",
     icon: (
       <svg viewBox="0 0 48 48">
         <path d="M24 6 41 15.5v19L24 44 7 34.5v-19L24 6Z" />
@@ -218,24 +223,34 @@ export default function Experience() {
         <div className="areas">
           {AREAS.map((a) => (
             <div className="area" key={a.index} data-reveal>
-              <div className="area-top">
-                <span className="area-index">{a.index}</span>
-                <span className="area-icon">{a.icon}</span>
+              <div className="area-media">
+                <CardThumb src={a.img} alt={a.title} />
               </div>
-              <h3 className="area-title">{a.title}</h3>
-              <p className="area-statement">{a.statement}</p>
-              <p className="area-desc">{a.desc}</p>
-              <div className="area-tags">
-                {a.tags.map((t) => (
-                  <span key={t}>{t}</span>
-                ))}
+              <div className="area-scrim" aria-hidden="true"></div>
+              <div className="area-content">
+                <div className="area-top">
+                  <span className="area-index">{a.index}</span>
+                  <span className="area-icon">{a.icon}</span>
+                </div>
+                <h3 className="area-title">{a.title}</h3>
+                <p className="area-statement">{a.statement}</p>
+                <div className="area-reveal">
+                  <div className="area-reveal-inner">
+                    <p className="area-desc">{a.desc}</p>
+                    <div className="area-tags">
+                      {a.tags.map((t) => (
+                        <span key={t}>{t}</span>
+                      ))}
+                    </div>
+                    <a className="area-cta" href={a.ctaHref}>
+                      {a.ctaLabel}
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M5 12h13M13 6l6 6-6 6" />
+                      </svg>
+                    </a>
+                  </div>
+                </div>
               </div>
-              <a className="area-cta" href={a.ctaHref}>
-                {a.ctaLabel}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 12h13M13 6l6 6-6 6" />
-                </svg>
-              </a>
             </div>
           ))}
         </div>

@@ -26,7 +26,7 @@ function initials(name: string): string {
     .join("");
 }
 
-function BlogCard({ post }: { post: Post }) {
+export function BlogCard({ post }: { post: Post }) {
   const [imgOk, setImgOk] = useState(true);
   const [photoOk, setPhotoOk] = useState(true);
 
@@ -123,13 +123,11 @@ function PreviewCard({
 /* ---------- Ideas That Move Projects Forward ---------- */
 function IdeasSection({ posts }: { posts: Post[] }) {
   const [activeCat, setActiveCat] = useState<InsightCategory | "all">("all");
-  const [showAll, setShowAll] = useState(false);
   const list = activeCat === "all" ? posts : posts.filter((p) => p.category === activeCat);
-  const visible = showAll ? list : list.slice(0, PREVIEW_COUNT);
+  const visible = list.slice(0, PREVIEW_COUNT);
 
   function selectCat(cat: InsightCategory | "all") {
     setActiveCat(cat);
-    setShowAll(false);
   }
 
   return (
@@ -166,13 +164,13 @@ function IdeasSection({ posts }: { posts: Post[] }) {
         </p>
       )}
 
-      {!showAll && list.length > PREVIEW_COUNT && (
-        <button type="button" className="ins-section-cta" onClick={() => setShowAll(true)} data-reveal>
+      {list.length > PREVIEW_COUNT && (
+        <a className="ins-section-cta" href="/blogs" data-reveal>
           See More
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M6 9l6 6 6-6" />
+            <path d="M5 12h13M13 6l6 6-6 6" />
           </svg>
-        </button>
+        </a>
       )}
     </section>
   );

@@ -267,16 +267,16 @@ const PANELS: Panel[] = [
     cols: [
       {
         index: "01",
-        title: "Insights",
+        title: "Blogs",
         desc: "Industry perspectives and practical knowledge.",
         links: [
-          { href: "/insights", label: "All Insights" },
+          { href: "/blogs", label: "All Blogs" },
           { href: "#link-insights-bim-and-digital", label: "BIM & Digital" },
           { href: "#link-insights-design-and-interiors", label: "Design & Interiors" },
           { href: "#link-insights-technology-and-ai", label: "Technology & AI" },
         ],
-        ctaHref: "/insights",
-        ctaLabel: "Explore Insights",
+        ctaHref: "/blogs",
+        ctaLabel: "Explore Blogs",
       },
       {
         index: "02",

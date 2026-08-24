@@ -14,25 +14,11 @@ interface Position {
 
 const POSITIONS: Position[] = [
   {
-    title: "BIM Coordinator",
-    department: "BIM & Digital Delivery",
-    location: "Coimbatore / Remote",
-    type: "Full-time",
-    desc: "Coordinate multidisciplinary BIM models, resolve clashes and support model-based documentation across live projects.",
-  },
-  {
     title: "Interior Designer",
     department: "Design & Interiors",
     location: "Coimbatore / Remote",
     type: "Full-time",
     desc: "Develop interior design solutions from concept through construction documentation, working closely with our BIM-integrated workflow.",
-  },
-  {
-    title: "Digital Engineer",
-    department: "Digital Delivery",
-    location: "Coimbatore / Remote",
-    type: "Full-time",
-    desc: "Build automation, data and coordination workflows that connect design, BIM and project delivery.",
   },
 ];
 

@@ -93,7 +93,7 @@
   color: var(--accent);
   margin-bottom: 20px;
 }
-.ucx-careers .intro { max-width: 60ch; font-size: 16px; line-height: 1.75; color: var(--accent-dim); margin-bottom: 28px; }
+.ucx-careers .intro { max-width: 60ch; font-size: 16px; line-height: 1.75; color: #fff; margin-bottom: 28px; }
 .ucx-careers .head-cta {
   display: inline-flex; align-items: center; gap: 10px;
   font-family: 'Getho','Atyp Display',sans-serif;
