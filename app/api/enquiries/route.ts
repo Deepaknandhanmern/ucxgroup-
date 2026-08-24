@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createEnquiry } from "@/lib/enquiries-db";
+import { notifyNewEnquiry } from "@/lib/mail";
 
 export async function POST(req: Request) {
   const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
@@ -9,7 +10,7 @@ export async function POST(req: Request) {
 
   const { source, ...data } = body as { source?: string } & Record<string, unknown>;
 
-  createEnquiry({
+  const enquiry = {
     source: source ?? "unknown",
     name: typeof data.name === "string" ? data.name : undefined,
     email: typeof data.email === "string" ? data.email : undefined,
@@ -17,7 +18,13 @@ export async function POST(req: Request) {
     subject: typeof data.subject === "string" ? data.subject : undefined,
     message: typeof data.message === "string" ? data.message : undefined,
     data,
-  });
+  };
+
+  createEnquiry(enquiry);
+
+  // Fire-and-forget — a slow or failing mail server should never delay or
+  // break the enquiry response the visitor is waiting on.
+  void notifyNewEnquiry(enquiry);
 
   return NextResponse.json({ ok: true });
 }
