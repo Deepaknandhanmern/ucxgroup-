@@ -32,7 +32,6 @@ export default function PrivacyPolicyPage() {
         {
           heading: "Third-Party Services",
           body: [
-            "Form submissions are processed through SplitForms, which delivers your enquiry to our team by email.",
             "Call scheduling is handled through Calendly. When you open the booking widget or complete a booking, Calendly may set its own cookies and process your information under its own privacy policy.",
           ],
         },

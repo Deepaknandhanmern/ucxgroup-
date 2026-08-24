@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { submitToSplitForms } from "@/lib/splitforms";
-import { saveEnquiryCopy } from "@/lib/save-enquiry";
+import { submitEnquiry } from "@/lib/save-enquiry";
 import FileCard from "@/components/ui/FileCard";
 import CardThumb from "@/components/ui/CardThumb";
 import { RESOURCE_FILTERS, type ResourceItem } from "@/lib/resources";
@@ -71,10 +70,9 @@ export default function Resources({ resources }: { resources: ResourceItem[] }) 
       payload[key] = String(value);
     });
 
-    const { ok } = await submitToSplitForms(payload);
+    const { ok } = await submitEnquiry("resource-download", payload);
     setSending(false);
     if (ok) {
-      saveEnquiryCopy("resource-download", payload);
       setSent(true);
       setTimeout(closeModal, 2600);
     } else {

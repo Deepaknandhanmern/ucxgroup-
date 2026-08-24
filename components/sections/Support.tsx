@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { submitToSplitForms } from "@/lib/splitforms";
+import { submitEnquiry } from "@/lib/save-enquiry";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
 interface SupportLine {
@@ -65,7 +65,7 @@ export default function Support() {
     formData.forEach((value, key) => {
       payload[key] = String(value);
     });
-    const { ok } = await submitToSplitForms(payload);
+    const { ok } = await submitEnquiry("homepage-query", payload);
     setStatus(ok ? "sent" : "error");
   }
 

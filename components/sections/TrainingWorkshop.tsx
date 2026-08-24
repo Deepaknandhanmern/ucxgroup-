@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
 import { useMagnetic } from "@/components/ui/useMagnetic";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
-import { submitToSplitForms } from "@/lib/splitforms";
+import { submitEnquiry } from "@/lib/save-enquiry";
 import {
   IconGraduate,
   IconPresentation,
@@ -149,7 +149,7 @@ export default function TrainingWorkshop() {
     formData.forEach((value, key) => {
       payload[key] = String(value);
     });
-    const { ok } = await submitToSplitForms(payload);
+    const { ok } = await submitEnquiry("training-workshop", payload);
     setLeadStatus(ok ? "sent" : "error");
   }
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { submitFormDataToSplitForms } from "@/lib/splitforms";
+import { submitEnquiry } from "@/lib/save-enquiry";
 
 interface ChallengeRow {
   challenge: string;
@@ -79,8 +79,11 @@ export default function CollaborationLab() {
     e.preventDefault();
     setStatus("sending");
     const formData = new FormData(e.currentTarget);
-    formData.set("subject", "New Challenge Submission");
-    const { ok } = await submitFormDataToSplitForms(formData);
+    const payload: Record<string, string> = { subject: "New Challenge Submission" };
+    formData.forEach((value, key) => {
+      payload[key] = String(value);
+    });
+    const { ok } = await submitEnquiry("collaboration-challenge", payload);
     setStatus(ok ? "sent" : "error");
   }
 

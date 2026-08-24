@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Script from "next/script";
-import { submitToSplitForms } from "@/lib/splitforms";
-import { saveEnquiryCopy } from "@/lib/save-enquiry";
+import { submitEnquiry } from "@/lib/save-enquiry";
 import { useMagnetic } from "@/components/ui/useMagnetic";
 import Toast from "@/components/ui/Toast";
 import ContactMap from "./ContactMap";
@@ -215,9 +214,8 @@ export default function ContactForm() {
       payload[key] = String(value);
     });
 
-    const { ok } = await submitToSplitForms(payload);
+    const { ok } = await submitEnquiry("contact", payload);
     if (ok) {
-      saveEnquiryCopy("contact", payload);
       form.reset();
       setStatus("idle");
       setToastShow(true);

@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { submitFormDataToSplitForms } from "@/lib/splitforms";
-import { saveEnquiryCopy } from "@/lib/save-enquiry";
+import { submitEnquiry } from "@/lib/save-enquiry";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
 interface Position {
@@ -62,18 +61,30 @@ export default function Careers({ positions }: { positions: Position[] }) {
     setStatus("sending");
 
     const formData = new FormData(e.currentTarget);
-    formData.set("subject", `Application: ${applyPosition?.title ?? ""}`);
-    formData.set("position", applyPosition?.title ?? "");
-    formData.set("department", applyPosition?.department ?? "");
+    const fields: Record<string, string> = {
+      subject: `Application: ${applyPosition?.title ?? ""}`,
+      position: applyPosition?.title ?? "",
+      department: applyPosition?.department ?? "",
+    };
 
-    const { ok } = await submitFormDataToSplitForms(formData);
-    if (ok) {
-      const fields: Record<string, string> = {};
-      formData.forEach((value, key) => {
-        if (typeof value === "string") fields[key] = value;
-      });
-      saveEnquiryCopy("careers", fields);
+    // The resume is a File — JSON can't carry it, so it's uploaded
+    // separately first and only its URL goes into the enquiry payload.
+    const resume = formData.get("resume");
+    if (resume instanceof File && resume.size > 0) {
+      const uploadData = new FormData();
+      uploadData.set("file", resume);
+      const uploadRes = await fetch("/api/enquiries/upload", { method: "POST", body: uploadData });
+      if (uploadRes.ok) {
+        const { url } = await uploadRes.json();
+        fields.resume_url = url;
+      }
     }
+
+    formData.forEach((value, key) => {
+      if (typeof value === "string" && key !== "resume") fields[key] = value;
+    });
+
+    const { ok } = await submitEnquiry("careers", fields);
     setStatus(ok ? "sent" : "error");
   }
 

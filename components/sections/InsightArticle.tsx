@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { formatPostDate, type Post } from "@/lib/insights";
-import { submitToSplitForms } from "@/lib/splitforms";
+import { submitEnquiry } from "@/lib/save-enquiry";
 
 const LEAD_POPUP_DELAY_MS = 20000;
 const LEAD_POPUP_SEEN_KEY = "ucx-insight-lead-seen";
@@ -66,7 +66,7 @@ export default function InsightArticle({ post, more }: { post: Post; more: Post[
     formData.forEach((value, key) => {
       payload[key] = String(value);
     });
-    const { ok } = await submitToSplitForms(payload);
+    const { ok } = await submitEnquiry("insight-lead", payload);
     if (ok) {
       setLeadStatus("sent");
       form.reset();

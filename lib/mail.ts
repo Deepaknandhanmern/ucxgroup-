@@ -9,6 +9,11 @@ const SOURCE_LABELS: Record<string, string> = {
   careers: "Careers Application",
   "case-study-download": "Case Study Download",
   "resource-download": "Resource Download",
+  "training-workshop": "Training & Workshop",
+  "insight-lead": "Insight Article",
+  "homepage-query": "Homepage Query",
+  "interiors-enquiry": "Design & Interiors",
+  "collaboration-challenge": "Collaboration Lab",
 };
 
 let transporter: ReturnType<typeof nodemailer.createTransport> | null = null;

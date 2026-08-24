@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useRef, useState } from "react";
-import { submitToSplitForms } from "@/lib/splitforms";
+import { submitEnquiry } from "@/lib/save-enquiry";
 import InteriorsHero from "@/components/sections/InteriorsHero";
 import BeforeAfterSlider from "@/components/ui/BeforeAfterSlider";
 
@@ -109,7 +109,7 @@ export default function Interiors() {
     formData.forEach((value, key) => {
       payload[key] = String(value);
     });
-    const { ok } = await submitToSplitForms(payload);
+    const { ok } = await submitEnquiry("interiors-enquiry", payload);
     setLeadStatus(ok ? "sent" : "error");
   }
 
