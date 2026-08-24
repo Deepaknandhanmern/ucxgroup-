@@ -10,6 +10,13 @@ export const metadata: Metadata = {
   title: "Blogs",
   description:
     "Every UCX blog post on BIM & digital engineering, design & delivery, and technology & AI — browse the full archive.",
+  openGraph: {
+    title: "Blogs | UCX Group",
+    description:
+      "Every UCX blog post on BIM & digital engineering, design & delivery, and technology & AI — browse the full archive.",
+    url: "https://ucx-group.com/blogs",
+    type: "website",
+  },
 };
 
 export default function BlogsPage() {

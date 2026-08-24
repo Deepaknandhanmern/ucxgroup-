@@ -74,6 +74,7 @@ import BackToTop from "@/components/layout/BackToTop";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import TabTitleSwitcher from "@/components/ui/TabTitleSwitcher";
 import Preloader from "@/components/ui/Preloader";
+import Analytics from "@/components/shared/Analytics";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ucx-group.com"),
@@ -91,12 +92,14 @@ export const metadata: Metadata = {
     siteName: "UCX Group",
     locale: "en_US",
     type: "website",
+    images: ["/social.png"],
   },
   twitter: {
     card: "summary_large_image",
     title: "UCX Group — Unconventional Collaboration",
     description:
       "Design, digital engineering, project delivery and asset information — one connected delivery ecosystem.",
+    images: ["/social.png"],
   },
 };
 
@@ -148,6 +151,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Footer />
         <BackToTop />
         <WhatsAppButton />
+        <Analytics />
       </body>
     </html>
   );
