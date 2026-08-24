@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 
 // Toggle maintenance mode by setting MAINTENANCE_MODE=true in your hosting
 // panel's environment variables and restarting the app — no redeploy needed.
@@ -10,7 +11,26 @@ import type { NextRequest } from "next/server";
 // maintenance page.
 const BYPASS_COOKIE = "ucx_maintenance_bypass";
 
+function guardDashboard(request: NextRequest): NextResponse | null {
+  const { pathname } = request.nextUrl;
+  if (!pathname.startsWith("/dashboard") && !pathname.startsWith("/api/dashboard")) return null;
+  if (pathname.startsWith("/dashboard/login")) return NextResponse.next();
+
+  const token = request.cookies.get(SESSION_COOKIE)?.value;
+  if (verifySessionToken(token)) return NextResponse.next();
+
+  if (pathname.startsWith("/api/dashboard")) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+  return NextResponse.redirect(new URL("/dashboard/login", request.url));
+}
+
 export function proxy(request: NextRequest) {
+  // Dashboard auth runs independently of maintenance mode, so the client can
+  // still manage the site while the public pages show the maintenance page.
+  const dashboardResult = guardDashboard(request);
+  if (dashboardResult) return dashboardResult;
+
   if (process.env.MAINTENANCE_MODE !== "true") {
     return NextResponse.next();
   }
@@ -46,5 +66,6 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     "/((?!api|_next/static|_next/image|favicon.ico|icon.png|sitemap.xml|robots.txt|brand/|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|woff2?|mp4|css|js|map)$).*)",
+    "/api/dashboard/:path*",
   ],
 };

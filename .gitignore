@@ -44,3 +44,8 @@ next-env.d.ts
 # locally as reference, not needed in the deployed app
 /*.html
 /*.html.txt
+
+# dashboard: sqlite database and client-uploaded blog images —
+# runtime data, not source, and must persist across deploys on the server
+/data/
+/public/uploads/

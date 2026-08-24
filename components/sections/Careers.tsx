@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { submitFormDataToSplitForms } from "@/lib/splitforms";
+import { saveEnquiryCopy } from "@/lib/save-enquiry";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
 interface Position {
@@ -75,6 +76,13 @@ export default function Careers() {
     formData.set("department", applyPosition?.department ?? "");
 
     const { ok } = await submitFormDataToSplitForms(formData);
+    if (ok) {
+      const fields: Record<string, string> = {};
+      formData.forEach((value, key) => {
+        if (typeof value === "string") fields[key] = value;
+      });
+      saveEnquiryCopy("careers", fields);
+    }
     setStatus(ok ? "sent" : "error");
   }
 

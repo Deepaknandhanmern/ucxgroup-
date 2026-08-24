@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { submitToSplitForms } from "@/lib/splitforms";
+import { saveEnquiryCopy } from "@/lib/save-enquiry";
 import FileCard from "@/components/ui/FileCard";
 import CardThumb from "@/components/ui/CardThumb";
 import { CASE_STUDY_FILTERS, type CaseStudy } from "@/lib/case-studies";
@@ -73,6 +74,7 @@ export default function CaseStudies({ cases }: { cases: CaseItem[] }) {
     const { ok } = await submitToSplitForms(payload);
     setSending(false);
     if (ok) {
+      saveEnquiryCopy("case-study-download", payload);
       setSent(true);
       setTimeout(closeModal, 2600);
     } else {
