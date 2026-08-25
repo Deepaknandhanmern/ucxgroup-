@@ -43,7 +43,7 @@
   z-index: 1;
   box-shadow: 0 40px 90px -24px rgba(2,13,26,.65);
 }
-.ih-media-video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ih-media-canvas { width: 100%; height: 100%; display: block; }
 .ih-media-veil {
   position: absolute; inset: 0;
   background:
