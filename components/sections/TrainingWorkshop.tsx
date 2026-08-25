@@ -9,15 +9,13 @@ import {
   IconGraduate,
   IconPresentation,
   IconUsers,
-  IconAutomation,
-  IconBook,
   IconTag,
   IconWrench,
   IconNodes,
   IconShieldCheck,
 } from "@/components/sections/capabilityIcons";
 
-type Category = "foundational" | "advanced" | "corporate" | "certification";
+type Category = "foundational" | "advanced" | "corporate";
 
 interface Program {
   id: string;
@@ -61,26 +59,6 @@ const PROGRAMS: Program[] = [
     outcomes: ["Needs assessment", "Custom curriculum design", "Team-based training", "On-site & remote delivery"],
     icon: IconUsers,
   },
-  {
-    id: "automation-workflows",
-    category: "advanced",
-    format: "3 Weeks · Applied Practice",
-    title: "Automation & Digital Workflows",
-    statement: "Building Smarter, Faster Workflows",
-    desc: "Practical training in automation and scripting to help teams reduce repetitive work and improve information quality.",
-    outcomes: ["Dynamo workflows", "Python automation", "Workflow scripting", "Applied automation projects"],
-    icon: IconAutomation,
-  },
-  {
-    id: "certification-assessment",
-    category: "certification",
-    format: "6 Weeks · Certification Track",
-    title: "Certification & Skill Assessment",
-    statement: "Structured Learning Paths With Measurable Outcomes",
-    desc: "Competency benchmarking and certification tracks that give individuals and teams a clear path to measurable skill growth.",
-    outcomes: ["Skill assessments", "Certification tracks", "Competency benchmarking", "Progress reporting"],
-    icon: IconBook,
-  },
 ];
 
 const FILTERS: { cat: Category | "all"; label: string }[] = [
@@ -88,7 +66,6 @@ const FILTERS: { cat: Category | "all"; label: string }[] = [
   { cat: "foundational", label: "Foundational" },
   { cat: "advanced", label: "Advanced" },
   { cat: "corporate", label: "Corporate" },
-  { cat: "certification", label: "Certification" },
 ];
 
 const WHY = [
