@@ -55,12 +55,6 @@ export default function CapabilityTabs({ eyebrow = "Capabilities", heading, desc
                 <path d="M5 12h13M13 6l6 6-6 6" />
               </svg>
             </a>
-          </div>
-
-          <div className="panel-side">
-            <div className="panel-thumb">
-              <CardThumb src={current.image} alt={current.title} />
-            </div>
             <div className="panel-tags">
               <span className="panel-tags-label">Typical Deliverables</span>
               <div className="tag-list">
@@ -68,6 +62,12 @@ export default function CapabilityTabs({ eyebrow = "Capabilities", heading, desc
                   <span key={d}>{d}</span>
                 ))}
               </div>
+            </div>
+          </div>
+
+          <div className="panel-side">
+            <div className="panel-thumb">
+              <CardThumb src={current.image} alt={current.title} />
             </div>
           </div>
         </div>

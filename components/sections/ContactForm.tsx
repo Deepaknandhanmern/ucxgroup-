@@ -7,7 +7,7 @@ import { useMagnetic } from "@/components/ui/useMagnetic";
 import Toast from "@/components/ui/Toast";
 import ContactMap from "./ContactMap";
 
-const CALENDLY_URL = "https://calendly.com/deepaknandhan25/30min";
+const CALENDLY_URL = "https://calendly.com/collaborate-ucx-group";
 const DAY_NAMES = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 const CONTACT_EMAIL = "collaborate@ucx-group.com";
 
@@ -199,6 +199,24 @@ export default function ContactForm() {
   const [toastShow, setToastShow] = useState(false);
   const cfg = CONFIG[selected];
   const submitBtnRef = useMagnetic<HTMLButtonElement>();
+
+  // Calendly's embed posts a window message when a visitor completes a
+  // booking — no server-side API token needed. We forward it into the same
+  // enquiries pipeline as every other form so it shows up in the dashboard.
+  useEffect(() => {
+    function onCalendlyMessage(e: MessageEvent) {
+      const data = e.data as { event?: string; payload?: { event?: { uri?: string }; invitee?: { uri?: string } } };
+      if (data?.event !== "calendly.event_scheduled") return;
+      submitEnquiry("calendly-booking", {
+        subject: "New Calendly booking",
+        message: "A visitor booked a call through the Calendly widget on the contact page.",
+        event_uri: data.payload?.event?.uri ?? "",
+        invitee_uri: data.payload?.invitee?.uri ?? "",
+      });
+    }
+    window.addEventListener("message", onCalendlyMessage);
+    return () => window.removeEventListener("message", onCalendlyMessage);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

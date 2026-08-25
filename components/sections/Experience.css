@@ -229,23 +229,6 @@
 .ucx-experience .area-cta:hover { color: var(--accent); gap: 12px; }
 .ucx-experience .area-cta:hover svg { transform: translateX(3px); }
 
-/* ---- 3D preview ---- */
-.ucx-experience .model-block { margin-bottom: clamp(56px,7vw,88px); scroll-margin-top: 96px; }
-.ucx-experience .model-intro {
-  font-size: 15px; line-height: 1.6; color: var(--muted); max-width: 60ch;
-  margin-top: -20px; margin-bottom: clamp(24px,3vw,32px);
-}
-.ucx-experience .model-frame {
-  position: relative; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden;
-  background: linear-gradient(135deg, var(--dark), var(--bg-deep));
-  border: 1px solid var(--line);
-}
-.ucx-experience .model-frame .ucx-model-viewer { width: 100%; height: 100%; }
-.ucx-experience .model-note {
-  display: block; margin-top: 12px;
-  font-size: 12.5px; line-height: 1.6; color: var(--muted); font-style: italic;
-}
-
 /* ---- closing ---- */
 .ucx-experience .closing {
   padding-top: clamp(36px,4vw,52px); border-top: 1px solid var(--line);

@@ -13,6 +13,7 @@ const SOURCE_LABELS: Record<string, string> = {
   "homepage-query": "Homepage Query",
   "interiors-enquiry": "Design & Interiors",
   "collaboration-challenge": "Collaboration Lab",
+  "calendly-booking": "Calendly Booking",
 };
 
 const STATUS_LABELS: Record<EnquiryStatus, string> = {

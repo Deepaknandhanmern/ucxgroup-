@@ -106,11 +106,11 @@
 .ucx-captabs .panel-cta svg { width: 14px; height: 14px; }
 .ucx-captabs .panel-cta:hover { gap: 14px; border-color: var(--dark); }
 
-.ucx-captabs .panel-side { display: flex; flex-direction: column; gap: 24px; }
+.ucx-captabs .panel-tags { margin-top: 28px; }
+
+.ucx-captabs .panel-side { position: relative; min-height: 320px; }
 .ucx-captabs .panel-thumb {
-  position: relative;
-  aspect-ratio: 4 / 3;
-  width: 100%;
+  position: absolute; inset: 0;
   border-radius: 18px;
   overflow: hidden;
   border: 1px solid var(--line);

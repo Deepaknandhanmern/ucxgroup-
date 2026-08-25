@@ -117,19 +117,14 @@ export default function CapabilityPage({ index, eyebrow, title, intro, items, pr
             )}
           </div>
         </div>
-      </div>
 
-      <div className="cap-body" ref={bodyGlowRef}>
-        <div className="grid-overlay"></div>
-        <div className="grid-glow"></div>
-        <div className="cursor-haze"></div>
-
-        <div className="wrapper">
-        {/* ---------- process band: full-bleed scrolling marquee, same
-            mechanic as the homepage hero's marquee (duplicated track,
-            translateX(-50%) loop, pause on hover). The animated track is
-            aria-hidden since a screen reader shouldn't read a scrolling,
-            duplicated list — the plain sr-only text carries the content. */}
+        {/* ---------- process band: scrolling marquee anchored to the
+            bottom of the hero, same mechanic as the homepage hero's
+            marquee (duplicated track, translateX(-50%) loop, pause on
+            hover) and same dark hero background — not a separate section.
+            The animated track is aria-hidden since a screen reader
+            shouldn't read a scrolling, duplicated list — the plain
+            sr-only text carries the content. */}
         <div className="band" data-reveal>
           <span className="sr-only">
             Process: {process[0]} &rarr; {process[1]} &rarr; {process[2]}
@@ -147,7 +142,14 @@ export default function CapabilityPage({ index, eyebrow, title, intro, items, pr
             ))}
           </div>
         </div>
+      </div>
 
+      <div className="cap-body" ref={bodyGlowRef}>
+        <div className="grid-overlay"></div>
+        <div className="grid-glow"></div>
+        <div className="cursor-haze"></div>
+
+        <div className="wrapper">
         {/* ---------- services ---------- */}
         {children ?? (
           <>

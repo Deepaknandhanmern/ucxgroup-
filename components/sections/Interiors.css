@@ -169,7 +169,7 @@
 }
 .ucx-interiors .svc-tile:hover .svc-scrim,
 .ucx-interiors .svc-tile:focus-visible .svc-scrim {
-  background: linear-gradient(180deg, rgba(4,22,44,.18) 0%, rgba(4,22,44,.58) 46%, rgba(4,22,44,.95) 100%);
+  background: var(--bg);
 }
 .ucx-interiors .svc-index {
   position: absolute;

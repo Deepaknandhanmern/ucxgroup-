@@ -2,83 +2,19 @@
 
 import { useEffect, useRef } from "react";
 
-// House-build frame sequence: ezgif-frame-001..050.jpg, 1280x720 (16:9),
-// copied verbatim into public/ from the client's original export folder.
-const SEQUENCE_FRAME_COUNT = 50;
-const sequenceSrc = (i: number) =>
-  `/brand/interiors/sequence/ezgif-frame-${String(i + 1).padStart(3, "0")}.jpg`;
-
 export default function InteriorsHero() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const wrap = wrapRef.current;
     const hero = heroRef.current;
     const media = mediaRef.current;
-    const canvas = canvasRef.current;
-    if (!wrap || !hero || !media || !canvas) return;
+    if (!wrap || !hero || !media) return;
 
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    // Preload every frame up front — the set is tiny (~1.2MB for 50 frames)
-    // so a full parallel preload beats the complexity of a lazy/windowed
-    // scheme, and guarantees no blank frames once scrubbing starts.
-    const images: HTMLImageElement[] = [];
-    for (let i = 0; i < SEQUENCE_FRAME_COUNT; i++) {
-      const img = new Image();
-      img.decoding = "async";
-      img.src = sequenceSrc(i);
-      if (i === 0) img.onload = () => drawFrame(0);
-      images.push(img);
-    }
-
-    // Draws the given frame into the canvas with CSS object-fit:cover
-    // semantics (crop to fill, never stretch) so the source 16:9 aspect
-    // ratio is preserved regardless of the hero's current container shape.
-    const drawFrame = (index: number) => {
-      const clamped = Math.max(0, Math.min(SEQUENCE_FRAME_COUNT - 1, index));
-      let img = images[clamped];
-      if (!img.complete || img.naturalWidth === 0) {
-        // Frame not decoded yet — hold on the nearest already-loaded one
-        // rather than drawing nothing.
-        img = images.find((candidate) => candidate.complete && candidate.naturalWidth > 0) ?? img;
-        if (!img.complete || img.naturalWidth === 0) return;
-      }
-
-      const dpr = window.devicePixelRatio || 1;
-      const cw = canvas.clientWidth;
-      const ch = canvas.clientHeight;
-      if (canvas.width !== cw * dpr || canvas.height !== ch * dpr) {
-        canvas.width = cw * dpr;
-        canvas.height = ch * dpr;
-      }
-
-      const canvasRatio = cw / ch;
-      const imgRatio = img.naturalWidth / img.naturalHeight;
-      let sx = 0, sy = 0, sw = img.naturalWidth, sh = img.naturalHeight;
-      if (imgRatio > canvasRatio) {
-        sw = img.naturalHeight * canvasRatio;
-        sx = (img.naturalWidth - sw) / 2;
-      } else {
-        sh = img.naturalWidth / canvasRatio;
-        sy = (img.naturalHeight - sh) / 2;
-      }
-
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, cw, ch);
-      ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch);
-    };
-
-    if (reduceMotion) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       media.style.setProperty("--expand", "1");
-      images[SEQUENCE_FRAME_COUNT - 1].onload = () => drawFrame(SEQUENCE_FRAME_COUNT - 1);
-      if (images[SEQUENCE_FRAME_COUNT - 1].complete) drawFrame(SEQUENCE_FRAME_COUNT - 1);
       return;
     }
 
@@ -86,7 +22,6 @@ export default function InteriorsHero() {
     let pinStart = 0;
     let pinEnd = 0;
     let travel = 0;
-    let lastFrame = -1;
 
     const measure = () => {
       const topOffset = window.innerWidth <= 640 ? 66 : 76;
@@ -94,7 +29,6 @@ export default function InteriorsHero() {
       travel = wrap.offsetHeight - hero.offsetHeight;
       pinStart = wrapTop - topOffset;
       pinEnd = pinStart + travel;
-      lastFrame = -1;
       update();
     };
 
@@ -103,30 +37,21 @@ export default function InteriorsHero() {
       const topOffset = window.innerWidth <= 640 ? 66 : 76;
       const y = window.scrollY;
 
-      let progress: number;
       if (travel <= 0 || y <= pinStart) {
         hero.style.position = "absolute";
         hero.style.top = "0";
         hero.style.bottom = "";
-        progress = 0;
+        media.style.setProperty("--expand", "0");
       } else if (y >= pinEnd) {
         hero.style.position = "absolute";
         hero.style.top = `${travel}px`;
         hero.style.bottom = "";
-        progress = 1;
+        media.style.setProperty("--expand", "1");
       } else {
         hero.style.position = "fixed";
         hero.style.top = `${topOffset}px`;
         hero.style.bottom = "";
-        progress = (y - pinStart) / travel;
-      }
-
-      media.style.setProperty("--expand", String(progress));
-
-      const frame = Math.round(progress * (SEQUENCE_FRAME_COUNT - 1));
-      if (frame !== lastFrame) {
-        lastFrame = frame;
-        drawFrame(frame);
+        media.style.setProperty("--expand", String((y - pinStart) / travel));
       }
     };
 
@@ -135,17 +60,12 @@ export default function InteriorsHero() {
       raf = requestAnimationFrame(update);
     };
 
-    const onResize = () => {
-      measure();
-      if (lastFrame >= 0) drawFrame(lastFrame);
-    };
-
     measure();
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onResize);
+    window.addEventListener("resize", measure);
     return () => {
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener("resize", measure);
       if (raf) cancelAnimationFrame(raf);
     };
   }, []);
@@ -161,7 +81,16 @@ export default function InteriorsHero() {
         </div>
 
         <div className="ih-media" ref={mediaRef} aria-hidden="true">
-          <canvas className="ih-media-canvas" ref={canvasRef}></canvas>
+          <video
+            className="ih-media-video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster="/brand/interiors/hero.png"
+          >
+            <source src="/brand/interiors/hero-expand.mp4" type="video/mp4" />
+          </video>
           <div className="ih-media-veil"></div>
         </div>
 
