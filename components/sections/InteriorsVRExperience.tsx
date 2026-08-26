@@ -65,7 +65,7 @@ const FRAGMENT_SHADER = /* glsl */ `
 
     float lon = atan(dir.x, -dir.z);
     float lat = asin(clamp(dir.y, -1.0, 1.0));
-    vec2 panoUv = vec2(lon / (2.0 * PI) + 0.5, 0.5 - lat / PI);
+    vec2 panoUv = vec2(lon / (2.0 * PI) + 0.5, 0.5 + lat / PI);
 
     gl_FragColor = vec4(texture2D(uTex, panoUv).rgb, 1.0);
   }
