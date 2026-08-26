@@ -56,6 +56,18 @@ async function main() {
   page.on("console", (msg) => console.log("PAGE LOG:", msg.type(), msg.text()));
   page.on("pageerror", (err) => console.log("PAGE ERROR:", err.message));
 
+  // Every screenshot run is a fresh browser context (empty sessionStorage),
+  // so the site's once-per-session intro preloader replays on every single
+  // shot otherwise — pre-seed the flag it checks so we land on the real
+  // page immediately, same as a real visitor's second pageview would.
+  await page.evaluateOnNewDocument(() => {
+    try {
+      sessionStorage.setItem("ucx-intro-seen", "1");
+    } catch {
+      /* sessionStorage unavailable — harmless, preloader just replays */
+    }
+  });
+
   // domcontentloaded, not networkidle — this dev site keeps a live HMR
   // websocket open, which stops "networkidle" from ever resolving.
   await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 });

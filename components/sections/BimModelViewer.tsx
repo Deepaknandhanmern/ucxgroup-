@@ -10,7 +10,10 @@ import * as FRAGS from "@thatopen/fragments";
 // BIM data, ~12x smaller and built to load fast instead of re-parsing IFC
 // in every visitor's browser.
 const MODEL_SRC = "/models/aravind-residence.frag";
-const WORKER_SRC = "/fragments-worker.mjs";
+// .js, not .mjs — several static hosts (Hostinger included) don't map the
+// .mjs extension to a JS content-type, which fails Worker construction
+// silently and hangs the model load forever with no error surfaced.
+const WORKER_SRC = "/fragments-worker.js";
 
 export default function BimModelViewer() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -73,6 +76,16 @@ export default function BimModelViewer() {
     };
     raf = requestAnimationFrame(tick);
 
+    // Safety net: if the worker fails to start (wrong MIME type on some
+    // host, blocked script, etc.) fragments.load() can hang indefinitely
+    // with nothing to catch — surface an error instead of a stuck spinner.
+    const loadTimeout = setTimeout(() => {
+      if (!cancelled) {
+        console.error("BIM model load timed out after 20s");
+        setStatus("error");
+      }
+    }, 20000);
+
     (async () => {
       try {
         fragments = new FRAGS.FragmentsModels(WORKER_SRC);
@@ -104,8 +117,10 @@ export default function BimModelViewer() {
           controls.update();
         }
 
+        clearTimeout(loadTimeout);
         setStatus("ready");
       } catch (err) {
+        clearTimeout(loadTimeout);
         console.error("BIM model failed to load:", err);
         if (!cancelled) setStatus("error");
       }
@@ -113,6 +128,7 @@ export default function BimModelViewer() {
 
     return () => {
       cancelled = true;
+      clearTimeout(loadTimeout);
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
       controls.dispose();
