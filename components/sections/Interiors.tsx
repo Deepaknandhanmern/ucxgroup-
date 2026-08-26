@@ -51,7 +51,8 @@ const SERVICES = [
 const PROCESS_STEPS = [
   { n: "01", label: "Design", desc: "Concept through coordinated design intent." },
   { n: "02", label: "Documentation", desc: "Buildable, production-ready drawings." },
-  { n: "03", label: "Delivery", desc: "On-site coordination through completion." },
+  { n: "03", label: "Procurement", desc: "Sourcing materials, furniture and finishes to spec." },
+  { n: "04", label: "Execution & Delivery", desc: "On-site coordination through completion." },
 ];
 
 const CLOSING_STEPS = [
