@@ -124,6 +124,20 @@
 .ih-cta-ghost:hover { background: rgba(243,241,230,.08); border-color: var(--cream); transform: translateY(-2px); }
 .ih-cta:hover svg { transform: translateX(3px); }
 
+/* ---- small link to the standalone 360° VR walkthrough page ---- */
+.ih-vr-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 18px;
+  font-size: 12.5px; font-weight: 600; letter-spacing: .04em;
+  color: rgba(243,241,230,.75);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(243,241,230,.25);
+  padding-bottom: 2px;
+  transition: color .3s var(--ease), border-color .3s var(--ease);
+}
+.ih-vr-link:hover { color: var(--accent); border-color: var(--accent); }
+.ih-vr-link svg { width: 15px; height: 15px; flex: none; }
+
 /* ---- rotating mark, bottom-right — same ring/textPath + beacon-pulse
    technique already used for the footer badge and global-delivery hub ---- */
 .ih-mark {

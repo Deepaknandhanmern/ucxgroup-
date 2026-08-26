@@ -1,0 +1,176 @@
+.ih-vr {
+  --bg: #04162C;
+  --bg-deep: #020D1A;
+  --accent: #74C6A2;
+  --accent-dim: rgba(116,198,162,0.55);
+  --cream: #F3F1E6;
+  --ease: cubic-bezier(.16,.84,.36,1);
+
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
+}
+.ih-vr * { box-sizing: border-box; }
+
+/* ---- stage: full-bleed WebGL panorama, no scroll effect, no gap ---- */
+.ih-vr-stage {
+  position: relative;
+  min-height: calc(100svh - 76px);
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--bg-deep);
+}
+.ih-vr-stage:fullscreen { min-height: 100vh; }
+@media (max-width: 640px) {
+  .ih-vr-stage { min-height: calc(100svh - 66px); }
+}
+
+.ih-vr-canvas {
+  position: absolute; inset: 0; z-index: 0;
+  width: 100%; height: 100%;
+  display: block;
+  cursor: grab;
+  touch-action: none;
+}
+.ih-vr-canvas:active { cursor: grabbing; }
+
+.ih-vr-veil {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(0deg, rgba(2,13,26,.85) 0%, rgba(2,13,26,.05) 34%, rgba(2,13,26,.1) 66%, rgba(2,13,26,.55) 100%);
+  pointer-events: none;
+}
+
+.ih-vr-loading {
+  position: absolute; inset: 0; z-index: 3;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--accent-dim);
+  background: var(--bg-deep);
+}
+
+.ih-vr-back {
+  position: absolute; top: clamp(18px,3vw,32px); left: clamp(18px,3vw,32px); z-index: 2;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 600; letter-spacing: .04em;
+  color: var(--cream); text-decoration: none;
+  background: rgba(2,13,26,.45);
+  border: 1px solid rgba(243,241,230,.25);
+  border-radius: 999px;
+  padding: 9px 16px 9px 12px;
+  backdrop-filter: blur(6px);
+  transition: border-color .3s var(--ease), background .3s var(--ease);
+}
+.ih-vr-back:hover { border-color: var(--accent-dim); background: rgba(2,13,26,.65); }
+.ih-vr-back svg { width: 15px; height: 15px; flex: none; }
+
+.ih-vr-badge {
+  position: absolute; top: clamp(18px,3vw,32px); right: clamp(78px,9vw,96px); z-index: 2;
+  font-size: 10.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--cream);
+  background: rgba(2,13,26,.45);
+  border: 1px solid rgba(243,241,230,.35);
+  border-radius: 999px;
+  padding: 7px 14px;
+  backdrop-filter: blur(6px);
+}
+@media (max-width: 640px) {
+  .ih-vr-badge { top: auto; bottom: clamp(18px,3vw,26px); right: clamp(18px,3vw,26px); }
+}
+
+/* ---- landing copy + "enter" CTA — fades out once the view unfurls ---- */
+.ih-vr-copy {
+  position: absolute; z-index: 2; left: clamp(20px,6vw,64px); bottom: clamp(28px,5vw,56px);
+  max-width: 520px;
+  transition: opacity .5s var(--ease), transform .5s var(--ease);
+}
+.ih-vr-copy.is-entered { opacity: 0; transform: translateY(10px); pointer-events: none; }
+.ih-vr-eyebrow {
+  display: block; font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--accent-dim); margin-bottom: 12px;
+}
+.ih-vr-heading {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; text-transform: uppercase;
+  line-height: 1; letter-spacing: -.01em;
+  font-size: clamp(32px,5.6vw,58px); color: var(--cream); margin: 0 0 22px;
+}
+.ih-vr-enter {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--bg-deep); background: var(--accent);
+  padding: 15px 26px; border-radius: 999px; border: 1px solid var(--accent);
+  cursor: pointer;
+  transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
+}
+.ih-vr-enter svg { width: 14px; height: 14px; transition: transform .3s var(--ease); }
+.ih-vr-enter:hover { background: transparent; color: var(--accent); transform: translateY(-2px); }
+.ih-vr-enter:hover svg { transform: translateX(3px); }
+
+/* ---- right-side toolbar: vertical stack of circular icon buttons.
+   Anchored below the badge (not vertically centered) since the site's
+   global WhatsApp button is fixed at right/top:50% on this page and would
+   otherwise sit directly on top of it. ---- */
+.ih-vr-toolbar {
+  position: absolute; z-index: 3; top: clamp(66px,9vw,100px); right: clamp(14px,2.4vw,26px);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.ih-vr-tool {
+  display: flex; align-items: center; justify-content: center;
+  width: 42px; height: 42px; border-radius: 50%;
+  background: rgba(2,13,26,.5);
+  border: 1px solid rgba(243,241,230,.22);
+  color: var(--cream);
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease);
+}
+.ih-vr-tool svg { width: 18px; height: 18px; }
+.ih-vr-tool:hover { border-color: var(--accent-dim); background: rgba(2,13,26,.72); }
+.ih-vr-tool.is-active { background: var(--accent); border-color: var(--accent); color: var(--bg-deep); }
+
+.ih-vr-info {
+  position: absolute; z-index: 3; top: clamp(66px,9vw,100px); right: clamp(64px,7vw,80px);
+  width: 240px;
+  background: rgba(2,13,26,.75);
+  border: 1px solid rgba(243,241,230,.2);
+  border-radius: 14px;
+  padding: 16px 18px;
+  backdrop-filter: blur(8px);
+}
+.ih-vr-info p { margin: 0 0 8px; font-size: 12.5px; line-height: 1.5; color: rgba(243,241,230,.8); }
+.ih-vr-info p:last-child { margin-bottom: 0; }
+
+.ih-vr-toast {
+  position: absolute; z-index: 4; bottom: clamp(24px,4vw,40px); left: 50%; transform: translateX(-50%);
+  font-size: 12px; font-weight: 600; letter-spacing: .04em;
+  color: var(--bg-deep); background: var(--accent);
+  border-radius: 999px; padding: 8px 18px;
+}
+
+/* ---- closing: brief context + CTA below the panorama ---- */
+.ih-vr-closing {
+  max-width: 720px; margin: 0 auto;
+  padding: clamp(56px,8vw,96px) clamp(20px,6vw,80px);
+  text-align: center;
+}
+.ih-vr-closing p {
+  font-size: 15.5px; line-height: 1.7; color: rgba(243,241,230,.68);
+  margin: 0 0 28px;
+}
+.ih-vr-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--bg-deep); background: var(--accent);
+  padding: 15px 26px; border-radius: 999px; border: 1px solid var(--accent);
+  text-decoration: none;
+  transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
+}
+.ih-vr-cta svg { width: 14px; height: 14px; transition: transform .3s var(--ease); }
+.ih-vr-cta:hover { background: transparent; color: var(--accent); transform: translateY(-2px); }
+.ih-vr-cta:hover svg { transform: translateX(3px); }
+
+@media (max-width: 640px) {
+  .ih-vr-toolbar { top: auto; bottom: clamp(18px,3vw,26px); right: clamp(14px,3vw,20px); transform: none; flex-direction: row; }
+  .ih-vr-info { top: auto; bottom: 74px; right: clamp(14px,3vw,20px); transform: none; }
+}

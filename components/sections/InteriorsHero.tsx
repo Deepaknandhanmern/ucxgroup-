@@ -124,6 +124,13 @@ export default function InteriorsHero() {
               </svg>
             </a>
           </div>
+
+          <a className="ih-vr-link" href="/design-interiors/vr-experience">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M8 9 5 12l3 3M16 9l3 3-3 3M12 3v18" />
+            </svg>
+            Try the 360&deg; VR Walkthrough
+          </a>
         </div>
 
         <div className="ih-mark" aria-hidden="true">

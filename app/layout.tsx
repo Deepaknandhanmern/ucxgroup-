@@ -37,6 +37,7 @@ import "@/components/sections/CaseStudies.css";
 import "@/components/sections/Careers.css";
 import "@/components/sections/GlobalDelivery.css";
 import "@/components/sections/InteriorsHero.css";
+import "@/components/sections/InteriorsVRExperience.css";
 import "@/components/sections/InteriorsFooter.css";
 import "@/components/sections/Interiors.css";
 import "@/components/sections/LabHero.css";
