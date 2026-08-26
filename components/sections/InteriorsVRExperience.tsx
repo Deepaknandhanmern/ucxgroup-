@@ -7,7 +7,11 @@ import * as THREE from "three";
 // — swap for a real UCX project capture when one is available. Must stay a
 // true equirectangular (2:1) image for the lon/lat sampling below to map
 // correctly.
-const PANO_SRC = "/brand/interiors/vr-demo-panorama.png";
+// -v2 filename is deliberate: the CDN caches public/ assets for a full year
+// (Cache-Control: s-maxage=31536000), so overwriting the old filename in
+// place would keep serving the previous image indefinitely — bump the
+// suffix any time this file's content changes again.
+const PANO_SRC = "/brand/interiors/vr-demo-panorama-v2.png";
 
 // Single fragment shader drives both states: a "little planet" (stereographic
 // azimuthal) landing view and a normal rectilinear look-around, continuously
