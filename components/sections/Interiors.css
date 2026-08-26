@@ -104,6 +104,47 @@
   to { transform: translateX(-50%); }
 }
 
+/* ---- small promo card: links out to the 360° VR walkthrough page ---- */
+.ucx-interiors .vr-promo {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 16px 24px;
+  max-width: 640px;
+  margin: 0 0 clamp(48px,6vw,72px);
+  padding: 18px 22px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  text-decoration: none; color: inherit;
+  transition: border-color .3s var(--ease), transform .3s var(--ease), box-shadow .3s var(--ease);
+}
+.ucx-interiors .vr-promo:hover {
+  border-color: var(--accent-dim);
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -28px rgba(4,22,44,.35);
+}
+.ucx-interiors .vr-promo-badge {
+  flex: none;
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--bg-deep); background: var(--accent);
+  padding: 7px 12px; border-radius: 999px;
+}
+.ucx-interiors .vr-promo-copy { flex: 1 1 240px; min-width: 0; }
+.ucx-interiors .vr-promo-copy h3 {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; text-transform: uppercase;
+  letter-spacing: -.005em; font-size: 15.5px; color: var(--bg); margin-bottom: 3px;
+}
+.ucx-interiors .vr-promo-copy p { font-size: 12.5px; line-height: 1.5; color: var(--ink-muted); }
+.ucx-interiors .vr-promo-cta {
+  flex: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 12px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--bg-deep); background: var(--accent);
+  padding: 11px 18px; border-radius: 999px;
+  transition: background .3s var(--ease), color .3s var(--ease), gap .3s var(--ease);
+}
+.ucx-interiors .vr-promo-cta svg { width: 14px; height: 14px; }
+.ucx-interiors .vr-promo:hover .vr-promo-cta { background: var(--bg-deep); color: var(--accent); gap: 11px; }
+
 /* ---- services: layered image-pair tiles ---- */
 .ucx-interiors .svc-head { margin-bottom: 24px; }
 .ucx-interiors .services {

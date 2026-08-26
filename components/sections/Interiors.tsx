@@ -202,6 +202,21 @@ export default function Interiors() {
       </div>
 
       <div className="wrapper">
+        {/* ---------- 360° VR experience promo card ---------- */}
+        <a className="vr-promo" href="/design-interiors/vr-experience" data-reveal>
+          <span className="vr-promo-badge">360&deg; VR Experience</span>
+          <div className="vr-promo-copy">
+            <h3>Step Inside a Real Project</h3>
+            <p>Drag to look around a real UCX interior, rendered live in your browser.</p>
+          </div>
+          <span className="vr-promo-cta">
+            Click Here
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h13M13 6l6 6-6 6" />
+            </svg>
+          </span>
+        </a>
+
         {/* ---------- services ---------- */}
         <div className="svc-head" data-reveal>
           <span className="sub-eyebrow">What We Deliver</span>
