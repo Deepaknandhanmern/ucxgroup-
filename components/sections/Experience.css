@@ -240,17 +240,30 @@
   letter-spacing: -.01em; font-size: clamp(18px,2.4vw,26px); color: var(--dark); margin-bottom: 10px;
 }
 .ucx-experience .closing-copy p { font-size: 14.5px; line-height: 1.6; color: var(--muted); }
-.ucx-experience .bim-link {
+
+/* ---- 3D preview: a real BIM model, embedded inline ---- */
+.ucx-experience .model-block { margin-bottom: clamp(56px,7vw,88px); scroll-margin-top: 96px; }
+.ucx-experience .model-intro {
+  font-size: 15px; line-height: 1.6; color: var(--muted); max-width: 60ch;
+  margin-top: -20px; margin-bottom: clamp(24px,3vw,32px);
+}
+.ucx-experience .model-frame {
+  position: relative; aspect-ratio: 16/9; border-radius: 20px; overflow: hidden;
+  background: linear-gradient(135deg, var(--dark), var(--bg-deep));
+  border: 1px solid var(--line);
+}
+.ucx-experience .model-link {
   display: inline-flex; align-items: center; gap: 8px;
   margin-top: 16px;
-  font-size: 12.5px; font-weight: 600; letter-spacing: .04em; color: var(--dark);
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--dark);
   text-decoration: none;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 2px;
-  transition: color .3s var(--ease), border-color .3s var(--ease);
+  transition: gap .3s var(--ease), color .3s var(--ease);
 }
-.ucx-experience .bim-link:hover { color: var(--accent-ink, var(--accent)); border-color: currentColor; }
-.ucx-experience .bim-link svg { width: 15px; height: 15px; flex: none; }
+.ucx-experience .model-link svg { width: 14px; height: 14px; transition: transform .3s var(--ease); }
+.ucx-experience .model-link:hover { color: var(--accent-ink, var(--accent)); gap: 12px; }
+.ucx-experience .model-link:hover svg { transform: translateX(3px); }
+
 .ucx-experience .closing-cta {
   display: inline-flex; align-items: center; gap: 10px; flex: none;
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;

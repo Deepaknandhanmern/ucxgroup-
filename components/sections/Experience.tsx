@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
 import SectionRail from "@/components/ui/SectionRail";
 import CardThumb from "@/components/ui/CardThumb";
+import BimPreview from "@/components/ui/BimPreview";
 
 const RAIL_SECTIONS = [
   { id: "overview", label: "Overview" },
@@ -254,6 +255,23 @@ export default function Experience() {
           ))}
         </div>
 
+        <div className="model-block" id="model" data-reveal>
+          <span className="sub-eyebrow">See It In 3D</span>
+          <p className="model-intro">
+            Drag to rotate, scroll to zoom — a real, coordinated UCX BIM model rendered live in the browser, not a
+            static render.
+          </p>
+          <div className="model-frame">
+            <BimPreview />
+          </div>
+          <a className="model-link" href="/experience/bim-model">
+            Open Full Experience
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h13M13 6l6 6-6 6" />
+            </svg>
+          </a>
+        </div>
+
         <div className="closing" id="closing" data-reveal>
           <div className="closing-copy">
             <h3>Different Projects. One Commitment to Delivery.</h3>
@@ -261,12 +279,6 @@ export default function Experience() {
               Every project brings different requirements, teams and challenges. Our experience continues to shape
               how UCX approaches design, digital delivery and project collaboration.
             </p>
-            <a className="bim-link" href="/experience/bim-model">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16zM3.27 6.96 12 12.01l8.73-5.05M12 22.08V12" />
-              </svg>
-              See a Live BIM Model
-            </a>
           </div>
           <a className="closing-cta" href="/capabilities">
             Explore Our Capabilities
