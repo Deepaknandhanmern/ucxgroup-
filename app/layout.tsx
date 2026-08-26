@@ -44,6 +44,7 @@ import "@/components/sections/LabHero.css";
 import "@/components/sections/LabExplore.css";
 import "@/components/sections/CollaborationLab.css";
 import "@/components/sections/Experience.css";
+import "@/components/sections/BimModelViewer.css";
 import "@/components/sections/ProjectLifecycle.css";
 import "@/components/sections/CapabilityPage.css";
 import "@/components/sections/CapabilityTabs.css";

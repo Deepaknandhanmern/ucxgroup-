@@ -3,16 +3,25 @@
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
-// Placeholder 360° panorama (CC0, Poly Haven "Glasshouse Interior") — swap
-// for a real on-site capture when one is available. Must stay a true
-// equirectangular (2:1) image for the sphere mapping to line up.
-const PANO_SRC = "/brand/interiors/vr-demo-panorama.png";
+// Real UCX project cube-face captures (front/back/left/right/up/down, 512px
+// each) — pulled from the client's own hosted tour. Six separate squares
+// rather than one equirectangular image, so the shader below picks a face
+// per-pixel from the blended view direction instead of doing a single
+// lon/lat texture lookup.
+const FACE_SRC = {
+  f: "/brand/interiors/vr-cube/f.jpg",
+  b: "/brand/interiors/vr-cube/b.jpg",
+  l: "/brand/interiors/vr-cube/l.jpg",
+  r: "/brand/interiors/vr-cube/r.jpg",
+  u: "/brand/interiors/vr-cube/u.jpg",
+  d: "/brand/interiors/vr-cube/d.jpg",
+};
 
 // Single fragment shader drives both states: a "little planet" (stereographic
 // azimuthal) landing view and a normal rectilinear look-around, continuously
-// blended by uMorph. Both formulas resolve to a 3D direction that's sampled
-// against the same equirectangular texture, so scrubbing uMorph is a real,
-// smooth unfurl from planet to first-person — not a swap between two viewers.
+// blended by uMorph. Both formulas resolve to a 3D direction that's then
+// resolved against the cube faces, so scrubbing uMorph is a real, smooth
+// unfurl from planet to first-person — not a swap between two viewers.
 const VERTEX_SHADER = /* glsl */ `
   varying vec2 vNdc;
   void main() {
@@ -23,7 +32,12 @@ const VERTEX_SHADER = /* glsl */ `
 
 const FRAGMENT_SHADER = /* glsl */ `
   precision highp float;
-  uniform sampler2D uTex;
+  uniform sampler2D uFaceF;
+  uniform sampler2D uFaceB;
+  uniform sampler2D uFaceL;
+  uniform sampler2D uFaceR;
+  uniform sampler2D uFaceU;
+  uniform sampler2D uFaceD;
   uniform float uAspect;
   uniform float uMorph;
   uniform float uYaw;
@@ -31,13 +45,28 @@ const FRAGMENT_SHADER = /* glsl */ `
   uniform float uFov;
   varying vec2 vNdc;
 
-  #define PI 3.14159265359
-
   vec3 rotateYawPitch(vec3 d, float yaw, float pitch) {
     float cp = cos(pitch), sp = sin(pitch);
     vec3 d1 = vec3(d.x, d.y * cp - d.z * sp, d.y * sp + d.z * cp);
     float cy = cos(yaw), sy = sin(yaw);
     return vec3(d1.x * cy + d1.z * sy, d1.y, -d1.x * sy + d1.z * cy);
+  }
+
+  // Standard cube-face selection: pick the dominant axis of the direction,
+  // resolve a per-face UV from the other two components.
+  vec3 sampleCube(vec3 d) {
+    float ax = abs(d.x), ay = abs(d.y), az = abs(d.z);
+    vec2 uv;
+    if (ax >= ay && ax >= az) {
+      if (d.x > 0.0) { uv = vec2(-d.z, d.y) / ax; return texture2D(uFaceR, uv * 0.5 + 0.5).rgb; }
+      else { uv = vec2(d.z, d.y) / ax; return texture2D(uFaceL, uv * 0.5 + 0.5).rgb; }
+    } else if (ay >= ax && ay >= az) {
+      if (d.y > 0.0) { uv = vec2(d.x, -d.z) / ay; return texture2D(uFaceU, uv * 0.5 + 0.5).rgb; }
+      else { uv = vec2(d.x, d.z) / ay; return texture2D(uFaceD, uv * 0.5 + 0.5).rgb; }
+    } else {
+      if (d.z > 0.0) { uv = vec2(-d.x, d.y) / az; return texture2D(uFaceB, uv * 0.5 + 0.5).rgb; }
+      else { uv = vec2(d.x, d.y) / az; return texture2D(uFaceF, uv * 0.5 + 0.5).rgb; }
+    }
   }
 
   void main() {
@@ -58,11 +87,7 @@ const FRAGMENT_SHADER = /* glsl */ `
     vec3 dir = normalize(mix(dirLP, dirRect, uMorph));
     dir = rotateYawPitch(dir, uYaw, uPitch);
 
-    float lon = atan(dir.x, -dir.z);
-    float lat = asin(clamp(dir.y, -1.0, 1.0));
-    vec2 panoUv = vec2(lon / (2.0 * PI) + 0.5, 0.5 - lat / PI);
-
-    gl_FragColor = vec4(texture2D(uTex, panoUv).rgb, 1.0);
+    gl_FragColor = vec4(sampleCube(dir), 1.0);
   }
 `;
 
@@ -102,7 +127,12 @@ export default function InteriorsVRExperience() {
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, -1, 1);
     const geometry = new THREE.PlaneGeometry(2, 2);
     const uniforms = {
-      uTex: { value: null as THREE.Texture | null },
+      uFaceF: { value: null as THREE.Texture | null },
+      uFaceB: { value: null as THREE.Texture | null },
+      uFaceL: { value: null as THREE.Texture | null },
+      uFaceR: { value: null as THREE.Texture | null },
+      uFaceU: { value: null as THREE.Texture | null },
+      uFaceD: { value: null as THREE.Texture | null },
       uAspect: { value: 1 },
       uMorph: { value: 0 },
       uYaw: { value: 0 },
@@ -117,9 +147,34 @@ export default function InteriorsVRExperience() {
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    const texture = new THREE.TextureLoader().load(PANO_SRC, () => setLoaded(true));
-    texture.colorSpace = THREE.SRGBColorSpace;
-    uniforms.uTex.value = texture;
+    const loader = new THREE.TextureLoader();
+    const faceTextures: THREE.Texture[] = [];
+    let loadedCount = 0;
+    const faceEntries = Object.entries(FACE_SRC) as [keyof typeof FACE_SRC, string][];
+    const uniformKey: Record<keyof typeof FACE_SRC, "uFaceF" | "uFaceB" | "uFaceL" | "uFaceR" | "uFaceU" | "uFaceD"> = {
+      f: "uFaceF",
+      b: "uFaceB",
+      l: "uFaceL",
+      r: "uFaceR",
+      u: "uFaceU",
+      d: "uFaceD",
+    };
+    // Intro: land on the little planet, hold briefly, then auto-zoom into
+    // ground-level 360° — the button below just lets an impatient visitor
+    // skip straight there.
+    let introTimer: ReturnType<typeof setTimeout> | null = null;
+    faceEntries.forEach(([key, src]) => {
+      const tex = loader.load(src, () => {
+        loadedCount += 1;
+        if (loadedCount === faceEntries.length) {
+          setLoaded(true);
+          introTimer = setTimeout(() => setEnteredBoth(true), 900);
+        }
+      });
+      tex.colorSpace = THREE.SRGBColorSpace;
+      faceTextures.push(tex);
+      uniforms[uniformKey[key]].value = tex;
+    });
 
     const resize = () => {
       const w = stage.clientWidth;
@@ -138,6 +193,7 @@ export default function InteriorsVRExperience() {
     let lastX = 0;
     let lastY = 0;
     let raf = 0;
+    let lastTime = performance.now();
 
     const onPointerDown = (e: PointerEvent) => {
       dragging = true;
@@ -158,26 +214,30 @@ export default function InteriorsVRExperience() {
     const stopDrag = () => {
       dragging = false;
     };
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      const delta = -e.deltaY * 0.0009;
-      morphTargetRef.current = THREE.MathUtils.clamp(morphTargetRef.current + delta, 0, 1);
-      enteredRef.current = morphTargetRef.current > 0.5;
-      setEntered(enteredRef.current);
-    };
 
+    // Drag is the only thing that moves the camera once inside — morph only
+    // changes via the intro or the toolbar's planet toggle, never by scroll,
+    // so the ground view can't be scrolled back into the little planet by
+    // accident. Wheel is intentionally left unhandled so the page still
+    // scrolls normally over the canvas.
     canvas.addEventListener("pointerdown", onPointerDown);
     canvas.addEventListener("pointermove", onPointerMove);
     canvas.addEventListener("pointerup", stopDrag);
     canvas.addEventListener("pointercancel", stopDrag);
-    canvas.addEventListener("wheel", onWheel, { passive: false });
 
     const tick = () => {
+      const now = performance.now();
+      // clamp dt so a stalled/backgrounded tab doesn't cause one giant jump
+      // in yaw/morph when it resumes
+      const dt = Math.min((now - lastTime) / 1000, 0.1);
+      lastTime = now;
+
       // idle spin fades out as the view unfurls into the room
       if (!dragging && !document.hidden && !reduceMotion) {
-        yaw += 0.0009 * (1 - morph);
+        yaw += 0.054 * dt * (1 - morph);
       }
-      morph = THREE.MathUtils.damp(morph, morphTargetRef.current, 6, 0.016);
+      // slow, deliberate damping — reads as a cinematic zoom rather than a snap
+      morph = THREE.MathUtils.damp(morph, morphTargetRef.current, 2.2, dt);
       uniforms.uYaw.value = yaw;
       uniforms.uPitch.value = pitch;
       uniforms.uMorph.value = morph;
@@ -188,15 +248,15 @@ export default function InteriorsVRExperience() {
 
     return () => {
       cancelAnimationFrame(raf);
+      if (introTimer) clearTimeout(introTimer);
       window.removeEventListener("resize", resize);
       canvas.removeEventListener("pointerdown", onPointerDown);
       canvas.removeEventListener("pointermove", onPointerMove);
       canvas.removeEventListener("pointerup", stopDrag);
       canvas.removeEventListener("pointercancel", stopDrag);
-      canvas.removeEventListener("wheel", onWheel);
       geometry.dispose();
       material.dispose();
-      texture.dispose();
+      faceTextures.forEach((tex) => tex.dispose());
       renderer.dispose();
     };
   }, []);
@@ -322,7 +382,7 @@ export default function InteriorsVRExperience() {
         {showInfo && (
           <div className="ih-vr-info">
             <p>Drag to look around.</p>
-            <p>Scroll or pinch to zoom from the little planet into the room.</p>
+            <p>Tap the planet icon to revisit the little planet view.</p>
             <p>Use the fullscreen icon for an immersive view.</p>
           </div>
         )}

@@ -240,6 +240,17 @@
   letter-spacing: -.01em; font-size: clamp(18px,2.4vw,26px); color: var(--dark); margin-bottom: 10px;
 }
 .ucx-experience .closing-copy p { font-size: 14.5px; line-height: 1.6; color: var(--muted); }
+.ucx-experience .bim-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 16px;
+  font-size: 12.5px; font-weight: 600; letter-spacing: .04em; color: var(--dark);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 2px;
+  transition: color .3s var(--ease), border-color .3s var(--ease);
+}
+.ucx-experience .bim-link:hover { color: var(--accent-ink, var(--accent)); border-color: currentColor; }
+.ucx-experience .bim-link svg { width: 15px; height: 15px; flex: none; }
 .ucx-experience .closing-cta {
   display: inline-flex; align-items: center; gap: 10px; flex: none;
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;

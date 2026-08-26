@@ -6,10 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p ${PORT:-3000}",
-    "lint": "eslint"
+    "lint": "eslint",
+    "screenshot": "node scripts/screenshot.mjs"
   },
   "dependencies": {
     "@google/model-viewer": "^4.3.1",
+    "@thatopen/components": "^3.4.8",
+    "@thatopen/fragments": "^3.4.7",
     "gray-matter": "^4.0.3",
     "next": "16.3.0",
     "nodemailer": "^9.0.5",
@@ -18,7 +21,8 @@
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",
     "server-only": "^0.0.1",
-    "three": "^0.183.2"
+    "three": "^0.183.2",
+    "web-ifc": "^0.0.77"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -29,6 +33,7 @@
     "@types/three": "^0.183.0",
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
+    "puppeteer-core": "^25.9.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
