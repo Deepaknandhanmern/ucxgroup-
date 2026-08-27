@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
 import SectionRail from "@/components/ui/SectionRail";
 import CardThumb from "@/components/ui/CardThumb";
-import BimPreview from "@/components/ui/BimPreview";
+import ImageCarousel from "@/components/ui/ImageCarousel";
 
 const RAIL_SECTIONS = [
   { id: "overview", label: "Overview" },
@@ -258,11 +258,17 @@ export default function Experience() {
         <div className="model-block" id="model" data-reveal>
           <span className="sub-eyebrow">See It In 3D</span>
           <p className="model-intro">
-            Drag to rotate, scroll to zoom — a real, coordinated UCX BIM model rendered live in the browser, not a
-            static render.
+            A real, coordinated UCX BIM model — browse a few key views below, or open the full experience to drag,
+            rotate and zoom it live in the browser.
           </p>
           <div className="model-frame">
-            <BimPreview />
+            <ImageCarousel
+              slides={[
+                { src: "/models/bim-carousel/view-1.png", alt: "Mr. Aravind Residence BIM model — exterior view" },
+                { src: "/models/bim-carousel/view-2.png", alt: "Mr. Aravind Residence BIM model — angled view" },
+                { src: "/models/bim-carousel/view-3.png", alt: "Mr. Aravind Residence BIM model — side view" },
+              ]}
+            />
           </div>
           <a className="model-link" href="/experience/bim-model">
             Open Full Experience

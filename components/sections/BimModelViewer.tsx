@@ -19,6 +19,8 @@ export default function BimModelViewer() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const [phase, setPhase] = useState<"fetching" | "parsing">("fetching");
+  const [progress, setProgress] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
@@ -93,8 +95,35 @@ export default function BimModelViewer() {
 
         const res = await fetch(MODEL_SRC);
         if (!res.ok) throw new Error(`Failed to fetch model: ${res.status}`);
-        const buffer = await res.arrayBuffer();
+
+        // Stream the download so we can show real progress instead of a
+        // static "loading" label for the ~25s a 2.4MB model takes to fetch
+        // and parse — a blank spinner that long reads as broken.
+        const total = Number(res.headers.get("content-length")) || 0;
+        const reader = res.body?.getReader();
+        let buffer: ArrayBuffer;
+        if (reader && total) {
+          const chunks: Uint8Array[] = [];
+          let received = 0;
+          for (;;) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            chunks.push(value);
+            received += value.length;
+            setProgress(Math.min(99, Math.round((received / total) * 100)));
+          }
+          const merged = new Uint8Array(received);
+          let offset = 0;
+          for (const chunk of chunks) {
+            merged.set(chunk, offset);
+            offset += chunk.length;
+          }
+          buffer = merged.buffer;
+        } else {
+          buffer = await res.arrayBuffer();
+        }
         if (cancelled) return;
+        setPhase("parsing");
 
         const model = await fragments.load(buffer, { modelId: "aravind-residence" });
         if (cancelled) return;
@@ -156,7 +185,21 @@ export default function BimModelViewer() {
       <div className="ih-bim-stage" ref={stageRef}>
         <canvas className="ih-bim-canvas" ref={canvasRef}></canvas>
 
-        {status === "loading" && <div className="ih-bim-loading">Loading BIM Model&hellip;</div>}
+        {status === "loading" && (
+          <div className="ih-bim-loading">
+            <div className="ih-bim-loading-bar">
+              <div
+                className="ih-bim-loading-fill"
+                style={{ width: `${phase === "fetching" ? progress : 100}%` }}
+              />
+            </div>
+            <span>
+              {phase === "fetching"
+                ? `Downloading Model… ${progress}%`
+                : "Parsing Geometry…"}
+            </span>
+          </div>
+        )}
         {status === "error" && (
           <div className="ih-bim-loading">Couldn&rsquo;t load the model — try refreshing.</div>
         )}
