@@ -14,6 +14,22 @@ const nextConfig: NextConfig = {
           { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
         ],
       },
+      // _next/static chunks are content-hashed and genuinely immutable —
+      // safe to cache forever, and new deploys get new filenames anyway.
+      {
+        source: "/_next/static/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+      // Everything else (page HTML) must NOT be cached by Hostinger's CDN.
+      // A cached page from a previous deploy references JS chunk files by
+      // hash — once a new deploy replaces those chunk files, a stale
+      // cached HTML page 404s trying to load its old chunks, and hydration
+      // breaks with a "Refused to execute script" MIME-type error. This
+      // explicit no-store forces the CDN to always re-fetch fresh HTML.
+      {
+        source: "/:path((?!_next/static|_next/image|models|brand).*)",
+        headers: [{ key: "Cache-Control", value: "no-store, must-revalidate" }],
+      },
     ];
   },
   async redirects() {
