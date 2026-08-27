@@ -50,10 +50,10 @@ export default function DeliveryProof() {
         <div className="proof-grid" data-reveal>
           <div className="proof-media">
             <BeforeAfterSlider
-              beforeSrc="/brand/home/delivery-before.png"
-              afterSrc="/brand/home/delivery-after.png"
-              beforeAlt="A UCX project mid-construction"
-              afterAlt="The same project delivered and handed over"
+              beforeSrc="/brand/home/delivery-after.png"
+              afterSrc="/brand/home/delivery-before.png"
+              beforeAlt="The same project delivered and handed over"
+              afterAlt="A UCX project mid-construction"
             />
           </div>
           <div className="proof-copy">
