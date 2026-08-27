@@ -4,6 +4,7 @@ import CapabilityTabs from "@/components/sections/CapabilityTabs";
 import { IconCube, IconChip, IconNodes, IconCrane, IconAutomation } from "@/components/sections/capabilityIcons";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/bim-digital-delivery" },
   title: "BIM & Digital Delivery",
   description:
     "Coordinated BIM, digital engineering, clash-resolved coordination and 4D/5D automation — building coordinated digital environments for complex projects.",
@@ -87,6 +88,25 @@ const ITEMS: CapabilityItem[] = [
   },
 ];
 
+const FAQS = [
+  {
+    q: "What is BIM & Digital Delivery?",
+    a: "It's UCX's core capability for building coordinated digital environments for complex projects — BIM services, digital engineering and VDC workflows that improve coordination, documentation and construction readiness.",
+  },
+  {
+    q: "Who is BIM & Digital Delivery for?",
+    a: "Architects, engineers, contractors and developers who need coordinated, multidisciplinary BIM models rather than siloed design files.",
+  },
+  {
+    q: "What does BIM coordination involve?",
+    a: "Identifying and resolving design and spatial conflicts through structured BIM coordination before they become construction issues — including clash detection, coordination meetings, issue tracking and coordination reports.",
+  },
+  {
+    q: "Can UCX support 4D and 5D BIM?",
+    a: "Yes. UCX's Automation & 4D/5D workflows cover Dynamo and Python automation, quantity extraction, 4D sequencing, 5D workflows, Power BI dashboards and AI-assisted workflows.",
+  },
+];
+
 export default function BimDigitalDeliveryPage() {
   return (
     <CapabilityPage
@@ -103,6 +123,7 @@ export default function BimDigitalDeliveryPage() {
         { label: "Specialist Solutions", href: "/specialist-solutions" },
       ]}
       items={ITEMS}
+      faqs={FAQS}
     >
       <CapabilityTabs
         embedded

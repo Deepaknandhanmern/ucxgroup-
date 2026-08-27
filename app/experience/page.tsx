@@ -3,6 +3,7 @@ import Experience from "@/components/sections/Experience";
 import ProjectLifecycle from "@/components/sections/ProjectLifecycle";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/experience" },
   title: "Experience",
   description:
     "How UCX moves a project from concept to handover — the disciplines, project lifecycle and delivery commitment behind every engagement.",

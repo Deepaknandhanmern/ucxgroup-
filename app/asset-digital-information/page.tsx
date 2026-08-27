@@ -4,6 +4,7 @@ import CapabilityTabs from "@/components/sections/CapabilityTabs";
 import { IconCube, IconTag, IconDatabase, IconBuildingGear, IconHandover } from "@/components/sections/capabilityIcons";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/asset-digital-information" },
   title: "Asset & Digital Information",
   description:
     "As-built BIM, COBie data, FM-ready models and digital twin workflows — turning project information into long-term asset value beyond construction.",
@@ -77,6 +78,25 @@ const ITEMS: CapabilityItem[] = [
   },
 ];
 
+const FAQS = [
+  {
+    q: "What is Asset & Digital Information?",
+    a: "Turning project information into long-term asset value — UCX structures digital information beyond construction to support as-built documentation, digital handover, facilities management and asset operations.",
+  },
+  {
+    q: "Does UCX prepare COBie data for handover?",
+    a: "Yes. COBie & Data covers COBie data preparation, asset data mapping, information validation and structuring to meet project handover requirements.",
+  },
+  {
+    q: "Can UCX support digital twin workflows?",
+    a: "Yes. Digital Handover & Digital Twin connects geometry, asset information and structured project data to support digital handover and digital twin use cases.",
+  },
+  {
+    q: "What is FM-ready BIM?",
+    a: "FM Models are BIM and asset information workflows prepared specifically for facility management — including asset identification, space & equipment data and maintenance information.",
+  },
+];
+
 export default function AssetDigitalInformationPage() {
   return (
     <CapabilityPage
@@ -92,6 +112,7 @@ export default function AssetDigitalInformationPage() {
         { label: "Project & Construction Support", href: "/project-construction-support" },
       ]}
       items={ITEMS}
+      faqs={FAQS}
     >
       <CapabilityTabs
         embedded

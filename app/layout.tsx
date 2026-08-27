@@ -82,6 +82,7 @@ import Analytics from "@/components/shared/Analytics";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ucx-group.com"),
+  alternates: { canonical: "/" },
   title: {
     default: "UCX Group — Unconventional Collaboration",
     template: "%s | UCX Group",

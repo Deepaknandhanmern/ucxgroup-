@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Capabilities from "@/components/sections/Capabilities";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/capabilities" },
   title: "Capabilities",
   description:
     "BIM & digital delivery, design & interiors, project & construction support, and asset & digital information — explore UCX's four connected delivery capabilities.",

@@ -7,6 +7,7 @@ import { listJobOpenings } from "@/lib/job-openings-db";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/careers" },
   title: "Careers",
   description:
     "Join UCX's team of BIM, digital engineering, design and delivery specialists — open roles and what it's like to build with us.",

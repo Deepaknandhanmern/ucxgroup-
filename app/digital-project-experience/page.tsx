@@ -7,6 +7,7 @@ import { getAllProjects } from "@/lib/projects-content";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/digital-project-experience" },
   title: "Digital Project Experience",
   description:
     "Technology-led delivery for complex project requirements — BIM, digital engineering, coordination, automation and structured information workflows across UCX's project experience.",

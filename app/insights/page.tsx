@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   description:
     "Perspectives on BIM & digital engineering, design & delivery, and technology & AI from the teams delivering UCX's projects.",
   alternates: {
+    canonical: "/insights",
     types: { "application/rss+xml": "/insights/feed.xml" },
   },
 };

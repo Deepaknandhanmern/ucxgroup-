@@ -7,6 +7,7 @@ import { getAllCaseStudies } from "@/lib/case-studies-content";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/case-studies" },
   title: "Case Studies",
   description:
     "In-depth case studies on how UCX solves coordination, delivery and asset-information challenges across BIM, interiors, construction and handover.",

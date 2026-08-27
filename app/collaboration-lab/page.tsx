@@ -5,6 +5,7 @@ import CollaborationLab from "@/components/sections/CollaborationLab";
 import SectionRail from "@/components/ui/SectionRail";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/collaboration-lab" },
   title: "Collaboration Lab",
   description:
     "UCX's Collaboration Lab is where firms, technology partners and specialists co-create solutions across BIM, AI, prefabrication and smart assets — see what we're building together.",

@@ -4,6 +4,7 @@ import FAQ from "@/components/sections/FAQ";
 import SectionRail from "@/components/ui/SectionRail";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/contact" },
   title: "Contact",
   description:
     "Start a conversation with UCX — reach our Coimbatore studio to discuss BIM, design, delivery or asset information support for your next project.",

@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
 import SectionRail from "@/components/ui/SectionRail";
 import CardThumb from "@/components/ui/CardThumb";
+import FAQ from "@/components/sections/FAQ";
 
 const RAIL_SECTIONS = [
   { id: "overview", label: "Overview" },
@@ -111,6 +112,25 @@ const STATS = [
   { value: "30+", label: "Projects Delivered" },
   { value: "07+", label: "Disciplines Covered" },
   { value: "03+", label: "Countries Served" },
+];
+
+const FAQS = [
+  {
+    q: "What capabilities does UCX offer?",
+    a: "Four connected core capabilities — BIM & Digital Delivery, Design & Interiors, Project & Construction Support, and Asset & Digital Information — plus Specialist Solutions and Training & Workshop programs.",
+  },
+  {
+    q: "Does UCX work on one capability at a time, or across all of them?",
+    a: "UCX connects design, digital engineering, delivery and asset information through one coordinated framework, helping project teams move from intent to information, and from information to execution — rather than treating each capability as a separate vendor relationship.",
+  },
+  {
+    q: "What delivery models does UCX offer?",
+    a: "Project-Based Delivery, Dedicated Delivery Teams, Overflow Capacity, White-Label Delivery, Strategic Partnership and Specialist Collaboration — flexible engagement models for different project and business requirements.",
+  },
+  {
+    q: "Can UCX integrate with our existing team and standards?",
+    a: "Yes. UCX adapts its delivery approach to your BIM standards, project requirements, LOD, documentation protocols, CDE environment and preferred technology platforms.",
+  },
 ];
 
 function FrameworkMotif() {
@@ -354,6 +374,9 @@ export default function Capabilities() {
             ))}
           </div>
         </div>
+
+        {/* ---------- FAQ ---------- */}
+        <FAQ items={FAQS} title="Capabilities — Frequently Asked Questions" sub="Common questions about how UCX's capabilities work together. Can’t find it here? Reach out to us directly." />
 
         {/* ---------- final CTA ---------- */}
         <div className="closing" id="closing" data-reveal>

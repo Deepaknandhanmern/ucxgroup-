@@ -4,6 +4,7 @@ import CapabilityTabs from "@/components/sections/CapabilityTabs";
 import { IconDocument, IconGauge, IconBars, IconShieldCheck, IconWrench } from "@/components/sections/capabilityIcons";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/project-construction-support" },
   title: "Project & Construction Support",
   description:
     "Structured project documentation, QA/QC, project controls and execution support — helping teams manage demanding delivery schedules with coordinated information.",
@@ -82,6 +83,25 @@ const ITEMS: CapabilityItem[] = [
   },
 ];
 
+const FAQS = [
+  {
+    q: "What is Project & Construction Support?",
+    a: "Structured project documentation, QA/QC, project controls and execution support — helping teams manage demanding delivery schedules with coordinated information.",
+  },
+  {
+    q: "Does UCX handle quantity takeoffs from BIM models?",
+    a: "Yes. Quantity & Data Extraction covers model-based quantities, schedules, material information and reporting, turning digital models into usable project data.",
+  },
+  {
+    q: "What QA/QC processes does UCX apply?",
+    a: "BIM QA/QC, drawing checks, standards compliance, information validation, coordination checks and deliverable review — quality built into the delivery workflow.",
+  },
+  {
+    q: "Does UCX support site-level coordination, not just documentation?",
+    a: "Yes. Execution & Coordination Support covers construction coordination, vendor coordination, procurement support, site information support and fabrication coordination.",
+  },
+];
+
 export default function ProjectConstructionSupportPage() {
   return (
     <CapabilityPage
@@ -97,6 +117,7 @@ export default function ProjectConstructionSupportPage() {
         { label: "Asset & Digital Information", href: "/asset-digital-information" },
       ]}
       items={ITEMS}
+      faqs={FAQS}
     >
       <CapabilityTabs
         embedded

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import LegalPage from "@/components/sections/LegalPage";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/terms" },
   title: "Terms of Use",
   description: "The terms that govern your use of the UCX Group website, ucx-group.com.",
 };

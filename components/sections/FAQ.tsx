@@ -2,12 +2,12 @@
 
 import { useRef, useState } from "react";
 
-interface FaqItem {
+export interface FaqItem {
   q: string;
   a: string;
 }
 
-const FAQ_ITEMS: FaqItem[] = [
+const DEFAULT_FAQ_ITEMS: FaqItem[] = [
   {
     q: "What does UCX do?",
     a: "UCX provides BIM & Digital Delivery, Interior Solutions, Specialized Digital Solutions, and Training & Workshops. We help architects, consultants, contractors, developers and organizations improve how projects are designed, coordinated and delivered.",
@@ -49,7 +49,15 @@ function IconMedallion() {
   );
 }
 
-export default function FAQ() {
+export default function FAQ({
+  items = DEFAULT_FAQ_ITEMS,
+  title = "Frequently asked questions",
+  sub = "Everything you need to know before you get started. Can’t find it here? Reach out to us directly.",
+}: {
+  items?: FaqItem[];
+  title?: string;
+  sub?: string;
+}) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const [flippingIndex, setFlippingIndex] = useState<number | null>(null);
   const flipTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -68,7 +76,7 @@ export default function FAQ() {
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: FAQ_ITEMS.map((item) => ({
+    mainEntity: items.map((item) => ({
       "@type": "Question",
       name: item.q,
       acceptedAnswer: { "@type": "Answer", text: item.a },
@@ -87,12 +95,12 @@ export default function FAQ() {
         <p className="faq__eyebrow">FAQ</p>
 
         <div className="faq__head">
-          <h2 className="faq__title">Frequently asked questions</h2>
-          <p className="faq__sub">Everything you need to know before you get started. Can&rsquo;t find it here? Reach out to us directly.</p>
+          <h2 className="faq__title">{title}</h2>
+          <p className="faq__sub">{sub}</p>
         </div>
 
         <div className="faq__list">
-          {FAQ_ITEMS.map((item, i) => {
+          {items.map((item, i) => {
             const isOpen = openIndex === i;
             return (
               <div className={`faq__item${isOpen ? " is-open" : ""}`} key={item.q}>

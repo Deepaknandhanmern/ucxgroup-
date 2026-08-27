@@ -9,6 +9,7 @@ import Workspace from "@/components/sections/Workspace";
 import SectionRail from "@/components/ui/SectionRail";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/about-us" },
   title: "About Us",
   description:
     "UCX is an engineering-led delivery ecosystem built around design, digital engineering, project delivery and asset information — meet the studio and the founders behind it.",

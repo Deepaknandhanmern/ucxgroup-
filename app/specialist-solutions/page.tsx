@@ -4,6 +4,7 @@ import CapabilityTabs from "@/components/sections/CapabilityTabs";
 import { IconScan, IconPrefab, IconHeritage, IconSpark, IconParametric } from "@/components/sections/capabilityIcons";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/specialist-solutions" },
   title: "Specialist Solutions",
   description:
     "Scan-to-BIM, prefabrication, heritage & restoration, BIM automation & AI, and parametric systems — engineering beyond the standard delivery scope.",
@@ -77,6 +78,25 @@ const ITEMS: CapabilityItem[] = [
   },
 ];
 
+const FAQS = [
+  {
+    q: "What specialist solutions does UCX offer?",
+    a: "Scan-to-BIM, prefabrication, heritage & restoration, BIM automation & AI, and parametric systems — engineering beyond the standard delivery scope for project challenges that need specialised workflows.",
+  },
+  {
+    q: "What is Scan-to-BIM?",
+    a: "Transforming existing buildings and assets into accurate, structured BIM environments through reality capture integration, point-cloud-to-BIM conversion and as-built documentation.",
+  },
+  {
+    q: "Can UCX digitally document heritage buildings?",
+    a: "Yes. Heritage & Restoration Projects digitally document and model complex existing and heritage assets — existing-condition modelling, scan-based documentation and restoration support — for informed preservation.",
+  },
+  {
+    q: "Does UCX use AI in BIM workflows?",
+    a: "Yes. BIM Automation & AI applies technology-assisted workflows — automated documentation, data extraction & processing and AI-assisted workflows — to improve productivity, consistency and information management.",
+  },
+];
+
 export default function SpecialistSolutionsPage() {
   return (
     <CapabilityPage
@@ -93,6 +113,7 @@ export default function SpecialistSolutionsPage() {
         { label: "Asset & Digital Information", href: "/asset-digital-information" },
       ]}
       items={ITEMS}
+      faqs={FAQS}
     >
       <CapabilityTabs
         embedded

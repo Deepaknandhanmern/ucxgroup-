@@ -7,6 +7,7 @@ import { getAllResources } from "@/lib/resources-content";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/resources" },
   title: "Resources",
   description:
     "Guides, templates and reference material from UCX on BIM standards, digital delivery workflows and asset information requirements.",

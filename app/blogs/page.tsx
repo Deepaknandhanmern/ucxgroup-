@@ -7,6 +7,7 @@ import { getAllInsightPosts } from "@/lib/insights-content";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/blogs" },
   title: "Blogs",
   description:
     "Every UCX blog post on BIM & digital engineering, design & delivery, and technology & AI — browse the full archive.",

@@ -7,6 +7,7 @@ import { getAllProjects } from "@/lib/projects-content";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/projects" },
   title: "Built Environment",
   description:
     "Selected project experience across BIM coordination, interiors, construction support and asset information — real delivery across sectors and geographies.",

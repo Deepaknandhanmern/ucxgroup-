@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
 import { useMagnetic } from "@/components/ui/useMagnetic";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
+import FAQ, { type FaqItem } from "@/components/sections/FAQ";
 
 export interface CapabilityItem {
   title: string;
@@ -33,9 +34,11 @@ export interface CapabilityPageProps {
   related?: RelatedCapability[];
   /** Replaces the default capability card grid — e.g. a <CapabilityTabs embedded /> explorer over the same items. */
   children?: React.ReactNode;
+  /** Page-specific FAQ items, rendered above the closing CTA with their own FAQPage schema. */
+  faqs?: FaqItem[];
 }
 
-export default function CapabilityPage({ index, eyebrow, title, intro, items, process, heroMotif, heroImage, related, children }: CapabilityPageProps) {
+export default function CapabilityPage({ index, eyebrow, title, intro, items, process, heroMotif, heroImage, related, children, faqs }: CapabilityPageProps) {
   const sectRef = useRef<HTMLDivElement>(null);
   const bodyGlowRef = useCursorGlow<HTMLDivElement>();
   const closingCtaRef = useMagnetic<HTMLAnchorElement>();
@@ -197,6 +200,11 @@ export default function CapabilityPage({ index, eyebrow, title, intro, items, pr
               ))}
             </div>
           </div>
+        )}
+
+        {/* ---------- FAQ ---------- */}
+        {faqs && faqs.length > 0 && (
+          <FAQ items={faqs} title={`${title} — Frequently Asked Questions`} sub="Common questions about this capability. Can’t find it here? Reach out to us directly." />
         )}
 
         {/* ---------- closing ---------- */}
