@@ -18,6 +18,7 @@ export default function BimPreview() {
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [phase, setPhase] = useState<"fetching" | "parsing">("fetching");
   const [progress, setProgress] = useState(0);
+  const [attempt, setAttempt] = useState(1);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -65,7 +66,7 @@ export default function BimPreview() {
     window.addEventListener("resize", resize);
 
     let raf = 0;
-    let fragments: FRAGS.FragmentsModels | null = null;
+    const fragmentsRef: { current: FRAGS.FragmentsModels | null } = { current: null };
 
     const tick = () => {
       controls.update();
@@ -74,19 +75,21 @@ export default function BimPreview() {
     };
     raf = requestAnimationFrame(tick);
 
-    // The model is ~2.4MB and reliably takes ~25s to fetch + parse even on a
-    // good connection — 20s was firing before genuinely-successful loads
-    // completed, showing a false "couldn't load" error.
-    const loadTimeout = setTimeout(() => {
-      if (!cancelled) setStatus("error");
-    }, 60000);
-
-    (async () => {
+    // Loads once, aborting itself if a single attempt takes implausibly
+    // long — the model is ~2.4MB and reliably takes ~25s on a good
+    // connection, but Hostinger's CDN is intermittently slow/flaky
+    // delivering that file, so a single fixed timeout was showing a false
+    // "couldn't load" error on connections that would have succeeded with
+    // a retry. Retrying a fresh attempt recovers from that far more often
+    // than waiting longer ever would.
+    async function loadOnce(): Promise<void> {
+      const controller = new AbortController();
+      const attemptTimeout = setTimeout(() => controller.abort(), 45000);
       try {
-        fragments = new FRAGS.FragmentsModels(WORKER_SRC);
-        controls.addEventListener("change", () => fragments?.update());
+        fragmentsRef.current = new FRAGS.FragmentsModels(WORKER_SRC);
+        controls.addEventListener("change", () => fragmentsRef.current?.update());
 
-        const res = await fetch(MODEL_SRC);
+        const res = await fetch(MODEL_SRC, { signal: controller.signal });
         if (!res.ok) throw new Error(`Failed to fetch model: ${res.status}`);
 
         // Stream the download so we can show real progress instead of a
@@ -118,11 +121,11 @@ export default function BimPreview() {
         if (cancelled) return;
         setPhase("parsing");
 
-        const model = await fragments.load(buffer, { modelId: "aravind-residence-preview" });
+        const model = await fragmentsRef.current!.load(buffer, { modelId: "aravind-residence-preview" });
         if (cancelled) return;
         model.useCamera(camera);
         scene.add(model.object);
-        await fragments.update(true);
+        await fragmentsRef.current!.update(true);
 
         const box = new THREE.Box3().setFromObject(model.object);
         if (!box.isEmpty()) {
@@ -136,23 +139,41 @@ export default function BimPreview() {
           camera.updateProjectionMatrix();
           controls.update();
         }
+      } finally {
+        clearTimeout(attemptTimeout);
+      }
+    }
 
-        clearTimeout(loadTimeout);
-        setStatus("ready");
-      } catch (err) {
-        clearTimeout(loadTimeout);
-        console.error("BIM preview failed to load:", err);
-        if (!cancelled) setStatus("error");
+    (async () => {
+      const maxAttempts = 3;
+      for (let i = 1; i <= maxAttempts; i++) {
+        if (cancelled) return;
+        setAttempt(i);
+        setPhase("fetching");
+        setProgress(0);
+        try {
+          await loadOnce();
+          if (!cancelled) setStatus("ready");
+          return;
+        } catch (err) {
+          fragmentsRef.current?.dispose();
+          console.error(`BIM preview failed to load (attempt ${i}/${maxAttempts}):`, err);
+          if (cancelled) return;
+          if (i === maxAttempts) {
+            setStatus("error");
+            return;
+          }
+          await new Promise((r) => setTimeout(r, 1000 * i));
+        }
       }
     })();
 
     return () => {
       cancelled = true;
-      clearTimeout(loadTimeout);
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
       controls.dispose();
-      fragments?.dispose();
+      fragmentsRef.current?.dispose();
       renderer.dispose();
     };
   }, []);
@@ -168,7 +189,10 @@ export default function BimPreview() {
               style={{ width: `${phase === "fetching" ? progress : 100}%` }}
             />
           </div>
-          <span>{phase === "fetching" ? `Downloading Model… ${progress}%` : "Parsing Geometry…"}</span>
+          <span>
+            {phase === "fetching" ? `Downloading Model… ${progress}%` : "Parsing Geometry…"}
+            {attempt > 1 ? ` (retry ${attempt - 1})` : ""}
+          </span>
         </div>
       )}
       {status === "error" && (
