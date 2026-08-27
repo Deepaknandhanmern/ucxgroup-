@@ -81,12 +81,14 @@ export default function BimModelViewer() {
     // Safety net: if the worker fails to start (wrong MIME type on some
     // host, blocked script, etc.) fragments.load() can hang indefinitely
     // with nothing to catch — surface an error instead of a stuck spinner.
+    // The model is ~2.4MB and reliably takes ~25s to fetch + parse even on
+    // a good connection, so the timeout needs real headroom above that.
     const loadTimeout = setTimeout(() => {
       if (!cancelled) {
-        console.error("BIM model load timed out after 20s");
+        console.error("BIM model load timed out after 60s");
         setStatus("error");
       }
-    }, 20000);
+    }, 60000);
 
     (async () => {
       try {

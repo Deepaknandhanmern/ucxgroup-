@@ -74,9 +74,12 @@ export default function BimPreview() {
     };
     raf = requestAnimationFrame(tick);
 
+    // The model is ~2.4MB and reliably takes ~25s to fetch + parse even on a
+    // good connection — 20s was firing before genuinely-successful loads
+    // completed, showing a false "couldn't load" error.
     const loadTimeout = setTimeout(() => {
       if (!cancelled) setStatus("error");
-    }, 20000);
+    }, 60000);
 
     (async () => {
       try {
