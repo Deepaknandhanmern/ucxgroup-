@@ -96,7 +96,7 @@ export default function BimDigitalDeliveryPage() {
       intro="Building coordinated digital environments for complex projects. UCX supports architects, engineers, contractors and developers with BIM services, digital engineering and VDC workflows that improve coordination, documentation and construction readiness."
       process={["Model", "Coordinate", "Deliver"]}
       heroMotif={IconCube}
-      heroImage="/brand/capabilities/bim-digital-delivery.jpg"
+      heroImage="/brand/capabilities/bim-digital-delivery.png"
       related={[
         { label: "Design & Interiors", href: "/design-interiors" },
         { label: "Asset & Digital Information", href: "/asset-digital-information" },

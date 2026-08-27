@@ -91,7 +91,7 @@ export default function ProjectConstructionSupportPage() {
       intro="Supporting teams with coordinated information and delivery capability. UCX provides structured project documentation, QA/QC, project controls and execution support to help teams manage demanding project requirements and delivery schedules."
       process={["Document", "Control", "Support"]}
       heroMotif={IconDocument}
-      heroImage="/brand/capabilities/project-construction-support.jpg"
+      heroImage="/brand/capabilities/project-construction-support.png"
       related={[
         { label: "BIM & Digital Delivery", href: "/bim-digital-delivery" },
         { label: "Asset & Digital Information", href: "/asset-digital-information" },

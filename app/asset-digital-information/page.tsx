@@ -86,7 +86,7 @@ export default function AssetDigitalInformationPage() {
       intro="Turning project information into long-term asset value. UCX structures digital information beyond construction to support as-built documentation, digital handover, facilities management and asset operations."
       process={["Capture", "Structure", "Handover"]}
       heroMotif={IconDatabase}
-      heroImage="/brand/capabilities/asset-digital-information.jpg"
+      heroImage="/brand/capabilities/asset-digital-information.png"
       related={[
         { label: "BIM & Digital Delivery", href: "/bim-digital-delivery" },
         { label: "Project & Construction Support", href: "/project-construction-support" },
