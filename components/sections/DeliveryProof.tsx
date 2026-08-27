@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
-import BeforeAfterSlider from "@/components/ui/BeforeAfterSlider";
 
 export default function DeliveryProof() {
   const sectRef = useRef<HTMLDivElement>(null);
@@ -47,33 +46,36 @@ export default function DeliveryProof() {
       <div className="cursor-haze"></div>
 
       <div className="wrapper">
-        <div className="proof-grid" data-reveal>
+        <div className="proof-row" data-reveal>
           <div className="proof-media">
-            <BeforeAfterSlider
-              beforeSrc="/brand/home/delivery-after.webp"
-              afterSrc="/brand/home/delivery-before.webp"
-              beforeAlt="The same project delivered and handed over"
-              afterAlt="A UCX project mid-construction"
-            />
+            <img src="/brand/home/delivery-before.webp" alt="A UCX project mid-construction" />
           </div>
           <div className="proof-copy">
-            <span className="eyebrow">Proof, Not Promises</span>
-            <h2 className="heading">
-              Projects Are Connected.
-              <br />
-              Delivery Should Be Too.
-            </h2>
+            <h2 className="heading">Projects Are Connected.</h2>
             <p className="intro">
-              One connected team carries every project from groundbreaking to
-              handover &mdash; the same design, information and delivery
-              ecosystem, start to finish. Drag the slider to compare.
+              From groundbreaking, every discipline works from one connected model &mdash; design, information and
+              delivery moving together, not handed off between disconnected teams.
             </p>
-            <div className="proof-tags">
-              <span>Design</span>
-              <span>Digital Delivery</span>
-              <span>Site Execution</span>
-            </div>
           </div>
+        </div>
+
+        <div className="proof-row proof-row--reverse" data-reveal>
+          <div className="proof-copy">
+            <h2 className="heading">Delivery Should Be Too.</h2>
+            <p className="intro">
+              The same team that started the project carries that connection all the way through to handover
+              &mdash; start to finish, one ecosystem.
+            </p>
+          </div>
+          <div className="proof-media">
+            <img src="/brand/home/delivery-after.webp" alt="The same project delivered and handed over" />
+          </div>
+        </div>
+
+        <div className="proof-tags" data-reveal>
+          <span>Design</span>
+          <span>Digital Delivery</span>
+          <span>Site Execution</span>
         </div>
       </div>
     </div>

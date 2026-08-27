@@ -54,12 +54,16 @@
 }
 .ucx-proof [data-reveal].is-in { opacity: 1; transform: none; }
 
-.ucx-proof .proof-grid {
+.ucx-proof .proof-row {
   display: grid;
   grid-template-columns: 1.15fr .85fr;
   gap: clamp(28px,4vw,56px);
   align-items: center;
 }
+.ucx-proof .proof-row + .proof-row { margin-top: clamp(40px,5vw,64px); }
+.ucx-proof .proof-row--reverse { grid-template-columns: .85fr 1.15fr; }
+.ucx-proof .proof-row--reverse .proof-media { order: 2; }
+.ucx-proof .proof-row--reverse .proof-copy { order: 1; }
 
 .ucx-proof .proof-media {
   position: relative;
@@ -68,13 +72,10 @@
   aspect-ratio: 4 / 3;
   box-shadow: 0 40px 80px -30px rgba(0,0,0,.6);
 }
-
-.ucx-proof .eyebrow {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 18px;
+.ucx-proof .proof-media img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
 }
-.ucx-proof .eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--mint); }
 
 .ucx-proof .heading {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
@@ -83,9 +84,12 @@
   margin-bottom: 18px;
 }
 
-.ucx-proof .intro { font-size: 15.5px; line-height: 1.7; color: var(--muted); max-width: 46ch; margin-bottom: 24px; }
+.ucx-proof .intro { font-size: 15.5px; line-height: 1.7; color: var(--muted); max-width: 46ch; }
 
-.ucx-proof .proof-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+.ucx-proof .proof-tags {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  margin-top: clamp(40px,5vw,64px);
+}
 .ucx-proof .proof-tags span {
   font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
   padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); color: var(--mint);
@@ -98,6 +102,9 @@
 
 @media (max-width: 900px) {
   .ucx-proof .cursor-haze { display: none; }
-  .ucx-proof .proof-grid { grid-template-columns: 1fr; }
-  .ucx-proof .proof-media { order: -1; }
+  .ucx-proof .proof-row,
+  .ucx-proof .proof-row--reverse { grid-template-columns: 1fr; }
+  .ucx-proof .proof-media,
+  .ucx-proof .proof-row--reverse .proof-media,
+  .ucx-proof .proof-row--reverse .proof-copy { order: unset; }
 }
