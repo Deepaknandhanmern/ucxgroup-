@@ -45,7 +45,7 @@ const AREAS: Area[] = [
     title: "Built Environment",
     statement: "Coordinated Delivery Across Complex Project Environments",
     desc: "UCX supports building, development, industrial and infrastructure projects through integrated design, BIM, digital engineering and project delivery capabilities.",
-    img: "/brand/experience/built-environment.jpg",
+    img: "/brand/experience/built-environment.png",
     icon: (
       <svg viewBox="0 0 48 48">
         <path d="M8 40V14l10-6 10 6v26" />
@@ -63,7 +63,7 @@ const AREAS: Area[] = [
     title: "Interiors",
     statement: "Design, Documentation & Delivery for Interior Environments",
     desc: "UCX combines interior design expertise with BIM, technical documentation, coordination and execution support to connect design intent with project delivery.",
-    img: "/brand/experience/interiors.jpg",
+    img: "/brand/experience/interiors.png",
     icon: (
       <svg viewBox="0 0 48 48">
         <path d="M6 40V17.5L24 6l18 11.5V40H6Z" />
@@ -80,7 +80,7 @@ const AREAS: Area[] = [
     title: "Digital Project Experience",
     statement: "Technology-Led Delivery for Complex Project Requirements",
     desc: "Digital delivery is at the core of UCX's approach. We use BIM, digital engineering, coordination, automation and structured information workflows to connect project teams and improve delivery certainty.",
-    img: "/brand/experience/digital-project-experience.jpg",
+    img: "/brand/experience/digital-project-experience.png",
     icon: (
       <svg viewBox="0 0 48 48">
         <path d="M24 6 41 15.5v19L24 44 7 34.5v-19L24 6Z" />
