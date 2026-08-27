@@ -198,7 +198,7 @@ export default function TrainingWorkshop() {
             {heroImgOk ? (
               <img
                 className="hero-motif-img"
-                src="/brand/capabilities/training-workshop.png"
+                src="/brand/capabilities/training-workshop.webp"
                 alt=""
                 onError={() => setHeroImgOk(false)}
               />

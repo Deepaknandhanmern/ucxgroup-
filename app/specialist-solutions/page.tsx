@@ -86,7 +86,7 @@ export default function SpecialistSolutionsPage() {
       intro="Some project challenges require specialised workflows. UCX applies BIM, digital engineering and design technology to address specific delivery requirements."
       process={["Identify", "Apply", "Deliver"]}
       heroMotif={IconScan}
-      heroImage="/brand/capabilities/specialist-solutions.png"
+      heroImage="/brand/capabilities/specialist-solutions.webp"
       related={[
         { label: "BIM & Digital Delivery", href: "/bim-digital-delivery" },
         { label: "Design & Interiors", href: "/design-interiors" },

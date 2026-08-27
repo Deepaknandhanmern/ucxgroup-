@@ -10,11 +10,11 @@ interface Card {
 }
 
 const CARDS: Card[] = [
-  { index: "01", title: "Scan-to-BIM", flow: "Existing conditions → Digital environments", img: "/brand/specialist/scan-to-bim-v2.png" },
-  { index: "02", title: "Prefabrication", flow: "BIM → Fabrication → Modular delivery", img: "/brand/specialist/prefabrication-v2.png" },
-  { index: "03", title: "Heritage", flow: "Existing assets → Structured digital information", img: "/brand/specialist/heritage-v2.png" },
-  { index: "04", title: "Automation & AI", flow: "Smarter workflows → Better delivery", img: "/brand/specialist/automation-ai-v2.png" },
-  { index: "05", title: "Parametric Systems", flow: "Design → Logic → Adaptability", img: "/brand/specialist/parametric-systems-v2.png" },
+  { index: "01", title: "Scan-to-BIM", flow: "Existing conditions → Digital environments", img: "/brand/specialist/scan-to-bim-v2.webp" },
+  { index: "02", title: "Prefabrication", flow: "BIM → Fabrication → Modular delivery", img: "/brand/specialist/prefabrication-v2.webp" },
+  { index: "03", title: "Heritage", flow: "Existing assets → Structured digital information", img: "/brand/specialist/heritage-v2.webp" },
+  { index: "04", title: "Automation & AI", flow: "Smarter workflows → Better delivery", img: "/brand/specialist/automation-ai-v2.webp" },
+  { index: "05", title: "Parametric Systems", flow: "Design → Logic → Adaptability", img: "/brand/specialist/parametric-systems-v2.webp" },
 ];
 
 function CardImage({ src, alt }: { src: string; alt: string }) {
