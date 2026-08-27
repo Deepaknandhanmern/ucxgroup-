@@ -15,6 +15,7 @@
   color: var(--dark);
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
   position: relative;
+  scroll-margin-top: 96px;
 }
 .ucx-ecosystem * { box-sizing: border-box; }
 

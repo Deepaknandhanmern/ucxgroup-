@@ -196,6 +196,7 @@
   grid-template-columns: repeat(2, 1fr);
   gap: clamp(16px,2vw,24px);
   margin-bottom: clamp(16px,2vw,24px);
+  scroll-margin-top: 96px;
 }
 .ucx-caphub .mod-card {
   position: relative;
@@ -408,6 +409,7 @@
   background: linear-gradient(135deg, rgba(145,242,181,.09), rgba(145,242,181,.015) 70%);
   padding: clamp(36px,4.6vw,56px);
   display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap;
+  scroll-margin-top: 96px;
 }
 .ucx-caphub .closing-copy { max-width: 52ch; }
 .ucx-caphub .closing-copy h3 {

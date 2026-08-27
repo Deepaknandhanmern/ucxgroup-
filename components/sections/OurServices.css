@@ -19,6 +19,7 @@
   isolation: isolate;
   padding-bottom: 1px;
   -webkit-font-smoothing: antialiased;
+  scroll-margin-top: 96px;
 }
 .ucx-svc * { box-sizing: border-box; margin: 0; padding: 0; }
 

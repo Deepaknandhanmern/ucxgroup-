@@ -112,6 +112,7 @@
   border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
   padding: clamp(36px,4vw,52px) 0;
   margin-bottom: clamp(72px,8vw,110px);
+  scroll-margin-top: 96px;
 }
 .ucx-experience .sub-eyebrow {
   display: block;
@@ -233,6 +234,7 @@
 .ucx-experience .closing {
   padding-top: clamp(36px,4vw,52px); border-top: 1px solid var(--line);
   display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap;
+  scroll-margin-top: 96px;
 }
 .ucx-experience .closing-copy { max-width: 56ch; }
 .ucx-experience .closing-copy h3 {
