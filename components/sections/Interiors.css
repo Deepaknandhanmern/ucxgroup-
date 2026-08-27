@@ -401,6 +401,20 @@
 }
 .ucx-interiors .mat-name { font-size: 11px; letter-spacing: .04em; color: var(--ink-muted); text-align: center; }
 
+.ucx-interiors .promo-banner {
+  margin-top: clamp(40px,5vw,60px);
+  aspect-ratio: 3 / 1;
+  border: 1px dashed var(--line);
+  border-radius: 16px;
+  background: rgba(4,22,44,.02);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  color: var(--ink-muted);
+}
+.ucx-interiors .promo-banner svg { width: 30px; height: 30px; opacity: .6; }
+.ucx-interiors .promo-banner span {
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+}
+
 /* ---- material swatch border-beam: a comet travels the swatch edge on a
    rotating conic gradient, cut to a ring via a two-layer alpha mask
    (content-box excluded from border-box); speeds up on hover/focus. Pure
