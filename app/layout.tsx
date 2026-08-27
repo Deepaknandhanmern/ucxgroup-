@@ -16,6 +16,7 @@ import "@/components/sections/Sectors.css";
 import "@/components/sections/GlobalReach.css";
 import "@/components/sections/GalleryArc.css";
 import "@/components/sections/DeliveryModel.css";
+import "@/components/sections/DeliveryProof.css";
 import "@/components/sections/TestimonialReel.css";
 import "@/components/sections/LabPromo.css";
 import "@/components/sections/WhyChooseUs.css";

@@ -6,6 +6,7 @@ import Ecosystem from "@/components/sections/Ecosystem";
 import OurServices from "@/components/sections/OurServices";
 import SpecialistSolutions from "@/components/sections/SpecialistSolutions";
 import DeliveryModel from "@/components/sections/DeliveryModel";
+import DeliveryProof from "@/components/sections/DeliveryProof";
 import GalleryArc from "@/components/sections/GalleryArc";
 import Sectors from "@/components/sections/Sectors";
 import GlobalReach from "@/components/sections/GlobalReach";
@@ -40,6 +41,7 @@ export default function Home() {
       <OurServices />
       <SpecialistSolutions />
       <DeliveryModel />
+      <DeliveryProof />
       <GalleryArc />
       <Sectors />
       <GlobalReach />
