@@ -114,8 +114,12 @@
   border-radius: 18px;
   overflow: hidden;
   border: 1px solid var(--line);
-  background: var(--bg);
+  background: #00211B;
 }
+/* Tab images are device-mockup renders on their own dark background —
+   cover-cropping cut off the mockup's edges inconsistently depending on
+   how tall each tab's copy made this panel. Show the whole image instead. */
+.ucx-captabs .panel-thumb .ucx-card-thumb-img { object-fit: contain; }
 
 .ucx-captabs .panel-tags-label {
   display: block; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase;
