@@ -44,6 +44,15 @@ const nextConfig: NextConfig = {
         destination: "/design-interiors/:path*",
         permanent: true,
       },
+      // Leftover from the previous WordPress site (which used /home as its
+      // homepage path) — Google's index still has it from before the
+      // domain switch, and it 404s otherwise since this site's homepage
+      // only lives at /.
+      {
+        source: "/home",
+        destination: "/",
+        permanent: true,
+      },
     ];
   },
 };
