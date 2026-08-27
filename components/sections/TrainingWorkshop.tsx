@@ -89,6 +89,7 @@ export default function TrainingWorkshop() {
   const talkCtaRef = useMagnetic<HTMLAnchorElement>();
   const [activeCat, setActiveCat] = useState<Category | "all">("all");
   const [leadStatus, setLeadStatus] = useState<LeadStatus>("idle");
+  const [heroImgOk, setHeroImgOk] = useState(true);
 
   const list = activeCat === "all" ? PROGRAMS : PROGRAMS.filter((p) => p.category === activeCat);
 
@@ -194,7 +195,16 @@ export default function TrainingWorkshop() {
           </div>
 
           <div className="hero-motif" data-reveal aria-hidden="true">
-            {IconGraduate}
+            {heroImgOk ? (
+              <img
+                className="hero-motif-img"
+                src="/brand/capabilities/training-workshop.png"
+                alt=""
+                onError={() => setHeroImgOk(false)}
+              />
+            ) : (
+              IconGraduate
+            )}
           </div>
         </div>
       </div>
