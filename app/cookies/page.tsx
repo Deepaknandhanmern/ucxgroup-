@@ -11,19 +11,20 @@ export default function CookiesPage() {
   return (
     <LegalPage
       title="Cookie Policy"
-      updated="August 21, 2026"
-      intro="This page explains what cookies and similar local storage ucx-group.com currently uses. We keep this deliberately minimal — this site does not run advertising or analytics tracking at this time."
+      updated="August 27, 2026"
+      intro="This page explains what cookies and similar local storage ucx-group.com uses, and why. We keep this deliberately minimal — the only tracking cookie is Google Analytics, and it only runs if you accept it in the cookie banner shown on your first visit."
       sections={[
         {
-          heading: "What We Don't Use",
+          heading: "Analytics Cookies (Opt-In)",
           body: [
-            "We don't set advertising cookies, and we don't currently run any analytics or visitor-tracking cookies. If that changes in the future, this page will be updated and, where required, we'll ask for your consent first.",
+            "With your consent, we use Google Analytics (GA4) to understand how visitors use this site — which pages are viewed, general location, and device type. This helps us improve the site. Google Analytics does not run until you accept it via the cookie banner.",
+            "We don't set advertising cookies, and we don't use tracking for any purpose beyond this.",
           ],
         },
         {
           heading: "Local Storage We Do Use",
           body: [
-            "This site uses your browser's sessionStorage — not a cookie, and never sent to our servers — to remember, for the current browser tab session only, that you've already seen the one-time intro animation on load, so it doesn't repeat every time you navigate.",
+            "This site uses your browser's localStorage to remember your cookie consent choice, and sessionStorage — neither is a cookie, and neither is sent to our servers — to remember, for the current browser tab session only, that you've already seen the one-time intro animation on load, so it doesn't repeat every time you navigate.",
           ],
         },
         {
@@ -36,6 +37,7 @@ export default function CookiesPage() {
           heading: "Managing Cookies",
           body: [
             "You can clear or block cookies at any time through your browser settings. Since we don't rely on tracking cookies for this site to function, doing so won't affect your ability to browse or use the contact form.",
+            "To change your consent choice, clear this site's data in your browser (or clear your cookies/site storage) — the consent banner will reappear on your next visit.",
           ],
         },
         {

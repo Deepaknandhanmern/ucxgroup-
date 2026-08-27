@@ -1,0 +1,68 @@
+.ucx-cookies {
+  position: fixed;
+  z-index: 600;
+  left: clamp(16px, 3vw, 32px);
+  bottom: clamp(16px, 3vw, 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(360px, calc(100vw - 32px));
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: #00352D;
+  color: #F3F1E6;
+  box-shadow: 0 24px 48px -20px rgba(0,53,45,.5);
+  font-family: 'Atyp Display', 'Helvetica Neue', Arial, sans-serif;
+  animation: ucxCookiesIn .4s cubic-bezier(.16,.84,.36,1);
+}
+
+.ucx-cookies-text {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: rgba(243,241,230,.85);
+  margin: 0;
+}
+.ucx-cookies-text a {
+  color: #91F2B5;
+  text-decoration: underline;
+  text-decoration-color: rgba(145,242,181,.4);
+  text-underline-offset: 3px;
+}
+.ucx-cookies-text a:hover { text-decoration-color: #91F2B5; }
+
+.ucx-cookies-actions { display: flex; gap: 10px; }
+
+.ucx-cookies-actions button {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+
+.ucx-cookies-decline {
+  background: transparent;
+  border: 1px solid rgba(243,241,230,.3);
+  color: rgba(243,241,230,.85);
+}
+.ucx-cookies-decline:hover { border-color: rgba(243,241,230,.6); color: #F3F1E6; }
+
+.ucx-cookies-accept {
+  background: #91F2B5;
+  border: 1px solid #91F2B5;
+  color: #00352D;
+}
+.ucx-cookies-accept:hover { background: #F3F1E6; border-color: #F3F1E6; }
+
+@keyframes ucxCookiesIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ucx-cookies { animation: none; }
+}

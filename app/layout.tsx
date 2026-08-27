@@ -62,6 +62,7 @@ import "@/components/ui/AnnouncementBanner.css";
 import "@/components/ui/LinkPreview.css";
 import "@/components/ui/WorldMap.css";
 import "@/components/ui/SearchPalette.css";
+import "@/components/ui/CookieConsent.css";
 import "@/components/sections/TeamHub.css";
 import "@/components/sections/TeamProfile.css";
 import "@/components/sections/Resources.css";
@@ -79,6 +80,7 @@ import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import TabTitleSwitcher from "@/components/ui/TabTitleSwitcher";
 import Preloader from "@/components/ui/Preloader";
 import Analytics from "@/components/shared/Analytics";
+import CookieConsent from "@/components/ui/CookieConsent";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://ucx-group.com"),
@@ -157,6 +159,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <BackToTop />
         <WhatsAppButton />
         <Analytics />
+        <CookieConsent />
       </body>
     </html>
   );
