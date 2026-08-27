@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: "/maintenance",
+      disallow: ["/maintenance", "/dashboard"],
     },
     sitemap: "https://ucx-group.com/sitemap.xml",
   };
