@@ -25,6 +25,7 @@ const ITEMS: CapabilityItem[] = [
       "Clash detection support",
     ],
     icon: IconCube,
+    image: "/brand/capabilities/tabs/bim-vdc.webp",
   },
   {
     title: "Digital Engineering",
@@ -39,6 +40,7 @@ const ITEMS: CapabilityItem[] = [
       "Digital QA/QC",
     ],
     icon: IconChip,
+    image: "/brand/capabilities/tabs/digital-engineering.webp",
   },
   {
     title: "BIM Coordination",
@@ -54,6 +56,7 @@ const ITEMS: CapabilityItem[] = [
       "Design review support",
     ],
     icon: IconNodes,
+    image: "/brand/capabilities/tabs/bim-coordination.webp",
   },
   {
     title: "Digital Construction",
@@ -69,6 +72,7 @@ const ITEMS: CapabilityItem[] = [
       "Digital construction workflows",
     ],
     icon: IconCrane,
+    image: "/brand/capabilities/tabs/digital-construction.webp",
   },
   {
     title: "Automation & 4D/5D",
@@ -85,6 +89,7 @@ const ITEMS: CapabilityItem[] = [
       "AI-assisted workflows",
     ],
     icon: IconAutomation,
+    image: "/brand/capabilities/tabs/automation-4d5d.webp",
   },
 ];
 

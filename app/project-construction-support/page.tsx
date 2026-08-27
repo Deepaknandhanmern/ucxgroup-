@@ -24,6 +24,7 @@ const ITEMS: CapabilityItem[] = [
       "Project information",
     ],
     icon: IconDocument,
+    image: "/brand/capabilities/tabs/project-documentation.webp",
   },
   {
     title: "Project Controls",
@@ -38,6 +39,7 @@ const ITEMS: CapabilityItem[] = [
       "Dashboard support",
     ],
     icon: IconGauge,
+    image: "/brand/capabilities/tabs/project-controls.webp",
   },
   {
     title: "Quantity & Data Extraction",
@@ -52,6 +54,7 @@ const ITEMS: CapabilityItem[] = [
       "Reporting",
     ],
     icon: IconBars,
+    image: "/brand/capabilities/tabs/quantity-data-extraction.webp",
   },
   {
     title: "QA/QC",
@@ -66,6 +69,7 @@ const ITEMS: CapabilityItem[] = [
       "Deliverable review",
     ],
     icon: IconShieldCheck,
+    image: "/brand/capabilities/tabs/qa-qc.webp",
   },
   {
     title: "Execution & Coordination Support",
@@ -80,6 +84,7 @@ const ITEMS: CapabilityItem[] = [
       "Execution documentation",
     ],
     icon: IconWrench,
+    image: "/brand/capabilities/tabs/execution-coordination-support.webp",
   },
 ];
 

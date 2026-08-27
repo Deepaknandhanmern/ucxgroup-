@@ -23,6 +23,7 @@ const ITEMS: CapabilityItem[] = [
       "Asset-ready information",
     ],
     icon: IconCube,
+    image: "/brand/capabilities/tabs/as-built-bim.webp",
   },
   {
     title: "Asset Information",
@@ -36,6 +37,7 @@ const ITEMS: CapabilityItem[] = [
       "Asset registers",
     ],
     icon: IconTag,
+    image: "/brand/capabilities/tabs/asset-information.webp",
   },
   {
     title: "COBie & Data",
@@ -49,6 +51,7 @@ const ITEMS: CapabilityItem[] = [
       "Handover requirements",
     ],
     icon: IconDatabase,
+    image: "/brand/capabilities/tabs/cobie-data.webp",
   },
   {
     title: "FM Models",
@@ -62,6 +65,7 @@ const ITEMS: CapabilityItem[] = [
       "Operational workflows",
     ],
     icon: IconBuildingGear,
+    image: "/brand/capabilities/tabs/fm-models.webp",
   },
   {
     title: "Digital Handover & Digital Twin",
@@ -75,6 +79,7 @@ const ITEMS: CapabilityItem[] = [
       "Digital twin workflows",
     ],
     icon: IconHandover,
+    image: "/brand/capabilities/tabs/digital-handover-twin.webp",
   },
 ];
 

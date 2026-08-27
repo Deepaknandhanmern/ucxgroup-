@@ -23,6 +23,7 @@ const ITEMS: CapabilityItem[] = [
       "BIM-ready asset information",
     ],
     icon: IconScan,
+    image: "/brand/capabilities/tabs/scan-to-bim.webp",
   },
   {
     title: "Prefabrication",
@@ -36,6 +37,7 @@ const ITEMS: CapabilityItem[] = [
       "Assembly coordination",
     ],
     icon: IconPrefab,
+    image: "/brand/capabilities/tabs/prefabrication.webp",
   },
   {
     title: "Heritage & Restoration Projects",
@@ -49,6 +51,7 @@ const ITEMS: CapabilityItem[] = [
       "Digital asset records",
     ],
     icon: IconHeritage,
+    image: "/brand/capabilities/tabs/heritage-restoration.webp",
   },
   {
     title: "BIM Automation & AI",
@@ -62,6 +65,7 @@ const ITEMS: CapabilityItem[] = [
       "Quality & productivity enhancement",
     ],
     icon: IconSpark,
+    image: "/brand/capabilities/tabs/bim-automation-ai.webp",
   },
   {
     title: "Parametric Systems",
@@ -75,6 +79,7 @@ const ITEMS: CapabilityItem[] = [
       "Fabrication-ready solutions",
     ],
     icon: IconParametric,
+    image: "/brand/capabilities/tabs/parametric-systems.webp",
   },
 ];
 
