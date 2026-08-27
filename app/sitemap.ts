@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAllProjects } from "@/lib/projects-content";
 import { getAllInsightPosts } from "@/lib/insights-content";
+import { TEAM } from "@/lib/team";
 
 // Reads posts from the dashboard's database — force-dynamic keeps this out
 // of Next's static generation pass entirely (sitemap.ts can otherwise be
@@ -28,6 +29,8 @@ const STATIC_ROUTES = [
   { path: "/resources", priority: 0.5, changeFrequency: "monthly" as const },
   { path: "/global-delivery", priority: 0.5, changeFrequency: "monthly" as const },
   { path: "/careers", priority: 0.6, changeFrequency: "weekly" as const },
+  { path: "/team", priority: 0.5, changeFrequency: "monthly" as const },
+  { path: "/training-workshop", priority: 0.5, changeFrequency: "monthly" as const },
   { path: "/contact", priority: 0.6, changeFrequency: "yearly" as const },
   { path: "/privacy-policy", priority: 0.2, changeFrequency: "yearly" as const },
   { path: "/terms", priority: 0.2, changeFrequency: "yearly" as const },
@@ -58,5 +61,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [...staticEntries, ...projectEntries, ...insightEntries];
+  const teamEntries: MetadataRoute.Sitemap = TEAM.map((m) => ({
+    url: `${BASE_URL}/team/${m.slug}`,
+    lastModified: now,
+    changeFrequency: "yearly",
+    priority: 0.4,
+  }));
+
+  return [...staticEntries, ...projectEntries, ...insightEntries, ...teamEntries];
 }
