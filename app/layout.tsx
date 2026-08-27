@@ -16,7 +16,6 @@ import "@/components/sections/Sectors.css";
 import "@/components/sections/GlobalReach.css";
 import "@/components/sections/GalleryArc.css";
 import "@/components/sections/DeliveryModel.css";
-import "@/components/sections/DeliveryProof.css";
 import "@/components/sections/TestimonialReel.css";
 import "@/components/sections/LabPromo.css";
 import "@/components/sections/WhyChooseUs.css";
@@ -138,9 +137,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <Script id="ucx-intro-check" strategy="beforeInteractive">
-          {"try{if(sessionStorage.getItem('ucx-intro-seen')){document.documentElement.classList.add('ucx-no-intro')}}catch(e){}"}
-        </Script>
+        <Script
+          id="ucx-intro-check"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(sessionStorage.getItem('ucx-intro-seen')){document.documentElement.classList.add('ucx-no-intro')}}catch(e){}",
+          }}
+        />
         <Preloader />
         <a
           href="#main-content"
