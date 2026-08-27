@@ -12,7 +12,7 @@ const SERVICES = [
     name: "Architecture & Planning",
     statement: "From Concept to Coordinated Design",
     deliverables: ["Concept development", "Space planning", "Architectural design", "Design development", "Planning support", "Design documentation"],
-    img: "/brand/interiors/svc-architecture-planning-a.jpg",
+    img: "/brand/interiors/svc-architecture-planning-a.webp",
   },
   {
     id: "interior-solutions",
@@ -20,7 +20,7 @@ const SERVICES = [
     name: "Interior Solutions",
     statement: "Interior Design With Delivery in Mind",
     deliverables: ["Workplace interiors", "Commercial interiors", "Residential interiors", "Hospitality & retail", "Space planning", "Interior detailing"],
-    img: "/brand/interiors/svc-interior-solutions-a.jpg",
+    img: "/brand/interiors/svc-interior-solutions-a.webp",
   },
   {
     id: "design-development",
@@ -28,7 +28,7 @@ const SERVICES = [
     name: "Design Development",
     statement: "Developing Ideas Into Buildable Solutions",
     deliverables: ["Design development", "Material coordination", "Technical detailing", "Design coordination", "Constructability considerations"],
-    img: "/brand/interiors/svc-design-development-a.jpg",
+    img: "/brand/interiors/svc-design-development-a.webp",
   },
   {
     id: "construction-documentation",
@@ -36,7 +36,7 @@ const SERVICES = [
     name: "Construction Documentation",
     statement: "Information That Can Be Built",
     deliverables: ["Working drawings", "Detailed drawings", "BIM documentation", "Interior documentation", "Schedules", "Drawing coordination"],
-    img: "/brand/interiors/svc-construction-documentation-a.jpg",
+    img: "/brand/interiors/svc-construction-documentation-a.webp",
   },
   {
     id: "bim-integrated-interiors",
@@ -44,7 +44,15 @@ const SERVICES = [
     name: "BIM-Integrated Interiors",
     statement: "Where Interior Design Meets Digital Delivery",
     deliverables: ["Interior BIM", "Furniture modelling", "Finish schedules", "Detailed interiors", "Coordination", "Fabrication-ready information"],
-    img: "/brand/interiors/svc-bim-integrated-interiors-a.jpg",
+    img: "/brand/interiors/svc-bim-integrated-interiors-a.webp",
+  },
+  {
+    id: "signage-wayfinding",
+    n: "06",
+    name: "Signage & Wayfinding",
+    statement: "Guiding People Through the Spaces We Design",
+    deliverables: ["Wayfinding strategy", "Signage design", "Environmental graphics", "Signage schedules", "Fabrication coordination", "Installation support"],
+    img: "/brand/interiors/svc-signage-wayfinding-a.webp",
   },
 ];
 
@@ -248,13 +256,6 @@ export default function Interiors() {
               </div>
             </div>
           ))}
-          <div className="svc-tile svc-tile--placeholder" data-reveal aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="9" />
-              <path d="M12 8v8M8 12h8" />
-            </svg>
-            <span>More Services Coming Soon</span>
-          </div>
         </div>
 
         {/* ---------- process band: animated stage timeline ---------- */}

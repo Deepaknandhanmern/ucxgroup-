@@ -181,17 +181,6 @@
   transform: translateY(-5px);
   box-shadow: 0 26px 44px -22px rgba(4,22,44,.4);
 }
-.ucx-interiors .svc-tile--placeholder {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
-  border-style: dashed;
-  background: rgba(116,198,162,.03);
-  color: var(--accent-ink);
-}
-.ucx-interiors .svc-tile--placeholder svg { width: 30px; height: 30px; opacity: .5; }
-.ucx-interiors .svc-tile--placeholder span {
-  font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-muted); text-align: center; padding: 0 24px;
-}
-
 /* ---- dominant image, always visible — points reveal on hover ---- */
 .ucx-interiors .svc-media { position: absolute; inset: 0; z-index: 0; }
 .ucx-interiors .svc-img,
