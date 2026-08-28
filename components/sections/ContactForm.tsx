@@ -64,6 +64,7 @@ function BookingCalendarCard({ url }: { url: string }) {
     for (let d = 1; d <= daysInMonth; d++) {
       if (Math.random() < 0.22) set.add(d);
     }
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentionally deferred to the client, see comment above
     setOpenDays(set);
   }, [daysInMonth]);
 
@@ -128,6 +129,7 @@ interface DynamicField {
   type: "select" | "text";
   options?: string[];
   placeholder?: string;
+  required?: boolean;
 }
 
 interface TypeConfig {
@@ -136,55 +138,75 @@ interface TypeConfig {
   desc: string;
   route: string;
   hint: string;
+  emailLabel: string;
+  companyLabel: string;
+  phoneRequired: boolean;
   messageLabel: string;
   messagePlaceholder: string;
+  messageRequired: boolean;
+  submitLabel: string;
   fields: DynamicField[];
 }
 
 const CONFIG: Record<QueryType, TypeConfig> = {
   bim: {
     tag: "A",
-    title: "BIM related query",
-    desc: "Model coordination, clash detection, LOD, file exchange.",
-    route: "BIM support desk",
-    hint: "A BIM specialist typically replies within 2–4 hours.",
-    messageLabel: "Describe the BIM issue",
-    messagePlaceholder: "e.g. clash between MEP and structural model on level 3...",
+    title: "BIM Support Desk",
+    desc: "Get help with model coordination, clash detection, LOD, file exchange and BIM workflows.",
+    route: "BIM Support Desk",
+    hint: "A BIM specialist typically responds within 1 business day.",
+    emailLabel: "Work email",
+    companyLabel: "Company / project name",
+    phoneRequired: false,
+    messageLabel: "Tell us about your BIM requirement",
+    messagePlaceholder: "Tell us what you're working on, what problem you're facing, and what outcome you need.",
+    messageRequired: true,
+    submitLabel: "Send request",
     fields: [
-      { name: "bim_software", label: "BIM software used", type: "select", options: ["Revit", "Navisworks", "AutoCAD", "ArchiCAD", "Tekla", "Other"] },
-      { name: "query_category", label: "Query category", type: "select", options: ["Clash detection", "Model coordination", "LOD / standards", "File exchange (IFC/RVT)", "Other"] },
-      { name: "model_file_size", label: "Model file size", type: "text", placeholder: "e.g. 180 MB" },
-      { name: "deadline", label: "Deadline / urgency", type: "select", options: ["Not urgent", "Within a week", "Within 48 hours", "Urgent"] },
+      { name: "bim_software", label: "BIM software used", type: "select", required: true, options: ["Revit", "Navisworks", "AutoCAD", "Archicad", "Tekla", "Other"] },
+      { name: "query_category", label: "Query category", type: "select", required: true, options: ["BIM modelling", "Clash detection", "Model coordination", "File exchange (IFC / RVT / NWC / NWD)", "Model audit / quality check", "BIM workflow / automation", "Other"] },
+      { name: "project_stage", label: "Project stage", type: "select", options: ["Concept", "Design development", "IFC", "Construction", "As-built"] },
+      { name: "deadline", label: "Deadline / urgency", type: "select", required: true, options: ["Not urgent", "Within a week", "Within a month", "Urgent / immediate"] },
     ],
   },
   interior: {
     tag: "B",
-    title: "Interior related",
-    desc: "Space planning, materials, styling, renders and layouts.",
-    route: "Interior design desk",
-    hint: "Our design team typically replies within 1 business day.",
-    messageLabel: "Describe your space and requirement",
-    messagePlaceholder: "e.g. 2BHK apartment, need modern minimalist layout...",
+    title: "Interior Design Desk",
+    desc: "Get support with space planning, interior design, materials, styling, layouts, 3D visualisation and complete interior solutions.",
+    route: "Interior Design Desk",
+    hint: "An interior design specialist typically responds within 4–5 business hours.",
+    emailLabel: "Email address",
+    companyLabel: "Company / project name",
+    phoneRequired: true,
+    messageLabel: "Tell us about your interior requirement",
+    messagePlaceholder: "Tell us about your space, current requirements, design expectations, challenges, preferred timeline, and the outcome you are looking for.",
+    messageRequired: true,
+    submitLabel: "Send request",
     fields: [
-      { name: "project_type", label: "Project type", type: "select", options: ["Residential", "Commercial", "Retail", "Hospitality"] },
-      { name: "space_area", label: "Space area (sq. ft)", type: "text", placeholder: "e.g. 1200" },
-      { name: "preferred_style", label: "Preferred style", type: "select", options: ["Modern minimalist", "Contemporary", "Industrial", "Traditional", "Scandinavian", "Not sure yet"] },
+      { name: "project_type", label: "Project type", type: "select", required: true, options: ["Residential", "Commercial", "Retail", "Hospitality"] },
+      { name: "service_required", label: "Service required", type: "select", required: true, options: ["Space planning", "Interior design", "Furniture & styling", "3D visualisation / renders", "Turnkey interior solutions", "Renovation / refurbishment", "Other"] },
+      { name: "space_area", label: "Space area (sq. ft.)", type: "text", required: true, placeholder: "Enter approximate area" },
       { name: "budget_range", label: "Budget range", type: "select", options: ["Under ₹5L", "₹5L – ₹15L", "₹15L – ₹30L", "₹30L+"] },
     ],
   },
   training: {
     tag: "C",
-    title: "Training academy",
-    desc: "Courses, certifications, batches and enrolment.",
-    route: "Academy admissions",
-    hint: "Admissions typically respond within 1 business day.",
-    messageLabel: "Anything specific you'd like to know",
-    messagePlaceholder: "e.g. is this course suitable for a working professional...",
+    title: "Training Academy",
+    desc: "Build practical BIM skills through structured, industry-focused online training designed for students, graduates and working professionals.",
+    route: "Training Academy",
+    hint: "An academy admissions specialist typically responds within 1 business day.",
+    emailLabel: "Email address",
+    companyLabel: "Current role / organisation",
+    phoneRequired: true,
+    messageLabel: "Anything specific you'd like to know?",
+    messagePlaceholder: "Tell us about your current experience, career goals, the course you're interested in, or anything you'd like to know about the curriculum, batch schedule, fees or certification.",
+    messageRequired: false,
+    submitLabel: "Send enquiry",
     fields: [
-      { name: "course", label: "Course of interest", type: "select", options: ["BIM fundamentals", "Revit MEP", "Navisworks coordination", "Interior design bootcamp", "Site management"] },
-      { name: "experience_level", label: "Experience level", type: "select", options: ["Complete beginner", "Some experience", "Working professional"] },
-      { name: "preferred_batch", label: "Preferred batch", type: "select", options: ["Weekday mornings", "Weekday evenings", "Weekends", "Flexible / self-paced"] },
-      { name: "learning_mode", label: "Mode of learning", type: "select", options: ["Online", "In-person", "Hybrid"] },
+      { name: "course", label: "Course of interest", type: "select", required: true, options: ["BIM fundamentals", "BIM advanced", "BIM professional"] },
+      { name: "experience_level", label: "Experience level", type: "select", required: true, options: ["Complete beginner", "Some BIM experience", "Working professional"] },
+      { name: "preferred_batch", label: "Preferred batch", type: "select", required: true, options: ["Next available batch", "Interested in upcoming batch", "Flexible"] },
+      { name: "learning_goal", label: "Learning goal", type: "select", options: ["Start a career in BIM", "Upgrade my BIM skills", "Advance my professional skills", "Certification", "Other"] },
     ],
   },
 };
@@ -199,6 +221,21 @@ export default function ContactForm() {
   const [toastShow, setToastShow] = useState(false);
   const cfg = CONFIG[selected];
   const submitBtnRef = useMagnetic<HTMLButtonElement>();
+
+  // Cards elsewhere on the site (e.g. the homepage "Talk to the Right Team"
+  // block) link here with ?type=bim|interior|training so the right panel is
+  // already selected when the visitor lands, instead of always defaulting
+  // to BIM. Read after mount (not in a lazy useState initializer) so the
+  // server-rendered "bim" markup matches the client's first render and only
+  // switches panels once hydration is safely past — same hydration-mismatch
+  // avoidance as the booking calendar's day highlights above.
+  useEffect(() => {
+    const type = new URLSearchParams(window.location.search).get("type");
+    if (type === "bim" || type === "interior" || type === "training") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentionally deferred to the client, see comment above
+      setSelected(type);
+    }
+  }, []);
 
   // Calendly's embed posts a window message when a visitor completes a
   // booking — no server-side API token needed. We forward it into the same
@@ -305,15 +342,15 @@ export default function ContactForm() {
                 <input type="text" name="name" placeholder="Your name" required />
               </div>
               <div className="field">
-                <label>Email address</label>
+                <label>{cfg.emailLabel}</label>
                 <input type="email" name="email" placeholder="you@company.com" required />
               </div>
               <div className="field">
-                <label>Phone number</label>
-                <input type="tel" name="phone" placeholder="+91 00000 00000" />
+                <label>Phone / WhatsApp</label>
+                <input type="tel" name="phone" placeholder="+91 00000 00000" required={cfg.phoneRequired} />
               </div>
               <div className="field">
-                <label>Company / project name</label>
+                <label>{cfg.companyLabel}</label>
                 <input type="text" name="company" placeholder="Optional" />
               </div>
 
@@ -323,7 +360,7 @@ export default function ContactForm() {
                   <div className="field" key={f.name}>
                     <label>{f.label}</label>
                     {f.type === "select" ? (
-                      <select name={f.name} defaultValue="">
+                      <select name={f.name} defaultValue="" required={f.required}>
                         <option value="">Select an option</option>
                         {f.options!.map((o) => (
                           <option key={o} value={o}>
@@ -332,7 +369,7 @@ export default function ContactForm() {
                         ))}
                       </select>
                     ) : (
-                      <input type="text" name={f.name} placeholder={f.placeholder || ""} />
+                      <input type="text" name={f.name} placeholder={f.placeholder || ""} required={f.required} />
                     )}
                   </div>
                 ))}
@@ -340,7 +377,7 @@ export default function ContactForm() {
 
               <div className="field full">
                 <label>{cfg.messageLabel}</label>
-                <textarea name="message" placeholder={cfg.messagePlaceholder}></textarea>
+                <textarea name="message" placeholder={cfg.messagePlaceholder} required={cfg.messageRequired}></textarea>
               </div>
             </div>
 
@@ -349,7 +386,7 @@ export default function ContactForm() {
                 {status === "error" ? "Something went wrong — please try again or email us directly." : cfg.hint}
               </span>
               <button type="submit" className="submit" disabled={status === "submitting"} ref={submitBtnRef}>
-                {status === "submitting" ? "Sending…" : "Send request"}
+                {status === "submitting" ? "Sending…" : cfg.submitLabel}
               </button>
             </div>
           </div>

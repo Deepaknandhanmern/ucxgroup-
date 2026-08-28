@@ -13,9 +13,9 @@ interface SupportLine {
 
 const LINES: SupportLine[] = [
   {
-    href: "#bim",
-    name: "BIM queries",
-    copy: "Model coordination, LOD, clash detection and file handover — answered by the modellers on your project.",
+    href: "/contact?type=bim#contact-form",
+    name: "BIM & Digital Delivery",
+    copy: "Model coordination, LOD, clash detection and information handover — direct access to the team delivering your project.",
     icon: (
       <svg viewBox="0 0 48 48">
         <path d="M24 6 41 15.5v19L24 44 7 34.5v-19L24 6Z" />
@@ -25,9 +25,9 @@ const LINES: SupportLine[] = [
     ),
   },
   {
-    href: "#interior",
-    name: "Interiors",
-    copy: "Layouts, finishes, joinery detailing and site queries — straight through to the interiors desk.",
+    href: "/contact?type=interior#contact-form",
+    name: "Interior Solutions",
+    copy: "Layouts, materials, joinery and design development — connected directly to our interiors team.",
     icon: (
       <svg viewBox="0 0 48 48">
         <path d="M6 40V17.5L24 6l18 11.5V40H6Z" />
@@ -37,9 +37,9 @@ const LINES: SupportLine[] = [
     ),
   },
   {
-    href: "#academy",
-    name: "Training academy",
-    copy: "Course access, schedules, certification and team enrolment for everything we teach.",
+    href: "/contact?type=training#contact-form",
+    name: "Training & Workshops",
+    copy: "Courses, schedules, certification and team enrolment — everything you need to build digital capability.",
     icon: (
       <svg viewBox="0 0 48 48">
         <path d="M24 7 44 16 24 25 4 16 24 7Z" />
@@ -124,11 +124,11 @@ export default function Support() {
         <div className="ucx-support__lead">
           <span className="ucx-support__eyebrow">Support</span>
           <h2 className="ucx-support__title">
-            Talk to the right
+            Talk to the Right
             <br />
-            team, first time
+            Team. First Time.
           </h2>
-          <p className="ucx-support__sub">Three direct lines, so your question lands with the people who actually work on it.</p>
+          <p className="ucx-support__sub">Three direct channels. Your enquiry goes straight to the people who understand the work.</p>
           <a className="ucx-support__cta" href="/contact">
             <span>Book a call</span>
             <svg viewBox="0 0 24 24" aria-hidden="true">
