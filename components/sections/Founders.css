@@ -270,19 +270,9 @@
   color: var(--bg-deep);
 }
 
-/* ---- promotional banner placeholder ---- */
-.ucx-founders .promo-banner {
+/* ---- promotional banner (PromoBanner component) ---- */
+.ucx-founders .ucx-promo-banner {
   margin-top: clamp(40px,5vw,60px);
-  aspect-ratio: 3 / 1;
-  border: 1px dashed var(--line);
-  border-radius: 16px;
-  background: rgba(0,53,45,.02);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-  color: var(--muted);
-}
-.ucx-founders .promo-banner svg { width: 30px; height: 30px; opacity: .6; }
-.ucx-founders .promo-banner span {
-  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
 }
 
 /* ---- CTA ---- */

@@ -20,10 +20,10 @@ import "@/components/sections/TestimonialReel.css";
 import "@/components/sections/LabPromo.css";
 import "@/components/sections/WhyChooseUs.css";
 import "@/components/sections/Founders.css";
+import "@/components/sections/PromoBanner.css";
 import "@/components/sections/CompanyHero.css";
 import "@/components/sections/OurApproach.css";
 import "@/components/sections/EngineeringPurpose.css";
-import "@/components/sections/StudioInterlude.css";
 import "@/components/sections/BuildingEcosystem.css";
 import "@/components/sections/Workspace.css";
 import "@/components/layout/Footer.css";
@@ -98,14 +98,14 @@ export const metadata: Metadata = {
     siteName: "UCX Group",
     locale: "en_US",
     type: "website",
-    images: ["/social.png"],
+    images: ["/brand/social.png"],
   },
   twitter: {
     card: "summary_large_image",
     title: "UCX Group — Unconventional Collaboration",
     description:
       "Design, digital engineering, project delivery and asset information — one connected delivery ecosystem.",
-    images: ["/social.png"],
+    images: ["/brand/social.png"],
   },
 };
 
