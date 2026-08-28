@@ -14,6 +14,7 @@ const SOURCE_LABELS: Record<string, string> = {
   "interiors-enquiry": "Design & Interiors",
   "collaboration-challenge": "Collaboration Lab",
   "calendly-booking": "Calendly Booking",
+  "newsletter-signup": "Newsletter Signup",
 };
 
 const STATUS_LABELS: Record<EnquiryStatus, string> = {

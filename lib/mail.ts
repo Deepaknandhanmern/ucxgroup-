@@ -15,6 +15,7 @@ const SOURCE_LABELS: Record<string, string> = {
   "interiors-enquiry": "Design & Interiors",
   "collaboration-challenge": "Collaboration Lab",
   "calendly-booking": "Calendly Booking",
+  "newsletter-signup": "Newsletter Signup",
 };
 
 let transporter: ReturnType<typeof nodemailer.createTransport> | null = null;

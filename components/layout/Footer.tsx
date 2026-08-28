@@ -3,8 +3,53 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import InteriorsFooter from "@/components/sections/InteriorsFooter";
+import { submitEnquiry } from "@/lib/save-enquiry";
+import Toast from "@/components/ui/Toast";
 
 const EMAIL = "collaborate@ucx-group.com";
+
+function NewsletterForm() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "submitting">("idle");
+  const [toast, setToast] = useState<{ show: boolean; message: string; tone: "success" | "error" }>({
+    show: false,
+    message: "",
+    tone: "success",
+  });
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus("submitting");
+    const { ok } = await submitEnquiry("newsletter-signup", { email });
+    setStatus("idle");
+    if (ok) {
+      setEmail("");
+      setToast({ show: true, message: "Subscribed — you'll hear from us with new insights.", tone: "success" });
+    } else {
+      setToast({ show: true, message: "Something went wrong — please try again.", tone: "error" });
+    }
+  }
+
+  return (
+    <>
+      <form className="newsletter-form" onSubmit={handleSubmit}>
+        <input
+          type="email"
+          name="email"
+          required
+          placeholder="you@company.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          aria-label="Email address"
+        />
+        <button type="submit" disabled={status === "submitting"}>
+          {status === "submitting" ? "Sending…" : "Subscribe"}
+        </button>
+      </form>
+      <Toast show={toast.show} message={toast.message} tone={toast.tone} onDismiss={() => setToast((t) => ({ ...t, show: false }))} />
+    </>
+  );
+}
 
 const QUICK_LINKS = [
   { href: "/capabilities", label: "Capabilities" },
@@ -128,6 +173,12 @@ export default function Footer() {
             </button>
             {copied && <span className="email-copied-label">Copied</span>}
           </span>
+        </div>
+
+        <div>
+          <p className="col-title">Stay Updated</p>
+          <p className="newsletter-copy">Get new insights and case studies in your inbox — no spam.</p>
+          <NewsletterForm />
         </div>
 
         <div>
