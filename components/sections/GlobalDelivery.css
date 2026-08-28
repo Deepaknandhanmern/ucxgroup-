@@ -100,6 +100,18 @@
   -webkit-mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 75%);
           mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 75%);
 }
+.ucx-global .map-head {
+  position: relative; z-index: 1;
+  max-width: 640px; text-align: center;
+  margin-bottom: clamp(32px,4vw,48px);
+}
+.ucx-global .map-head-title {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(22px,3vw,34px); line-height: 1.15; color: var(--accent);
+  margin-bottom: 14px;
+}
+.ucx-global .map-head-body { font-size: 15px; line-height: 1.7; color: var(--accent-dim); }
 .ucx-global .map-globe {
   position: relative; z-index: 1;
   width: min(100%, clamp(420px,60vw,820px));
@@ -108,9 +120,15 @@
 .ucx-global .map-legend {
   position: relative; z-index: 1;
   width: 100%; max-width: 760px;
-  display: flex; flex-wrap: wrap; justify-content: center;
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
   gap: clamp(20px,4vw,40px);
 }
+.ucx-global .legend-group { display: flex; align-items: center; gap: clamp(16px,3vw,28px); flex-wrap: wrap; justify-content: center; }
+.ucx-global .legend-group-label {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent-dim);
+}
+.ucx-global .legend-group-items { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(20px,4vw,40px); }
 .ucx-global .legend-item { display: flex; align-items: baseline; gap: 10px; }
 .ucx-global .legend-dot {
   width: 7px; height: 7px; border-radius: 50%; flex: none;

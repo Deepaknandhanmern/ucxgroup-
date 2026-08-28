@@ -111,6 +111,13 @@ export default function GlobalDelivery() {
         {/* ---------- connection map ---------- */}
         <div className="map">
           <div className="map-grid" aria-hidden="true"></div>
+          <div className="map-head">
+            <h2 className="map-head-title">One Team. Anywhere.</h2>
+            <p className="map-head-body">
+              We integrate with your existing standards, workflows and technology, allowing international teams to
+              extend their delivery capability without geographical limitations.
+            </p>
+          </div>
           <div className="map-globe">
             <WorldMap dots={MAP_DOTS} />
           </div>
@@ -122,24 +129,28 @@ export default function GlobalDelivery() {
                 <em>Delivery Origin &middot; Coimbatore</em>
               </div>
             </div>
-            {NODES.map((n) => (
-              <div className="legend-item" key={n.label}>
-                <span className="legend-dot"></span>
-                <div>
-                  <strong>{n.label}</strong>
-                  <em>{n.caption}</em>
-                </div>
+            <div className="legend-group">
+              <span className="legend-group-label">Global Reach</span>
+              <div className="legend-group-items">
+                {NODES.map((n) => (
+                  <div className="legend-item" key={n.label}>
+                    <span className="legend-dot"></span>
+                    <div>
+                      <strong>{n.label}</strong>
+                      <em>{n.caption}</em>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
 
         {/* ---------- quality & standards ---------- */}
         <div className="quality" id="quality">
-          <span className="sub-eyebrow">Quality &amp; Standards</span>
+          <span className="sub-eyebrow">Built for International Delivery</span>
           <p className="quality-body">
-            Consistent documentation, BIM standards, quality control and information management aligned with
-            professional project requirements.
+            Aligned to your standards. Integrated with your team. Scaled to your needs. Delivered with control.
           </p>
         </div>
 

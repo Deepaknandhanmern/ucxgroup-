@@ -100,48 +100,9 @@
 .ucx-globalreach .cta:hover svg { transform: translateX(3px); }
 
 /* ---- connection map ---- */
-.ucx-globalreach .map { width: 100%; max-width: 640px; margin: 0 auto; }
-
-/* ---- compass (above the map) ---- */
-.ucx-globalreach .map-compass {
-  position: relative;
-  width: 128px;
-  margin: 0 auto 32px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-}
-.ucx-globalreach .compass-svg { width: 100%; aspect-ratio: 1 / 1; }
-.ucx-globalreach .compass-ring { fill: none; stroke: var(--line); stroke-width: 1; }
-.ucx-globalreach .compass-tick { stroke: var(--accent-dim); stroke-width: 1.2; }
-.ucx-globalreach .compass-tick.minor { stroke: var(--line); stroke-width: 1; }
-.ucx-globalreach .compass-label { font-family: 'Atyp Display',sans-serif; font-size: 9px; letter-spacing: .06em; fill: var(--accent-dim); }
-.ucx-globalreach .compass-n { font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; font-size: 11px; fill: var(--accent); }
-.ucx-globalreach .compass-needle {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: grCompassNeedleSettle 5s ease-in-out infinite;
-}
-.ucx-globalreach .needle-north { fill: var(--accent); }
-.ucx-globalreach .needle-south { fill: var(--accent-dim); }
-.ucx-globalreach .compass-pivot { fill: var(--bg); stroke: var(--accent); stroke-width: 1.2; }
-.ucx-globalreach .compass-caption {
-  margin-top: 6px;
-  font-size: 9.5px;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--accent-dim);
-  white-space: nowrap;
-}
-
-@keyframes grCompassNeedleSettle {
-  0%,100% { transform: rotate(-4deg); }
-  50% { transform: rotate(4deg); }
-}
+.ucx-globalreach .map { width: 100%; max-width: clamp(560px, 44vw, 820px); margin: 0 auto; }
 
 @media (max-width: 900px) {
   .ucx-globalreach .wrapper { grid-template-columns: 1fr; }
-  .ucx-globalreach .map { order: -1; max-width: 480px; }
-}
-@media (max-width: 560px) {
-  .ucx-globalreach .map-compass { width: 92px; margin-bottom: 24px; }
-  .ucx-globalreach .compass-caption { font-size: 8.5px; }
+  .ucx-globalreach .map { order: -1; max-width: 560px; }
 }
