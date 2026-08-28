@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Static assets — vendor/minified bundles (e.g. fragments-worker.js)
+    // aren't source code and shouldn't be parsed as it.
+    "public/**",
   ]),
 ]);
 

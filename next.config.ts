@@ -14,12 +14,20 @@ const nextConfig: NextConfig = {
           { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
         ],
       },
-      // _next/static chunks are content-hashed and genuinely immutable —
-      // safe to cache forever, and new deploys get new filenames anyway.
-      {
-        source: "/_next/static/:path*",
-        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
-      },
+      // _next/static chunks are content-hashed and genuinely immutable in a
+      // production build — safe to cache forever, and new deploys get new
+      // filenames anyway. In dev, Turbopack reuses these paths across
+      // recompiles/HMR, so the same immutable header makes the browser keep
+      // serving stale chunks against a newer dev server (surfaces as a
+      // "(stale)" build badge or phantom errors in the error overlay).
+      ...(process.env.NODE_ENV === "production"
+        ? [
+            {
+              source: "/_next/static/:path*",
+              headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+            },
+          ]
+        : []),
       // Everything else (page HTML) must NOT be cached by Hostinger's CDN.
       // A cached page from a previous deploy references JS chunk files by
       // hash — once a new deploy replaces those chunk files, a stale
