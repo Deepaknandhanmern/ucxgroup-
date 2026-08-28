@@ -72,7 +72,7 @@
 .ucx-model .dm-steps {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: clamp(20px,3vw,32px);
   margin-bottom: clamp(56px,7vw,88px);
 }

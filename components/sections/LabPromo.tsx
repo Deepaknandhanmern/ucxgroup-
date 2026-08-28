@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const TAGS = ["AI & Automation", "Digital Construction", "Prefabrication", "Smart Buildings"];
+const TAGS = ["AI & Automation", "Digital Construction", "Prefabrication", "Smart Assets"];
 
 // Fixed (non-rotating) positions for the four interactive orbit nodes —
 // the longer labels sit top/bottom where centered text has room either
@@ -65,10 +65,10 @@ export default function LabPromo() {
       <div className="wrapper">
         <div className="lp-copy">
           <span className="eyebrow">More Than Project Delivery.</span>
-          <h2 className="heading">Let&rsquo;s Build What Comes Next.</h2>
+          <h2 className="heading">What If We Built the Next Solution Together?</h2>
           <p className="intro">
-            The UCX Collaboration Lab brings industry expertise, technology and project experience together to
-            co-create solutions for real AEC challenges.
+            The UCX Collaboration Lab brings people, technology and real project challenges together to explore
+            what&rsquo;s possible beyond conventional delivery.
           </p>
           <div className="tags">
             {TAGS.map((t, i) => (
@@ -91,7 +91,7 @@ export default function LabPromo() {
                 <path d="M5 12h13M13 6l6 6-6 6" />
               </svg>
             </span>
-            Explore Collaboration Lab
+            Explore the Collaboration Lab
           </a>
         </div>
 

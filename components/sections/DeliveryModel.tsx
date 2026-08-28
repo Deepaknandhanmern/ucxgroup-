@@ -13,7 +13,8 @@ const MODELS: Model[] = [
   { title: "Project Delivery", description: "Defined scopes. Clear deliverables.", tint: "mint" },
   { title: "Dedicated Teams", description: "Extend your team with UCX capability.", tint: "dark" },
   { title: "Flexible Delivery", description: "Scale when workloads and deadlines change.", tint: "mint" },
-  { title: "Strategic Partnerships", description: "Build long-term delivery capability.", tint: "dark" },
+  { title: "White-Label Delivery", description: "Your brand. Our delivery capability.", tint: "dark" },
+  { title: "Strategic Partnerships", description: "Build long-term delivery capability.", tint: "mint" },
 ];
 
 export default function DeliveryModel() {
@@ -75,7 +76,7 @@ export default function DeliveryModel() {
         </div>
 
         <div className="closing" data-reveal>
-          <a className="closing-cta" href="/collaboration-lab">
+          <a className="closing-cta" href="/capabilities#delivery">
             Explore How We Work
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12h13M13 6l6 6-6 6" />

@@ -81,7 +81,7 @@
   text-transform: uppercase; line-height: .98; letter-spacing: -.01em;
   font-size: clamp(32px,4.6vw,58px); color: var(--accent); margin-bottom: 22px;
 }
-.ucx-labpromo .intro { font-size: 16.5px; line-height: 1.7; color: var(--accent-dim); max-width: 52ch; margin-bottom: 28px; }
+.ucx-labpromo .intro { font-size: 16.5px; line-height: 1.7; color: var(--white); max-width: 52ch; margin-bottom: 28px; }
 .ucx-labpromo .tags { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 34px; }
 .ucx-labpromo .tags span {
   font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase;
