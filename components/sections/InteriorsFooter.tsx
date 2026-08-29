@@ -10,10 +10,6 @@ const VALUES = [
   "SpayceX by UCX",
 ];
 
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
 export default function InteriorsFooter() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const giantRef = useRef<HTMLDivElement>(null);
@@ -115,11 +111,6 @@ export default function InteriorsFooter() {
             &copy; {new Date().getFullYear()} SpayceX by UCX. All rights reserved.
             <i className="ifoot-copy-credit">Designed &amp; Developed by Agape Works</i>
           </span>
-          <button type="button" className="ifoot-top" onClick={scrollToTop} aria-label="Back to top">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M5 10l7-7m0 0l7 7m-7-7v18" />
-            </svg>
-          </button>
         </div>
       </footer>
     </div>

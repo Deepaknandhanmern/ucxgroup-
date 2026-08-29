@@ -41,7 +41,7 @@
   position: absolute; z-index: 0; pointer-events: none; left: 50%;
   bottom: -3vh;
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 900;
-  font-size: 15vw; line-height: .78; letter-spacing: -.03em;
+  font-size: 18vw; line-height: .78; letter-spacing: -.03em;
   white-space: nowrap; color: transparent;
   -webkit-text-stroke: 1px rgba(243,241,230,.08);
   background: linear-gradient(180deg, rgba(243,241,230,.12) 0%, transparent 65%);
@@ -119,20 +119,8 @@
   padding-left: 10px; margin-left: 10px;
   border-left: 1px solid var(--line);
 }
-.ifoot-top {
-  position: absolute; right: clamp(20px,6vw,48px); top: 50%; transform: translateY(-50%);
-  width: 42px; height: 42px; border-radius: 50%;
-  border: 1px solid var(--line); background: transparent; color: var(--accent-dim);
-  display: flex; align-items: center; justify-content: center; cursor: pointer;
-  transition: color .3s var(--ease), border-color .3s var(--ease), transform .3s var(--ease);
-}
-.ifoot-top svg { width: 16px; height: 16px; transition: transform .3s var(--ease); }
-.ifoot-top:hover { color: var(--accent); border-color: var(--accent); }
-.ifoot-top:hover svg { transform: translateY(-2px); }
-
 @media (max-width: 700px) {
-  .ifoot-giant { font-size: 22vw; }
-  .ifoot-top { position: static; transform: none; margin: 0 auto; }
+  .ifoot-giant { font-size: 26vw; }
 }
 
 @media (prefers-reduced-motion: reduce) {

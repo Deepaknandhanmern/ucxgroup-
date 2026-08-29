@@ -4,6 +4,7 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { submitEnquiry } from "@/lib/save-enquiry";
 import InteriorsHero from "@/components/sections/InteriorsHero";
 import BeforeAfterSlider from "@/components/ui/BeforeAfterSlider";
+import PromoBanner from "@/components/sections/PromoBanner";
 
 const SERVICES = [
   {
@@ -55,6 +56,71 @@ const SERVICES = [
     img: "/brand/interiors/svc-signage-wayfinding-a.webp",
   },
 ];
+
+const TESTIMONIALS = [
+  {
+    name: "Shruthi Ramesh",
+    location: "Bangalore, India",
+    role: "Renovation & Interior Design",
+    quote:
+      "UCX transformed our existing space with thoughtful design and practical solutions, delivering a renovation that feels both beautiful and functional.",
+  },
+  {
+    name: "Veni",
+    location: "Coimbatore, India",
+    role: "Turnkey Interior Design & Execution",
+    quote:
+      "UCX handled our interior project with strong attention to detail and smooth coordination, delivering a space that reflected our requirements from design to execution.",
+  },
+  {
+    name: "Jayaraman",
+    location: "Udumalpet, India",
+    role: "Renovation & Interior Design",
+    quote:
+      "UCX brought clarity to our renovation and interior project, providing practical solutions that transformed the existing space into a well-designed environment.",
+  },
+  {
+    name: "Arun",
+    location: "Coimbatore, India",
+    role: "Architectural Turnkey & Interior Solutions",
+    quote:
+      "UCX provided a coordinated approach from architectural planning to interior execution, making the overall project delivery organised and seamless.",
+  },
+  {
+    name: "Raghava",
+    location: "Bangalore, India",
+    role: "Interior Consultation & Design Solutions",
+    quote:
+      "UCX provided practical and well-considered interior solutions, helping us make confident decisions while creating a clear direction for the space.",
+  },
+];
+const TESTIMONIALS_ROW_1 = TESTIMONIALS.slice(0, 2);
+const TESTIMONIALS_ROW_2 = TESTIMONIALS.slice(2);
+
+function testimonialInitials(name: string): string {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
+function TestimonialCard({ t }: { t: (typeof TESTIMONIALS)[number] }) {
+  return (
+    <div className="tm-card">
+      <p className="tm-quote">&ldquo;{t.quote}&rdquo;</p>
+      <div className="tm-person">
+        <span className="tm-avatar">{testimonialInitials(t.name)}</span>
+        <div className="tm-meta">
+          <span className="tm-name">{t.name}</span>
+          <span className="tm-role">{t.role}</span>
+          <span className="tm-location">{t.location}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 const PROCESS_STEPS = [
   { n: "01", label: "Design", desc: "Concept through coordinated design intent." },
@@ -285,8 +351,8 @@ export default function Interiors() {
         <div className="featured" data-reveal>
           <div className="featured-media">
             <BeforeAfterSlider
-              beforeSrc="/brand/interiors/featured-before.jpg"
-              afterSrc="/brand/interiors/featured-after.jpg"
+              beforeSrc="/brand/home/delivery-before.webp"
+              afterSrc="/brand/home/delivery-after.webp"
               beforeAlt="The space before the fit-out"
               afterAlt="The completed fit-out"
             />
@@ -319,13 +385,12 @@ export default function Interiors() {
           ))}
         </div>
 
-        <div className="promo-banner" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2" />
-            <circle cx="8.5" cy="8.5" r="1.5" />
-            <path d="M21 15l-5-5L5 21" />
-          </svg>
-          <span>Promotional banner — coming soon</span>
+        <div className="promo-banner-slot" data-reveal>
+          <PromoBanner
+            src="/brand/interiors/promo-banner.webp"
+            alt="SpayceX — Design With Intention. Delivered With Precision. Luxury interiors shaped by thoughtful design, refined detailing and coordinated delivery."
+            href="#closing"
+          />
         </div>
 
         {/* ---------- closing: copy + inline enquiry form ---------- */}
@@ -378,20 +443,27 @@ export default function Interiors() {
           </div>
         </div>
 
-        {/* ---------- client quote: closes the page, right before the footer ---------- */}
-        <div className="quote-block" data-reveal>
-          <svg className="quote-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M7.17 6C4.87 6 3 7.87 3 10.17c0 2.02 1.44 3.7 3.35 4.08-.13.9-.6 1.7-1.35 2.25a.5.5 0 00.3.9c2.9 0 5.3-2.34 5.3-5.5V10.17C10.6 7.87 8.73 6 7.17 6zm10 0c-2.3 0-4.17 1.87-4.17 4.17 0 2.02 1.44 3.7 3.35 4.08-.13.9-.6 1.7-1.35 2.25a.5.5 0 00.3.9c2.9 0 5.3-2.34 5.3-5.5V10.17C20.6 7.87 18.73 6 17.17 6z" />
-          </svg>
-          <p className="quote-text">
-            &ldquo;UCX delivered an outstanding interior design solution with a strong understanding of our requirements,
-            professionalism and commitment to quality.&rdquo;
-          </p>
-          <div className="quote-meta">
-            <span className="quote-name">Abishek</span>
-            <span className="quote-role">Interior Design &middot; Singapore</span>
-          </div>
+        {/* ---------- testimonials: closes the page, right before the footer ---------- */}
+        <div className="tm-head" data-reveal>
+          <span className="sub-eyebrow">Testimonials</span>
+          <h2 className="tm-title">What Our Clients Say</h2>
+          <p className="tm-intro">Trusted through collaboration. Proven through delivery.</p>
         </div>
+      </div>
+
+      <div className="tm-marquee" data-reveal>
+        <div className="tm-row">
+          {[...TESTIMONIALS_ROW_1, ...TESTIMONIALS_ROW_1].map((t, i) => (
+            <TestimonialCard t={t} key={`${t.name}-${i}`} />
+          ))}
+        </div>
+        <div className="tm-row tm-row--reverse">
+          {[...TESTIMONIALS_ROW_2, ...TESTIMONIALS_ROW_2].map((t, i) => (
+            <TestimonialCard t={t} key={`${t.name}-${i}`} />
+          ))}
+        </div>
+        <span className="tm-edge tm-edge--left" aria-hidden="true"></span>
+        <span className="tm-edge tm-edge--right" aria-hidden="true"></span>
       </div>
     </div>
   );

@@ -41,7 +41,13 @@
 .ucx-interiors .wrapper {
   position: relative; z-index: 1;
   max-width: 1200px; margin: 0 auto;
-  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
+  padding: clamp(14px,1.6vw,20px) clamp(20px,6vw,80px) var(--ucx-section-gap);
+}
+/* The testimonials heading sits in its own wrapper instance, immediately
+   followed by the full-bleed .tm-marquee — the shared bottom padding above
+   is meant for page-end spacing and doesn't belong between them. */
+.ucx-interiors .wrapper:has(+ .tm-marquee) {
+  padding-bottom: 0;
 }
 
 /* ---- shared image placeholder (drop real photos into public/brand/interiors/) ---- */
@@ -108,7 +114,7 @@
 .ucx-interiors .vr-promo {
   display: flex; align-items: center; flex-wrap: wrap; gap: 16px 24px;
   max-width: 640px;
-  margin: 0 0 clamp(48px,6vw,72px);
+  margin: 0 auto clamp(24px,3vw,36px);
   padding: 18px 22px;
   border: 1px solid var(--line);
   border-radius: 16px;
@@ -401,18 +407,72 @@
 }
 .ucx-interiors .mat-name { font-size: 11px; letter-spacing: .04em; color: var(--ink-muted); text-align: center; }
 
-.ucx-interiors .promo-banner {
-  margin-top: clamp(40px,5vw,60px);
-  aspect-ratio: 3 / 1;
-  border: 1px dashed var(--line);
-  border-radius: 16px;
-  background: rgba(4,22,44,.02);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-  color: var(--ink-muted);
+.ucx-interiors .promo-banner-slot {
+  margin: clamp(40px,5vw,60px) 0 clamp(56px,7vw,88px);
 }
-.ucx-interiors .promo-banner svg { width: 30px; height: 30px; opacity: .6; }
-.ucx-interiors .promo-banner span {
-  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+
+/* ---- testimonials: two rows scrolling opposite directions, full-bleed ---- */
+.ucx-interiors .tm-head { max-width: 640px; margin: clamp(56px,7vw,88px) 0 28px; }
+.ucx-interiors .tm-title {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  text-transform: uppercase; line-height: 1.1; letter-spacing: -.01em;
+  font-size: clamp(26px,3.6vw,42px); color: var(--bg); margin: 10px 0 12px;
+}
+.ucx-interiors .tm-intro { font-size: 15px; line-height: 1.6; color: var(--ink-muted); }
+
+.ucx-interiors .tm-marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex; flex-direction: column; gap: 16px;
+  padding: 4px 0;
+  margin-bottom: clamp(20px,2.5vw,32px);
+}
+.ucx-interiors .tm-row {
+  display: flex; gap: 16px; width: max-content;
+  animation: tmScrollLeft 36s linear infinite;
+}
+.ucx-interiors .tm-row--reverse { animation-name: tmScrollRight; animation-duration: 42s; }
+.ucx-interiors .tm-marquee:hover .tm-row { animation-play-state: paused; }
+
+.ucx-interiors .tm-card {
+  flex: none; width: min(360px, 82vw);
+  border: 1px solid var(--line); border-radius: 16px;
+  padding: 22px 24px;
+  background: #FFFFFF;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.ucx-interiors .tm-quote { font-size: 14px; line-height: 1.65; color: var(--bg); }
+.ucx-interiors .tm-person { display: flex; align-items: center; gap: 12px; }
+.ucx-interiors .tm-avatar {
+  flex: none; width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; font-size: 13px;
+  background: var(--accent); color: var(--bg-deep);
+}
+.ucx-interiors .tm-meta { display: flex; flex-direction: column; min-width: 0; }
+.ucx-interiors .tm-name { font-size: 13.5px; font-weight: 700; color: var(--bg); }
+.ucx-interiors .tm-role { font-size: 11.5px; color: var(--accent-ink); }
+.ucx-interiors .tm-location { font-size: 11px; color: var(--ink-muted); }
+
+.ucx-interiors .tm-edge {
+  position: absolute; top: 0; bottom: 0; z-index: 1; width: clamp(40px,8vw,140px);
+  pointer-events: none;
+}
+.ucx-interiors .tm-edge--left { left: 0; background: linear-gradient(90deg, #fff, transparent); }
+.ucx-interiors .tm-edge--right { right: 0; background: linear-gradient(-90deg, #fff, transparent); }
+
+@keyframes tmScrollLeft {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes tmScrollRight {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ucx-interiors .tm-row { animation: none; }
 }
 
 /* ---- material swatch border-beam: a comet travels the swatch edge on a
@@ -457,24 +517,6 @@
 @media (prefers-reduced-motion: reduce) {
   .ucx-interiors .mat-beam { animation: none; --mat-beam-angle: 40deg; }
 }
-
-/* ---- client quote ---- */
-.ucx-interiors .quote-block {
-  max-width: 680px; margin: clamp(64px,8vw,100px) auto 0;
-  text-align: center;
-  display: flex; flex-direction: column; align-items: center; gap: 18px;
-}
-.ucx-interiors .quote-mark { width: 30px; height: 30px; color: var(--accent-ink); opacity: .5; }
-.ucx-interiors .quote-text {
-  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
-  font-size: clamp(18px,2.3vw,26px); line-height: 1.4; letter-spacing: -.005em; color: var(--bg);
-}
-.ucx-interiors .quote-meta { display: flex; flex-direction: column; gap: 4px; }
-.ucx-interiors .quote-name {
-  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
-  font-size: 13px; color: var(--accent-ink); text-transform: uppercase; letter-spacing: .04em;
-}
-.ucx-interiors .quote-role { font-size: 12px; color: var(--ink-muted); }
 
 /* ---- closing: sage panel with copy + dark glass form card ---- */
 .ucx-interiors .closing-final {
@@ -595,7 +637,7 @@
   .ucx-interiors .closing-final { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
-  .ucx-interiors .wrapper { padding: 60px 20px 70px; }
+  .ucx-interiors .wrapper { padding: 18px 20px 70px; }
   .ucx-interiors .svc-tile { height: 320px; }
   .ucx-interiors .categories { grid-template-columns: repeat(2, 1fr); }
   .ucx-interiors .materials { grid-template-columns: repeat(2, 1fr); }

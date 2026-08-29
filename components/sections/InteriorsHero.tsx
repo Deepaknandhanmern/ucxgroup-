@@ -1,11 +1,14 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const HERO_VIDEOS = ["/brand/interiors/hero-1.mp4", "/brand/interiors/hero-2.mp4", "/brand/interiors/hero-3.mp4", "/brand/interiors/hero-4.mp4"];
 
 export default function InteriorsHero() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
+  const [clip, setClip] = useState(0);
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -82,15 +85,15 @@ export default function InteriorsHero() {
 
         <div className="ih-media" ref={mediaRef} aria-hidden="true">
           <video
+            key={clip}
             className="ih-media-video"
+            src={HERO_VIDEOS[clip]}
             autoPlay
             muted
-            loop
             playsInline
-            poster="/brand/interiors/hero.png"
-          >
-            <source src="/brand/interiors/hero-expand.mp4" type="video/mp4" />
-          </video>
+            poster={clip === 0 ? "/brand/interiors/hero.png" : undefined}
+            onEnded={() => setClip((c) => (c + 1) % HERO_VIDEOS.length)}
+          />
           <div className="ih-media-veil"></div>
         </div>
 
