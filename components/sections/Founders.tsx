@@ -120,7 +120,6 @@ export default function Founders() {
           src="/brand/founders/promo-banner.webp"
           alt="UCX — Connect. Coordinate. Deliver. Integrated BIM, digital delivery, design and project capability."
           href="/contact"
-          ctaLabel="Start a Collaboration"
           fullWidth
         />
       </div>
