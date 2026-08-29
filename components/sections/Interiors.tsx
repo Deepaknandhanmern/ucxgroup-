@@ -390,7 +390,6 @@ export default function Interiors() {
             src="/brand/interiors/promo-banner.webp"
             alt="SpayceX — Design With Intention. Delivered With Precision. Luxury interiors shaped by thoughtful design, refined detailing and coordinated delivery."
             href="#closing"
-            ctaLabel="Start Your Project"
           />
         </div>
 

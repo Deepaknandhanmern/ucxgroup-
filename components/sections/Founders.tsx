@@ -121,6 +121,7 @@ export default function Founders() {
           alt="UCX — Connect. Coordinate. Deliver. Integrated BIM, digital delivery, design and project capability."
           href="/contact"
           ctaLabel="Start a Collaboration"
+          fullWidth
         />
       </div>
     </div>

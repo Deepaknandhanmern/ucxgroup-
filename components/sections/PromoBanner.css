@@ -1,17 +1,11 @@
-/* Designed promotional banner image, broken out to the full viewport width
-   regardless of the section's own max-width wrapper — a billboard, not a
-   contained card. The image carries its own branding/copy; the CTA in the
-   corner is a real button so it's an actual clickable affordance, not just
-   baked into the artwork. */
+/* Designed promotional banner image, sized to slot into a section rather
+   than fill the viewport. The image carries its own branding/copy, so this
+   is just a rounded, clipped frame with a hover lift. */
 .ucx-promo-banner {
   display: block;
   position: relative;
-  left: 50%;
-  right: 50%;
-  width: 100vw;
-  margin-left: -50vw;
-  margin-right: -50vw;
   aspect-ratio: 3 / 1;
+  border-radius: 20px;
   overflow: hidden;
   isolation: isolate;
   transition: transform .3s ease, box-shadow .3s ease;
@@ -32,6 +26,19 @@
   object-fit: cover;
 }
 
+/* ---- full-width variant: breaks out to the viewport edge regardless of
+   the section's own max-width wrapper, with a real CTA button pinned to
+   the bottom-right corner over the artwork. Opt-in via the `fullWidth`
+   prop — most placements stay contained. ---- */
+.ucx-promo-banner--full {
+  left: 50%;
+  right: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  border-radius: 0;
+}
+
 .ucx-promo-banner-cta {
   position: absolute;
   right: clamp(16px, 3vw, 40px);
@@ -50,5 +57,7 @@
 .ucx-promo-banner:hover .ucx-promo-banner-cta svg { transform: translateX(3px); }
 
 @media (max-width: 640px) {
+  .ucx-promo-banner { border-radius: 16px; }
+  .ucx-promo-banner--full { border-radius: 0; }
   .ucx-promo-banner-cta { padding: 11px 18px 11px 20px; right: 14px; bottom: 14px; }
 }
