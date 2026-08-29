@@ -12,7 +12,7 @@ const SERVICES = [
     n: "01",
     name: "Architecture & Planning",
     statement: "From Concept to Coordinated Design",
-    deliverables: ["Concept development", "Space planning", "Architectural design", "Design development", "Planning support", "Design documentation"],
+    deliverables: ["Concept development", "Space planning", "Architectural & facade design", "Design development & detailing", "Refurbishment & adaptive reuse", "Planning & design documentation"],
     img: "/brand/interiors/svc-architecture-planning-a.webp",
   },
   {
@@ -20,7 +20,7 @@ const SERVICES = [
     n: "02",
     name: "Interior Solutions",
     statement: "Interior Design With Delivery in Mind",
-    deliverables: ["Workplace interiors", "Commercial interiors", "Residential interiors", "Hospitality & retail", "Space planning", "Interior detailing"],
+    deliverables: ["Workplace & commercial interiors", "Residential & hospitality interiors", "Retail interiors", "Space planning & interior detailing", "Renovation & refurbishment", "Turnkey interior solutions"],
     img: "/brand/interiors/svc-interior-solutions-a.webp",
   },
   {
