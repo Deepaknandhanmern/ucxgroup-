@@ -1,11 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { CAT_LABELS, type Project } from "@/lib/projects";
+import { useEffect, useState } from "react";
+import CardThumb from "@/components/ui/CardThumb";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
-
-const MAX_VISIBLE = 7;
-const HALF = 3;
 
 interface FanSlot {
   rot: number;
@@ -25,6 +22,8 @@ const FAN_SLOTS: FanSlot[] = [
   { rot: 21, scale: 0.72, x: 19, y: 4.6, z: 1 },
 ];
 
+const IMAGES = Array.from({ length: 7 }, (_, i) => `/brand/experience/${i + 1}.webp`);
+
 function spreadForWidth(w: number) {
   if (w < 480) return 0.42;
   if (w < 640) return 0.62;
@@ -33,45 +32,10 @@ function spreadForWidth(w: number) {
   return 1;
 }
 
-function slotsForCount(count: number): FanSlot[] {
-  if (count >= MAX_VISIBLE) return FAN_SLOTS;
-  const center = (count - 1) / 2;
-  return Array.from({ length: count }, (_, i) => {
-    const dist = center ? (i - center) / center : 0;
-    const abs = Math.abs(dist);
-    return { rot: dist * 21, scale: 1 - 0.28 * abs * abs, x: dist * 19, y: abs * abs * 4.6, z: 10 - Math.round(abs * 9) };
-  });
-}
-
-function ProjectImage({ src, alt, discipline }: { src: string; alt: string; discipline: string }) {
-  const [ok, setOk] = useState(true);
-  if (!ok) {
-    return (
-      <div className="arc-fallback">
-        <span>{discipline}</span>
-      </div>
-    );
-  }
-  return <img src={src} alt={alt} className="arc-img" loading="lazy" onError={() => setOk(false)} draggable={false} />;
-}
-
 export default function GalleryArc() {
   const glowRef = useCursorGlow<HTMLDivElement>();
-  // Fetched client-side (rather than passed as a server prop) so the
-  // homepage itself can stay statically generated instead of becoming
-  // force-dynamic just for this one decorative section.
-  const [featured, setFeatured] = useState<Project[]>([]);
-  const total = featured.length;
-  const needsPagination = total > MAX_VISIBLE;
-  const [center, setCenter] = useState(0);
   const [hovered, setHovered] = useState<number | null>(null);
   const [spread, setSpread] = useState(1);
-
-  useEffect(() => {
-    fetch("/api/projects")
-      .then((r) => r.json())
-      .then((data: { projects: Project[] }) => setFeatured(data.projects.slice(0, 8)));
-  }, []);
 
   useEffect(() => {
     function onResize() {
@@ -81,30 +45,6 @@ export default function GalleryArc() {
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
   }, []);
-
-  const slots = slotsForCount(needsPagination ? MAX_VISIBLE : total);
-  const centerSlot = (slots.length - 1) / 2;
-
-  const slotFor = useCallback(
-    (index: number) => {
-      if (!needsPagination) return index;
-      const rel = ((index - center) % total + total) % total;
-      const offset = rel > total / 2 ? rel - total : rel;
-      if (Math.abs(offset) > HALF) return null;
-      return offset + HALF;
-    },
-    [center, total, needsPagination]
-  );
-
-  function cycle(dir: 1 | -1) {
-    setCenter((c) => ((c + dir) % total + total) % total);
-    setHovered(null);
-  }
-
-  function goTo(i: number) {
-    setCenter(i);
-    setHovered(null);
-  }
 
   return (
     <div className="ucx-gallery-arc" ref={glowRef}>
@@ -119,99 +59,49 @@ export default function GalleryArc() {
 
       <div className="fan-stage">
         <div className="fan-track" onMouseLeave={() => setHovered(null)}>
-          {featured.map((p, i) => {
-            const slot = slotFor(i);
-            let style: React.CSSProperties;
+          {IMAGES.map((src, i) => {
+            const base = FAN_SLOTS[i];
+            const isHovered = hovered === i;
+            let x = base.x * spread;
+            let y = base.y;
+            let rot = base.rot;
+            let scale = base.scale;
+            const z = isHovered ? 20 : base.z;
 
-            if (slot !== null) {
-              const base = slots[slot];
-              const isHovered = hovered === i;
-              let x = base.x * spread;
-              let y = base.y;
-              let rot = base.rot;
-              let scale = base.scale;
-              const z = isHovered ? 20 : base.z;
-
-              if (hovered !== null && hovered !== i) {
-                const hoveredSlot = slotFor(hovered);
-                if (hoveredSlot !== null) {
-                  const dist = Math.abs(slot - hoveredSlot);
-                  const normalized = centerSlot ? (slot - centerSlot) / centerSlot : 0;
-                  const push = 5 * (1 - Math.abs(normalized)) * (1 + 0.2 * Math.max(0, 3 - dist)) * spread;
-                  if (slot < hoveredSlot) {
-                    x -= push;
-                    rot -= 3 / (dist + 1);
-                  } else {
-                    x += push;
-                    rot += 3 / (dist + 1);
-                  }
-                }
-              } else if (isHovered) {
-                y -= 2.2;
-                scale *= 1.08;
+            if (hovered !== null && hovered !== i) {
+              const dist = Math.abs(i - hovered);
+              const normalized = (i - 3) / 3;
+              const push = 5 * (1 - Math.abs(normalized)) * (1 + 0.2 * Math.max(0, 3 - dist)) * spread;
+              if (i < hovered) {
+                x -= push;
+                rot -= 3 / (dist + 1);
+              } else {
+                x += push;
+                rot += 3 / (dist + 1);
               }
-
-              style = {
-                transform: `translate(-50%, 0) translate(${x}rem, ${y}rem) rotate(${rot}deg) scale(${scale})`,
-                zIndex: z,
-                opacity: 1,
-              };
-            } else {
-              style = {
-                transform: "translate(-50%, 0) scale(.4)",
-                opacity: 0,
-                zIndex: 0,
-                pointerEvents: "none",
-              };
+            } else if (isHovered) {
+              y -= 2.2;
+              scale *= 1.08;
             }
 
+            const style: React.CSSProperties = {
+              transform: `translate(-50%, 0) translate(${x}rem, ${y}rem) rotate(${rot}deg) scale(${scale})`,
+              zIndex: z,
+            };
+
             return (
-              <a
-                key={p.slug}
-                href={`/projects/${p.slug}`}
-                className={`fan-card${hovered === i ? " is-hover" : ""}`}
+              <div
+                key={src}
+                className={`fan-card${isHovered ? " is-hover" : ""}`}
                 style={style}
-                onMouseEnter={() => slot !== null && setHovered(i)}
-                onFocus={() => slot !== null && setHovered(i)}
+                onMouseEnter={() => setHovered(i)}
               >
-                <ProjectImage src={p.image} alt={p.title} discipline={p.discipline} />
-                <div className="fan-caption">
-                  <span className="fan-sector">
-                    {CAT_LABELS[p.cat]} &middot; {p.location}
-                  </span>
-                  <h3>{p.title}</h3>
-                </div>
-              </a>
+                <CardThumb src={src} alt="" />
+              </div>
             );
           })}
         </div>
       </div>
-
-      {needsPagination && (
-        <div className="arc-controls">
-          <button type="button" className="arc-arrow" aria-label="Previous project" onClick={() => cycle(-1)}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M15 6l-6 6 6 6" />
-            </svg>
-          </button>
-          <div className="arc-dots">
-            {featured.map((p, i) => (
-              <button
-                type="button"
-                key={p.slug}
-                className={i === center ? "is-active" : ""}
-                aria-label={`Show ${p.title}`}
-                onClick={() => goTo(i)}
-              />
-            ))}
-          </div>
-          <button type="button" className="arc-arrow" aria-label="Next project" onClick={() => cycle(1)}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 6l6 6-6 6" />
-            </svg>
-          </button>
-        </div>
-      )}
 
       <div className="arc-ctas">
         <a className="arc-cta-primary" href="/projects">
