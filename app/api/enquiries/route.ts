@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createEnquiry } from "@/lib/enquiries-db";
 import { notifyNewEnquiry } from "@/lib/mail";
+import { addSubscriber } from "@/lib/subscribers-db";
 
 export async function POST(req: Request) {
   const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
@@ -25,6 +26,13 @@ export async function POST(req: Request) {
   // Fire-and-forget — a slow or failing mail server should never delay or
   // break the enquiry response the visitor is waiting on.
   void notifyNewEnquiry(enquiry);
+
+  // Newsletter signups also join the persistent subscriber list, notified
+  // by email whenever a post is published — separate from this per-enquiry
+  // admin notification above.
+  if (enquiry.source === "newsletter-signup" && enquiry.email) {
+    addSubscriber(enquiry.email);
+  }
 
   return NextResponse.json({ ok: true });
 }

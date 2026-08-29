@@ -1,8 +1,10 @@
 import "server-only";
 import nodemailer from "nodemailer";
 import type { EnquiryInput } from "@/lib/enquiries-db";
+import { listActiveSubscribers } from "@/lib/subscribers-db";
 
 const NOTIFY_TO = "collaborate@ucx-group.com";
+const SITE_URL = "https://ucx-group.com";
 
 const SOURCE_LABELS: Record<string, string> = {
   contact: "Contact Form",
@@ -58,4 +60,29 @@ export async function notifyNewEnquiry(enquiry: EnquiryInput): Promise<void> {
   } catch (err) {
     console.error("Failed to send enquiry notification email:", err);
   }
+}
+
+// Fire-and-forget, same as above: a broken mail server should never block
+// the publish action itself. Sent individually (not one email BCC'd to
+// everyone) so each subscriber gets their own working unsubscribe link.
+export async function notifySubscribersOfNewPost(post: { title: string; slug: string; excerpt: string }): Promise<void> {
+  const t = getTransporter();
+  if (!t) return;
+
+  const subscribers = listActiveSubscribers();
+  if (subscribers.length === 0) return;
+
+  const postUrl = `${SITE_URL}/insights/${post.slug}`;
+
+  await Promise.allSettled(
+    subscribers.map((sub) => {
+      const unsubscribeUrl = `${SITE_URL}/unsubscribe?token=${sub.token}`;
+      return t.sendMail({
+        from: process.env.SMTP_USER,
+        to: sub.email,
+        subject: `New from UCX Group: ${post.title}`,
+        text: `${post.title}\n\n${post.excerpt}\n\nRead it here: ${postUrl}\n\n---\nYou're receiving this because you subscribed to UCX Group insights.\nUnsubscribe: ${unsubscribeUrl}`,
+      });
+    })
+  );
 }

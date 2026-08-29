@@ -1,5 +1,6 @@
 import "server-only";
 import db from "@/lib/db";
+import { notifySubscribersOfNewPost } from "@/lib/mail";
 
 export type PostStatus = "draft" | "published" | "scheduled";
 
@@ -46,9 +47,18 @@ export interface BlogPostInput {
 // visit to a post-reading page rather than on a timer.
 function promoteScheduledPosts(): void {
   const now = new Date().toISOString();
+  const justPublished = db
+    .prepare("SELECT * FROM blog_posts WHERE status = 'scheduled' AND publish_at IS NOT NULL AND publish_at <= ?")
+    .all(now) as BlogPostRow[];
+  if (justPublished.length === 0) return;
+
   db.prepare(
     "UPDATE blog_posts SET status = 'published', updated_at = ? WHERE status = 'scheduled' AND publish_at IS NOT NULL AND publish_at <= ?"
   ).run(now, now);
+
+  for (const post of justPublished) {
+    void notifySubscribersOfNewPost(post);
+  }
 }
 
 function slugify(title: string): string {

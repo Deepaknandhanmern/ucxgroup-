@@ -72,6 +72,7 @@ import "@/components/sections/InsightArticle.css";
 import "@/components/sections/Maintenance.css";
 import "@/components/sections/NotFoundContent.css";
 import "@/components/sections/LegalPage.css";
+import "@/components/sections/Unsubscribe.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BackToTop from "@/components/layout/BackToTop";

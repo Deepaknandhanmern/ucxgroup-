@@ -8,6 +8,7 @@ import {
   type BlogPostInput,
   type PostStatus,
 } from "@/lib/blog-posts-db";
+import { notifySubscribersOfNewPost } from "@/lib/mail";
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -49,6 +50,12 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     publishAt: status === "scheduled" ? body.publishAt ?? null : null,
   });
 
+  // Only notify on the transition into "published" — not on every
+  // subsequent edit of a post that's already live.
+  if (post && existing.status !== "published" && post.status === "published") {
+    void notifySubscribersOfNewPost(post);
+  }
+
   return NextResponse.json({ post });
 }
 
@@ -57,7 +64,8 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const postId = Number(id);
-  if (!getPostById(postId)) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  const existing = getPostById(postId);
+  if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   const body = (await req.json().catch(() => ({}))) as { status?: PostStatus };
   if (body.status !== "draft" && body.status !== "published") {
@@ -65,6 +73,11 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   }
 
   updatePostStatus(postId, body.status);
+
+  if (existing.status !== "published" && body.status === "published") {
+    void notifySubscribersOfNewPost(existing);
+  }
+
   return NextResponse.json({ ok: true });
 }
 

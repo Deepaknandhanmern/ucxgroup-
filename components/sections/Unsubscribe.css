@@ -1,0 +1,42 @@
+.ucx-unsubscribe {
+  --bg: #00352D;
+  --bg-deep: #00211B;
+  --accent: #91F2B5;
+  --accent-dim: rgba(145,242,181,0.55);
+  --cream: #F3F1E6;
+  --ease: cubic-bezier(.16,.84,.36,1);
+
+  min-height: 60vh;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--bg) !important;
+  color: var(--accent);
+  font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
+  text-align: center;
+}
+
+.ucx-unsubscribe .wrapper {
+  max-width: 480px; margin: 0 auto;
+  padding: clamp(80px,12vw,120px) 24px;
+}
+
+.ucx-unsubscribe h1 {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  text-transform: uppercase; line-height: 1.1; letter-spacing: -.01em;
+  font-size: clamp(26px,4vw,38px); color: var(--cream); margin-bottom: 16px;
+}
+.ucx-unsubscribe p {
+  font-size: 15px; line-height: 1.7; color: var(--accent-dim);
+  margin: 0 auto 30px;
+}
+
+.ucx-unsubscribe .home-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--bg-deep); background: var(--accent);
+  padding: 15px 28px; border-radius: 999px; border: 1px solid var(--accent);
+  transition: background .3s var(--ease), color .3s var(--ease), transform .3s var(--ease);
+}
+.ucx-unsubscribe .home-cta svg { width: 14px; height: 14px; transition: transform .3s var(--ease); }
+.ucx-unsubscribe .home-cta:hover { background: transparent; color: var(--accent); transform: translateY(-2px); }
+.ucx-unsubscribe .home-cta:hover svg { transform: translateX(3px); }

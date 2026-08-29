@@ -142,6 +142,20 @@ function runMigrations(conn: DatabaseSync) {
       salt TEXT NOT NULL,
       updated_at TEXT NOT NULL
     );
+
+    -- Newsletter subscribers, notified by email whenever a post is
+    -- published. Kept separate from the generic "enquiries" table (which
+    -- still logs a newsletter-signup enquiry for the dashboard notification
+    -- email) since this is a distinct, growing list with its own lifecycle
+    -- (active/unsubscribed) rather than a one-off lead.
+    CREATE TABLE IF NOT EXISTS subscribers (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      email TEXT UNIQUE NOT NULL,
+      token TEXT UNIQUE NOT NULL,
+      active INTEGER NOT NULL DEFAULT 1,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
   `);
 
   // Existing databases created before these columns existed won't get them

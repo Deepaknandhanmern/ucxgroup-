@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { listPosts, createPost, makeUniqueSlug, type BlogPostInput } from "@/lib/blog-posts-db";
+import { notifySubscribersOfNewPost } from "@/lib/mail";
 
 export async function GET() {
   return NextResponse.json({ posts: listPosts() });
@@ -30,6 +31,10 @@ export async function POST(req: Request) {
     status,
     publishAt: status === "scheduled" ? body.publishAt ?? null : null,
   });
+
+  if (post.status === "published") {
+    void notifySubscribersOfNewPost(post);
+  }
 
   return NextResponse.json({ post }, { status: 201 });
 }
