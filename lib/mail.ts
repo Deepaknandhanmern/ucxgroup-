@@ -1,7 +1,7 @@
 import "server-only";
 import nodemailer from "nodemailer";
 import type { EnquiryInput } from "@/lib/enquiries-db";
-import { listActiveSubscribers } from "@/lib/subscribers-db";
+import { listActiveSubscribers, type Subscriber } from "@/lib/subscribers-db";
 
 const NOTIFY_TO = "collaborate@ucx-group.com";
 const SITE_URL = "https://ucx-group.com";
@@ -59,6 +59,27 @@ export async function notifyNewEnquiry(enquiry: EnquiryInput): Promise<void> {
     });
   } catch (err) {
     console.error("Failed to send enquiry notification email:", err);
+  }
+}
+
+// Sent right after a successful signup, so the subscriber has immediate
+// proof it worked (and a way to undo it) instead of hearing nothing until
+// the next post ships.
+export async function notifySubscriptionConfirmed(sub: Subscriber): Promise<void> {
+  const t = getTransporter();
+  if (!t) return;
+
+  const unsubscribeUrl = `${SITE_URL}/unsubscribe?token=${sub.token}`;
+
+  try {
+    await t.sendMail({
+      from: process.env.SMTP_USER,
+      to: sub.email,
+      subject: "You're subscribed to UCX Group insights",
+      text: `Thanks for subscribing — you'll get an email whenever we publish something new.\n\n---\nDidn't sign up for this? Unsubscribe: ${unsubscribeUrl}`,
+    });
+  } catch (err) {
+    console.error("Failed to send subscription confirmation email:", err);
   }
 }
 

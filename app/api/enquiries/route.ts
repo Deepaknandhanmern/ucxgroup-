@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createEnquiry } from "@/lib/enquiries-db";
-import { notifyNewEnquiry } from "@/lib/mail";
+import { notifyNewEnquiry, notifySubscriptionConfirmed } from "@/lib/mail";
 import { addSubscriber } from "@/lib/subscribers-db";
 
 export async function POST(req: Request) {
@@ -29,9 +29,13 @@ export async function POST(req: Request) {
 
   // Newsletter signups also join the persistent subscriber list, notified
   // by email whenever a post is published — separate from this per-enquiry
-  // admin notification above.
+  // admin notification above. They also get an immediate confirmation
+  // email of their own (skipped on a duplicate signup that's already active).
   if (enquiry.source === "newsletter-signup" && enquiry.email) {
-    addSubscriber(enquiry.email);
+    const result = addSubscriber(enquiry.email);
+    if (result?.shouldConfirm) {
+      void notifySubscriptionConfirmed(result.subscriber);
+    }
   }
 
   return NextResponse.json({ ok: true });
