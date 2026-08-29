@@ -107,10 +107,9 @@ export default function Founders() {
         </div>
 
         <PromoBanner
-          eyebrow="UCX Group"
-          headline="Building what comes next, together."
-          ctaLabel="Start a Conversation"
-          ctaHref="/contact"
+          src="/brand/founders/promo-banner.webp"
+          alt="UCX — Connect. Coordinate. Deliver. Integrated BIM, digital delivery, design and project capability."
+          href="/contact"
         />
 
         <div className="team-cta-row">
