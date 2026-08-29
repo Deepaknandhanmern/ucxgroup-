@@ -117,11 +117,11 @@ const STATS = [
 const FAQS = [
   {
     q: "What capabilities does UCX offer?",
-    a: "Four connected core capabilities — BIM & Digital Delivery, Design & Interiors, Project & Construction Support, and Asset & Digital Information — plus Specialist Solutions and Training & Workshop programs.",
+    a: "UCX offers four connected core capabilities — BIM & Digital Delivery, Design & Interiors, Project & Construction Support, and Asset & Digital Information — supported by Specialist Solutions and Training & Workshop programs.",
   },
   {
-    q: "Does UCX work on one capability at a time, or across all of them?",
-    a: "UCX connects design, digital engineering, delivery and asset information through one coordinated framework, helping project teams move from intent to information, and from information to execution — rather than treating each capability as a separate vendor relationship.",
+    q: "Does UCX work on one capability at a time, or across multiple capabilities?",
+    a: "Both. UCX can deliver individual capabilities or connect design, digital engineering, delivery and asset information through one coordinated framework — from project intent to execution.",
   },
   {
     q: "What delivery models does UCX offer?",
