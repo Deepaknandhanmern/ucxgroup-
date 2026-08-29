@@ -150,7 +150,7 @@
 /* ---- interactive collaboration network ---- */
 .ucx-labhero .network-wrap {
   position: relative; z-index: 1;
-  width: clamp(240px,28vw,400px);
+  width: clamp(300px,36vw,520px);
   aspect-ratio: 1;
   justify-self: center;
 }
@@ -307,7 +307,7 @@
   .ucx-labhero .hero-copy { max-width: none; text-align: center; margin: 0 auto; }
   .ucx-labhero .hero-band .heading { justify-content: center; }
   .ucx-labhero .hero-band .tags, .ucx-labhero .hero-band .hero-actions { justify-content: center; }
-  .ucx-labhero .network-wrap { order: -1; margin: 0 auto clamp(24px,5vw,40px); width: clamp(160px,44vw,240px); }
+  .ucx-labhero .network-wrap { order: -1; margin: 0 auto clamp(24px,5vw,40px); width: clamp(200px,52vw,300px); }
   .ucx-labhero .lab-body .grid-glow, .ucx-labhero .lab-body .cursor-haze { display: none; }
 }
 

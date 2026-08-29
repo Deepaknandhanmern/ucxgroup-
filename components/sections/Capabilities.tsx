@@ -5,6 +5,7 @@ import { useCursorGlow } from "@/components/ui/useCursorGlow";
 import SectionRail from "@/components/ui/SectionRail";
 import CardThumb from "@/components/ui/CardThumb";
 import FAQ from "@/components/sections/FAQ";
+import { IconParametric } from "@/components/sections/capabilityIcons";
 
 const RAIL_SECTIONS = [
   { id: "overview", label: "Overview" },
@@ -204,6 +205,10 @@ export default function Capabilities() {
                 </svg>
               </a>
             </div>
+          </div>
+
+          <div className="hero-motif" data-reveal aria-hidden="true">
+            {IconParametric}
           </div>
         </div>
       </div>

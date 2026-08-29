@@ -75,14 +75,33 @@
   max-width: 1100px; margin: 0 auto;
   padding: calc(var(--ucx-section-gap) / 2) clamp(20px,6vw,80px);
 }
-/* ---- hero: split copy + framework motif ---- */
+/* ---- hero: split copy + framework motif, matching the capability pages' hero pattern ---- */
 .ucx-caphub .hero {
   position: relative; z-index: 1;
-  max-width: 1100px; margin: 0 auto;
+  max-width: 1200px; margin: 0 auto;
   padding: 0 clamp(20px,6vw,80px);
+  display: grid; grid-template-columns: 1.15fr .85fr;
+  gap: clamp(32px,5vw,64px); align-items: center;
   scroll-margin-top: 96px;
 }
 .ucx-caphub .hero-copy { max-width: 640px; }
+.ucx-caphub .hero-motif {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--line); border-radius: 24px;
+  background: rgba(145,242,181,.03);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.ucx-caphub .hero-motif svg {
+  width: 62%; height: 62%; fill: none; stroke: var(--accent);
+  stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round;
+  opacity: .9;
+}
+.ucx-caphub .hero-motif::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 40%, rgba(145,242,181,.16), transparent 70%);
+}
 .ucx-caphub .eyebrow {
   display: inline-flex; align-items: center; gap: 10px;
   font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
@@ -400,6 +419,8 @@
 
 @media (max-width: 900px) {
   .ucx-caphub .grid-glow, .ucx-caphub .cursor-haze { display: none; }
+  .ucx-caphub .hero { grid-template-columns: 1fr; }
+  .ucx-caphub .hero-motif { aspect-ratio: 16 / 9; order: -1; }
   .ucx-caphub .hero-copy { max-width: none; }
   .ucx-caphub .blocks { grid-template-columns: 1fr; }
   .ucx-caphub .blocks-extra { grid-template-columns: 1fr; }

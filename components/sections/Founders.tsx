@@ -106,12 +106,6 @@ export default function Founders() {
           ))}
         </div>
 
-        <PromoBanner
-          src="/brand/founders/promo-banner.webp"
-          alt="UCX — Connect. Coordinate. Deliver. Integrated BIM, digital delivery, design and project capability."
-          href="/contact"
-        />
-
         <div className="team-cta-row">
           <Link href="/team" className="team-cta">
             Meet the UCX Team
@@ -121,6 +115,13 @@ export default function Founders() {
             </svg>
           </Link>
         </div>
+
+        <PromoBanner
+          src="/brand/founders/promo-banner.webp"
+          alt="UCX — Connect. Coordinate. Deliver. Integrated BIM, digital delivery, design and project capability."
+          href="/contact"
+          ctaLabel="Start a Collaboration"
+        />
       </div>
     </div>
   );
