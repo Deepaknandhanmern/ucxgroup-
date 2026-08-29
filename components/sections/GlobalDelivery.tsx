@@ -6,9 +6,48 @@ import { WorldMap } from "@/components/ui/WorldMap";
 const TAGS = ["International Delivery", "Remote Collaboration", "Dedicated Teams", "Scalable Capacity"];
 
 const STEPS = [
-  { n: "01", label: "Connect", desc: "We align on scope, standards and the project team on both sides." },
-  { n: "02", label: "Coordinate", desc: "Shared models, structured communication and defined delivery cadence." },
-  { n: "03", label: "Deliver", desc: "Consistent, quality-controlled output handed off on schedule." },
+  { n: "01", label: "Connect", desc: "Align scope, standards, technology and responsibilities." },
+  { n: "02", label: "Coordinate", desc: "Work through shared models, structured communication and defined review cycles." },
+  { n: "03", label: "Deliver", desc: "Quality-controlled outputs delivered to agreed requirements and schedules." },
+];
+
+const PILLARS = [
+  {
+    label: "Standards",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" />
+        <path d="M9 12l2 2 4-4" />
+      </svg>
+    ),
+  },
+  {
+    label: "Integration",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 6H6a3 3 0 00-3 3v0a3 3 0 003 3h1" />
+        <path d="M15 18h3a3 3 0 003-3v0a3 3 0 00-3-3h-1" />
+        <path d="M8 12h8" />
+      </svg>
+    ),
+  },
+  {
+    label: "Scale",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5" />
+      </svg>
+    ),
+  },
+  {
+    label: "Control",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="8" />
+        <circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
 ];
 
 // Coimbatore, Tamil Nadu — every delivery connection on the map originates here.
@@ -98,8 +137,8 @@ export default function GlobalDelivery() {
             Globally Connected.
           </h1>
           <p className="intro">
-            UCX supports international architects, engineers, contractors, developers and project teams through
-            structured digital collaboration and scalable delivery models.
+            UCX supports architects, engineers, contractors, developers and project teams worldwide through
+            structured digital delivery, remote collaboration and scalable teams.
           </p>
           <div className="tags">
             {TAGS.map((t) => (
@@ -125,8 +164,8 @@ export default function GlobalDelivery() {
             <div className="legend-item legend-hub">
               <span className="legend-dot"></span>
               <div>
-                <strong>Tamil Nadu, India</strong>
-                <em>Delivery Origin &middot; Coimbatore</em>
+                <strong>India</strong>
+                <em>Delivery Origin &middot; Coimbatore, Tamil Nadu</em>
               </div>
             </div>
             <div className="legend-group">
@@ -149,9 +188,19 @@ export default function GlobalDelivery() {
         {/* ---------- quality & standards ---------- */}
         <div className="quality" id="quality">
           <span className="sub-eyebrow">Built for International Delivery</span>
-          <p className="quality-body">
-            Aligned to your standards. Integrated with your team. Scaled to your needs. Delivered with control.
-          </p>
+          <div>
+            <p className="quality-body">
+              Aligned to your standards. Integrated with your team. Scaled to your needs. Delivered with control.
+            </p>
+            <div className="pillars">
+              {PILLARS.map((p) => (
+                <div className="pillar" key={p.label}>
+                  <span className="pillar-icon" aria-hidden="true">{p.icon}</span>
+                  <span className="pillar-label">{p.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* ---------- approach ---------- */}
@@ -177,8 +226,16 @@ export default function GlobalDelivery() {
           </div>
         </div>
 
+        <div className="capability">
+          <h2 className="capability-title">Your Team. Our Capability.</h2>
+          <p className="capability-body">
+            Whether you need project support, additional capacity, a dedicated team or a long-term delivery partner,
+            UCX adapts to the way you work.
+          </p>
+        </div>
+
         <div className="closing">
-          <p>Ready to work with a connected delivery team, wherever your project is based?</p>
+          <p>Ready to work with a connected delivery team?</p>
           <a href="/contact">Start a Collaboration &rarr;</a>
         </div>
       </div>

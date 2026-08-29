@@ -173,7 +173,25 @@
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent);
 }
-.ucx-global .quality-body { font-size: 16px; line-height: 1.75; color: var(--accent-dim); max-width: 64ch; }
+.ucx-global .quality-body { font-size: 16px; line-height: 1.75; color: var(--accent-dim); max-width: 64ch; margin-bottom: clamp(20px,2.6vw,28px); }
+
+.ucx-global .pillars { display: flex; flex-wrap: wrap; gap: clamp(10px,1.6vw,16px); }
+.ucx-global .pillar {
+  display: flex; align-items: center; gap: 10px;
+  border: 1px solid var(--line); border-radius: 12px;
+  padding: 10px 16px;
+  transition: border-color .3s var(--ease), background .3s var(--ease);
+}
+.ucx-global .pillar:hover { border-color: var(--accent-dim); background: rgba(145,242,181,.04); }
+.ucx-global .pillar-icon {
+  display: grid; place-items: center;
+  width: 22px; height: 22px; flex: none; color: var(--accent);
+}
+.ucx-global .pillar-icon svg { width: 100%; height: 100%; }
+.ucx-global .pillar-label {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent);
+}
 
 /* ---- approach ---- */
 .ucx-global .approach {
@@ -207,6 +225,19 @@
   font-size: 19px; color: var(--cream); text-transform: uppercase; margin-bottom: 10px;
 }
 .ucx-global .step p { font-size: 14px; line-height: 1.65; color: var(--accent-dim); }
+
+/* ---- your team, our capability ---- */
+.ucx-global .capability {
+  max-width: 640px; margin-bottom: clamp(32px,4vw,44px);
+  opacity: 0; animation: gdFadeUp .9s var(--ease) forwards; animation-delay: .25s;
+}
+.ucx-global .capability-title {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(22px,3vw,32px); line-height: 1.15; color: var(--accent);
+  margin-bottom: 14px;
+}
+.ucx-global .capability-body { font-size: 15.5px; line-height: 1.7; color: var(--accent-dim); max-width: 58ch; }
 
 /* ---- closing ---- */
 .ucx-global .closing {
