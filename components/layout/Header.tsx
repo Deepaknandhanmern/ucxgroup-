@@ -386,6 +386,7 @@ const MOBILE_ITEMS: MobileItem[] = [
     key: "experience",
     label: "Experience",
     links: [
+      { href: "/experience", label: "All Experience" },
       { href: "/projects", label: "Built Environment" },
       { href: "/projects?filter=interiors", label: "Interiors" },
       { href: "/digital-project-experience", label: "Digital Project Experience" },
@@ -396,7 +397,7 @@ const MOBILE_ITEMS: MobileItem[] = [
     label: "Collaboration Lab",
     icon: true,
     links: [
-      { href: "/collaboration-lab", label: "About the Lab" },
+      { href: "/collaboration-lab", label: "Collaboration Lab" },
       { href: "/collaboration-lab#domains", label: "Collaboration Domains" },
       { href: "/collaboration-lab#ways-to-collaborate", label: "How We Collaborate" },
     ],
