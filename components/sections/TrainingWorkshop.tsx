@@ -15,70 +15,92 @@ import {
   IconShieldCheck,
 } from "@/components/sections/capabilityIcons";
 
-type Category = "foundational" | "advanced" | "corporate";
-
 interface Program {
   id: string;
-  category: Category;
+  n: string;
   format: string;
   title: string;
   statement: string;
   desc: string;
   outcomes: string[];
+  idealFor: string;
+  ctaLabel: string;
   icon: React.ReactNode;
 }
 
 const PROGRAMS: Program[] = [
   {
     id: "bim-fundamentals",
-    category: "foundational",
-    format: "2 Weeks · Instructor-Led",
-    title: "BIM Fundamentals Training",
-    statement: "Building the Foundation for Digital Delivery",
-    desc: "Structured training in core BIM software, standards and workflows for professionals starting their digital delivery journey.",
-    outcomes: ["BIM software training", "Modelling fundamentals", "Standards & workflows", "Hands-on exercises"],
+    n: "01",
+    format: "5 Weeks · Online / Hybrid",
+    title: "BIM Fundamentals",
+    statement: "Build a Strong BIM Foundation",
+    desc: "A structured introduction to BIM, modelling principles and essential workflows for students and professionals beginning their digital delivery journey.",
+    outcomes: [
+      "BIM fundamentals & principles",
+      "Revit modelling essentials",
+      "Project setup & standards",
+      "Views, sheets & documentation",
+      "Basic project workflows",
+      "Practical modelling exercises",
+    ],
+    idealFor: "Students, freshers, architects and professionals starting their BIM journey.",
+    ctaLabel: "Explore BIM Fundamentals",
     icon: IconGraduate,
   },
   {
-    id: "advanced-vdc",
-    category: "advanced",
-    format: "4 Weeks · Hands-On Workshop",
-    title: "Advanced BIM & VDC Workshops",
-    statement: "Deepening Technical Capability",
-    desc: "Hands-on workshops covering coordination, clash resolution and advanced modelling for teams ready to go beyond the basics.",
-    outcomes: ["Multidisciplinary coordination", "Clash detection practice", "Advanced modelling techniques", "Applied case studies"],
+    id: "bim-advanced",
+    n: "02",
+    format: "10 Weeks · Online / Hybrid",
+    title: "BIM Advanced",
+    statement: "Develop Technical & Coordination Skills",
+    desc: "Take your BIM skills beyond modelling with advanced workflows focused on project coordination, documentation and efficient digital delivery.",
+    outcomes: [
+      "Advanced Revit workflows",
+      "BIM coordination",
+      "Model management",
+      "Advanced documentation",
+      "Families & project standards",
+      "Clash detection & coordination",
+      "Real-world project exercises",
+    ],
+    idealFor: "BIM professionals and designers looking to strengthen their technical and project delivery capabilities.",
+    ctaLabel: "Explore BIM Advanced",
     icon: IconPresentation,
   },
   {
-    id: "corporate-training",
-    category: "corporate",
-    format: "Flexible · Custom Curriculum",
-    title: "Corporate Training Programs",
-    statement: "Tailored Training for Project Teams",
-    desc: "Customised in-house programs designed around a firm's tools, standards and project requirements.",
-    outcomes: ["Needs assessment", "Custom curriculum design", "Team-based training", "On-site & remote delivery"],
+    id: "bim-professional",
+    n: "03",
+    format: "15 Weeks · Online / Hybrid",
+    title: "BIM Professional",
+    statement: "Prepare for Real-World BIM Delivery",
+    desc: "An industry-focused program designed to develop professional BIM capability across modelling, coordination, documentation, standards and project workflows.",
+    outcomes: [
+      "Professional BIM workflows",
+      "Project standards & information management",
+      "Multidisciplinary coordination",
+      "BIM QA/QC",
+      "Advanced documentation",
+      "Project-based delivery",
+      "Industry best practices",
+    ],
+    idealFor: "Experienced professionals and BIM practitioners preparing for higher-level project responsibilities.",
+    ctaLabel: "Explore BIM Professional",
     icon: IconUsers,
   },
 ];
 
-const FILTERS: { cat: Category | "all"; label: string }[] = [
-  { cat: "all", label: "All Programs" },
-  { cat: "foundational", label: "Foundational" },
-  { cat: "advanced", label: "Advanced" },
-  { cat: "corporate", label: "Corporate" },
-];
-
 const WHY = [
-  { title: "Industry-Focused Curriculum", desc: "Built around real BIM and digital delivery workflows, not generic theory.", icon: IconTag },
-  { title: "Hands-On, Project-Based Learning", desc: "Every program includes applied exercises and real project scenarios.", icon: IconWrench },
-  { title: "Flexible Delivery Formats", desc: "In-person, remote or blended — designed around your team's schedule.", icon: IconNodes },
-  { title: "Certification & Career Growth", desc: "Structured learning paths with measurable, certifiable outcomes.", icon: IconShieldCheck },
+  { title: "Industry-Led Learning", desc: "Learn from professionals who work with BIM and digital delivery on real projects — not just from theoretical course material.", icon: IconTag },
+  { title: "Project-Based Practice", desc: "Build skills through practical exercises and project scenarios that reflect actual industry workflows.", icon: IconWrench },
+  { title: "Software + Workflow", desc: "Go beyond learning software. Understand how BIM is applied, coordinated and delivered within real project environments.", icon: IconNodes },
+  { title: "Career-Focused Development", desc: "Develop practical skills that can strengthen your portfolio, workplace performance and readiness for BIM roles.", icon: IconShieldCheck },
 ];
 
 const FORMATS = [
-  { n: "01", title: "Instructor-Led Workshops", desc: "Live, hands-on sessions guided by industry practitioners." },
-  { n: "02", title: "Corporate & In-House Programs", desc: "Tailored training delivered at your organization, around your tools and standards." },
-  { n: "03", title: "Self-Paced Certification Tracks", desc: "Structured, flexible learning with measurable, certifiable outcomes." },
+  { n: "01", title: "Learn With Industry Experts", desc: "Live online and hybrid sessions led by industry professionals, with dual-monitor learning for demonstrations, practice and real-time guidance." },
+  { n: "02", title: "Learn. Specialise. Get Certified.", desc: "Progress through Autodesk-recognised certification-focused BIM programs with specialist workshops designed to build practical, industry-ready skills." },
+  { n: "03", title: "Learn Beyond the Course", desc: "Attend specialist workshops, receive career guidance and build the practical knowledge needed to move confidently into professional BIM roles." },
 ];
 
 type LeadStatus = "idle" | "sending" | "sent" | "error";
@@ -87,11 +109,8 @@ export default function TrainingWorkshop() {
   const sectRef = useRef<HTMLDivElement>(null);
   const bodyGlowRef = useCursorGlow<HTMLDivElement>();
   const talkCtaRef = useMagnetic<HTMLAnchorElement>();
-  const [activeCat, setActiveCat] = useState<Category | "all">("all");
   const [leadStatus, setLeadStatus] = useState<LeadStatus>("idle");
   const [heroImgOk, setHeroImgOk] = useState(true);
-
-  const list = activeCat === "all" ? PROGRAMS : PROGRAMS.filter((p) => p.category === activeCat);
 
   useEffect(() => {
     const sect = sectRef.current;
@@ -168,16 +187,16 @@ export default function TrainingWorkshop() {
 
             <div className="train-stats">
               <div className="train-stat">
-                <strong>5</strong>
-                <span>Programs</span>
+                <strong>3</strong>
+                <span>Professional Programs</span>
               </div>
               <div className="train-stat">
                 <strong>100%</strong>
-                <span>Practical</span>
+                <span>Practical &amp; Project-Based</span>
               </div>
               <div className="train-stat">
-                <strong>Yes</strong>
-                <span>Certification Included</span>
+                <strong>Certified</strong>
+                <span>Globally recognised</span>
               </div>
             </div>
 
@@ -218,32 +237,17 @@ export default function TrainingWorkshop() {
           {/* ---------- programs ---------- */}
           <div className="prog-head" id="programs" data-reveal>
             <span className="sub-eyebrow">Our Programs</span>
-            <h2>Five Ways to Build Digital Delivery Capability</h2>
-          </div>
-
-          <div className="prog-filters" data-reveal>
-            {FILTERS.map((f) => (
-              <button
-                key={f.cat}
-                type="button"
-                className={`prog-filter${activeCat === f.cat ? " is-active" : ""}`}
-                onClick={() => setActiveCat(f.cat)}
-              >
-                {f.label}
-              </button>
-            ))}
-            <span className="prog-count">
-              {list.length} {list.length === 1 ? "program" : "programs"}
-            </span>
+            <h2>Three Levels. One Clear Path to BIM Proficiency.</h2>
           </div>
 
           <div className="prog-grid">
-            {list.map((p) => (
+            {PROGRAMS.map((p) => (
               <div className="prog-card" key={p.id} data-reveal>
                 <div className="prog-card-head">
                   <span className="prog-icon">{p.icon}</span>
                   <span className="prog-format">{p.format}</span>
                 </div>
+                <span className="prog-index">{p.n}</span>
                 <h3 className="prog-title">{p.title}</h3>
                 <p className="prog-statement">{p.statement}</p>
                 <p className="prog-desc">{p.desc}</p>
@@ -255,8 +259,11 @@ export default function TrainingWorkshop() {
                     ))}
                   </ul>
                 </div>
+                <p className="prog-idealfor">
+                  <strong>Ideal for:</strong> {p.idealFor}
+                </p>
                 <a className="prog-cta" href="#enquire">
-                  Enquire About This Program
+                  {p.ctaLabel}
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M5 12h13M13 6l6 6-6 6" />
                   </svg>
@@ -265,9 +272,9 @@ export default function TrainingWorkshop() {
             ))}
           </div>
 
-          {/* ---------- why train with us ---------- */}
+          {/* ---------- why learn with us ---------- */}
           <div className="why-band" data-reveal>
-            <span className="sub-eyebrow">Why Train With Us</span>
+            <span className="sub-eyebrow">Why Learn With Us?</span>
             <div className="why-grid">
               {WHY.map((w) => (
                 <div className="why-card" key={w.title}>
@@ -281,7 +288,7 @@ export default function TrainingWorkshop() {
 
           {/* ---------- delivery formats ---------- */}
           <div className="formats-band" data-reveal>
-            <span className="sub-eyebrow">How You Can Train</span>
+            <span className="sub-eyebrow">How You Can Learn</span>
             <div className="formats-grid">
               {FORMATS.map((f) => (
                 <div className="format-card" key={f.title}>
@@ -297,8 +304,8 @@ export default function TrainingWorkshop() {
           <div id="enquire" className="enquire-final" data-reveal>
             <div className="enquire-copy">
               <span className="enquire-eyebrow">Get Started</span>
-              <h3>Ready to Build Your Team&rsquo;s Capability?</h3>
-              <p>Tell us about your training needs and we&rsquo;ll help you find the right program.</p>
+              <h3>Ready to Build Your BIM Career?</h3>
+              <p>Tell us where you are in your BIM journey, and we&rsquo;ll help you choose the right program for your goals.</p>
             </div>
 
             <div className="enquire-form-card">
@@ -313,7 +320,7 @@ export default function TrainingWorkshop() {
                   <input required type="email" name="email" placeholder="you@email.com" />
                   <input type="tel" name="phone" placeholder="Phone (optional)" />
                   <select name="program" defaultValue="">
-                    <option value="" disabled>Which program interests you?</option>
+                    <option value="" disabled>Which program are you interested in?</option>
                     {PROGRAMS.map((p) => (
                       <option key={p.id} value={p.title}>{p.title}</option>
                     ))}
