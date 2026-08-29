@@ -80,8 +80,6 @@
   position: relative; z-index: 1;
   max-width: 1100px; margin: 0 auto;
   padding: 0 clamp(20px,6vw,80px);
-  display: grid; grid-template-columns: 1.15fr .85fr;
-  gap: clamp(32px,5vw,64px); align-items: center;
   scroll-margin-top: 96px;
 }
 .ucx-caphub .hero-copy { max-width: 640px; }
@@ -117,51 +115,6 @@
 .ucx-caphub .cta-solid svg, .ucx-caphub .cta-ghost svg { width: 14px; height: 14px; transition: transform .3s var(--ease); }
 .ucx-caphub .cta-ghost:hover svg { transform: translateY(3px); }
 .ucx-caphub .cta-solid:hover svg { transform: translateX(3px); }
-
-/* ---- hero motif: the four capabilities as one connected framework ---- */
-.ucx-caphub .hero-motif {
-  position: relative;
-  aspect-ratio: 1 / 1;
-  border: 1px solid var(--line); border-radius: 24px;
-  background: rgba(145,242,181,.03);
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
-}
-.ucx-caphub .hero-motif::after {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(circle at 50% 45%, rgba(145,242,181,.16), transparent 70%);
-}
-.ucx-caphub .hero-motif svg { position: relative; z-index: 1; width: 76%; height: 76%; }
-.ucx-caphub .fw-ring { fill: none; stroke: var(--line); stroke-width: 1; }
-.ucx-caphub .fw-spokes line { stroke: var(--line-glow); stroke-width: 1; stroke-dasharray: 3 5; }
-.ucx-caphub .fw-hub-ring { fill: none; stroke: var(--accent-dim); stroke-width: 1; }
-.ucx-caphub .fw-hub-beacon { fill: var(--accent); }
-.ucx-caphub .fw-hub-beacon-pulse {
-  fill: none; stroke: var(--accent); stroke-width: 1.4;
-  transform-origin: 150px 150px;
-  animation: capHubBeacon 2.6s var(--ease) infinite;
-}
-@keyframes capHubBeacon { 0% { r: 4; opacity: .9; } 100% { r: 22; opacity: 0; } }
-.ucx-caphub .fw-hub-label {
-  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; font-size: 13px;
-  letter-spacing: .04em; fill: var(--cream);
-}
-.ucx-caphub .fw-node circle { fill: var(--accent); }
-.ucx-caphub .fw-node text {
-  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; font-size: 9px;
-  letter-spacing: .08em; fill: var(--accent-dim);
-}
-.ucx-caphub .fw-pulse { fill: var(--accent); opacity: 0; animation: capFwTravel 3.6s var(--ease) infinite; }
-.ucx-caphub .fw-pulse.p1 { offset-path: path('M150,150 L150,46'); }
-.ucx-caphub .fw-pulse.p2 { offset-path: path('M150,150 L254,150'); animation-delay: .9s; }
-.ucx-caphub .fw-pulse.p3 { offset-path: path('M150,150 L150,254'); animation-delay: 1.8s; }
-.ucx-caphub .fw-pulse.p4 { offset-path: path('M150,150 L46,150'); animation-delay: 2.7s; }
-@keyframes capFwTravel {
-  0% { offset-distance: 0%; opacity: 0; }
-  12% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { offset-distance: 100%; opacity: 0; }
-}
 
 /* ---- framework intro: premium bordered panel ---- */
 .ucx-caphub .framework {
@@ -437,14 +390,11 @@
     animation-duration: .001ms !important; transition-duration: .001ms !important;
   }
   .ucx-caphub [data-reveal] { opacity: 1; transform: none; }
-  .ucx-caphub .fw-hub-beacon-pulse, .ucx-caphub .fw-pulse { animation: none; opacity: 0; }
 }
 
 @media (max-width: 900px) {
   .ucx-caphub .grid-glow, .ucx-caphub .cursor-haze { display: none; }
-  .ucx-caphub .hero { grid-template-columns: 1fr; }
   .ucx-caphub .hero-copy { max-width: none; }
-  .ucx-caphub .hero-motif { aspect-ratio: 16 / 9; order: -1; }
   .ucx-caphub .blocks { grid-template-columns: 1fr; }
   .ucx-caphub .blocks-extra { grid-template-columns: 1fr; }
   .ucx-caphub .mod-reveal { grid-template-rows: 1fr; opacity: 1; }

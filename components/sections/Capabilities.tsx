@@ -133,51 +133,6 @@ const FAQS = [
   },
 ];
 
-function FrameworkMotif() {
-  return (
-    <svg viewBox="0 0 300 300" aria-hidden="true">
-      <circle className="fw-ring" cx="150" cy="150" r="132" />
-      <circle className="fw-ring" cx="150" cy="150" r="108" />
-
-      <g className="fw-spokes">
-        <line x1="150" y1="150" x2="150" y2="46" />
-        <line x1="150" y1="150" x2="254" y2="150" />
-        <line x1="150" y1="150" x2="150" y2="254" />
-        <line x1="150" y1="150" x2="46" y2="150" />
-      </g>
-
-      <circle className="fw-pulse p1" r="3.5" />
-      <circle className="fw-pulse p2" r="3.5" />
-      <circle className="fw-pulse p3" r="3.5" />
-      <circle className="fw-pulse p4" r="3.5" />
-
-      <g className="fw-hub">
-        <circle className="fw-hub-ring" cx="150" cy="150" r="30" />
-        <circle className="fw-hub-beacon" cx="150" cy="150" r="4" />
-        <circle className="fw-hub-beacon-pulse" cx="150" cy="150" r="4" />
-        <text className="fw-hub-label" x="150" y="154" textAnchor="middle">UCX</text>
-      </g>
-
-      <g className="fw-node">
-        <circle cx="150" cy="46" r="6" />
-        <text x="150" y="26" textAnchor="middle">DESIGN</text>
-      </g>
-      <g className="fw-node">
-        <circle cx="254" cy="150" r="6" />
-        <text x="254" y="176" textAnchor="middle">DIGITAL</text>
-      </g>
-      <g className="fw-node">
-        <circle cx="150" cy="254" r="6" />
-        <text x="150" y="280" textAnchor="middle">DELIVERY</text>
-      </g>
-      <g className="fw-node">
-        <circle cx="46" cy="150" r="6" />
-        <text x="46" y="176" textAnchor="middle">ASSET</text>
-      </g>
-    </svg>
-  );
-}
-
 export default function Capabilities() {
   const sectRef = useRef<HTMLDivElement>(null);
   const bodyGlowRef = useCursorGlow<HTMLDivElement>();
@@ -249,10 +204,6 @@ export default function Capabilities() {
                 </svg>
               </a>
             </div>
-          </div>
-
-          <div className="hero-motif" data-reveal>
-            <FrameworkMotif />
           </div>
         </div>
       </div>
