@@ -265,7 +265,7 @@
 .ucx-labhero .manifesto p { font-size: 15.5px; line-height: 1.7; color: var(--muted); max-width: 62ch; }
 
 /* ---- 4-stage process ---- */
-.ucx-labhero .process-head { margin-bottom: clamp(28px,3.4vw,40px); }
+.ucx-labhero .process-head { margin-bottom: clamp(28px,3.4vw,40px); scroll-margin-top: 96px; }
 .ucx-labhero .process-head h3 {
   font-family: 'UCXGetho','Getho',sans-serif; font-weight: 700;
   font-size: clamp(20px,2.6vw,28px); color: var(--dark);

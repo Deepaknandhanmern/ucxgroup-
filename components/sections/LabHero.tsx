@@ -378,7 +378,7 @@ export default function LabHero() {
           </div>
 
           {/* ---------- 4-stage process ---------- */}
-          <div className="process-head" data-reveal>
+          <div className="process-head" id="how-it-works" data-reveal>
             <h3>From Challenge to Applied Solution</h3>
           </div>
           <ol className="stages">

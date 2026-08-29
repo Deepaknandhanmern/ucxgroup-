@@ -20,6 +20,15 @@ export default function Resources({ resources }: { resources: ResourceItem[] }) 
 
   const list = activeCat === "all" ? resources : resources.filter((r) => r.cat === activeCat);
 
+  // Header mega-menu category links land here as ?category=guides etc.
+  useEffect(() => {
+    const category = new URLSearchParams(window.location.search).get("category");
+    if (category && FILTERS.some((f) => f.cat === category)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- deferred to the client to avoid a hydration mismatch, same pattern as FeaturedProjects
+      setActiveCat(category);
+    }
+  }, []);
+
   function openModal(item: ResourceItem, e: React.MouseEvent<HTMLButtonElement>) {
     lastFocusRef.current = e.currentTarget;
     setModalItem(item);

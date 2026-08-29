@@ -77,6 +77,15 @@ export default function DigitalProjectExperience({ projects }: { projects: Proje
     [activeCat, digitalProjects]
   );
 
+  // Header mega-menu category links land here as ?filter=bim-vdc etc.
+  useEffect(() => {
+    const filter = new URLSearchParams(window.location.search).get("filter");
+    if (filter && DIGITAL_FILTERS.some((f) => f.cat === filter)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- deferred to the client to avoid a hydration mismatch, same pattern as FeaturedProjects
+      setActiveCat(filter as DigitalCat);
+    }
+  }, []);
+
   // scroll reveal
   useEffect(() => {
     const sect = sectRef.current;

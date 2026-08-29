@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { CapabilityItem } from "@/components/sections/CapabilityPage";
 import CardThumb from "@/components/ui/CardThumb";
 
@@ -16,9 +16,24 @@ export interface CapabilityTabsProps {
 export default function CapabilityTabs({ eyebrow = "Capabilities", heading, description, items, embedded }: CapabilityTabsProps) {
   const [active, setActive] = useState(0);
   const current = items[active];
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  // Header mega-menu links land here as #service-1, #service-2, etc. (1-based,
+  // matching the item's position) — select and scroll to that tab, since only
+  // the active tab's panel exists in the DOM for a plain anchor to land on.
+  useEffect(() => {
+    const match = window.location.hash.match(/^#service-(\d+)$/);
+    if (!match) return;
+    const index = Number(match[1]) - 1;
+    if (index < 0 || index >= items.length) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- deferred to the client, mirrors ContactForm's ?type= handling
+    setActive(index);
+    rootRef.current?.scrollIntoView({ block: "start" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once on mount only
+  }, []);
 
   return (
-    <div className={`ucx-captabs${embedded ? " ucx-captabs--embedded" : ""}`} id="capabilities">
+    <div className={`ucx-captabs${embedded ? " ucx-captabs--embedded" : ""}`} id="capabilities" ref={rootRef}>
       <div className="wrapper">
         <div className="head">
           <span className="eyebrow">{eyebrow}</span>

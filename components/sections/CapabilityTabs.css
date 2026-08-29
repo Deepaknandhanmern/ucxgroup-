@@ -12,6 +12,7 @@
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
   position: relative;
   border-top: 1px solid var(--line);
+  scroll-margin-top: 96px;
 }
 .ucx-captabs * { box-sizing: border-box; }
 

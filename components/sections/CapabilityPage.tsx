@@ -156,7 +156,7 @@ export default function CapabilityPage({ index, eyebrow, title, intro, items, pr
             </div>
             <div className="services">
               {items.map((it, i) => (
-                <div className="service" key={it.title} data-reveal>
+                <div className="service" id={`service-${i + 1}`} key={it.title} data-reveal>
                   <div className="service-head">
                     <span className="service-index">{String(i + 1).padStart(2, "0")}</span>
                     <span className="service-icon">{it.icon}</span>

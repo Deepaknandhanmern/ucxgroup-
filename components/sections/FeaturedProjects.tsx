@@ -85,9 +85,17 @@ export default function FeaturedProjects({ projects }: { projects: Project[] }) 
       : projects.filter((p) => p.cat === activeCat);
 
   useEffect(() => {
-    const filter = new URLSearchParams(window.location.search).get("filter");
+    const params = new URLSearchParams(window.location.search);
+    const filter = params.get("filter");
     if (filter && FILTERS.some((f) => f.cat === filter)) setActiveCat(filter as Cat);
-    setIsInteriorsFilter(filter === "interiors");
+    const isInteriors = filter === "interiors";
+    setIsInteriorsFilter(isInteriors);
+
+    // Header mega-menu interior links land here as ?filter=interiors&cat=workplace-office etc.
+    const cat = params.get("cat");
+    if (isInteriors && cat && INTERIOR_FILTERS.some((f) => f.cat === cat)) {
+      setActiveInteriorCat(cat as InteriorCat);
+    }
   }, []);
 
   useEffect(() => {

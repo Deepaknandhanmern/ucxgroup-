@@ -184,7 +184,13 @@
   gap: clamp(24px,3vw,48px);
   padding: clamp(36px,5vw,56px) 0;
   border-bottom: 1px solid var(--line);
+  scroll-margin-top: 100px;
   transition: background .35s var(--ease);
+}
+.ucx-cap .service:target { animation: serviceLanded 2.4s var(--ease); }
+@keyframes serviceLanded {
+  0%, 100% { background: transparent; }
+  15%, 60% { background: rgba(145,242,181,.1); }
 }
 .ucx-cap .service:hover { background: rgba(145,242,181,.06); }
 

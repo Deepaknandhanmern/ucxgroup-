@@ -9,6 +9,15 @@ export default function Blogs({ posts }: { posts: Post[] }) {
   const [activeCat, setActiveCat] = useState<InsightCategory | "all">("all");
   const list = activeCat === "all" ? posts : posts.filter((p) => p.category === activeCat);
 
+  // Header mega-menu category links land here as ?category=bim-digital etc.
+  useEffect(() => {
+    const category = new URLSearchParams(window.location.search).get("category");
+    if (category && INSIGHT_FILTERS.some((f) => f.cat === category)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- deferred to the client to avoid a hydration mismatch, same pattern as FeaturedProjects
+      setActiveCat(category as InsightCategory);
+    }
+  }, []);
+
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
