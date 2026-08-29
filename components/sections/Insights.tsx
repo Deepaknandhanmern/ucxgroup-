@@ -6,6 +6,8 @@ import { CASE_STUDY_FILTERS, type CaseStudy, type CaseStudyCategory } from "@/li
 import { RESOURCE_FILTERS, type ResourceItem, type ResourceCategory } from "@/lib/resources";
 import CardThumb from "@/components/ui/CardThumb";
 import SectionRail from "@/components/ui/SectionRail";
+import Toast from "@/components/ui/Toast";
+import { submitEnquiry } from "@/lib/save-enquiry";
 
 const RAIL_SECTIONS = [
   { id: "overview", label: "Overview" },
@@ -286,6 +288,51 @@ function ResourcesSection({ items }: { items: ResourceItem[] }) {
   );
 }
 
+/* ---------- closing: stay updated subscribe form ---------- */
+function SubscribeForm() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "submitting">("idle");
+  const [toast, setToast] = useState<{ show: boolean; message: string; tone: "success" | "error" }>({
+    show: false,
+    message: "",
+    tone: "success",
+  });
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setStatus("submitting");
+    const { ok } = await submitEnquiry("newsletter-signup", { email });
+    setStatus("idle");
+    if (ok) {
+      setEmail("");
+      setToast({ show: true, message: "Subscribed — you'll hear from us with new insights.", tone: "success" });
+    } else {
+      setToast({ show: true, message: "Something went wrong — please try again.", tone: "error" });
+    }
+  }
+
+  return (
+    <>
+      <span className="ins-subscribe-eyebrow">Stay Updated</span>
+      <form className="ins-subscribe-form" onSubmit={handleSubmit}>
+        <input
+          type="email"
+          name="email"
+          required
+          placeholder="you@company.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          aria-label="Email address"
+        />
+        <button type="submit" disabled={status === "submitting"}>
+          {status === "submitting" ? "Sending…" : "Subscribe"}
+        </button>
+      </form>
+      <Toast show={toast.show} message={toast.message} tone={toast.tone} onDismiss={() => setToast((t) => ({ ...t, show: false }))} />
+    </>
+  );
+}
+
 export default function Insights({
   posts,
   caseStudies,
@@ -352,12 +399,7 @@ export default function Insights({
         <div className="ins-closing" id="closing" data-reveal>
           <h3>Keep Building Your Knowledge.</h3>
           <p>Explore ideas, lessons and technologies shaping the future of the built environment.</p>
-          <a className="ins-section-cta" href="/contact">
-            Start a Collaboration
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M5 12h13M13 6l6 6-6 6" />
-            </svg>
-          </a>
+          <SubscribeForm />
         </div>
       </div>
     </div>
