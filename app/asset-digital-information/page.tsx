@@ -24,6 +24,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconCube,
     image: "/brand/capabilities/tabs/as-built-bim.webp",
+    noteLabel: "Ideal for",
+    noteText: "Owners, developers and project teams requiring an accurate digital record of the completed asset for future reference and management.",
   },
   {
     title: "Asset Information",
@@ -38,6 +40,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconTag,
     image: "/brand/capabilities/tabs/asset-information.webp",
+    noteLabel: "Client benefit",
+    noteText: "Structured and accessible asset data that supports efficient handover, asset management and operational decision-making.",
   },
   {
     title: "COBie & Data",
@@ -52,6 +56,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconDatabase,
     image: "/brand/capabilities/tabs/cobie-data.webp",
+    noteLabel: "Client benefit",
+    noteText: "Standardised and validated asset information that supports smoother handover and meets project-specific information requirements.",
   },
   {
     title: "FM Models",
@@ -66,6 +72,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconBuildingGear,
     image: "/brand/capabilities/tabs/fm-models.webp",
+    noteLabel: "Ideal for",
+    noteText: "Asset owners and facility management teams requiring organised digital information to support building operations and maintenance.",
   },
   {
     title: "Digital Handover & Digital Twin",
@@ -80,6 +88,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconHandover,
     image: "/brand/capabilities/tabs/digital-handover-twin.webp",
+    noteLabel: "Client benefit",
+    noteText: "Connected project and asset information that supports a smoother transition from construction to long-term asset management and future digital twin workflows.",
   },
 ];
 

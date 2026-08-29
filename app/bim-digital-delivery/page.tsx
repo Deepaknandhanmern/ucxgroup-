@@ -26,6 +26,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconCube,
     image: "/brand/capabilities/tabs/bim-vdc.webp",
+    noteLabel: "Ideal for",
+    noteText: "Architects, consultants, contractors and developers seeking accurate, coordinated project models.",
   },
   {
     title: "Digital Engineering",
@@ -41,6 +43,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconChip,
     image: "/brand/capabilities/tabs/digital-engineering.webp",
+    noteLabel: "Client benefit",
+    noteText: "Better-connected engineering information, fewer coordination gaps and more reliable project documentation.",
   },
   {
     title: "BIM Coordination",
@@ -57,6 +61,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconNodes,
     image: "/brand/capabilities/tabs/bim-coordination.webp",
+    noteLabel: "Client benefit",
+    noteText: "Fewer site conflicts, reduced rework and greater confidence before construction begins.",
   },
   {
     title: "Digital Construction",
@@ -73,6 +79,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconCrane,
     image: "/brand/capabilities/tabs/digital-construction.webp",
+    noteLabel: "Client benefit",
+    noteText: "Better planning, improved quantity visibility and stronger coordination between design and site execution.",
   },
   {
     title: "Automation & 4D/5D",
@@ -90,6 +98,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconAutomation,
     image: "/brand/capabilities/tabs/automation-4d5d.webp",
+    noteLabel: "Client benefit",
+    noteText: "Faster processes, consistent project information and reduced repetitive work.",
   },
 ];
 

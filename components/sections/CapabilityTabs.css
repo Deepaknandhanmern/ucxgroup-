@@ -133,6 +133,11 @@
   border: 1px solid var(--line); background: var(--bg);
   border-radius: 999px; padding: 7px 14px;
 }
+.ucx-captabs .panel-note {
+  font-size: 13.5px; line-height: 1.6; color: var(--muted);
+  margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--line);
+}
+.ucx-captabs .panel-note strong { color: var(--dark); }
 
 @media (max-width: 860px) {
   .ucx-captabs .panel { grid-template-columns: 1fr; }

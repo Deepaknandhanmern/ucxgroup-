@@ -25,6 +25,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconDocument,
     image: "/brand/capabilities/tabs/project-documentation.webp",
+    noteLabel: "Ideal for",
+    noteText: "Architects, consultants and contractors requiring accurate, coordinated and well-managed project information.",
   },
   {
     title: "Project Controls",
@@ -40,6 +42,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconGauge,
     image: "/brand/capabilities/tabs/project-controls.webp",
+    noteLabel: "Client benefit",
+    noteText: "Better visibility of project information, progress and deliverables for improved tracking and decision-making.",
   },
   {
     title: "Quantity & Data Extraction",
@@ -55,6 +59,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconBars,
     image: "/brand/capabilities/tabs/quantity-data-extraction.webp",
+    noteLabel: "Client benefit",
+    noteText: "Reliable model-based quantities and structured data to support planning, cost visibility and informed decision-making.",
   },
   {
     title: "QA/QC",
@@ -70,6 +76,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconShieldCheck,
     image: "/brand/capabilities/tabs/qa-qc.webp",
+    noteLabel: "Client benefit",
+    noteText: "Improved accuracy, consistency and compliance through structured quality checks and early issue identification.",
   },
   {
     title: "Execution & Coordination Support",
@@ -85,6 +93,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconWrench,
     image: "/brand/capabilities/tabs/execution-coordination-support.webp",
+    noteLabel: "Client benefit",
+    noteText: "Better coordination between design, procurement, fabrication and site teams for smoother project execution.",
   },
 ];
 

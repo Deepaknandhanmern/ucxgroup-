@@ -62,6 +62,11 @@ export default function CapabilityTabs({ eyebrow = "Capabilities", heading, desc
                   <span key={d}>{d}</span>
                 ))}
               </div>
+              {current.noteText && (
+                <p className="panel-note">
+                  <strong>{current.noteLabel}:</strong> {current.noteText}
+                </p>
+              )}
             </div>
           </div>
 

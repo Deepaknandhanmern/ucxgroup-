@@ -13,6 +13,9 @@ export interface CapabilityItem {
   deliverables: string[];
   icon: React.ReactNode;
   image?: string;
+  /** Short "Ideal for" / "Client benefit" line shown under Typical Deliverables. */
+  noteLabel?: string;
+  noteText?: string;
 }
 
 export interface RelatedCapability {
@@ -178,6 +181,11 @@ export default function CapabilityPage({ index, eyebrow, title, intro, items, pr
                         ))}
                       </ul>
                     </div>
+                    {it.noteText && (
+                      <p className="service-note">
+                        <strong>{it.noteLabel}:</strong> {it.noteText}
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}

@@ -24,6 +24,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconScan,
     image: "/brand/capabilities/tabs/scan-to-bim.webp",
+    noteLabel: "Ideal for",
+    noteText: "Owners, architects and project teams requiring accurate digital models of existing buildings and assets for renovation, documentation or future development.",
   },
   {
     title: "Prefabrication",
@@ -38,6 +40,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconPrefab,
     image: "/brand/capabilities/tabs/prefabrication.webp",
+    noteLabel: "Client benefit",
+    noteText: "Better integration between design, fabrication and assembly — improving accuracy, coordination and construction efficiency.",
   },
   {
     title: "Heritage & Restoration Projects",
@@ -52,6 +56,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconHeritage,
     image: "/brand/capabilities/tabs/heritage-restoration.webp",
+    noteLabel: "Ideal for",
+    noteText: "Architects, conservation teams and asset owners requiring accurate digital documentation to support informed restoration and long-term preservation.",
   },
   {
     title: "BIM Automation & AI",
@@ -66,6 +72,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconSpark,
     image: "/brand/capabilities/tabs/bim-automation-ai.webp",
+    noteLabel: "Client benefit",
+    noteText: "Faster and more consistent workflows through automation and AI-assisted processes that reduce repetitive work and improve information management.",
   },
   {
     title: "Parametric Systems",
@@ -80,6 +88,8 @@ const ITEMS: CapabilityItem[] = [
     ],
     icon: IconParametric,
     image: "/brand/capabilities/tabs/parametric-systems.webp",
+    noteLabel: "Client benefit",
+    noteText: "Flexible and repeatable design solutions that improve adaptability, consistency and efficiency across design and fabrication workflows.",
   },
 ];
 
