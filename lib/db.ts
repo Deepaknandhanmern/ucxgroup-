@@ -148,6 +148,10 @@ function runMigrations(conn: DatabaseSync) {
   // from CREATE TABLE IF NOT EXISTS — add them explicitly, once.
   ensureColumn(conn, "blog_posts", "status", "status TEXT NOT NULL DEFAULT 'published'");
   ensureColumn(conn, "blog_posts", "publish_at", "publish_at TEXT");
+  // Additional gallery images shown as a carousel on the article page,
+  // beyond the single required cover `image` used for listing cards and
+  // social previews. JSON array of URLs, defaults to an empty array.
+  ensureColumn(conn, "blog_posts", "images", "images TEXT NOT NULL DEFAULT '[]'");
   ensureColumn(conn, "enquiries", "read", "read INTEGER NOT NULL DEFAULT 0");
   ensureColumn(conn, "enquiries", "status", "status TEXT NOT NULL DEFAULT 'new'");
   ensureColumn(conn, "projects", "digital_category", "digital_category TEXT");

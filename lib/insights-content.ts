@@ -28,6 +28,7 @@ function toPost(row: BlogPostRow): Post {
     title: row.title,
     excerpt: row.excerpt,
     image: row.image,
+    images: JSON.parse(row.images || "[]") as string[],
     team: row.team,
     category: row.category as InsightCategory,
     date: row.date,

@@ -38,11 +38,14 @@ function datetimeLocalToIso(value: string): string | null {
 export default function PostEditor({ post }: { post?: BlogPostRow }) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
 
   const [postId, setPostId] = useState<number | undefined>(post?.id);
   const [title, setTitle] = useState(post?.title ?? "");
   const [excerpt, setExcerpt] = useState(post?.excerpt ?? "");
   const [image, setImage] = useState(post?.image ?? "");
+  const [images, setImages] = useState<string[]>(post?.images ? (JSON.parse(post.images) as string[]) : []);
+  const [galleryUploading, setGalleryUploading] = useState(false);
   const [team, setTeam] = useState(post?.team ?? "");
   const [category, setCategory] = useState(post?.category ?? "bim-digital");
   const [date, setDate] = useState(post?.date ?? new Date().toISOString().slice(0, 10));
@@ -87,11 +90,50 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
     setUploading(false);
   }
 
+  async function handleGalleryUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? []);
+    if (files.length === 0) return;
+    setGalleryUploading(true);
+    setError("");
+
+    const uploaded: string[] = [];
+    for (const file of files) {
+      const formData = new FormData();
+      formData.set("file", file);
+      const res = await fetch("/api/dashboard/upload", { method: "POST", body: formData });
+      const data = await res.json();
+      if (res.ok) {
+        uploaded.push(data.url);
+      } else {
+        setError(data.error ?? "Upload failed.");
+        break;
+      }
+    }
+    if (uploaded.length > 0) setImages((prev) => [...prev, ...uploaded]);
+    setGalleryUploading(false);
+    if (galleryInputRef.current) galleryInputRef.current.value = "";
+  }
+
+  function removeGalleryImage(index: number) {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function moveGalleryImage(index: number, dir: -1 | 1) {
+    setImages((prev) => {
+      const next = [...prev];
+      const target = index + dir;
+      if (target < 0 || target >= next.length) return prev;
+      [next[index], next[target]] = [next[target], next[index]];
+      return next;
+    });
+  }
+
   function buildPayload() {
     return {
       title,
       excerpt,
       image,
+      images,
       team,
       category,
       date,
@@ -225,6 +267,67 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
             <p className="mt-1.5 text-xs text-neutral-400">Recommended: landscape 16:9, at least 1600×900px. JPG, PNG, WEBP or GIF, under 8MB.</p>
           </div>
         </div>
+      </div>
+
+      <div>
+        <span className={labelClass}>Gallery images</span>
+        <p className="mt-1 text-xs text-neutral-400">
+          Shown as a carousel on the article page, below the cover image. Optional — with none added, the article just shows the cover image.
+        </p>
+        {images.length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-3">
+            {images.map((src, i) => (
+              <div key={src + i} className="relative w-28">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={src} alt={`Gallery ${i + 1}`} className="h-20 w-28 rounded-lg object-cover" />
+                <div className="mt-1 flex items-center justify-between gap-1">
+                  <button
+                    type="button"
+                    onClick={() => moveGalleryImage(i, -1)}
+                    disabled={i === 0}
+                    className="rounded border border-neutral-300 px-1.5 py-0.5 text-xs text-neutral-600 hover:bg-neutral-50 disabled:opacity-30"
+                    aria-label="Move earlier"
+                  >
+                    ←
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => removeGalleryImage(i)}
+                    className="rounded border border-red-200 px-1.5 py-0.5 text-xs text-red-600 hover:bg-red-50"
+                    aria-label="Remove image"
+                  >
+                    Remove
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => moveGalleryImage(i, 1)}
+                    disabled={i === images.length - 1}
+                    className="rounded border border-neutral-300 px-1.5 py-0.5 text-xs text-neutral-600 hover:bg-neutral-50 disabled:opacity-30"
+                    aria-label="Move later"
+                  >
+                    →
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        <button
+          type="button"
+          onClick={() => galleryInputRef.current?.click()}
+          disabled={galleryUploading}
+          className="mt-3 rounded-lg border border-neutral-300 px-3 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+        >
+          {galleryUploading ? "Uploading…" : "Add gallery images"}
+        </button>
+        <input
+          ref={galleryInputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/gif"
+          multiple
+          onChange={handleGalleryUpload}
+          className="hidden"
+        />
       </div>
 
       <div className="grid grid-cols-2 gap-5">

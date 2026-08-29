@@ -18,6 +18,8 @@ export interface Post {
   title: string;
   excerpt: string;
   image: string;
+  /** Additional gallery images shown as a carousel below the cover image. */
+  images: string[];
   team: string;
   category: InsightCategory;
   /** ISO date string, e.g. "2026-08-16" */

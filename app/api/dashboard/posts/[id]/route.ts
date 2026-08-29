@@ -37,6 +37,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     title: body.title,
     excerpt: body.excerpt ?? "",
     image: body.image ?? "",
+    images: Array.isArray(body.images) ? body.images : [],
     team: body.team ?? "",
     category: (body.category as string) ?? "bim-digital",
     date: body.date ?? existing.date,

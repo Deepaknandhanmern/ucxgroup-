@@ -19,6 +19,7 @@ export async function POST(req: Request) {
     title: body.title,
     excerpt: body.excerpt ?? "",
     image: body.image ?? "",
+    images: Array.isArray(body.images) ? body.images : [],
     team: body.team ?? "",
     category: (body.category as string) ?? "bim-digital",
     date: body.date ?? new Date().toISOString().slice(0, 10),

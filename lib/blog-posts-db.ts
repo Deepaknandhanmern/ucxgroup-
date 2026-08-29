@@ -9,6 +9,7 @@ export interface BlogPostRow {
   title: string;
   excerpt: string;
   image: string;
+  images: string; // JSON array string — additional gallery images for the article carousel
   team: string;
   category: string;
   date: string;
@@ -27,6 +28,7 @@ export interface BlogPostInput {
   title: string;
   excerpt: string;
   image: string;
+  images: string[];
   team: string;
   category: string;
   date: string;
@@ -102,14 +104,15 @@ export function createPost(input: BlogPostInput): BlogPostRow {
   const now = new Date().toISOString();
   const result = db
     .prepare(
-      `INSERT INTO blog_posts (slug, title, excerpt, image, team, category, date, read_time, tags, author_key, body_markdown, status, publish_at, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO blog_posts (slug, title, excerpt, image, images, team, category, date, read_time, tags, author_key, body_markdown, status, publish_at, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       input.slug,
       input.title,
       input.excerpt,
       input.image,
+      JSON.stringify(input.images),
       input.team,
       input.category,
       input.date,
@@ -128,13 +131,14 @@ export function createPost(input: BlogPostInput): BlogPostRow {
 export function updatePost(id: number, input: BlogPostInput): BlogPostRow | undefined {
   const now = new Date().toISOString();
   db.prepare(
-    `UPDATE blog_posts SET slug = ?, title = ?, excerpt = ?, image = ?, team = ?, category = ?, date = ?, read_time = ?, tags = ?, author_key = ?, body_markdown = ?, status = ?, publish_at = ?, updated_at = ?
+    `UPDATE blog_posts SET slug = ?, title = ?, excerpt = ?, image = ?, images = ?, team = ?, category = ?, date = ?, read_time = ?, tags = ?, author_key = ?, body_markdown = ?, status = ?, publish_at = ?, updated_at = ?
      WHERE id = ?`
   ).run(
     input.slug,
     input.title,
     input.excerpt,
     input.image,
+    JSON.stringify(input.images),
     input.team,
     input.category,
     input.date,
