@@ -94,22 +94,25 @@
 .ucx-workspace .ph {
   position: relative;
   flex: 1 1 0; min-width: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-  border: 1px dashed var(--line);
-  background: rgba(0,53,45,.02);
-  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: #fff;
   overflow: hidden;
-  transition: flex 0.5s var(--ease), border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease);
+  transition: flex 0.5s var(--ease), border-color .3s var(--ease);
 }
-.ucx-workspace .ph:hover { flex: 3.5 1 0; border-color: var(--accent); background: rgba(145,242,181,.08); color: var(--dark); }
+.ucx-workspace .ph:hover { flex: 3.5 1 0; border-color: var(--accent); }
+.ucx-workspace .ph-scrim {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(0deg, rgba(0,34,27,.75) 0%, rgba(0,34,27,.15) 45%, transparent 70%);
+}
 .ucx-workspace .ph-index {
-  position: absolute; top: 14px; left: 16px;
+  position: absolute; z-index: 2; top: 14px; left: 16px;
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
-  font-size: 11px; letter-spacing: .1em; opacity: .5;
+  font-size: 11px; letter-spacing: .1em; opacity: .75;
 }
-.ucx-workspace .ph svg { width: 26px; height: 26px; opacity: .7; flex: none; }
 .ucx-workspace .ph-label {
-  font-size: 11px; letter-spacing: .06em; text-transform: uppercase; text-align: center; padding: 0 10px;
+  position: absolute; z-index: 2; left: 16px; bottom: 14px;
+  font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
   white-space: nowrap;
 }
 
