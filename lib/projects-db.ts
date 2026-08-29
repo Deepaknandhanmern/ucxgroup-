@@ -13,6 +13,7 @@ export interface ProjectRow {
   stage: string;
   technology: string; // JSON array string
   image: string;
+  images: string; // JSON array string — additional gallery images for the project carousel
   summary: string;
   body: string; // JSON array string (paragraphs)
   scope: string; // JSON array string
@@ -31,6 +32,7 @@ export interface ProjectInput {
   stage: string;
   technology: string[];
   image: string;
+  images: string[];
   summary: string;
   body: string[];
   scope: string[];
@@ -72,8 +74,8 @@ export function createProject(input: ProjectInput): ProjectRow {
   const now = new Date().toISOString();
   const result = db
     .prepare(
-      `INSERT INTO projects (slug, cat, interior_category, digital_category, title, location, discipline, stage, technology, image, summary, body, scope, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO projects (slug, cat, interior_category, digital_category, title, location, discipline, stage, technology, image, images, summary, body, scope, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       input.slug,
@@ -86,6 +88,7 @@ export function createProject(input: ProjectInput): ProjectRow {
       input.stage,
       JSON.stringify(input.technology),
       input.image,
+      JSON.stringify(input.images),
       input.summary,
       JSON.stringify(input.body),
       JSON.stringify(input.scope),
@@ -98,7 +101,7 @@ export function createProject(input: ProjectInput): ProjectRow {
 export function updateProject(id: number, input: ProjectInput): ProjectRow | undefined {
   const now = new Date().toISOString();
   db.prepare(
-    `UPDATE projects SET slug = ?, cat = ?, interior_category = ?, digital_category = ?, title = ?, location = ?, discipline = ?, stage = ?, technology = ?, image = ?, summary = ?, body = ?, scope = ?, updated_at = ?
+    `UPDATE projects SET slug = ?, cat = ?, interior_category = ?, digital_category = ?, title = ?, location = ?, discipline = ?, stage = ?, technology = ?, image = ?, images = ?, summary = ?, body = ?, scope = ?, updated_at = ?
      WHERE id = ?`
   ).run(
     input.slug,
@@ -111,6 +114,7 @@ export function updateProject(id: number, input: ProjectInput): ProjectRow | und
     input.stage,
     JSON.stringify(input.technology),
     input.image,
+    JSON.stringify(input.images),
     input.summary,
     JSON.stringify(input.body),
     JSON.stringify(input.scope),

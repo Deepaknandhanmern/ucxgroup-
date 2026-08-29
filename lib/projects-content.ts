@@ -14,6 +14,7 @@ function toProject(row: ProjectRow): Project {
     stage: row.stage,
     technology: JSON.parse(row.technology) as string[],
     image: row.image,
+    images: JSON.parse(row.images || "[]") as string[],
     summary: row.summary,
     body: JSON.parse(row.body) as string[],
     scope: JSON.parse(row.scope) as string[],

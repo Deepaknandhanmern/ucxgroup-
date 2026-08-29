@@ -169,6 +169,9 @@ function runMigrations(conn: DatabaseSync) {
   ensureColumn(conn, "enquiries", "read", "read INTEGER NOT NULL DEFAULT 0");
   ensureColumn(conn, "enquiries", "status", "status TEXT NOT NULL DEFAULT 'new'");
   ensureColumn(conn, "projects", "digital_category", "digital_category TEXT");
+  // Additional gallery images shown as a carousel on the project detail
+  // page, beyond the single required cover `image`. JSON array of URLs.
+  ensureColumn(conn, "projects", "images", "images TEXT NOT NULL DEFAULT '[]'");
 
   // One-time migration: seed the DB from the existing markdown posts the
   // first time this ever runs, so the switchover to DB-backed content

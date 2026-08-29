@@ -20,6 +20,8 @@ export interface Project {
   stage: string;
   technology: string[];
   image: string;
+  /** Additional gallery images shown as a carousel below the cover image. */
+  images: string[];
   summary: string;
   body: string[];
   scope: string[];

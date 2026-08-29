@@ -71,6 +71,43 @@
   color: var(--accent-dim); border: 1px solid var(--line); padding: 10px 20px; border-radius: 999px;
 }
 
+.pd-hero-arrow {
+  position: absolute; top: 50%; z-index: 2; transform: translateY(-50%);
+  display: flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 50%;
+  border: none; cursor: pointer;
+  background: rgba(255,255,255,.85); color: var(--bg-deep);
+  box-shadow: 0 8px 20px -8px rgba(0,0,0,.5);
+  transition: background .2s ease, transform .2s ease;
+}
+.pd-hero-arrow svg { width: 18px; height: 18px; }
+.pd-hero-arrow:hover { background: #fff; transform: translateY(-50%) scale(1.06); }
+.pd-hero-arrow--prev { left: 16px; }
+.pd-hero-arrow--next { right: 16px; }
+.pd-hero-count {
+  position: absolute; right: 16px; bottom: 14px; z-index: 2;
+  font-size: 11.5px; letter-spacing: .06em; color: #fff;
+  background: rgba(0,0,0,.5); padding: 5px 11px; border-radius: 999px;
+}
+
+.pd-hero-thumbs {
+  display: flex; gap: 10px; overflow-x: auto;
+  margin: -8px 0 clamp(36px,5vw,52px);
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+.pd-hero-thumb {
+  flex: none; width: 88px; aspect-ratio: 16/10;
+  border-radius: 10px; overflow: hidden;
+  padding: 0; cursor: pointer;
+  border: 2px solid transparent;
+  opacity: .55;
+  transition: opacity .2s ease, border-color .2s ease;
+}
+.pd-hero-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.pd-hero-thumb:hover { opacity: .85; }
+.pd-hero-thumb.is-active { opacity: 1; border-color: var(--accent); }
+
 .pd-layout {
   display: grid; grid-template-columns: 1fr 240px; gap: clamp(32px,5vw,56px);
   margin-bottom: clamp(48px,6vw,72px);

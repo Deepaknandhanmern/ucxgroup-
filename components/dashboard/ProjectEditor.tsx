@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FILTERS, INTERIOR_FILTERS, DIGITAL_FILTERS } from "@/lib/projects";
 import type { ProjectRow } from "@/lib/projects-db";
@@ -13,8 +13,13 @@ const DIGITAL_CATEGORIES = DIGITAL_FILTERS.filter((f) => f.cat !== "all");
 export default function ProjectEditor({ project }: { project?: ProjectRow }) {
   const router = useRouter();
 
+  const galleryInputRef = useRef<HTMLInputElement>(null);
+  const [galleryUploading, setGalleryUploading] = useState(false);
+  const [galleryError, setGalleryError] = useState("");
+
   const [title, setTitle] = useState(project?.title ?? "");
   const [image, setImage] = useState(project?.image ?? "");
+  const [images, setImages] = useState<string[]>(project?.images ? (JSON.parse(project.images) as string[]) : []);
   const [cat, setCat] = useState(project?.cat ?? "commercial");
   const [interiorCategory, setInteriorCategory] = useState(project?.interior_category ?? "");
   const [digitalCategory, setDigitalCategory] = useState(project?.digital_category ?? "");
@@ -29,6 +34,45 @@ export default function ProjectEditor({ project }: { project?: ProjectRow }) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
+  async function handleGalleryUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? []);
+    if (files.length === 0) return;
+    setGalleryUploading(true);
+    setGalleryError("");
+
+    const uploaded: string[] = [];
+    for (const file of files) {
+      const formData = new FormData();
+      formData.set("file", file);
+      formData.set("kind", "image");
+      const res = await fetch("/api/dashboard/upload", { method: "POST", body: formData });
+      const data = await res.json();
+      if (res.ok) {
+        uploaded.push(data.url);
+      } else {
+        setGalleryError(data.error ?? "Upload failed.");
+        break;
+      }
+    }
+    if (uploaded.length > 0) setImages((prev) => [...prev, ...uploaded]);
+    setGalleryUploading(false);
+    if (galleryInputRef.current) galleryInputRef.current.value = "";
+  }
+
+  function removeGalleryImage(index: number) {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function moveGalleryImage(index: number, dir: -1 | 1) {
+    setImages((prev) => {
+      const next = [...prev];
+      const target = index + dir;
+      if (target < 0 || target >= next.length) return prev;
+      [next[index], next[target]] = [next[target], next[index]];
+      return next;
+    });
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
@@ -37,6 +81,7 @@ export default function ProjectEditor({ project }: { project?: ProjectRow }) {
     const payload = {
       title,
       image,
+      images,
       cat,
       interiorCategory: interiorCategory || null,
       digitalCategory: digitalCategory || null,
@@ -86,6 +131,68 @@ export default function ProjectEditor({ project }: { project?: ProjectRow }) {
       </label>
 
       <UploadField label="Cover image" kind="image" value={image} onChange={setImage} />
+
+      <div>
+        <span className={labelClass}>Gallery images</span>
+        <p className="mt-1 text-xs text-neutral-400">
+          Shown as a carousel on the project detail page, below the cover image. Optional — with none added, the project just shows the cover image.
+        </p>
+        {images.length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-3">
+            {images.map((src, i) => (
+              <div key={src + i} className="relative w-28">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={src} alt={`Gallery ${i + 1}`} className="h-20 w-28 rounded-lg object-cover" />
+                <div className="mt-1 flex items-center justify-between gap-1">
+                  <button
+                    type="button"
+                    onClick={() => moveGalleryImage(i, -1)}
+                    disabled={i === 0}
+                    className="rounded border border-neutral-300 px-1.5 py-0.5 text-xs text-neutral-600 hover:bg-neutral-50 disabled:opacity-30"
+                    aria-label="Move earlier"
+                  >
+                    ←
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => removeGalleryImage(i)}
+                    className="rounded border border-red-200 px-1.5 py-0.5 text-xs text-red-600 hover:bg-red-50"
+                    aria-label="Remove image"
+                  >
+                    Remove
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => moveGalleryImage(i, 1)}
+                    disabled={i === images.length - 1}
+                    className="rounded border border-neutral-300 px-1.5 py-0.5 text-xs text-neutral-600 hover:bg-neutral-50 disabled:opacity-30"
+                    aria-label="Move later"
+                  >
+                    →
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        <button
+          type="button"
+          onClick={() => galleryInputRef.current?.click()}
+          disabled={galleryUploading}
+          className="mt-3 rounded-lg border border-neutral-300 px-3 py-1.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+        >
+          {galleryUploading ? "Uploading…" : "Add gallery images"}
+        </button>
+        <input
+          ref={galleryInputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/gif"
+          multiple
+          onChange={handleGalleryUpload}
+          className="hidden"
+        />
+        {galleryError && <p className="mt-1 text-sm text-red-600">{galleryError}</p>}
+      </div>
 
       <div className="grid grid-cols-3 gap-5">
         <label className={labelClass}>

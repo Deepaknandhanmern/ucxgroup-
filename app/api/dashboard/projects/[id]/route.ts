@@ -33,6 +33,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     stage: body.stage ?? "",
     technology: Array.isArray(body.technology) ? body.technology : [],
     image: body.image ?? "",
+    images: Array.isArray(body.images) ? body.images : [],
     summary: body.summary,
     body: Array.isArray(body.body) ? body.body : [],
     scope: Array.isArray(body.scope) ? body.scope : [],

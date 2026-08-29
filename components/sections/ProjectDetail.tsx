@@ -5,7 +5,19 @@ import { CAT_LABELS, type Project } from "@/lib/projects";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 
 export default function ProjectDetail({ project, more }: { project: Project; more: Project[] }) {
+  const galleryImages = [project.image, ...project.images].filter(Boolean);
+  const hasCarousel = galleryImages.length > 1;
+
   const [imgOk, setImgOk] = useState(true);
+  const [activeImage, setActiveImage] = useState(0);
+
+  function goToImage(i: number) {
+    setActiveImage(i);
+    setImgOk(true);
+  }
+  function stepImage(dir: 1 | -1) {
+    goToImage((activeImage + dir + galleryImages.length) % galleryImages.length);
+  }
 
   return (
     <div className="ucx-pd">
@@ -28,13 +40,48 @@ export default function ProjectDetail({ project, more }: { project: Project; mor
 
         <div className="pd-hero">
           {imgOk ? (
-            <img src={project.image} alt={project.title} onError={() => setImgOk(false)} />
+            <img key={activeImage} src={galleryImages[activeImage]} alt={project.title} onError={() => setImgOk(false)} />
           ) : (
             <div className="pd-hero-fallback" aria-hidden="true">
               <span>{project.discipline}</span>
             </div>
           )}
+          {hasCarousel && imgOk && (
+            <>
+              <button type="button" className="pd-hero-arrow pd-hero-arrow--prev" onClick={() => stepImage(-1)} aria-label="Previous image">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M15 6l-6 6 6 6" />
+                </svg>
+              </button>
+              <button type="button" className="pd-hero-arrow pd-hero-arrow--next" onClick={() => stepImage(1)} aria-label="Next image">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 6l6 6-6 6" />
+                </svg>
+              </button>
+              <span className="pd-hero-count">
+                {activeImage + 1} / {galleryImages.length}
+              </span>
+            </>
+          )}
         </div>
+
+        {hasCarousel && (
+          <div className="pd-hero-thumbs" role="tablist" aria-label="Project image gallery">
+            {galleryImages.map((src, i) => (
+              <button
+                type="button"
+                key={src + i}
+                role="tab"
+                aria-selected={i === activeImage}
+                aria-label={`Show image ${i + 1} of ${galleryImages.length}`}
+                className={`pd-hero-thumb${i === activeImage ? " is-active" : ""}`}
+                onClick={() => goToImage(i)}
+              >
+                <img src={src} alt="" loading="lazy" />
+              </button>
+            ))}
+          </div>
+        )}
 
         <div className="pd-layout">
           <div className="pd-body">
