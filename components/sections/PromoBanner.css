@@ -41,8 +41,9 @@
 
 .ucx-promo-banner-cta {
   position: absolute;
-  right: clamp(16px, 3vw, 40px);
-  bottom: clamp(16px, 3vw, 40px);
+  left: 50%;
+  bottom: clamp(14px, 3vw, 28px);
+  transform: translateX(-50%);
   z-index: 1;
   display: inline-flex; align-items: center; gap: 10px;
   font-family: 'Getho', 'Atyp Display', sans-serif; font-weight: 700;
@@ -53,11 +54,11 @@
   transition: transform .3s ease, box-shadow .3s ease;
 }
 .ucx-promo-banner-cta svg { width: 14px; height: 14px; transition: transform .3s ease; }
-.ucx-promo-banner:hover .ucx-promo-banner-cta { transform: translateY(-2px); box-shadow: 0 18px 34px -14px rgba(0,0,0,.5); }
+.ucx-promo-banner:hover .ucx-promo-banner-cta { transform: translateX(-50%) translateY(-2px); box-shadow: 0 18px 34px -14px rgba(0,0,0,.5); }
 .ucx-promo-banner:hover .ucx-promo-banner-cta svg { transform: translateX(3px); }
 
 @media (max-width: 640px) {
   .ucx-promo-banner { border-radius: 16px; }
   .ucx-promo-banner--full { border-radius: 0; }
-  .ucx-promo-banner-cta { padding: 11px 18px 11px 20px; right: 14px; bottom: 14px; }
+  .ucx-promo-banner-cta { padding: 11px 18px 11px 20px; bottom: 14px; }
 }
