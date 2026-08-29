@@ -96,7 +96,15 @@
    Ecosystem.tsx (which assumes uniform vw-wide slots) lines up with what's
    actually on screen. Capping the panel's own width used to desync the
    progress rail from the visible pillar by a step. */
-.ucx-eco-panel.intro { text-align: center; }
+.ucx-eco-panel.intro {
+  text-align: center;
+  /* This panel's own copy is short, so centering it in the full 100vh
+     pinned viewport (like the pillar panels, which are filled by an
+     image) leaves a large empty gap above it right after the About
+     Us section. Anchor it near the top of the viewport instead. */
+  justify-content: flex-start;
+  padding-top: clamp(48px,10vh,110px);
+}
 .ucx-eco-panel.intro .focus-inner { max-width: 780px; margin: 0 auto; }
 .ucx-eco-panel.intro .eyebrow {
   display: inline-flex; align-items: center; gap: 10px;
