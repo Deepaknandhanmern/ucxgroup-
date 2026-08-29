@@ -144,35 +144,26 @@
 }
 .ucx-labhero .network-svg { position: relative; z-index: 1; width: 100%; height: 100%; overflow: visible; }
 
-.ucx-labhero .net-edges line {
-  stroke: rgba(145,242,181,.28);
-  stroke-width: 1;
+.ucx-labhero .net-edge {
+  stroke: #91F2B5;
+  stroke-width: .7;
 }
 .ucx-labhero .net-pointer-line {
   stroke: #91F2B5;
   stroke-width: 1.4;
   opacity: 0;
-  animation: netFadeIn .25s var(--ease) forwards;
+  transition: opacity .2s var(--ease);
 }
 .ucx-labhero .net-node {
   fill: #91F2B5;
-  opacity: .85;
-  transform-box: fill-box;
-  transform-origin: center;
-  transition: r .25s var(--ease), fill .25s var(--ease), opacity .25s var(--ease);
-  animation: netDrift 7s ease-in-out infinite;
+  transition: fill .2s var(--ease);
 }
-.ucx-labhero .net-node.is-near { fill: #FFFFFF; opacity: 1; }
+.ucx-labhero .net-node.is-near { fill: #FFFFFF; opacity: 1 !important; r: 6; }
 .ucx-labhero .net-pointer-dot {
   fill: #FFFFFF;
   opacity: 0;
   filter: drop-shadow(0 0 6px rgba(145,242,181,.8));
-  animation: netFadeIn .25s var(--ease) forwards;
-}
-@keyframes netFadeIn { to { opacity: 1; } }
-@keyframes netDrift {
-  0%, 100% { transform: translate(0,0); }
-  50% { transform: translate(3px,-4px); }
+  transition: opacity .2s var(--ease);
 }
 
 .ucx-labhero .scroll-cue {

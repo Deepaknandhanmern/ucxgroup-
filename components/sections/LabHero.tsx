@@ -7,100 +7,232 @@ const TAGS = ["AEC Innovation", "Digital Solutions", "Co-Creation"];
 const TITLE_WORDS = ["What", "Can", "We", "Build", "Together?"];
 const SUBTITLE = "Exploring practical solutions to real-world AEC challenges.";
 
-// ---------- interactive collaboration network ----------
-// A loose graph of nodes representing people/ideas coming together — nodes
-// near the pointer light up and draw a live connection to it, echoing the
-// "bring expertise together" idea the Lab is actually about.
+// ---------- interactive collaboration sphere ----------
+// A rotating geodesic wireframe — a subdivided icosahedron, the same
+// construction behind a Japanese kusudama origami ball's faceted panels —
+// standing in for many pieces of expertise assembling into one whole.
+// Nodes near the pointer light up and draw a live connection to it.
 const NET_VB = 360;
-interface NetNode { id: number; x: number; y: number }
-const NET_NODES: NetNode[] = [
-  { id: 0, x: 70, y: 60 },
-  { id: 1, x: 180, y: 40 },
-  { id: 2, x: 290, y: 80 },
-  { id: 3, x: 130, y: 130 },
-  { id: 4, x: 250, y: 160 },
-  { id: 5, x: 60, y: 200 },
-  { id: 6, x: 180, y: 220 },
-  { id: 7, x: 300, y: 240 },
-  { id: 8, x: 110, y: 290 },
-  { id: 9, x: 230, y: 310 },
-  { id: 10, x: 40, y: 320 },
-];
-const NET_EDGES: [number, number][] = [
-  [0, 1], [1, 2], [0, 3], [1, 3], [3, 4], [2, 4], [3, 5], [3, 6],
-  [4, 6], [4, 7], [5, 6], [6, 7], [5, 8], [6, 8], [6, 9], [7, 9], [8, 9], [8, 10],
-];
-const NET_RADIUS = 110;
+const SPHERE_RADIUS = 128;
+const PERSPECTIVE = 3.2;
+const TILT = 0.45;
+const HOVER_RADIUS = 46;
+const ROTATION_SPEED = 0.0026;
+
+type Vec3 = [number, number, number];
+
+function normalize([x, y, z]: Vec3): Vec3 {
+  const len = Math.sqrt(x * x + y * y + z * z) || 1;
+  return [x / len, y / len, z / len];
+}
+
+// Icosahedron (12 verts / 20 faces) subdivided once into a 42-vertex,
+// 80-face geodesic sphere — dense enough to read as many small facets,
+// like a kusudama ball, rather than a plain low-poly shape.
+function buildGeodesicSphere(): { vertices: Vec3[]; edges: [number, number][] } {
+  const t = (1 + Math.sqrt(5)) / 2;
+  const vertices: Vec3[] = (
+    [
+      [-1, t, 0], [1, t, 0], [-1, -t, 0], [1, -t, 0],
+      [0, -1, t], [0, 1, t], [0, -1, -t], [0, 1, -t],
+      [t, 0, -1], [t, 0, 1], [-t, 0, -1], [-t, 0, 1],
+    ] as Vec3[]
+  ).map(normalize);
+
+  const baseFaces: [number, number, number][] = [
+    [0, 11, 5], [0, 5, 1], [0, 1, 7], [0, 7, 10], [0, 10, 11],
+    [1, 5, 9], [5, 11, 4], [11, 10, 2], [10, 7, 6], [7, 1, 8],
+    [3, 9, 4], [3, 4, 2], [3, 2, 6], [3, 6, 8], [3, 8, 9],
+    [4, 9, 5], [2, 4, 11], [6, 2, 10], [8, 6, 7], [9, 8, 1],
+  ];
+
+  const midpointCache = new Map<string, number>();
+  function midpoint(a: number, b: number): number {
+    const key = a < b ? `${a}-${b}` : `${b}-${a}`;
+    const cached = midpointCache.get(key);
+    if (cached !== undefined) return cached;
+    const va = vertices[a];
+    const vb = vertices[b];
+    vertices.push(normalize([(va[0] + vb[0]) / 2, (va[1] + vb[1]) / 2, (va[2] + vb[2]) / 2]));
+    const index = vertices.length - 1;
+    midpointCache.set(key, index);
+    return index;
+  }
+
+  const faces: [number, number, number][] = [];
+  for (const [a, b, c] of baseFaces) {
+    const ab = midpoint(a, b);
+    const bc = midpoint(b, c);
+    const ca = midpoint(c, a);
+    faces.push([a, ab, ca], [b, bc, ab], [c, ca, bc], [ab, bc, ca]);
+  }
+
+  const edgeSet = new Set<string>();
+  const edges: [number, number][] = [];
+  for (const [a, b, c] of faces) {
+    for (const [x, y] of [[a, b], [b, c], [c, a]] as [number, number][]) {
+      const key = x < y ? `${x}-${y}` : `${y}-${x}`;
+      if (!edgeSet.has(key)) {
+        edgeSet.add(key);
+        edges.push(x < y ? [x, y] : [y, x]);
+      }
+    }
+  }
+
+  return { vertices, edges };
+}
+
+function project(v: Vec3, angle: number): { x: number; y: number; z: number } {
+  const cosA = Math.cos(angle);
+  const sinA = Math.sin(angle);
+  const x1 = v[0] * cosA - v[2] * sinA;
+  const z1 = v[0] * sinA + v[2] * cosA;
+  const cosT = Math.cos(TILT);
+  const sinT = Math.sin(TILT);
+  const y2 = v[1] * cosT - z1 * sinT;
+  const z2 = v[1] * sinT + z1 * cosT;
+  const f = PERSPECTIVE / (PERSPECTIVE + z2);
+  return { x: NET_VB / 2 + x1 * SPHERE_RADIUS * f, y: NET_VB / 2 + y2 * SPHERE_RADIUS * f, z: z2 };
+}
 
 function CollabNetwork() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
-  const rafRef = useRef<number | null>(null);
-  const [pointer, setPointer] = useState<{ x: number; y: number } | null>(null);
+  const groupRef = useRef<SVGGElement>(null);
+  const pointerRef = useRef<{ x: number; y: number } | null>(null);
 
   useEffect(() => {
-    const wrap = wrapRef.current;
     const svg = svgRef.current;
-    if (!wrap || !svg) return;
-    if (!window.matchMedia("(pointer: fine)").matches) return;
+    const group = groupRef.current;
+    const wrap = wrapRef.current;
+    if (!svg || !group || !wrap) return;
+
+    const { vertices, edges } = buildGeodesicSphere();
+    const NS = "http://www.w3.org/2000/svg";
+
+    const edgeEls = edges.map(() => {
+      const line = document.createElementNS(NS, "line");
+      line.setAttribute("class", "net-edge");
+      group.appendChild(line);
+      return line;
+    });
+    const nodeEls = vertices.map(() => {
+      const c = document.createElementNS(NS, "circle");
+      c.setAttribute("class", "net-node");
+      group.appendChild(c);
+      return c;
+    });
+    const pointerLineEls = vertices.map(() => {
+      const line = document.createElementNS(NS, "line");
+      line.setAttribute("class", "net-pointer-line");
+      group.appendChild(line);
+      return line;
+    });
+    const pointerDot = document.createElementNS(NS, "circle");
+    pointerDot.setAttribute("class", "net-pointer-dot");
+    pointerDot.setAttribute("r", "5");
+    group.appendChild(pointerDot);
+
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let angle = 0;
+    let raf = 0;
+
+    function draw() {
+      const projected = vertices.map((v) => project(v, angle));
+
+      edges.forEach(([a, b], i) => {
+        const pa = projected[a];
+        const pb = projected[b];
+        const el = edgeEls[i];
+        el.setAttribute("x1", String(pa.x));
+        el.setAttribute("y1", String(pa.y));
+        el.setAttribute("x2", String(pb.x));
+        el.setAttribute("y2", String(pb.y));
+        el.setAttribute("opacity", String(0.1 + ((pa.z + pb.z) / 2 + 1) * 0.14));
+      });
+
+      projected.forEach((p, i) => {
+        const el = nodeEls[i];
+        el.setAttribute("cx", String(p.x));
+        el.setAttribute("cy", String(p.y));
+        el.setAttribute("r", String(1.6 + (p.z + 1) * 1.3));
+        if (!el.classList.contains("is-near")) {
+          el.setAttribute("opacity", String(0.3 + (p.z + 1) * 0.28));
+        }
+      });
+
+      const pointer = pointerRef.current;
+      projected.forEach((p, i) => {
+        const nodeEl = nodeEls[i];
+        const lineEl = pointerLineEls[i];
+        const isNear = !!pointer && Math.hypot(p.x - pointer.x, p.y - pointer.y) < HOVER_RADIUS;
+        nodeEl.classList.toggle("is-near", isNear);
+        if (isNear && pointer) {
+          lineEl.setAttribute("x1", String(pointer.x));
+          lineEl.setAttribute("y1", String(pointer.y));
+          lineEl.setAttribute("x2", String(p.x));
+          lineEl.setAttribute("y2", String(p.y));
+          lineEl.style.opacity = "1";
+        } else {
+          lineEl.style.opacity = "0";
+        }
+      });
+      if (pointer) {
+        pointerDot.setAttribute("cx", String(pointer.x));
+        pointerDot.setAttribute("cy", String(pointer.y));
+        pointerDot.style.opacity = "1";
+      } else {
+        pointerDot.style.opacity = "0";
+      }
+    }
+
+    function frame() {
+      angle += ROTATION_SPEED;
+      draw();
+      raf = requestAnimationFrame(frame);
+    }
+
+    if (reduce) {
+      draw();
+    } else {
+      raf = requestAnimationFrame(frame);
+    }
 
     function onMove(e: PointerEvent) {
-      if (rafRef.current) return;
-      rafRef.current = requestAnimationFrame(() => {
-        const r = svg!.getBoundingClientRect();
-        setPointer({
-          x: ((e.clientX - r.left) / r.width) * NET_VB,
-          y: ((e.clientY - r.top) / r.height) * NET_VB,
-        });
-        rafRef.current = null;
-      });
+      const r = svg!.getBoundingClientRect();
+      pointerRef.current = {
+        x: ((e.clientX - r.left) / r.width) * NET_VB,
+        y: ((e.clientY - r.top) / r.height) * NET_VB,
+      };
+      if (reduce) draw();
     }
     function onLeave() {
-      setPointer(null);
+      pointerRef.current = null;
+      if (reduce) draw();
     }
 
-    wrap.addEventListener("pointermove", onMove, { passive: true });
-    wrap.addEventListener("pointerleave", onLeave);
+    const pointerFine = window.matchMedia("(pointer: fine)").matches;
+    if (pointerFine) {
+      wrap.addEventListener("pointermove", onMove, { passive: true });
+      wrap.addEventListener("pointerleave", onLeave);
+    }
+
     return () => {
+      if (raf) cancelAnimationFrame(raf);
       wrap.removeEventListener("pointermove", onMove);
       wrap.removeEventListener("pointerleave", onLeave);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      edgeEls.forEach((el) => el.remove());
+      nodeEls.forEach((el) => el.remove());
+      pointerLineEls.forEach((el) => el.remove());
+      pointerDot.remove();
     };
   }, []);
-
-  const near = pointer
-    ? NET_NODES.filter((n) => Math.hypot(n.x - pointer.x, n.y - pointer.y) < NET_RADIUS)
-    : [];
-  const nearIds = new Set(near.map((n) => n.id));
 
   return (
     <div className="network-wrap" ref={wrapRef}>
       <div className="network-glow"></div>
       <svg ref={svgRef} viewBox={`0 0 ${NET_VB} ${NET_VB}`} className="network-svg" aria-hidden="true">
-        <g className="net-edges">
-          {NET_EDGES.map(([a, b], i) => {
-            const na = NET_NODES[a];
-            const nb = NET_NODES[b];
-            return <line key={i} x1={na.x} y1={na.y} x2={nb.x} y2={nb.y} />;
-          })}
-        </g>
-        {pointer &&
-          near.map((n) => (
-            <line key={`p-${n.id}`} className="net-pointer-line" x1={pointer.x} y1={pointer.y} x2={n.x} y2={n.y} />
-          ))}
-        <g className="net-nodes">
-          {NET_NODES.map((n, i) => (
-            <circle
-              key={n.id}
-              className={`net-node${nearIds.has(n.id) ? " is-near" : ""}`}
-              cx={n.x}
-              cy={n.y}
-              r={nearIds.has(n.id) ? 7 : 4.5}
-              style={{ animationDelay: `${(i % 6) * -1.3}s` }}
-            />
-          ))}
-        </g>
-        {pointer && <circle className="net-pointer-dot" cx={pointer.x} cy={pointer.y} r="5" />}
+        <g ref={groupRef}></g>
       </svg>
     </div>
   );
