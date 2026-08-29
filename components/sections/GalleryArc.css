@@ -18,7 +18,7 @@
   font-family: 'Atyp Display','Helvetica Neue',Arial,sans-serif;
   overflow: hidden;
   isolation: isolate;
-  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
+  padding: calc(var(--ucx-section-gap) / 2) clamp(20px,6vw,80px);
 }
 .ucx-gallery-arc * { box-sizing: border-box; }
 

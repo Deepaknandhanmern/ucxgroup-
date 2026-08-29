@@ -51,7 +51,7 @@
 
 .ucx-model .wrapper {
   max-width: 1240px; margin: 0 auto;
-  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
+  padding: calc(var(--ucx-section-gap) / 2) clamp(20px,6vw,80px);
 }
 
 .ucx-model .head { max-width: 700px; margin-bottom: clamp(56px,7vw,88px); }

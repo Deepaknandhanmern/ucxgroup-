@@ -41,7 +41,7 @@
 .ucx-interiors .wrapper {
   position: relative; z-index: 1;
   max-width: 1200px; margin: 0 auto;
-  padding: clamp(14px,1.6vw,20px) clamp(20px,6vw,80px) var(--ucx-section-gap);
+  padding: clamp(14px,1.6vw,20px) clamp(20px,6vw,80px) calc(var(--ucx-section-gap) / 2);
 }
 /* The testimonials heading sits in its own wrapper instance, immediately
    followed by the full-bleed .tm-marquee — the shared bottom padding above

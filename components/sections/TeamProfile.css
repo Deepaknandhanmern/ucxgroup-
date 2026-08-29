@@ -29,6 +29,23 @@
     repeating-linear-gradient(90deg, rgba(145,242,181,.045) 0 1px, transparent 1px 8.333%),
     repeating-linear-gradient(0deg, rgba(145,242,181,.045) 0 1px, transparent 1px 120px);
 }
+.ucx-team-profile .profile-hero .grid-glow {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, rgba(145,242,181,.30) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, rgba(145,242,181,.30) 0 1px, transparent 1px 120px);
+  opacity: 0;
+  transition: opacity .5s var(--ease);
+  -webkit-mask-image: radial-gradient(280px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
+          mask-image: radial-gradient(280px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
+}
+.ucx-team-profile .profile-hero.is-hot .grid-glow { opacity: 1; }
+.ucx-team-profile .profile-hero .cursor-haze {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  opacity: 0; transition: opacity .6s var(--ease);
+  background: radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.07), transparent 70%);
+}
+.ucx-team-profile .profile-hero.is-hot .cursor-haze { opacity: 1; }
 .ucx-team-profile .profile-hero-inner {
   position: relative; max-width: 1100px; margin: 0 auto; padding: 0 clamp(20px,6vw,80px);
 }
@@ -77,7 +94,7 @@
 .ucx-team-profile .profile-cta--ghost:hover { border-color: var(--accent); background: rgba(145,242,181,.08); }
 
 /* ---- rest of team / closing ---- */
-.ucx-team-profile .wrapper { max-width: 1000px; margin: 0 auto; padding: var(--ucx-section-gap) clamp(20px,6vw,80px); }
+.ucx-team-profile .wrapper { max-width: 1000px; margin: 0 auto; padding: calc(var(--ucx-section-gap) / 2) clamp(20px,6vw,80px); }
 .ucx-team-profile .sub-eyebrow {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   font-size: 12.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--dark);

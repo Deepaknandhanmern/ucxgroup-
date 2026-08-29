@@ -1,3 +1,7 @@
+"use client";
+
+import { useCursorGlow } from "@/components/ui/useCursorGlow";
+
 export interface LegalSection {
   heading: string;
   body: string[];
@@ -14,9 +18,13 @@ export default function LegalPage({
   intro: string;
   sections: LegalSection[];
 }) {
+  const glowRef = useCursorGlow<HTMLDivElement>();
+
   return (
-    <div className="ucx-legal">
+    <div className="ucx-legal" ref={glowRef}>
       <div className="grid-overlay" aria-hidden="true"></div>
+      <div className="grid-glow" aria-hidden="true"></div>
+      <div className="cursor-haze" aria-hidden="true"></div>
       <div className="wrapper">
         <span className="eyebrow">Legal</span>
         <h1>{title}</h1>

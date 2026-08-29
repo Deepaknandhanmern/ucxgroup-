@@ -33,9 +33,46 @@ export default function OurApproach() {
     return () => io.disconnect();
   }, []);
 
+  useEffect(() => {
+    const sect = sectRef.current;
+    if (!sect) return;
+    let pending = false;
+    let px = 0;
+    let py = 0;
+    function onPointerMove(e: PointerEvent) {
+      const b = sect!.getBoundingClientRect();
+      px = e.clientX - b.left;
+      py = e.clientY - b.top;
+      if (!pending) {
+        pending = true;
+        requestAnimationFrame(() => {
+          sect!.style.setProperty("--mx", px + "px");
+          sect!.style.setProperty("--my", py + "px");
+          pending = false;
+        });
+      }
+    }
+    function onPointerEnter() {
+      sect!.classList.add("is-hot");
+    }
+    function onPointerLeave() {
+      sect!.classList.remove("is-hot");
+    }
+    sect.addEventListener("pointermove", onPointerMove, { passive: true });
+    sect.addEventListener("pointerenter", onPointerEnter);
+    sect.addEventListener("pointerleave", onPointerLeave);
+    return () => {
+      sect.removeEventListener("pointermove", onPointerMove);
+      sect.removeEventListener("pointerenter", onPointerEnter);
+      sect.removeEventListener("pointerleave", onPointerLeave);
+    };
+  }, []);
+
   return (
     <div className="ucx-approach" id="approach" ref={sectRef}>
       <div className="grid-overlay" aria-hidden="true"></div>
+      <div className="grid-glow" aria-hidden="true"></div>
+      <div className="cursor-haze" aria-hidden="true"></div>
       <div className="wrapper">
         <div className="approach-copy" data-reveal>
           <span className="eyebrow">A Different Way to Deliver</span>

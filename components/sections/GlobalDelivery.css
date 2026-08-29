@@ -48,7 +48,7 @@
 .ucx-global .wrapper {
   position: relative; z-index: 1;
   max-width: 1200px; margin: 0 auto;
-  padding: clamp(90px,9vw,140px) clamp(20px,6vw,80px) var(--ucx-section-gap);
+  padding: clamp(90px,9vw,140px) clamp(20px,6vw,80px) calc(var(--ucx-section-gap) / 2);
 }
 
 .ucx-global .head,

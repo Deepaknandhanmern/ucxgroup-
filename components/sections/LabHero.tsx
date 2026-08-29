@@ -254,7 +254,7 @@ const STAGES: Stage[] = [
 
 export default function LabHero() {
   const rootRef = useRef<HTMLDivElement>(null);
-  const heroBandRef = useRef<HTMLDivElement>(null);
+  const heroGlowRef = useCursorGlow<HTMLDivElement>();
   const bodyGlowRef = useCursorGlow<HTMLDivElement>();
   const [visibleWords, setVisibleWords] = useState(0);
   const [restVisible, setRestVisible] = useState(false);
@@ -301,7 +301,7 @@ export default function LabHero() {
   }, []);
 
   function scrollToNext() {
-    const band = heroBandRef.current;
+    const band = heroGlowRef.current;
     const next = band?.nextElementSibling;
     if (next) next.scrollIntoView({ behavior: "smooth", block: "start" });
   }
@@ -309,8 +309,10 @@ export default function LabHero() {
   return (
     <div className="ucx-labhero" id="overview" ref={rootRef}>
       {/* ---------- hero band: full-bleed, dark ---------- */}
-      <div className="hero-band" ref={heroBandRef}>
+      <div className="hero-band" ref={heroGlowRef}>
         <div className="grid-overlay"></div>
+        <div className="grid-glow"></div>
+        <div className="cursor-haze"></div>
         <div className="aura"></div>
         <div className="vignette"></div>
 

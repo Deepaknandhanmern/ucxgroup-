@@ -67,13 +67,13 @@
   background: var(--bg);
   color: var(--accent);
   overflow: hidden;
-  padding: clamp(90px,9vw,140px) 0 var(--ucx-section-gap);
+  padding: clamp(90px,9vw,140px) 0 calc(var(--ucx-section-gap) / 2);
 }
 
 .ucx-experience .wrapper {
   position: relative; z-index: 1;
   max-width: 1200px; margin: 0 auto;
-  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
+  padding: calc(var(--ucx-section-gap) / 2) clamp(20px,6vw,80px);
 }
 
 /* ---- hero ---- */

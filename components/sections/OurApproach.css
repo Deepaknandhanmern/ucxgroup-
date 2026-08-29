@@ -6,6 +6,7 @@
   --accent-dim: rgba(145,242,181,0.55);
   --line: rgba(0,53,45,0.2);
   --line-soft: rgba(0,53,45,.03);
+  --line-glow: rgba(145,242,181,0.45);
   --cream: #F3F1E6;
   --ease: cubic-bezier(.16,.84,.36,1);
 
@@ -27,6 +28,23 @@
     repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 120px);
   opacity: 1;
 }
+.ucx-approach .grid-glow {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-glow) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, var(--line-glow) 0 1px, transparent 1px 120px);
+  opacity: 0;
+  transition: opacity .5s var(--ease);
+  -webkit-mask-image: radial-gradient(240px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
+          mask-image: radial-gradient(240px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
+}
+.ucx-approach.is-hot .grid-glow { opacity: 1; }
+.ucx-approach .cursor-haze {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  opacity: 0; transition: opacity .6s var(--ease);
+  background: radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.1), transparent 70%);
+}
+.ucx-approach.is-hot .cursor-haze { opacity: 1; }
 
 .ucx-approach [data-reveal] {
   opacity: 0; transform: translateY(24px);
@@ -37,7 +55,7 @@
 .ucx-approach .wrapper {
   position: relative; z-index: 1;
   max-width: 1280px; margin: 0 auto;
-  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
+  padding: calc(var(--ucx-section-gap) / 2) clamp(20px,6vw,80px);
   display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(40px,6vw,72px);
   align-items: center;
 }

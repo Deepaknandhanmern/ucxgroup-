@@ -47,6 +47,7 @@ export default function CompanyHero() {
     <div className="ucx-companyhero" id="overview" ref={sectRef}>
       <div className="grid-overlay"></div>
       <div className="grid-glow"></div>
+      <div className="cursor-haze"></div>
 
       <div className="wrapper">
         <div className="hero-copy">

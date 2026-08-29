@@ -52,7 +52,7 @@
 .ucx-svc .wrapper {
   position: relative; z-index: 1;
   max-width: 1240px; margin: 0 auto;
-  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
+  padding: calc(var(--ucx-section-gap) / 2) clamp(20px,6vw,80px);
 }
 
 .ucx-svc .head { margin-bottom: 56px; opacity: 0; animation: svcFadeUp .9s var(--ease) forwards; }

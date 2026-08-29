@@ -324,9 +324,46 @@ export default function Hero() {
     };
   }, []);
 
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+    let pending = false;
+    let px = 0;
+    let py = 0;
+    function onPointerMove(e: PointerEvent) {
+      const b = hero!.getBoundingClientRect();
+      px = e.clientX - b.left;
+      py = e.clientY - b.top;
+      if (!pending) {
+        pending = true;
+        requestAnimationFrame(() => {
+          hero!.style.setProperty("--mx", px + "px");
+          hero!.style.setProperty("--my", py + "px");
+          pending = false;
+        });
+      }
+    }
+    function onPointerEnter() {
+      hero!.classList.add("is-hot");
+    }
+    function onPointerLeave() {
+      hero!.classList.remove("is-hot");
+    }
+    hero.addEventListener("pointermove", onPointerMove, { passive: true });
+    hero.addEventListener("pointerenter", onPointerEnter);
+    hero.addEventListener("pointerleave", onPointerLeave);
+    return () => {
+      hero.removeEventListener("pointermove", onPointerMove);
+      hero.removeEventListener("pointerenter", onPointerEnter);
+      hero.removeEventListener("pointerleave", onPointerLeave);
+    };
+  }, []);
+
   return (
     <div className="ucx-hero" id="hero" ref={heroRef}>
       <div className="grid-overlay"></div>
+      <div className="grid-glow"></div>
+      <div className="cursor-haze"></div>
       <div className="aura"></div>
       <div className="vignette"></div>
       <div className="noise"></div>

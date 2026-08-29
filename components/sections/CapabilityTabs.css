@@ -17,7 +17,7 @@
 
 .ucx-captabs .wrapper {
   max-width: 1200px; margin: 0 auto;
-  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
+  padding: calc(var(--ucx-section-gap) / 2) clamp(20px,6vw,80px);
 }
 
 /* ---- embedded mode: nested inside another section's own wrapper (e.g.

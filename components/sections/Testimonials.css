@@ -4,6 +4,7 @@
   --accent-dim: rgba(145,242,181,0.55);
   --line: rgba(145,242,181,0.18);
   --line-soft: rgba(145,242,181,0.05);
+  --line-glow: rgba(145,242,181,0.30);
   --cream: #F3F1E6;
   --ease: cubic-bezier(.16,.84,.36,1);
 
@@ -23,6 +24,23 @@
     repeating-linear-gradient(0deg, var(--line-soft) 0 1px, transparent 1px 120px);
   opacity: .5;
 }
+.ucx-testimonials .grid-glow {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    repeating-linear-gradient(90deg, var(--line-glow) 0 1px, transparent 1px 8.333%),
+    repeating-linear-gradient(0deg, var(--line-glow) 0 1px, transparent 1px 120px);
+  opacity: 0;
+  transition: opacity .5s var(--ease);
+  -webkit-mask-image: radial-gradient(320px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
+          mask-image: radial-gradient(320px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
+}
+.ucx-testimonials.is-hot .grid-glow { opacity: 1; }
+.ucx-testimonials .cursor-haze {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  opacity: 0; transition: opacity .6s var(--ease);
+  background: radial-gradient(320px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.07), transparent 70%);
+}
+.ucx-testimonials.is-hot .cursor-haze { opacity: 1; }
 
 .ucx-testimonials [data-reveal] {
   opacity: 0; transform: translateY(16px);

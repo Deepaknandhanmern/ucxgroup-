@@ -43,6 +43,7 @@ export interface CapabilityPageProps {
 
 export default function CapabilityPage({ index, eyebrow, title, intro, items, process, heroMotif, heroImage, related, children, faqs }: CapabilityPageProps) {
   const sectRef = useRef<HTMLDivElement>(null);
+  const heroGlowRef = useCursorGlow<HTMLDivElement>();
   const bodyGlowRef = useCursorGlow<HTMLDivElement>();
   const closingCtaRef = useMagnetic<HTMLAnchorElement>();
   const [imgOk, setImgOk] = useState(true);
@@ -95,8 +96,10 @@ export default function CapabilityPage({ index, eyebrow, title, intro, items, pr
     <div className="ucx-cap" ref={sectRef}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
       {/* ---------- hero: its own dark band, matching Hero.css ---------- */}
-      <div className="hero-band">
+      <div className="hero-band" ref={heroGlowRef}>
         <div className="grid-overlay"></div>
+        <div className="grid-glow"></div>
+        <div className="cursor-haze"></div>
         <div className="hero">
           <div className="hero-copy" data-reveal>
             <Breadcrumbs
@@ -124,28 +127,17 @@ export default function CapabilityPage({ index, eyebrow, title, intro, items, pr
           </div>
         </div>
 
-        {/* ---------- process band: scrolling marquee anchored to the
-            bottom of the hero, same mechanic as the homepage hero's
-            marquee (duplicated track, translateX(-50%) loop, pause on
-            hover) and same dark hero background — not a separate section.
-            The animated track is aria-hidden since a screen reader
-            shouldn't read a scrolling, duplicated list — the plain
-            sr-only text carries the content. */}
+        {/* ---------- process band: static strip anchored to the bottom of
+            the hero, same dark hero background — not a separate section.
+            Same visual language as before (outlined uppercase steps, solid
+            arrows, hairline top edge) but fixed in place, not scrolling. */}
         <div className="band" data-reveal>
-          <span className="sr-only">
-            Process: {process[0]} &rarr; {process[1]} &rarr; {process[2]}
-          </span>
-          <div className="band-track" aria-hidden="true">
-            {[0, 1].map((rep) => (
-              <span className="band-group" key={rep}>
-                <span className="band-step">{process[0]}</span>
-                <span className="band-arrow">&rarr;</span>
-                <span className="band-step">{process[1]}</span>
-                <span className="band-arrow">&rarr;</span>
-                <span className="band-step">{process[2]}</span>
-                <span className="band-arrow">&rarr;</span>
-              </span>
-            ))}
+          <div className="band-track">
+            <span className="band-step">{process[0]}</span>
+            <span className="band-arrow">&rarr;</span>
+            <span className="band-step">{process[1]}</span>
+            <span className="band-arrow">&rarr;</span>
+            <span className="band-step">{process[2]}</span>
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import type { TeamMember } from "@/lib/team";
+import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
 function ProfilePhoto({ src, alt, initials }: { src: string; alt: string; initials: string }) {
   const [ok, setOk] = useState(true);
@@ -14,11 +15,14 @@ function ProfilePhoto({ src, alt, initials }: { src: string; alt: string; initia
 
 export default function TeamProfile({ member, others }: { member: TeamMember; others: TeamMember[] }) {
   const firstName = member.name.split(" ")[0];
+  const heroGlowRef = useCursorGlow<HTMLDivElement>();
 
   return (
     <div className="ucx-team-profile">
-      <div className="profile-hero">
+      <div className="profile-hero" ref={heroGlowRef}>
         <div className="grid-overlay"></div>
+        <div className="grid-glow"></div>
+        <div className="cursor-haze"></div>
         <div className="profile-hero-inner">
           <Breadcrumbs
             variant="dark"

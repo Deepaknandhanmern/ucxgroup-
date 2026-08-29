@@ -62,7 +62,7 @@
 .ucx-labpromo .wrapper {
   position: relative; z-index: 1;
   max-width: 1160px; margin: 0 auto;
-  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
+  padding: calc(var(--ucx-section-gap) / 2) clamp(20px,6vw,80px);
   display: grid;
   grid-template-columns: 1.15fr .85fr;
   align-items: center;
@@ -116,31 +116,99 @@
 .ucx-labpromo .cta:hover { transform: translateY(-3px); box-shadow: 0 22px 40px -14px rgba(0,53,45,.55); }
 .ucx-labpromo .cta:hover .cta-icon { transform: translateX(3px); }
 
-/* ---- orbit graphic ---- */
+/* ---- blueprint graphic ----
+   the motion tells the story of the section: a building sketches itself in
+   like a blueprint being drawn — the outline first, then the facade grid,
+   rooftop sensors and a called-out prefab module filling in behind it — then
+   softly resets and redraws, on a steady 7s loop. the four callouts around it
+   are static, hoverable annotations tied to the tags on the left; each leader
+   line points at the feature its discipline actually builds. */
 .ucx-labpromo .lp-graphic { display: flex; align-items: center; justify-content: center; }
 .ucx-labpromo .orbit-svg { width: min(100%, 320px); height: auto; overflow: visible; }
-.ucx-labpromo .orbit-ring { fill: none; stroke: rgba(0,53,45,.22); stroke-width: 1; stroke-dasharray: 2 6; }
-.ucx-labpromo .orbit-spin-slow { transform-origin: 160px 160px; animation: lpSpin 34s linear infinite; }
-.ucx-labpromo .orbit-spin-rev { transform-origin: 160px 160px; animation: lpSpin 26s linear infinite reverse; }
-.ucx-labpromo .node { fill: var(--accent); animation: lpNodePulse 2.6s ease-in-out infinite; transition: r .3s var(--ease), fill .3s var(--ease); }
-.ucx-labpromo .orbit-core {
+
+.ucx-labpromo .blueprint-ground { stroke: rgba(0,53,45,.22); stroke-width: 1; }
+
+.ucx-labpromo .blueprint-outline {
+  fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-dasharray: 1;
+  animation: lpDraw 7s ease-in-out infinite;
+}
+.ucx-labpromo .blueprint-window {
+  fill: var(--accent); opacity: 0;
+  transform-box: fill-box; transform-origin: center;
+  animation: lpFill 7s ease-in-out infinite;
+}
+.ucx-labpromo .blueprint-mast {
+  stroke: var(--accent); stroke-width: 1.4; opacity: 0;
+  animation: lpMastFade 7s ease-in-out infinite;
+}
+.ucx-labpromo .blueprint-sensor-dot {
   fill: var(--accent);
-  filter: drop-shadow(0 12px 24px rgba(0,53,45,.35));
+  transform-box: fill-box; transform-origin: center;
+  animation: lpSensor 7s ease-in-out infinite;
 }
-.ucx-labpromo .orbit-mark {
+.ucx-labpromo .blueprint-module {
+  fill: none; stroke: var(--accent); stroke-width: 1.4; stroke-dasharray: 4 3; opacity: 0;
+  animation: lpModuleFade 7s ease-in-out infinite;
+}
+.ucx-labpromo .blueprint-stamp {
+  fill: var(--accent);
+  filter: drop-shadow(0 10px 20px rgba(0,53,45,.3));
+}
+.ucx-labpromo .blueprint-stamp-mark {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
-  font-size: 30px; fill: var(--white);
-}
-@keyframes lpSpin { to { transform: rotate(360deg); } }
-@keyframes lpNodePulse {
-  0%, 100% { opacity: .55; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.35); }
+  font-size: 18px; fill: var(--white);
 }
 
-/* ---- interactive orbit nodes, synced with the tags on the left ---- */
+@keyframes lpDraw {
+  0% { stroke-dashoffset: 1; opacity: .95; }
+  30% { stroke-dashoffset: 0; opacity: .95; }
+  82% { stroke-dashoffset: 0; opacity: .95; }
+  93% { opacity: 0; }
+  95% { stroke-dashoffset: 1; opacity: 0; }
+  100% { stroke-dashoffset: 1; opacity: .95; }
+}
+@keyframes lpFill {
+  0%, 30% { opacity: 0; transform: scale(.35); }
+  42% { opacity: 1; transform: scale(1); }
+  80% { opacity: 1; transform: scale(1); }
+  92%, 100% { opacity: 0; transform: scale(.35); }
+}
+@keyframes lpMastFade {
+  0%, 32% { opacity: 0; }
+  44% { opacity: .8; }
+  80% { opacity: .8; }
+  92%, 100% { opacity: 0; }
+}
+@keyframes lpSensor {
+  0%, 34% { opacity: 0; transform: scale(.4); }
+  46% { opacity: 1; transform: scale(1.3); }
+  50% { opacity: 1; transform: scale(1); }
+  78% { opacity: 1; }
+  90%, 100% { opacity: 0; transform: scale(.4); }
+}
+@keyframes lpModuleFade {
+  0%, 40% { opacity: 0; }
+  52% { opacity: .9; }
+  80% { opacity: .9; }
+  92%, 100% { opacity: 0; }
+}
+
+/* ---- interactive callouts, synced with the tags on the left ---- */
 .ucx-labpromo .orbit-node { cursor: pointer; outline: none; }
 .ucx-labpromo .node-hit { fill: transparent; }
-.ucx-labpromo .orbit-node .node { animation: none; opacity: .7; }
+.ucx-labpromo .orbit-connector {
+  stroke: var(--accent); stroke-width: 1; stroke-dasharray: 3 5; opacity: .28;
+  transition: opacity .3s var(--ease), stroke-dasharray .3s var(--ease);
+}
+.ucx-labpromo .orbit-node.is-active .orbit-connector,
+.ucx-labpromo .orbit-node:focus-visible .orbit-connector { opacity: .85; stroke-dasharray: none; }
+.ucx-labpromo .orbit-target {
+  fill: none; stroke: var(--accent); stroke-width: 1.5; opacity: 0;
+  transition: opacity .3s var(--ease);
+}
+.ucx-labpromo .orbit-node.is-active .orbit-target,
+.ucx-labpromo .orbit-node:focus-visible .orbit-target { opacity: .9; animation: lpTargetPulse 1.2s ease-out infinite; }
+.ucx-labpromo .node { fill: var(--accent); opacity: .7; transition: r .3s var(--ease), fill .3s var(--ease), opacity .3s var(--ease); }
 .ucx-labpromo .orbit-node.is-active .node,
 .ucx-labpromo .orbit-node:focus-visible .node { r: 9; fill: var(--white); opacity: 1; }
 .ucx-labpromo .node-label {
@@ -152,10 +220,20 @@
 .ucx-labpromo .orbit-node.is-active .node-label,
 .ucx-labpromo .orbit-node:focus-visible .node-label { opacity: 1; }
 
+@keyframes lpTargetPulse {
+  0% { r: 7; opacity: .9; }
+  100% { r: 16; opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ucx-labpromo *, .ucx-labpromo *::before, .ucx-labpromo *::after {
     animation-duration: .001ms !important; transition-duration: .001ms !important;
   }
+  .ucx-labpromo .blueprint-outline { animation: none; stroke-dashoffset: 0; opacity: .95; }
+  .ucx-labpromo .blueprint-window,
+  .ucx-labpromo .blueprint-mast,
+  .ucx-labpromo .blueprint-sensor-dot,
+  .ucx-labpromo .blueprint-module { animation: none; opacity: 1; transform: scale(1); }
 }
 @media (max-width: 860px) {
   .ucx-labpromo .grid-glow, .ucx-labpromo .cursor-haze { display: none; }

@@ -50,7 +50,7 @@
 .ucx-sectors .wrapper {
   position: relative; z-index: 1;
   max-width: 1160px; margin: 0 auto;
-  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
+  padding: calc(var(--ucx-section-gap) / 2) clamp(20px,6vw,80px);
 }
 
 .ucx-sectors .head { max-width: 640px; margin-bottom: clamp(40px,5vw,56px); }

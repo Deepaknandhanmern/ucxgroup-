@@ -14,7 +14,7 @@
   position: relative; overflow: hidden; isolation: isolate;
 }
 .ucxcs-root *, .ucxcs-root *::before, .ucxcs-root *::after { box-sizing: border-box; }
-.ucxcs { position: relative; z-index: 2; max-width: 1280px; margin: 0 auto; padding: clamp(56px,7vw,110px) clamp(20px,5vw,64px) var(--ucx-section-gap); }
+.ucxcs { position: relative; z-index: 2; max-width: 1280px; margin: 0 auto; padding: clamp(56px,7vw,110px) clamp(20px,5vw,64px) calc(var(--ucx-section-gap) / 2); }
 
 /* ================= BACKGROUND LAYERS ================= */
 .ucxcs__bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }

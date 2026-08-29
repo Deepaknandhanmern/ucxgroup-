@@ -39,12 +39,18 @@
           mask-image: radial-gradient(320px circle at var(--mx,50%) var(--my,50%), #000 0%, rgba(0,0,0,.35) 45%, transparent 72%);
 }
 .ucx-companyhero.is-hot .grid-glow { opacity: 1; }
+.ucx-companyhero .cursor-haze {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  opacity: 0; transition: opacity .6s var(--ease);
+  background: radial-gradient(320px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.07), transparent 70%);
+}
+.ucx-companyhero.is-hot .cursor-haze { opacity: 1; }
 
 .ucx-companyhero .wrapper {
   position: relative; z-index: 1;
   max-width: 1440px; margin: 0 auto;
   width: 100%;
-  padding: clamp(120px,14vw,168px) clamp(20px,6vw,80px) var(--ucx-section-gap);
+  padding: clamp(120px,14vw,168px) clamp(20px,6vw,80px) calc(var(--ucx-section-gap) / 2);
 }
 
 .ucx-companyhero .hero-copy {

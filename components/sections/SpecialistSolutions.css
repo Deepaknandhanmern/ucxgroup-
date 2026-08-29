@@ -50,7 +50,7 @@
 .ucx-special .wrapper {
   position: relative; z-index: 1;
   max-width: 1320px; margin: 0 auto;
-  padding: var(--ucx-section-gap) 0;
+  padding: calc(var(--ucx-section-gap) / 2) 0;
 }
 .ucx-special .head,
 .ucx-special .dots,

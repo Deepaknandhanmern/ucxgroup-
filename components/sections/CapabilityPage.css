@@ -61,19 +61,26 @@
   --accent-dim: rgba(145,242,181,0.55);
   --line: rgba(145,242,181,0.18);
   --line-soft: rgba(145,242,181,0.045);
+  --line-glow: rgba(145,242,181,0.30);
   --cream: #F3F1E6;
 
   position: relative;
+  isolation: isolate;
   background: var(--bg);
   color: var(--accent);
   overflow: hidden;
-  padding: clamp(90px,9vw,140px) 0 var(--ucx-section-gap);
+  padding: clamp(90px,9vw,140px) 0 calc(var(--ucx-section-gap) / 2);
 }
+.ucx-cap .hero-band.is-hot .grid-glow { opacity: 1; }
+.ucx-cap .hero-band .cursor-haze {
+  background: radial-gradient(320px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.07), transparent 70%);
+}
+.ucx-cap .hero-band.is-hot .cursor-haze { opacity: 1; }
 
 .ucx-cap .wrapper {
   position: relative; z-index: 1;
   max-width: 1200px; margin: 0 auto;
-  padding: var(--ucx-section-gap) clamp(20px,6vw,80px);
+  padding: calc(var(--ucx-section-gap) / 2) clamp(20px,6vw,80px);
 }
 
 /* ---- hero ---- */
@@ -138,11 +145,10 @@
   background: radial-gradient(circle at 50% 40%, rgba(145,242,181,.16), transparent 70%);
 }
 
-/* ---- process band: compact scrolling marquee flush into the bottom of
-   the hero band (same bg as the hero, not a separate section) — same
-   visual language as the homepage hero's marquee: outlined/stroke
-   uppercase text, solid-color separators, hairline top edge, mask-faded
-   ends. ---- */
+/* ---- process band: static strip flush into the bottom of the hero band
+   (same bg as the hero, not a separate section) — same visual language as
+   before: outlined/stroke uppercase text, solid-color separators, hairline
+   top edge. Fixed in place, not a scrolling marquee. ---- */
 .ucx-cap .band {
   position: relative;
   z-index: 1;
@@ -150,16 +156,11 @@
   background: transparent;
   border-top: 1px solid var(--line-soft);
   padding: clamp(22px,2.6vw,32px) 0;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
-          mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
 }
 .ucx-cap .band-track {
-  display: flex; align-items: center; width: max-content; flex: none;
-  animation: bandScroll 26s linear infinite;
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
+  gap: clamp(10px,1.8vw,18px);
 }
-.ucx-cap .band:hover .band-track { animation-play-state: paused; }
-.ucx-cap .band-group { display: flex; align-items: center; gap: clamp(10px,1.8vw,18px); padding-right: clamp(10px,1.8vw,18px); }
 .ucx-cap .band-step {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700; text-transform: uppercase;
   letter-spacing: .01em; font-size: clamp(18px,2.2vw,28px); white-space: nowrap;
@@ -167,10 +168,6 @@
   -webkit-text-stroke: 1px rgba(145,242,181,.55);
 }
 .ucx-cap .band-arrow { font-size: clamp(15px,1.8vw,22px); color: var(--accent); }
-@keyframes bandScroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
 
 /* ---- services (vertical dossier rhythm, not a card grid) ---- */
 .ucx-cap .cap-head { margin-bottom: 8px; scroll-margin-top: 96px; }
@@ -297,6 +294,5 @@
 }
 @media (max-width: 640px) {
   .ucx-cap .wrapper { padding: 70px 20px 80px; }
-  .ucx-cap .band-track { animation-duration: 14s; }
   .ucx-cap .service-deliverables ul { grid-template-columns: 1fr; }
 }

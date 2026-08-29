@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { TEAM, type TeamMember } from "@/lib/team";
+import { useCursorGlow } from "@/components/ui/useCursorGlow";
 
 function TeamCardPhoto({ src, alt, initials }: { src: string; alt: string; initials: string }) {
   const [ok, setOk] = useState(true);
@@ -12,10 +13,14 @@ function TeamCardPhoto({ src, alt, initials }: { src: string; alt: string; initi
 }
 
 export default function TeamHub() {
+  const heroGlowRef = useCursorGlow<HTMLDivElement>();
+
   return (
     <div className="ucx-team-hub">
-      <div className="team-hub-hero">
+      <div className="team-hub-hero" ref={heroGlowRef}>
         <div className="grid-overlay"></div>
+        <div className="grid-glow"></div>
+        <div className="cursor-haze"></div>
         <div className="team-hub-hero-inner">
           <span className="eyebrow">Company · Team</span>
           <h1 className="heading">Meet the UCX Team</h1>
