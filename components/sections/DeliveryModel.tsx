@@ -7,14 +7,16 @@ interface Model {
   title: string;
   description: string;
   tint: "mint" | "dark";
+  /** Matching delivery model row on the capabilities page, e.g. "01" -> #delivery-01 */
+  anchor: string;
 }
 
 const MODELS: Model[] = [
-  { title: "Project Delivery", description: "Defined scopes. Clear deliverables.", tint: "mint" },
-  { title: "Dedicated Teams", description: "Extend your team with UCX capability.", tint: "dark" },
-  { title: "Flexible Delivery", description: "Scale when workloads and deadlines change.", tint: "mint" },
-  { title: "White-Label Delivery", description: "Your brand. Our delivery capability.", tint: "dark" },
-  { title: "Strategic Partnerships", description: "Build long-term delivery capability.", tint: "mint" },
+  { title: "Project Delivery", description: "Defined scopes. Clear deliverables.", tint: "mint", anchor: "01" },
+  { title: "Dedicated Teams", description: "Extend your team with UCX capability.", tint: "dark", anchor: "02" },
+  { title: "Flexible Delivery", description: "Scale when workloads and deadlines change.", tint: "mint", anchor: "03" },
+  { title: "White-Label Delivery", description: "Your brand. Our delivery capability.", tint: "dark", anchor: "04" },
+  { title: "Strategic Partnerships", description: "Build long-term delivery capability.", tint: "mint", anchor: "05" },
 ];
 
 export default function DeliveryModel() {
@@ -67,11 +69,11 @@ export default function DeliveryModel() {
 
         <div className="dm-steps" data-reveal>
           {MODELS.map((m, i) => (
-            <div className={`dm-step is-${m.tint}`} key={m.title}>
+            <a className={`dm-step is-${m.tint}`} key={m.title} href={`/capabilities#delivery-${m.anchor}`}>
               <span className="dm-step-num">0{i + 1}</span>
               <h3>{m.title}</h3>
               <p>{m.description}</p>
-            </div>
+            </a>
           ))}
         </div>
 

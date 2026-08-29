@@ -307,9 +307,15 @@
   align-items: baseline; gap: clamp(16px,2.5vw,32px);
   padding: clamp(20px,2.6vw,28px) 0;
   border-bottom: 1px solid var(--line);
+  scroll-margin-top: 140px;
   transition: background .3s var(--ease);
 }
 .ucx-caphub .delivery-row:hover { background: rgba(145,242,181,.06); }
+.ucx-caphub .delivery-row:target { animation: deliveryRowLanded 2.4s var(--ease); }
+@keyframes deliveryRowLanded {
+  0%, 100% { background: transparent; }
+  15%, 60% { background: rgba(145,242,181,.14); }
+}
 .ucx-caphub .delivery-index {
   font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
   font-size: 13px; color: var(--muted);

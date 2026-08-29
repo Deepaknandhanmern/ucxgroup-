@@ -288,7 +288,7 @@ export default function Capabilities() {
 
           <div className="delivery-list">
             {DELIVERY_MODELS.map((m) => (
-              <div className="delivery-row" key={m.index} data-reveal>
+              <div className="delivery-row" id={`delivery-${m.index}`} key={m.index} data-reveal>
                 <span className="delivery-index">{m.index}</span>
                 <h3 className="delivery-name">{m.title}</h3>
                 <p className="delivery-desc">{m.desc}</p>
