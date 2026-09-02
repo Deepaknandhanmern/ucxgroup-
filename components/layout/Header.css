@@ -573,13 +573,11 @@
 }
 
 @media (max-width: 640px) {
-  .ucxnav__logo-rest { max-width: 0; opacity: 0; }
-  .ucxnav__logo-rest--mint { max-width: 0; opacity: 0; }
+  /* Full wordmark at the top, same as desktop — only collapse to the
+     abbreviated "UCX" mark once scrolled (.is-scrolled, defined above),
+     instead of forcing the abbreviated state unconditionally. */
   .ucxnav__logo-letter { font-size: 19px; }
-  .ucxnav__logo-word2 { margin-left: 0; }
-  .ucxnav__logo-word2-text { border-top: 2px solid var(--ucx-white); }
-  .ucxnav__logo-letter--mint { color: var(--ucx-white); }
-  .ucxnav__logo-xletter { max-width: 38px; opacity: 1; margin-left: 2px; font-size: 23px; }
+  .ucxnav.is-scrolled .ucxnav__logo-xletter { max-width: 38px; font-size: 23px; }
   :root { --ucx-bar-h: 66px; }
   .ucxnav { --ucx-bar-h: 66px; }
 }
