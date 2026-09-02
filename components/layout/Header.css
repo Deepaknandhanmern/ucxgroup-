@@ -572,6 +572,14 @@
   .ucxnav__burger { display: flex; }
   .ucxnav.is-mobile-open .ucxnav__mobile { display: block; }
   body.ucxnav-lock { overflow: hidden; }
+
+  /* Cap the collapsed "UCX" mark to 60% of the bar's own height (via the
+     --ucx-bar-h var it's already keyed to) instead of a fixed px guess —
+     so it stays proportional to the bar at both tablet and mobile, whatever
+     --ucx-bar-h happens to be at that breakpoint. */
+  .ucxnav.is-scrolled .ucxnav__logo-letter { font-size: calc(var(--ucx-bar-h) * 0.6); }
+  .ucxnav.is-scrolled .ucxnav__logo-xletter { max-width: calc(var(--ucx-bar-h) * 0.6); font-size: calc(var(--ucx-bar-h) * 0.6); }
+  .ucxnav.is-scrolled .ucxnav__logo-img { height: calc(var(--ucx-bar-h) * 0.6); }
 }
 
 @media (max-width: 640px) {
@@ -579,9 +587,6 @@
      abbreviated "UCX" mark once scrolled (.is-scrolled, defined above),
      instead of forcing the abbreviated state unconditionally. */
   .ucxnav__logo-letter { font-size: 19px; }
-  .ucxnav.is-scrolled .ucxnav__logo-letter { font-size: 15px; }
-  .ucxnav.is-scrolled .ucxnav__logo-xletter { max-width: 28px; font-size: 17px; }
-  .ucxnav.is-scrolled .ucxnav__logo-img { height: 18px; }
   :root { --ucx-bar-h: 66px; }
   .ucxnav { --ucx-bar-h: 66px; }
 }
