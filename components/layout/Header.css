@@ -560,11 +560,13 @@
 }
 
 @media (max-width: 960px) {
-  /* .ucxnav__nav normally carries flex:1, pushing search/CTA/burger to the
-     right edge — hiding it here removes that spacer, so without an explicit
-     justify-content the remaining items would collapse back next to the
-     logo instead of staying pinned right. */
-  .ucxnav__inner { justify-content: space-between; }
+  /* .ucxnav__nav normally carries flex:1, pushing search+burger to the
+     right edge as a group — hiding it here removes that spacer. Pushing
+     the search trigger with margin-left:auto keeps that same effect
+     (logo pinned left, search+burger pinned together at the right) —
+     justify-content:space-between on the row would instead spread all
+     three items evenly, stranding search in the dead center. */
+  .ucx-search-trigger { margin-left: auto; }
   .ucxnav__nav, .ucxnav__panels { display: none; }
   .ucxnav__cta { display: none; }
   .ucxnav__burger { display: flex; }
