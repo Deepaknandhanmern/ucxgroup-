@@ -573,13 +573,15 @@
   .ucxnav.is-mobile-open .ucxnav__mobile { display: block; }
   body.ucxnav-lock { overflow: hidden; }
 
-  /* Cap the collapsed "UCX" mark to 60% of the bar's own height (via the
-     --ucx-bar-h var it's already keyed to) instead of a fixed px guess —
-     so it stays proportional to the bar at both tablet and mobile, whatever
-     --ucx-bar-h happens to be at that breakpoint. */
-  .ucxnav.is-scrolled .ucxnav__logo-letter { font-size: calc(var(--ucx-bar-h) * 0.6); }
-  .ucxnav.is-scrolled .ucxnav__logo-xletter { max-width: calc(var(--ucx-bar-h) * 0.6); font-size: calc(var(--ucx-bar-h) * 0.6); }
-  .ucxnav.is-scrolled .ucxnav__logo-img { height: calc(var(--ucx-bar-h) * 0.6); }
+  /* Cap the collapsed "UCX" mark to 60% of the bar's own WIDTH, not
+     height — a flex item's percentage max-width resolves against its flex
+     container (.ucxnav__inner), so this is a hard width ceiling regardless
+     of font metrics. Letter/X sizing stays a small fixed size; the
+     max-width is the actual constraint being asked for. */
+  .ucxnav.is-scrolled .ucxnav__logo { max-width: 60%; overflow: hidden; }
+  .ucxnav.is-scrolled .ucxnav__logo-letter { font-size: 17px; }
+  .ucxnav.is-scrolled .ucxnav__logo-xletter { max-width: 20px; font-size: 17px; }
+  .ucxnav.is-scrolled .ucxnav__logo-img { height: 20px; }
 }
 
 @media (max-width: 640px) {
