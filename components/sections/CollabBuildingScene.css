@@ -48,6 +48,16 @@
     radial-gradient(90% 60% at 50% 0%, rgba(1,15,13,.6) 0%, transparent 60%);
   pointer-events: none;
 }
+/* subtle teal/warm split-tone at the extreme edges only — a color-grade
+   pass, not a wash, so it never dulls the building itself */
+.ucx-collab-building .color-grade {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(200deg, rgba(255,196,140,.05) 0%, transparent 30%),
+    linear-gradient(20deg, rgba(80,200,255,.05) 0%, transparent 30%);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
 .ucx-collab-building .ground-shadow {
   position: absolute;
   left: 50%; top: 82.5%;
@@ -130,6 +140,12 @@
   position: absolute; inset: 0;
   perspective: 130cqi;
   perspective-origin: 50% 40%;
+  transform-origin: 50% 44%;
+}
+.ucx-collab-building .scene.cam-punch { animation: ucxBuildingCamPunch 1.1s cubic-bezier(.22,.61,.36,1); }
+@keyframes ucxBuildingCamPunch {
+  0% { transform: scale(1.05); filter: brightness(1.12); }
+  100% { transform: scale(1); filter: brightness(1); }
 }
 .ucx-collab-building .rig {
   position: absolute;
@@ -281,7 +297,12 @@
   text-align: center;
   color: var(--white);
   width: 84%;
+  /* a focus-pull on top of the plain fade — the title arrives slightly soft
+     and sharpens into focus, like a rack focus rather than a plain cut */
+  filter: blur(6px);
+  transition: opacity 1.1s ease, filter 1.1s ease;
 }
+.ucx-collab-building .title-block.visible { filter: blur(0); }
 .ucx-collab-building .title-block .eyebrow {
   display: block;
   font-size: clamp(9px, 3cqi, 11px);
@@ -369,6 +390,27 @@
 .ucx-collab-building .tagline.visible { opacity: 1; }
 .ucx-collab-building .tagline .arrow { color: var(--accent); margin: 0 .5em; font-weight: 300; }
 
+/* ---------- cinematic framing: letterbox bars + film grain ----------
+   both sit above everything (last in DOM, no z-index needed) but only the
+   bars occupy space — they hug the top/bottom edges only, so the building
+   and overlay text in the middle are never touched by them. */
+.ucx-collab-building .letterbox {
+  position: absolute; left: 0; right: 0;
+  height: 6.5%;
+  background: #000;
+  pointer-events: none;
+}
+.ucx-collab-building .letterbox-top { top: 0; }
+.ucx-collab-building .letterbox-bottom { bottom: 0; }
+
+.ucx-collab-building .film-grain {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  opacity: .05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
 @container (max-width: 300px) {
   .ucx-collab-building .micro { display: none; }
 }
@@ -377,8 +419,10 @@
   .ucx-collab-building .panel, .ucx-collab-building .roof, .ucx-collab-building .core,
   .ucx-collab-building .interior-wire, .ucx-collab-building .content-lines,
   .ucx-collab-building .asset-net, .ucx-collab-building .collab-lines,
-  .ucx-collab-building .collab-layer, .ucx-collab-building .tagline {
+  .ucx-collab-building .collab-layer, .ucx-collab-building .tagline,
+  .ucx-collab-building .title-block {
     transition-duration: .01ms !important;
   }
+  .ucx-collab-building .scene.cam-punch { animation: none !important; }
   .ucx-collab-building .particle, .ucx-collab-building .glint { animation: none !important; opacity: 0 !important; }
 }

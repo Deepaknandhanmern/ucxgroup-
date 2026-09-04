@@ -45,6 +45,7 @@ type Mode = "content" | "collab" | "tagline" | "none";
 
 export default function CollabBuildingScene() {
   const rootRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<HTMLDivElement>(null);
   const rigRef = useRef<HTMLDivElement>(null);
   const buildingRef = useRef<HTMLDivElement>(null);
   const bgGridRef = useRef<HTMLDivElement>(null);
@@ -55,13 +56,14 @@ export default function CollabBuildingScene() {
 
   useEffect(() => {
     const root = rootRef.current;
+    const scene = sceneRef.current;
     const rig = rigRef.current;
     const building = buildingRef.current;
     const bgGrid = bgGridRef.current;
     const faceFront = faceFrontRef.current;
     const faceBack = faceBackRef.current;
     const titleText = titleTextRef.current;
-    if (!root || !rig || !building || !bgGrid || !faceFront || !faceBack || !titleText) return;
+    if (!root || !scene || !rig || !building || !bgGrid || !faceFront || !faceBack || !titleText) return;
 
     const contentLineGroups = Array.from(root.querySelectorAll<HTMLElement>(".content-lines"));
     const assetNet = root.querySelector<SVGGElement>(".asset-net");
@@ -109,6 +111,14 @@ export default function CollabBuildingScene() {
     function enterStage(stage: Stage) {
       currentKey = stage.key;
       building!.className = "building stage-" + stage.key;
+
+      // a brief camera "punch-in" on every stage cut — like a documentary
+      // cutting to a fresh angle, instead of the scene just relabeling itself.
+      // Applied to .scene (not .rig, which the rotation loop drives via its
+      // own inline transform every frame) so the two animations don't fight.
+      scene!.classList.remove("cam-punch");
+      void scene!.offsetWidth;
+      scene!.classList.add("cam-punch");
 
       if (stage.title && stage.micro) {
         titleText!.textContent = stage.title;
@@ -205,6 +215,7 @@ export default function CollabBuildingScene() {
 
       <div className="bg-grid" ref={bgGridRef}></div>
       <div className="bg-vignette"></div>
+      <div className="color-grade" aria-hidden="true"></div>
       <div className="ground-ring"></div>
       <div className="ground-shadow"></div>
 
@@ -222,7 +233,7 @@ export default function CollabBuildingScene() {
         <span className="fc fc-br"></span>
       </div>
 
-      <div className="scene">
+      <div className="scene" ref={sceneRef}>
         <div className="rig" ref={rigRef}>
           <div className="building" ref={buildingRef}>
             <div className="face front" ref={faceFrontRef}></div>
@@ -302,6 +313,10 @@ export default function CollabBuildingScene() {
           <span className="arrow">&rarr;</span>Apply
         </div>
       </div>
+
+      <div className="letterbox letterbox-top" aria-hidden="true"></div>
+      <div className="letterbox letterbox-bottom" aria-hidden="true"></div>
+      <div className="film-grain" aria-hidden="true"></div>
     </div>
   );
 }
