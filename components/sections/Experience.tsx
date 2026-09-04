@@ -139,6 +139,7 @@ function StatCounter({ stat }: { stat: Stat }) {
 
 export default function Experience() {
   const sectRef = useRef<HTMLDivElement>(null);
+  const heroGlowRef = useCursorGlow<HTMLDivElement>();
   const bodyGlowRef = useCursorGlow<HTMLDivElement>();
 
   // scroll reveal
@@ -172,8 +173,10 @@ export default function Experience() {
     <div className="ucx-experience" ref={sectRef}>
       <SectionRail sections={RAIL_SECTIONS} />
       {/* ---------- hero: its own dark band, matching Hero.css ---------- */}
-      <div className="hero-band" id="overview">
+      <div className="hero-band" id="overview" ref={heroGlowRef}>
         <div className="grid-overlay"></div>
+        <div className="grid-glow"></div>
+        <div className="cursor-haze"></div>
         <div className="head" data-reveal>
           <span className="eyebrow">Experience</span>
           <h1 className="heading">Experience Built Through Collaboration</h1>

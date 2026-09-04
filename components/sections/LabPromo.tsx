@@ -3,36 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 
 const TAGS = ["AI & Automation", "Digital Construction", "Prefabrication", "Smart Assets"];
-
-// Fixed callout-marker positions around the blueprint, each with a leader
-// line to the building feature it annotates — synced with the tags on the
-// left. Order matches TAGS: rooftop sensors, facade grid, the prefab
-// module, the door/foundation.
-const CALLOUTS = [
-  { x: 160, y: 18, labelX: 160, labelY: 2, anchor: "middle" as const, tx: 113, ty: 40 },
-  { x: 296, y: 160, labelX: 308, labelY: 164, anchor: "start" as const, tx: 226, ty: 150 },
-  { x: 160, y: 302, labelX: 160, labelY: 322, anchor: "middle" as const, tx: 111, ty: 196 },
-  { x: 24, y: 160, labelX: 12, labelY: 164, anchor: "end" as const, tx: 113, ty: 240 },
-];
-
-function makeWindowGrid(x0: number, y0: number, x1: number, y1: number, cols: number, rows: number, size: number) {
-  const cellW = (x1 - x0) / cols;
-  const cellH = (y1 - y0) / rows;
-  const cells: { x: number; y: number }[] = [];
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      cells.push({ x: x0 + c * cellW + (cellW - size) / 2, y: y0 + r * cellH + (cellH - size) / 2 });
-    }
-  }
-  return cells;
-}
-const WINDOWS = [
-  ...makeWindowGrid(82, 76, 144, 216, 3, 5, 12),
-  ...makeWindowGrid(172, 136, 240, 256, 3, 4, 12),
-];
+const CAPTIONS = ["DESIGN", "DIGITAL", "DELIVERY", "ASSET"];
 
 export default function LabPromo() {
   const sectRef = useRef<HTMLDivElement>(null);
+  const buildingFrameRef = useRef<HTMLDivElement>(null);
+  const captionRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState<number | null>(null);
 
   useEffect(() => {
@@ -67,6 +43,232 @@ export default function LabPromo() {
       sect.removeEventListener("pointermove", onPointerMove);
       sect.removeEventListener("pointerenter", onPointerEnter);
       sect.removeEventListener("pointerleave", onPointerLeave);
+    };
+  }, []);
+
+  // A gentle 3D tilt on the building card — it leans away from the pointer
+  // like it has real depth, instead of sitting flat on the page. Mouse-only:
+  // coarse (touch) pointers get the richer set of interactions below instead,
+  // since a continuous drag-to-tilt would fight with normal page scrolling.
+  useEffect(() => {
+    const frame = buildingFrameRef.current;
+    if (!frame) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    if (reduceMotion || coarse) return;
+
+    let targetX = 0;
+    let targetY = 0;
+    let curX = 0;
+    let curY = 0;
+    let raf = 0;
+
+    function onMove(e: PointerEvent) {
+      const b = frame!.getBoundingClientRect();
+      const nx = ((e.clientX - b.left) / b.width) * 2 - 1;
+      const ny = ((e.clientY - b.top) / b.height) * 2 - 1;
+      targetY = nx * 10;
+      targetX = -ny * 8;
+    }
+    function onLeave() {
+      targetX = 0;
+      targetY = 0;
+    }
+    function tick() {
+      curX += (targetX - curX) * 0.08;
+      curY += (targetY - curY) * 0.08;
+      frame!.style.transform = `rotateX(${curX.toFixed(2)}deg) rotateY(${curY.toFixed(2)}deg)`;
+      raf = requestAnimationFrame(tick);
+    }
+    frame.addEventListener("pointermove", onMove, { passive: true });
+    frame.addEventListener("pointerleave", onLeave);
+    raf = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(raf);
+      frame.removeEventListener("pointermove", onMove);
+      frame.removeEventListener("pointerleave", onLeave);
+    };
+  }, []);
+
+  // ---------------------------------------------------------------------
+  // Mobile/tablet (coarse pointer) interactions — most visitors only ever
+  // see this section on a touchscreen, so it gets its own richer set of
+  // gestures instead of just inheriting the desktop hover-tilt (which
+  // never fires on touch at all):
+  //  - scroll-triggered tilt-in the first time the card enters view
+  //  - ambient motion: phone-tilt (gyroscope) when available/granted,
+  //    otherwise a gentle auto-sway so it's never static
+  //  - tap: a quick "poke" tilt toward the tap point + haptic buzz
+  //  - long-press: reveals a rotating stage caption (Design/Digital/
+  //    Delivery/Asset)
+  //  - swipe left/right: cycles the highlighted tag above, so the same
+  //    gesture that works everywhere else on a phone also drives this card
+  // Deliberately NOT a continuous drag-to-tilt: capturing touchmove for
+  // that would fight with the user's normal page-scroll gesture over the
+  // same element, so gestures are read from touchstart/touchend deltas and
+  // hold-duration instead of live dragging.
+  // ---------------------------------------------------------------------
+  useEffect(() => {
+    const frame = buildingFrameRef.current;
+    const caption = captionRef.current;
+    if (!frame || !caption) return;
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    if (!coarse) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let curX = 0,
+      curY = 0,
+      targetX = 0,
+      targetY = 0;
+    let raf = 0;
+    let gyroActive = false;
+    let swayT = 0;
+    let started = false;
+
+    function tick() {
+      if (!gyroActive && !reduceMotion) {
+        swayT += 0.006;
+        targetX = Math.sin(swayT * 0.7) * 3;
+        targetY = Math.sin(swayT) * 14;
+      }
+      curX += (targetX - curX) * 0.05;
+      curY += (targetY - curY) * 0.05;
+      frame!.style.transform = `rotateX(${curX.toFixed(2)}deg) rotateY(${curY.toFixed(2)}deg)`;
+      raf = requestAnimationFrame(tick);
+    }
+
+    function startAnimating() {
+      if (started) return;
+      started = true;
+      // enter tilted, then ease into the ambient motion — a one-time
+      // "wake up" moment instead of appearing already mid-animation
+      curX = 10;
+      curY = -16;
+      if (!reduceMotion) raf = requestAnimationFrame(tick);
+      else frame!.style.transform = "none";
+    }
+
+    let io: IntersectionObserver | null = null;
+    if ("IntersectionObserver" in window) {
+      io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              startAnimating();
+              io!.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.3 }
+      );
+      io.observe(frame);
+    } else {
+      startAnimating();
+    }
+
+    function onOrientation(e: DeviceOrientationEvent) {
+      gyroActive = true;
+      const beta = e.beta ?? 0;
+      const gamma = e.gamma ?? 0;
+      targetX = Math.max(-8, Math.min(8, (beta - 45) * -0.15));
+      targetY = Math.max(-10, Math.min(10, gamma * 0.2));
+    }
+    let gyroRequested = false;
+    function requestGyro() {
+      if (gyroRequested || reduceMotion) return;
+      gyroRequested = true;
+      const DOE = window.DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<string> };
+      if (DOE && typeof DOE.requestPermission === "function") {
+        DOE.requestPermission()
+          .then((state) => {
+            if (state === "granted") window.addEventListener("deviceorientation", onOrientation);
+          })
+          .catch(() => {});
+      } else if ("DeviceOrientationEvent" in window) {
+        window.addEventListener("deviceorientation", onOrientation);
+      }
+    }
+
+    let captionIndex = 0;
+    function showCaption() {
+      caption!.textContent = CAPTIONS[captionIndex % CAPTIONS.length];
+      captionIndex++;
+      caption!.classList.add("show");
+    }
+    function hideCaption() {
+      caption!.classList.remove("show");
+    }
+
+    let touchStartX = 0,
+      touchStartY = 0,
+      touchStartTime = 0;
+    let longPressTimer: ReturnType<typeof setTimeout> | null = null;
+    let longPressFired = false;
+
+    function onTouchStart(e: TouchEvent) {
+      requestGyro();
+      const t = e.touches[0];
+      touchStartX = t.clientX;
+      touchStartY = t.clientY;
+      touchStartTime = performance.now();
+      longPressFired = false;
+      longPressTimer = setTimeout(() => {
+        longPressFired = true;
+        showCaption();
+        if (navigator.vibrate) navigator.vibrate(12);
+      }, 480);
+
+      const b = frame!.getBoundingClientRect();
+      const nx = ((t.clientX - b.left) / b.width) * 2 - 1;
+      const ny = ((t.clientY - b.top) / b.height) * 2 - 1;
+      targetY = nx * 12;
+      targetX = -ny * 8;
+      frame!.classList.add("is-poked");
+    }
+
+    function onTouchEnd(e: TouchEvent) {
+      if (longPressTimer) clearTimeout(longPressTimer);
+      frame!.classList.remove("is-poked");
+      hideCaption();
+
+      const t = e.changedTouches[0];
+      const dx = t.clientX - touchStartX;
+      const dy = t.clientY - touchStartY;
+      const dt = performance.now() - touchStartTime;
+      const absDx = Math.abs(dx);
+      const absDy = Math.abs(dy);
+
+      if (!longPressFired) {
+        if (absDx > 40 && absDx > absDy * 1.4) {
+          // a real horizontal swipe — cycle the highlighted tag
+          setActive((prev) => {
+            const count = TAGS.length;
+            const cur = prev ?? 0;
+            return dx < 0 ? (cur + 1) % count : (cur - 1 + count) % count;
+          });
+          if (navigator.vibrate) navigator.vibrate(8);
+        } else if (absDx < 12 && absDy < 12 && dt < 400) {
+          // a tap — quick poke pulse
+          frame!.classList.remove("is-tapped");
+          void frame!.offsetWidth;
+          frame!.classList.add("is-tapped");
+          if (navigator.vibrate) navigator.vibrate(10);
+        }
+      }
+      targetX = 0;
+      targetY = 0;
+    }
+
+    frame.addEventListener("touchstart", onTouchStart, { passive: true });
+    frame.addEventListener("touchend", onTouchEnd, { passive: true });
+
+    return () => {
+      if (io) io.disconnect();
+      cancelAnimationFrame(raf);
+      window.removeEventListener("deviceorientation", onOrientation);
+      frame!.removeEventListener("touchstart", onTouchStart);
+      frame!.removeEventListener("touchend", onTouchEnd);
+      if (longPressTimer) clearTimeout(longPressTimer);
     };
   }, []);
 
@@ -113,54 +315,13 @@ export default function LabPromo() {
         </div>
 
         <div className="lp-graphic">
-          <svg className="orbit-svg" viewBox="0 0 320 320" role="img" aria-label="A blueprint of a building drawing itself, annotated with the four disciplines the Collaboration Lab brings together">
-            <line className="blueprint-ground" x1="34" y1="272" x2="286" y2="272" aria-hidden="true" />
-
-            {/* the building sketches itself in on a loop, like a blueprint being drawn */}
-            <path className="blueprint-outline" d="M68,60 L158,60 L158,120 L254,120 L254,272 L68,272 Z" pathLength={1} aria-hidden="true" />
-
-            <g aria-hidden="true">
-              {WINDOWS.map((w, i) => (
-                <rect key={i} className="blueprint-window" x={w.x} y={w.y} width="12" height="12" style={{ animationDelay: `${-(i * 0.04)}s` }} />
-              ))}
-              <rect className="blueprint-window" x="95" y="224" width="36" height="48" style={{ animationDelay: `${-(WINDOWS.length * 0.04)}s` }} />
-            </g>
-
-            <line className="blueprint-mast" x1="113" y1="60" x2="113" y2="42" aria-hidden="true" />
-            <circle className="blueprint-sensor-dot" cx="113" cy="40" r="4" aria-hidden="true" />
-            <line className="blueprint-mast" x1="206" y1="120" x2="206" y2="104" style={{ animationDelay: "-.5s" }} aria-hidden="true" />
-            <circle className="blueprint-sensor-dot" cx="206" cy="102" r="4" style={{ animationDelay: "-.5s" }} aria-hidden="true" />
-
-            <rect className="blueprint-module" x="76" y="168" width="70" height="56" aria-hidden="true" />
-
-            {/* title-block stamp — the fixed brand mark on the drawing */}
-            <circle className="blueprint-stamp" cx="278" cy="292" r="20" aria-hidden="true" />
-            <text className="blueprint-stamp-mark" x="278" y="299" textAnchor="middle" aria-hidden="true">X</text>
-
-            {/* four fixed, hoverable annotation callouts — synced with the tags on
-                the left, each pointing a leader line at the feature it names */}
-            {CALLOUTS.map((n, i) => (
-              <g
-                key={TAGS[i]}
-                className={`orbit-node${active === i ? " is-active" : ""}`}
-                onPointerEnter={() => setActive(i)}
-                onPointerLeave={() => setActive(null)}
-                tabIndex={0}
-                role="button"
-                aria-label={TAGS[i]}
-                onFocus={() => setActive(i)}
-                onBlur={() => setActive(null)}
-              >
-                <line className="orbit-connector" x1={n.x} y1={n.y} x2={n.tx} y2={n.ty} />
-                <circle className="orbit-target" cx={n.tx} cy={n.ty} r="8" />
-                <circle className="node-hit" cx={n.x} cy={n.y} r="20" />
-                <circle className="node" cx={n.x} cy={n.y} r="6" />
-                <text className="node-label" x={n.labelX} y={n.labelY} textAnchor={n.anchor}>
-                  {TAGS[i]}
-                </text>
-              </g>
-            ))}
-          </svg>
+          <div className="lp-building-frame" ref={buildingFrameRef}>
+            <div className="lp-building-bg">
+              <div className="lp-building-shadow" aria-hidden="true"></div>
+            </div>
+            <img className="lp-building-img" src="/brand/lab-promo/building.png" alt="A UCX-designed residential tower elevation" />
+            <div className="lp-caption" ref={captionRef} aria-hidden="true"></div>
+          </div>
         </div>
       </div>
     </div>

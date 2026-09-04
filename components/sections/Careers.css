@@ -55,14 +55,21 @@
   --accent-dim: rgba(145,242,181,0.55);
   --line: rgba(145,242,181,0.18);
   --line-soft: rgba(145,242,181,0.045);
+  --line-glow: rgba(145,242,181,0.30);
   --cream: #F3F1E6;
 
   position: relative;
+  isolation: isolate;
   background: var(--bg);
   color: var(--accent);
   overflow: hidden;
   padding: clamp(90px,9vw,140px) 0 calc(var(--ucx-section-gap) / 2);
 }
+.ucx-careers .hero-band.is-hot .grid-glow { opacity: 1; }
+.ucx-careers .hero-band .cursor-haze {
+  background: radial-gradient(320px circle at var(--mx,50%) var(--my,50%), rgba(145,242,181,.07), transparent 70%);
+}
+.ucx-careers .hero-band.is-hot .cursor-haze { opacity: 1; }
 
 .ucx-careers .wrapper {
   position: relative; z-index: 1;

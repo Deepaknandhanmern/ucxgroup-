@@ -62,7 +62,11 @@
 .ucx-labpromo .wrapper {
   position: relative; z-index: 1;
   max-width: 1160px; margin: 0 auto;
-  padding: calc(var(--ucx-section-gap) / 2) clamp(20px,6vw,80px);
+  /* extra top padding gives the building's overflow (see .lp-building-img)
+     real room inside this section's own overflow:hidden box, instead of
+     being clipped by it — it's shared section spacing, not a gap reserved
+     just for the picture, so it doesn't read as empty space. */
+  padding: clamp(140px,15vw,200px) clamp(20px,6vw,80px) calc(var(--ucx-section-gap) / 2);
   display: grid;
   grid-template-columns: 1.15fr .85fr;
   align-items: center;
@@ -115,125 +119,88 @@
 .ucx-labpromo .cta-icon svg { width: 15px; height: 15px; }
 .ucx-labpromo .cta:hover { transform: translateY(-3px); box-shadow: 0 22px 40px -14px rgba(0,53,45,.55); }
 .ucx-labpromo .cta:hover .cta-icon { transform: translateX(3px); }
+.ucx-labpromo .cta:active { transform: scale(.96); box-shadow: 0 10px 22px -14px rgba(0,53,45,.5); }
 
-/* ---- blueprint graphic ----
-   the motion tells the story of the section: a building sketches itself in
-   like a blueprint being drawn — the outline first, then the facade grid,
-   rooftop sensors and a called-out prefab module filling in behind it — then
-   softly resets and redraws, on a steady 7s loop. the four callouts around it
-   are static, hoverable annotations tied to the tags on the left; each leader
-   line points at the feature its discipline actually builds. */
-.ucx-labpromo .lp-graphic { display: flex; align-items: center; justify-content: center; }
-.ucx-labpromo .orbit-svg { width: min(100%, 320px); height: auto; overflow: visible; }
-
-.ucx-labpromo .blueprint-ground { stroke: rgba(0,53,45,.22); stroke-width: 1; }
-
-.ucx-labpromo .blueprint-outline {
-  fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-dasharray: 1;
-  animation: lpDraw 7s ease-in-out infinite;
+/* ---- building elevation graphic ----
+   the frame is a clipped, rounded card (its own layer, .lp-building-bg) but
+   the frame element itself has visible overflow, so the building's top can
+   break past the card's edge instead of being cropped by it. perspective +
+   a pointer-driven rotateX/rotateY (see LabPromo.tsx) sell it as a tilting
+   3D object rather than a flat sticker on the card. */
+.ucx-labpromo .lp-graphic { display: flex; align-items: flex-end; justify-content: center; }
+.ucx-labpromo .lp-building-frame {
+  position: relative;
+  width: min(100%, 420px);
+  aspect-ratio: 1;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding: 0 6%;
+  perspective: 900px;
+  transform-style: preserve-3d;
+  transition: transform .3s var(--ease);
+  will-change: transform;
 }
-.ucx-labpromo .blueprint-window {
-  fill: var(--accent); opacity: 0;
-  transform-box: fill-box; transform-origin: center;
-  animation: lpFill 7s ease-in-out infinite;
+.ucx-labpromo .lp-building-bg {
+  position: absolute; inset: 0;
+  z-index: 0;
+  border-radius: 26px;
+  overflow: hidden;
+  background: radial-gradient(120% 90% at 50% 38%, #054942 0%, #023D37 55%, #011f1c 100%);
+  box-shadow: 0 30px 60px -24px rgba(1,15,13,.5);
 }
-.ucx-labpromo .blueprint-mast {
-  stroke: var(--accent); stroke-width: 1.4; opacity: 0;
-  animation: lpMastFade 7s ease-in-out infinite;
+.ucx-labpromo .lp-building-shadow {
+  position: absolute;
+  left: 50%; bottom: 4%;
+  width: 60%; height: 8%;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(0,0,0,.55), transparent 72%);
 }
-.ucx-labpromo .blueprint-sensor-dot {
-  fill: var(--accent);
-  transform-box: fill-box; transform-origin: center;
-  animation: lpSensor 7s ease-in-out infinite;
-}
-.ucx-labpromo .blueprint-module {
-  fill: none; stroke: var(--accent); stroke-width: 1.4; stroke-dasharray: 4 3; opacity: 0;
-  animation: lpModuleFade 7s ease-in-out infinite;
-}
-.ucx-labpromo .blueprint-stamp {
-  fill: var(--accent);
-  filter: drop-shadow(0 10px 20px rgba(0,53,45,.3));
-}
-.ucx-labpromo .blueprint-stamp-mark {
-  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
-  font-size: 18px; fill: var(--white);
-}
-
-@keyframes lpDraw {
-  0% { stroke-dashoffset: 1; opacity: .95; }
-  30% { stroke-dashoffset: 0; opacity: .95; }
-  82% { stroke-dashoffset: 0; opacity: .95; }
-  93% { opacity: 0; }
-  95% { stroke-dashoffset: 1; opacity: 0; }
-  100% { stroke-dashoffset: 1; opacity: .95; }
-}
-@keyframes lpFill {
-  0%, 30% { opacity: 0; transform: scale(.35); }
-  42% { opacity: 1; transform: scale(1); }
-  80% { opacity: 1; transform: scale(1); }
-  92%, 100% { opacity: 0; transform: scale(.35); }
-}
-@keyframes lpMastFade {
-  0%, 32% { opacity: 0; }
-  44% { opacity: .8; }
-  80% { opacity: .8; }
-  92%, 100% { opacity: 0; }
-}
-@keyframes lpSensor {
-  0%, 34% { opacity: 0; transform: scale(.4); }
-  46% { opacity: 1; transform: scale(1.3); }
-  50% { opacity: 1; transform: scale(1); }
-  78% { opacity: 1; }
-  90%, 100% { opacity: 0; transform: scale(.4); }
-}
-@keyframes lpModuleFade {
-  0%, 40% { opacity: 0; }
-  52% { opacity: .9; }
-  80% { opacity: .9; }
-  92%, 100% { opacity: 0; }
+.ucx-labpromo .lp-building-img {
+  position: relative; z-index: 1;
+  max-width: 100%;
+  width: auto; height: 143%;
+  object-fit: contain;
+  object-position: bottom;
+  transform: translateZ(40px);
+  filter: drop-shadow(0 26px 34px rgba(1,15,13,.5));
+  transition: filter .3s ease;
 }
 
-/* ---- interactive callouts, synced with the tags on the left ---- */
-.ucx-labpromo .orbit-node { cursor: pointer; outline: none; }
-.ucx-labpromo .node-hit { fill: transparent; }
-.ucx-labpromo .orbit-connector {
-  stroke: var(--accent); stroke-width: 1; stroke-dasharray: 3 5; opacity: .28;
-  transition: opacity .3s var(--ease), stroke-dasharray .3s var(--ease);
+/* ---- touch-only feedback (see LabPromo.tsx's coarse-pointer effect) ---- */
+.ucx-labpromo .lp-building-frame.is-poked { transition: none; }
+.ucx-labpromo .lp-building-frame.is-tapped .lp-building-img {
+  animation: lpBuildingPulse .5s ease;
 }
-.ucx-labpromo .orbit-node.is-active .orbit-connector,
-.ucx-labpromo .orbit-node:focus-visible .orbit-connector { opacity: .85; stroke-dasharray: none; }
-.ucx-labpromo .orbit-target {
-  fill: none; stroke: var(--accent); stroke-width: 1.5; opacity: 0;
-  transition: opacity .3s var(--ease);
+@keyframes lpBuildingPulse {
+  0% { filter: drop-shadow(0 26px 34px rgba(1,15,13,.5)) brightness(1); }
+  35% { filter: drop-shadow(0 26px 34px rgba(117,198,162,.65)) brightness(1.15); }
+  100% { filter: drop-shadow(0 26px 34px rgba(1,15,13,.5)) brightness(1); }
 }
-.ucx-labpromo .orbit-node.is-active .orbit-target,
-.ucx-labpromo .orbit-node:focus-visible .orbit-target { opacity: .9; animation: lpTargetPulse 1.2s ease-out infinite; }
-.ucx-labpromo .node { fill: var(--accent); opacity: .7; transition: r .3s var(--ease), fill .3s var(--ease), opacity .3s var(--ease); }
-.ucx-labpromo .orbit-node.is-active .node,
-.ucx-labpromo .orbit-node:focus-visible .node { r: 9; fill: var(--white); opacity: 1; }
-.ucx-labpromo .node-label {
-  font-family: 'Atyp Display',sans-serif; font-weight: 600;
-  font-size: 10.5px; letter-spacing: .02em;
-  fill: var(--accent); opacity: .55;
-  transition: opacity .3s var(--ease);
-}
-.ucx-labpromo .orbit-node.is-active .node-label,
-.ucx-labpromo .orbit-node:focus-visible .node-label { opacity: 1; }
 
-@keyframes lpTargetPulse {
-  0% { r: 7; opacity: .9; }
-  100% { r: 16; opacity: 0; }
+.ucx-labpromo .lp-caption {
+  position: absolute;
+  left: 50%; bottom: 6%;
+  transform: translate(-50%, 6px);
+  z-index: 2;
+  font-family: 'Getho','Atyp Display',sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .28em;
+  color: var(--white);
+  background: rgba(0,53,45,.55);
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 999px;
+  padding: 8px 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease, transform .25s ease;
+  white-space: nowrap;
 }
+.ucx-labpromo .lp-caption.show { opacity: 1; transform: translate(-50%, 0); }
 
 @media (prefers-reduced-motion: reduce) {
   .ucx-labpromo *, .ucx-labpromo *::before, .ucx-labpromo *::after {
     animation-duration: .001ms !important; transition-duration: .001ms !important;
   }
-  .ucx-labpromo .blueprint-outline { animation: none; stroke-dashoffset: 0; opacity: .95; }
-  .ucx-labpromo .blueprint-window,
-  .ucx-labpromo .blueprint-mast,
-  .ucx-labpromo .blueprint-sensor-dot,
-  .ucx-labpromo .blueprint-module { animation: none; opacity: 1; transform: scale(1); }
 }
 @media (max-width: 860px) {
   .ucx-labpromo .grid-glow, .ucx-labpromo .cursor-haze { display: none; }
@@ -243,5 +210,5 @@
   .ucx-labpromo .intro { margin-left: auto; margin-right: auto; }
   .ucx-labpromo .cta { margin: 0 auto; }
   .ucx-labpromo .lp-graphic { order: -1; }
-  .ucx-labpromo .orbit-svg { width: 220px; }
+  .ucx-labpromo .lp-building-frame { width: 260px; }
 }

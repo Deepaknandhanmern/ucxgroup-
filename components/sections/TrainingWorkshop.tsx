@@ -107,6 +107,7 @@ type LeadStatus = "idle" | "sending" | "sent" | "error";
 
 export default function TrainingWorkshop() {
   const sectRef = useRef<HTMLDivElement>(null);
+  const heroGlowRef = useCursorGlow<HTMLDivElement>();
   const bodyGlowRef = useCursorGlow<HTMLDivElement>();
   const talkCtaRef = useMagnetic<HTMLAnchorElement>();
   const [leadStatus, setLeadStatus] = useState<LeadStatus>("idle");
@@ -172,8 +173,10 @@ export default function TrainingWorkshop() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }} />
 
       {/* ---------- hero ---------- */}
-      <div className="hero-band">
+      <div className="hero-band" ref={heroGlowRef}>
         <div className="grid-overlay"></div>
+        <div className="grid-glow"></div>
+        <div className="cursor-haze"></div>
         <div className="hero">
           <div className="hero-copy" data-reveal>
             <Breadcrumbs

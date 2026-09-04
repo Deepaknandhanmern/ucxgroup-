@@ -296,14 +296,6 @@ export default function ContactForm() {
           lands with the right expert straight away.
         </p>
 
-        <BookingCalendarCard url={CALENDLY_URL} />
-        <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="lazyOnload" />
-
-        <div className="office-strip">
-          <EmailCard email={CONTACT_EMAIL} />
-          <ContactMap />
-        </div>
-
         <div className="selector-label">1. Choose your query type</div>
         <div className="selector">
           {OPTIONS.map(({ type }) => {
@@ -391,6 +383,14 @@ export default function ContactForm() {
             </div>
           </div>
         </form>
+
+        <div className="office-strip">
+          <EmailCard email={CONTACT_EMAIL} />
+          <ContactMap />
+        </div>
+
+        <BookingCalendarCard url={CALENDLY_URL} />
+        <Script src="https://assets.calendly.com/assets/external/widget.js" strategy="lazyOnload" />
       </div>
 
       <Toast

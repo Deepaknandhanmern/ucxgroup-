@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export interface FaqItem {
   q: string;
@@ -61,6 +61,36 @@ export default function FAQ({
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const [flippingIndex, setFlippingIndex] = useState<number | null>(null);
   const flipTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const rootRef = useRef<HTMLElement>(null);
+
+  // Scroll-reveal for the head, each question and the footer — the same
+  // staggered fade-up used across the rest of the site (Experience, LabHero,
+  // Careers), so the FAQ doesn't feel static next to those sections.
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const targets = Array.from(root.querySelectorAll<HTMLElement>("[data-reveal]"));
+    targets.forEach((el, i) => {
+      el.style.transitionDelay = `${(i % 6) * 70}ms`;
+    });
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+      targets.forEach((el) => el.classList.add("is-in"));
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-in");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
+    );
+    targets.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
 
   function handleToggle(i: number) {
     setOpenIndex((prev) => (prev === i ? null : i));
@@ -84,7 +114,7 @@ export default function FAQ({
   };
 
   return (
-    <section className="ucx-faq" id="faq">
+    <section className="ucx-faq" id="faq" ref={rootRef}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div className="faq__bg-grid" aria-hidden="true"></div>
       <div className="faq__rings">
@@ -94,7 +124,7 @@ export default function FAQ({
       <div className="faq__inner">
         <p className="faq__eyebrow">FAQ</p>
 
-        <div className="faq__head">
+        <div className="faq__head" data-reveal>
           <h2 className="faq__title">{title}</h2>
           <p className="faq__sub">{sub}</p>
         </div>
@@ -103,7 +133,7 @@ export default function FAQ({
           {items.map((item, i) => {
             const isOpen = openIndex === i;
             return (
-              <div className={`faq__item${isOpen ? " is-open" : ""}`} key={item.q}>
+              <div className={`faq__item${isOpen ? " is-open" : ""}`} key={item.q} data-reveal>
                 <button className="faq__row" aria-expanded={isOpen} onClick={() => handleToggle(i)}>
                   <span className="faq__index">{String(i + 1).padStart(2, "0")}</span>
                   <span className="faq__q">{item.q}</span>
@@ -122,7 +152,7 @@ export default function FAQ({
           })}
         </div>
 
-        <div className="faq__foot">
+        <div className="faq__foot" data-reveal>
           <p className="faq__foot-text">
             Still have questions? <strong>We&rsquo;re happy to help.</strong>
           </p>

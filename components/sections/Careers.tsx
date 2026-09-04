@@ -17,6 +17,7 @@ type ApplyStatus = "idle" | "sending" | "sent" | "error";
 export default function Careers({ positions }: { positions: Position[] }) {
   const POSITIONS = positions;
   const sectRef = useRef<HTMLDivElement>(null);
+  const heroGlowRef = useCursorGlow<HTMLDivElement>();
   const bodyGlowRef = useCursorGlow<HTMLDivElement>();
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const lastFocusRef = useRef<HTMLElement | null>(null);
@@ -91,8 +92,10 @@ export default function Careers({ positions }: { positions: Position[] }) {
   return (
     <div className="ucx-careers" ref={sectRef}>
       {/* ---------- hero: its own dark band, matching Hero.css ---------- */}
-      <div className="hero-band">
+      <div className="hero-band" ref={heroGlowRef}>
         <div className="grid-overlay"></div>
+        <div className="grid-glow"></div>
+        <div className="cursor-haze"></div>
         <div className="head">
           <span className="eyebrow">Careers</span>
           <h1 className="heading">Build What Comes Next.</h1>

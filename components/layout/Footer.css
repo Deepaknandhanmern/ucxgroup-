@@ -90,14 +90,25 @@
   gap: 12px;
 }
 .ucx-footer .col-links a {
+  position: relative;
+  display: inline-block;
   font-family: 'Atyp Display', sans-serif;
   color: var(--white);
   text-decoration: none;
   font-size: 15px;
   font-weight: 400;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, transform 0.25s ease;
 }
-.ucx-footer .col-links a:hover { color: var(--secondary); }
+.ucx-footer .col-links a::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -3px;
+  width: 0; height: 1px;
+  background: var(--secondary);
+  transition: width 0.3s ease;
+}
+.ucx-footer .col-links a:hover { color: var(--secondary); transform: translateX(3px); }
+.ucx-footer .col-links a:hover::after { width: 100%; }
 
 .ucx-footer .cta-link {
   display: inline-flex;

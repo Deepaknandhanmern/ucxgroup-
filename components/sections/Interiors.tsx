@@ -63,35 +63,35 @@ const TESTIMONIALS = [
     location: "Bangalore, India",
     role: "Renovation & Interior Design",
     quote:
-      "UCX transformed our existing space with thoughtful design and practical solutions, delivering a renovation that feels both beautiful and functional.",
+      "They really understood what we wanted and made the most of our existing space. The final result feels beautiful, comfortable and practical.",
   },
   {
     name: "Veni",
     location: "Coimbatore, India",
     role: "Turnkey Interior Design & Execution",
     quote:
-      "UCX handled our interior project with strong attention to detail and smooth coordination, delivering a space that reflected our requirements from design to execution.",
+      "From the initial design to the execution, the team kept things well coordinated and paid attention to the details. It made the whole process much easier for us.",
   },
   {
     name: "Jayaraman",
     location: "Udumalpet, India",
     role: "Renovation & Interior Design",
     quote:
-      "UCX brought clarity to our renovation and interior project, providing practical solutions that transformed the existing space into a well-designed environment.",
+      "We had a lot of things to figure out with the renovation. UCX helped us bring everything together and gave us practical ideas that really changed the space.",
   },
   {
     name: "Arun",
     location: "Coimbatore, India",
     role: "Architectural Turnkey & Interior Solutions",
     quote:
-      "UCX provided a coordinated approach from architectural planning to interior execution, making the overall project delivery organised and seamless.",
+      "What I liked most was that everything was handled in a coordinated way, from the planning to the interiors. It made the project feel much more organised.",
   },
   {
     name: "Raghava",
     location: "Bangalore, India",
     role: "Interior Consultation & Design Solutions",
     quote:
-      "UCX provided practical and well-considered interior solutions, helping us make confident decisions while creating a clear direction for the space.",
+      "The team listened to what we needed and helped us make the right decisions for the space. We came away with a much clearer idea of what we wanted.",
   },
 ];
 const TESTIMONIALS_ROW_1 = TESTIMONIALS.slice(0, 2);
