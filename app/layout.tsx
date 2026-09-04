@@ -41,6 +41,7 @@ import "@/components/sections/InteriorsVRExperience.css";
 import "@/components/sections/InteriorsFooter.css";
 import "@/components/sections/Interiors.css";
 import "@/components/sections/LabHero.css";
+import "@/components/sections/CollabBuildingScene.css";
 import "@/components/sections/LabExplore.css";
 import "@/components/sections/CollaborationLab.css";
 import "@/components/sections/Experience.css";

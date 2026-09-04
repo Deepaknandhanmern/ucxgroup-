@@ -1,0 +1,384 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&display=swap');
+
+.ucx-collab-building {
+  --env-deep: #011F1B;
+  --env: #023D37;
+  --env-soft: #05564D;
+  --accent: #75C6A2;
+  --accent-dim: rgba(117,198,162,.32);
+  --white: #FFFFFF;
+  --paper: rgba(255,255,255,.86);
+
+  --bw: 17cqi;   /* building footprint (width = depth) */
+  --bh: 58cqi;   /* building height */
+
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 26px;
+  overflow: hidden;
+  background: radial-gradient(120% 90% at 50% 18%, var(--env-soft) 0%, var(--env) 42%, var(--env-deep) 100%);
+  font-family: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  container-type: inline-size;
+}
+.ucx-collab-building * { box-sizing: border-box; }
+
+.ucx-collab-building .sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* ---------- environment ---------- */
+.ucx-collab-building .bg-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.045) 1px, transparent 1px);
+  background-size: 4.2cqi 4.2cqi;
+  -webkit-mask-image: radial-gradient(70% 65% at 50% 46%, #000 0%, transparent 78%);
+          mask-image: radial-gradient(70% 65% at 50% 46%, #000 0%, transparent 78%);
+  opacity: .55;
+  will-change: transform;
+}
+.ucx-collab-building .bg-vignette {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(120% 90% at 50% 100%, rgba(1,15,13,.85) 0%, transparent 55%),
+    radial-gradient(90% 60% at 50% 0%, rgba(1,15,13,.6) 0%, transparent 60%);
+  pointer-events: none;
+}
+.ucx-collab-building .ground-shadow {
+  position: absolute;
+  left: 50%; top: 82.5%;
+  width: 34cqi; height: 6.5cqi;
+  transform: translate(-50%,-50%);
+  background: radial-gradient(closest-side, rgba(0,0,0,.55), transparent 72%);
+  filter: blur(1px);
+  pointer-events: none;
+}
+.ucx-collab-building .ground-ring {
+  position: absolute;
+  left: 50%; top: 82.5%;
+  width: 40cqi; height: 7.5cqi;
+  transform: translate(-50%,-50%);
+  border: 1px solid var(--accent-dim);
+  border-radius: 50%;
+  opacity: .35;
+  pointer-events: none;
+}
+
+/* ---------- ambient richness: particles, light sweep, frame corners ---------- */
+.ucx-collab-building .particles {
+  position: absolute; inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ucx-collab-building .particle {
+  position: absolute;
+  bottom: 6%;
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px 1px var(--accent-dim);
+  opacity: 0;
+  animation: ucxBuildingDrift linear infinite;
+}
+@keyframes ucxBuildingDrift {
+  0% { opacity: 0; transform: translateY(0) scale(.6); }
+  10% { opacity: .8; }
+  85% { opacity: .5; }
+  100% { opacity: 0; transform: translateY(-72cqi) scale(1.3); }
+}
+.ucx-collab-building .p1 { left: 18%; animation-duration: 11s; animation-delay: 0s; }
+.ucx-collab-building .p2 { left: 27%; animation-duration: 14s; animation-delay: 1.4s; }
+.ucx-collab-building .p3 { left: 36%; animation-duration: 9.5s; animation-delay: 2.8s; }
+.ucx-collab-building .p4 { left: 46%; animation-duration: 13s; animation-delay: .7s; }
+.ucx-collab-building .p5 { left: 58%; animation-duration: 10.5s; animation-delay: 3.6s; }
+.ucx-collab-building .p6 { left: 66%; animation-duration: 15s; animation-delay: 2s; }
+.ucx-collab-building .p7 { left: 74%; animation-duration: 12s; animation-delay: 4.4s; }
+.ucx-collab-building .p8 { left: 82%; animation-duration: 9s; animation-delay: 1s; }
+.ucx-collab-building .p9 { left: 40%; animation-duration: 16s; animation-delay: 5.2s; }
+.ucx-collab-building .p10 { left: 62%; animation-duration: 11.5s; animation-delay: 6s; }
+
+.ucx-collab-building .glint {
+  position: absolute; inset: -20%;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 42%, rgba(255,255,255,.12) 49%, rgba(255,255,255,.22) 50%, rgba(255,255,255,.12) 51%, transparent 58%);
+  transform: translateX(-60%);
+  animation: ucxBuildingGlint 7s ease-in-out infinite;
+}
+@keyframes ucxBuildingGlint {
+  0%, 40% { transform: translateX(-60%); }
+  60%, 100% { transform: translateX(60%); }
+}
+
+.ucx-collab-building .frame-corners { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.ucx-collab-building .fc {
+  position: absolute;
+  width: 22px; height: 22px;
+  border: 1px solid var(--accent-dim);
+  opacity: .55;
+}
+.ucx-collab-building .fc-tl { top: 14px; left: 14px; border-right: none; border-bottom: none; }
+.ucx-collab-building .fc-tr { top: 14px; right: 14px; border-left: none; border-bottom: none; }
+.ucx-collab-building .fc-bl { bottom: 14px; left: 14px; border-right: none; border-top: none; }
+.ucx-collab-building .fc-br { bottom: 14px; right: 14px; border-left: none; border-top: none; }
+
+/* ---------- 3D scene ---------- */
+.ucx-collab-building .scene {
+  position: absolute; inset: 0;
+  perspective: 130cqi;
+  perspective-origin: 50% 40%;
+}
+.ucx-collab-building .rig {
+  position: absolute;
+  top: 44%; left: 50%;
+  width: 0; height: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.ucx-collab-building .building {
+  position: absolute; top: 0; left: 0;
+  width: 0; height: 0;
+  transform-style: preserve-3d;
+}
+.ucx-collab-building .face {
+  position: absolute;
+  top: calc(var(--bh) / -2);
+  left: calc(var(--bw) / -2);
+  width: var(--bw);
+  height: var(--bh);
+  display: grid;
+  grid-template-rows: repeat(9, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  background: var(--env-deep);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.05);
+}
+.ucx-collab-building .face.front { transform: translateZ(calc(var(--bw) / 2)); }
+.ucx-collab-building .face.back { transform: rotateY(180deg) translateZ(calc(var(--bw) / 2)); }
+.ucx-collab-building .face.left { transform: rotateY(-90deg) translateZ(calc(var(--bw) / 2)); }
+.ucx-collab-building .face.right { transform: rotateY(90deg) translateZ(calc(var(--bw) / 2)); }
+
+.ucx-collab-building .panel {
+  background: linear-gradient(160deg, rgba(255,255,255,.20), rgba(255,255,255,.06));
+  transform: translateZ(var(--ez, 0px));
+  transition: transform 1.15s cubic-bezier(.2,.7,.2,1), opacity .9s ease, background .9s ease;
+}
+.ucx-collab-building .panel.stone {
+  background: linear-gradient(160deg, rgba(255,255,255,.09), rgba(0,0,0,.10));
+}
+.ucx-collab-building .building.digital-active .face.front .panel,
+.ucx-collab-building .building.digital-active .face.back .panel {
+  opacity: .3;
+  background: rgba(117,198,162,.05);
+}
+
+.ucx-collab-building .roof {
+  position: absolute;
+  left: calc(var(--bw) / -2);
+  top: calc(var(--bw) / -2);
+  width: var(--bw);
+  height: var(--bw);
+  transform: rotateX(90deg) translateZ(calc(var(--bh) / 2));
+  background: linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.03));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.07);
+}
+.ucx-collab-building .mep {
+  position: absolute;
+  background: rgba(255,255,255,.10);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.12);
+  transition: transform 1.1s cubic-bezier(.2,.7,.2,1);
+}
+.ucx-collab-building .mep::after {
+  content: '';
+  position: absolute; top: 35%; left: 35%;
+  width: 14%; height: 14%;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px 1px var(--accent);
+  opacity: .75;
+  animation: ucxBuildingPulse 3.2s ease-in-out infinite;
+}
+.ucx-collab-building .mep.m1 { width: 26%; height: 34%; left: 14%; top: 30%; }
+.ucx-collab-building .mep.m2 { width: 20%; height: 22%; left: 56%; top: 20%; animation-delay: .6s; }
+.ucx-collab-building .mep.m3 { width: 16%; height: 16%; left: 60%; top: 58%; }
+.ucx-collab-building .mep.m3::after { animation-delay: 1.3s; }
+
+.ucx-collab-building .building.exploded .roof { transform: rotateX(90deg) translateZ(calc(var(--bh) / 2 + 26px)); }
+
+@keyframes ucxBuildingPulse {
+  0%, 100% { opacity: .35; transform: scale(1); }
+  50% { opacity: .9; transform: scale(1.25); }
+}
+
+.ucx-collab-building .core {
+  position: absolute;
+  left: 50%; top: 8%;
+  width: 1px; height: 84%;
+  transform: translateX(-50%) translateZ(calc(var(--bw) / 2 + 3px));
+  background: linear-gradient(to bottom, transparent, var(--white) 12%, var(--accent) 88%, transparent);
+  opacity: .22;
+  transition: opacity 1s ease;
+}
+.ucx-collab-building .building.stage-design .core,
+.ucx-collab-building .building.stage-delivery .core { opacity: .65; }
+
+/* interior wireframe (BIM layer) */
+.ucx-collab-building .interior-wire {
+  position: absolute; top: 0; left: 0;
+  width: 0; height: 0;
+  transform-style: preserve-3d;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.ucx-collab-building .building.digital-active .interior-wire { opacity: 1; }
+.ucx-collab-building .iw-face {
+  position: absolute;
+  top: calc(var(--bh) * -0.27);
+  left: calc(var(--bw) * -0.27);
+  width: calc(var(--bw) * .54);
+  height: calc(var(--bh) * .54);
+  border: 1px solid var(--accent);
+  background:
+    repeating-linear-gradient(to bottom, rgba(117,198,162,.16) 0 1px, transparent 1px 12.5%),
+    repeating-linear-gradient(to right, rgba(117,198,162,.16) 0 1px, transparent 1px 25%);
+  opacity: .55;
+}
+.ucx-collab-building .iw-face.front { transform: translateZ(calc(var(--bw) * .27)); }
+.ucx-collab-building .iw-face.back { transform: rotateY(180deg) translateZ(calc(var(--bw) * .27)); }
+.ucx-collab-building .iw-face.left { transform: rotateY(-90deg) translateZ(calc(var(--bw) * .27)); }
+.ucx-collab-building .iw-face.right { transform: rotateY(90deg) translateZ(calc(var(--bw) * .27)); }
+
+/* ---------- 2D overlays ---------- */
+.ucx-collab-building .connections {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+.ucx-collab-building .connections line {
+  stroke: var(--accent);
+  stroke-width: .14;
+  vector-effect: non-scaling-stroke;
+}
+.ucx-collab-building .content-lines { opacity: 0; transition: opacity 1.1s ease; }
+.ucx-collab-building .content-lines.visible { opacity: 1; }
+.ucx-collab-building .asset-net { opacity: 0; transition: opacity 1s ease; }
+.ucx-collab-building .asset-net.visible { opacity: 1; }
+.ucx-collab-building .collab-lines { opacity: 0; transition: opacity 1.3s ease; }
+.ucx-collab-building .collab-lines.visible { opacity: 1; }
+
+.ucx-collab-building .overlay-layer {
+  position: absolute; inset: 0;
+  pointer-events: none;
+}
+
+.ucx-collab-building .title-block {
+  position: absolute;
+  left: 50%; top: 9%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: var(--white);
+  width: 84%;
+}
+.ucx-collab-building .title-block .eyebrow {
+  display: block;
+  font-size: clamp(9px, 3cqi, 11px);
+  font-weight: 400;
+  letter-spacing: .28em;
+  color: var(--accent);
+  opacity: .85;
+  margin-bottom: .5em;
+}
+.ucx-collab-building .title-block h1 {
+  margin: 0;
+  font-weight: 300;
+  font-size: clamp(15px, 7cqi, 26px);
+  letter-spacing: .01em;
+  line-height: 1.05;
+}
+
+.ucx-collab-building .micro {
+  position: absolute;
+  font-size: clamp(9px, 2.6cqi, 12px);
+  font-weight: 400;
+  letter-spacing: .06em;
+  color: var(--paper);
+  line-height: 1.5;
+  width: 11ch;
+}
+.ucx-collab-building .micro span { display: block; }
+.ucx-collab-building .micro span::before {
+  content: '';
+  display: inline-block;
+  width: 5px; height: 1px;
+  margin-right: .5em;
+  background: var(--accent);
+  vertical-align: middle;
+}
+.ucx-collab-building .micro.tl { left: 3%; top: 26%; text-align: right; }
+.ucx-collab-building .micro.tl span::before { display: none; }
+.ucx-collab-building .micro.tl span::after { content: ''; display: inline-block; width: 5px; height: 1px; margin-left: .5em; background: var(--accent); vertical-align: middle; }
+.ucx-collab-building .micro.tr { right: 3%; top: 26%; }
+.ucx-collab-building .micro.bl { left: 3%; bottom: 15%; text-align: right; }
+.ucx-collab-building .micro.bl span::before { display: none; }
+.ucx-collab-building .micro.bl span::after { content: ''; display: inline-block; width: 5px; height: 1px; margin-left: .5em; background: var(--accent); vertical-align: middle; }
+.ucx-collab-building .micro.br { right: 3%; bottom: 15%; }
+
+.ucx-collab-building .collab-layer { opacity: 0; transition: opacity 1.3s ease; }
+.ucx-collab-building .collab-layer.visible { opacity: 1; }
+.ucx-collab-building .node {
+  position: absolute;
+  transform: translate(-50%,-50%);
+  font-size: clamp(9px, 2.6cqi, 11.5px);
+  font-weight: 400;
+  letter-spacing: .09em;
+  color: var(--white);
+  white-space: nowrap;
+}
+.ucx-collab-building .node::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 120%;
+  width: 4px; height: 4px;
+  margin-left: -2px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 6px 1px var(--accent-dim);
+}
+.ucx-collab-building .n1 { left: 14%; top: 39%; }
+.ucx-collab-building .n2 { left: 86%; top: 39%; text-align: right; }
+.ucx-collab-building .n3 { left: 86%; top: 73%; text-align: right; }
+.ucx-collab-building .n4 { left: 14%; top: 73%; }
+.ucx-collab-building .n5 { left: 50%; top: 91%; text-align: center; }
+.ucx-collab-building .n6 { left: 50%; top: 19%; text-align: center; }
+
+.ucx-collab-building .tagline {
+  position: absolute;
+  left: 50%; bottom: 9%;
+  transform: translateX(-50%);
+  color: var(--white);
+  font-weight: 300;
+  font-size: clamp(10px, 3.6cqi, 15px);
+  letter-spacing: .04em;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+.ucx-collab-building .tagline.visible { opacity: 1; }
+.ucx-collab-building .tagline .arrow { color: var(--accent); margin: 0 .5em; font-weight: 300; }
+
+@container (max-width: 300px) {
+  .ucx-collab-building .micro { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ucx-collab-building .panel, .ucx-collab-building .roof, .ucx-collab-building .core,
+  .ucx-collab-building .interior-wire, .ucx-collab-building .content-lines,
+  .ucx-collab-building .asset-net, .ucx-collab-building .collab-lines,
+  .ucx-collab-building .collab-layer, .ucx-collab-building .tagline {
+    transition-duration: .01ms !important;
+  }
+  .ucx-collab-building .particle, .ucx-collab-building .glint { animation: none !important; opacity: 0 !important; }
+}

@@ -62,11 +62,7 @@
 .ucx-labpromo .wrapper {
   position: relative; z-index: 1;
   max-width: 1160px; margin: 0 auto;
-  /* extra top padding gives the building's overflow (see .lp-building-img)
-     real room inside this section's own overflow:hidden box, instead of
-     being clipped by it — it's shared section spacing, not a gap reserved
-     just for the picture, so it doesn't read as empty space. */
-  padding: clamp(140px,15vw,200px) clamp(20px,6vw,80px) calc(var(--ucx-section-gap) / 2);
+  padding: calc(var(--ucx-section-gap) / 2) clamp(20px,6vw,80px);
   display: grid;
   grid-template-columns: 1.15fr .85fr;
   align-items: center;
@@ -121,81 +117,24 @@
 .ucx-labpromo .cta:hover .cta-icon { transform: translateX(3px); }
 .ucx-labpromo .cta:active { transform: scale(.96); box-shadow: 0 10px 22px -14px rgba(0,53,45,.5); }
 
-/* ---- building elevation graphic ----
-   the frame is a clipped, rounded card (its own layer, .lp-building-bg) but
-   the frame element itself has visible overflow, so the building's top can
-   break past the card's edge instead of being cropped by it. perspective +
-   a pointer-driven rotateX/rotateY (see LabPromo.tsx) sell it as a tilting
-   3D object rather than a flat sticker on the card. */
-.ucx-labpromo .lp-graphic { display: flex; align-items: flex-end; justify-content: center; }
-.ucx-labpromo .lp-building-frame {
-  position: relative;
-  width: min(100%, 420px);
-  aspect-ratio: 1;
-  display: flex; align-items: flex-end; justify-content: center;
-  padding: 0 6%;
-  perspective: 900px;
-  transform-style: preserve-3d;
-  transition: transform .3s var(--ease);
-  will-change: transform;
+.ucx-labpromo .lp-trust {
+  display: flex; flex-wrap: wrap; gap: clamp(24px,4vw,40px);
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(0,53,45,.18);
 }
-.ucx-labpromo .lp-building-bg {
-  position: absolute; inset: 0;
-  z-index: 0;
-  border-radius: 26px;
-  overflow: hidden;
-  background: radial-gradient(120% 90% at 50% 38%, #054942 0%, #023D37 55%, #011f1c 100%);
-  box-shadow: 0 30px 60px -24px rgba(1,15,13,.5);
+.ucx-labpromo .lp-trust-stat { display: flex; flex-direction: column; gap: 4px; }
+.ucx-labpromo .lp-trust-stat strong {
+  font-family: 'Getho','Atyp Display',sans-serif; font-weight: 700;
+  font-size: clamp(24px,2.6vw,30px); line-height: 1; color: var(--accent);
 }
-.ucx-labpromo .lp-building-shadow {
-  position: absolute;
-  left: 50%; bottom: 4%;
-  width: 60%; height: 8%;
-  transform: translateX(-50%);
-  background: radial-gradient(closest-side, rgba(0,0,0,.55), transparent 72%);
-}
-.ucx-labpromo .lp-building-img {
-  position: relative; z-index: 1;
-  max-width: 100%;
-  width: auto; height: 143%;
-  object-fit: contain;
-  object-position: bottom;
-  transform: translateZ(40px);
-  filter: drop-shadow(0 26px 34px rgba(1,15,13,.5));
-  transition: filter .3s ease;
+.ucx-labpromo .lp-trust-stat span {
+  font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: rgba(0,53,45,.68);
 }
 
-/* ---- touch-only feedback (see LabPromo.tsx's coarse-pointer effect) ---- */
-.ucx-labpromo .lp-building-frame.is-poked { transition: none; }
-.ucx-labpromo .lp-building-frame.is-tapped .lp-building-img {
-  animation: lpBuildingPulse .5s ease;
-}
-@keyframes lpBuildingPulse {
-  0% { filter: drop-shadow(0 26px 34px rgba(1,15,13,.5)) brightness(1); }
-  35% { filter: drop-shadow(0 26px 34px rgba(117,198,162,.65)) brightness(1.15); }
-  100% { filter: drop-shadow(0 26px 34px rgba(1,15,13,.5)) brightness(1); }
-}
-
-.ucx-labpromo .lp-caption {
-  position: absolute;
-  left: 50%; bottom: 6%;
-  transform: translate(-50%, 6px);
-  z-index: 2;
-  font-family: 'Getho','Atyp Display',sans-serif;
-  font-weight: 700;
-  font-size: 12px;
-  letter-spacing: .28em;
-  color: var(--white);
-  background: rgba(0,53,45,.55);
-  border: 1px solid rgba(255,255,255,.22);
-  border-radius: 999px;
-  padding: 8px 20px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .25s ease, transform .25s ease;
-  white-space: nowrap;
-}
-.ucx-labpromo .lp-caption.show { opacity: 1; transform: translate(-50%, 0); }
+/* ---- revolving building scene graphic ---- */
+.ucx-labpromo .lp-graphic { display: flex; align-items: center; justify-content: center; }
+.ucx-labpromo .lp-graphic .ucx-collab-building { width: min(100%, 460px); }
 
 @media (prefers-reduced-motion: reduce) {
   .ucx-labpromo *, .ucx-labpromo *::before, .ucx-labpromo *::after {
@@ -206,9 +145,9 @@
   .ucx-labpromo .grid-glow, .ucx-labpromo .cursor-haze { display: none; }
   .ucx-labpromo .wrapper { grid-template-columns: 1fr; text-align: center; }
   .ucx-labpromo .lp-copy { text-align: center; }
-  .ucx-labpromo .eyebrow, .ucx-labpromo .tags { justify-content: center; }
+  .ucx-labpromo .eyebrow, .ucx-labpromo .tags, .ucx-labpromo .lp-trust { justify-content: center; }
   .ucx-labpromo .intro { margin-left: auto; margin-right: auto; }
   .ucx-labpromo .cta { margin: 0 auto; }
   .ucx-labpromo .lp-graphic { order: -1; }
-  .ucx-labpromo .lp-building-frame { width: 260px; }
+  .ucx-labpromo .lp-graphic .ucx-collab-building { width: 260px; }
 }
