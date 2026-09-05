@@ -146,6 +146,13 @@
   color: var(--ink);
   -webkit-tap-highlight-color: transparent;
 }
+/* Overrides the site-wide button:active { transform: scale(.97) } baseline
+   — this row contains a 3D-flipping icon (perspective + preserve-3d +
+   backface-visibility below), and applying a live transform to its parent
+   at the same moment is a known compositing-glitch trigger on some mobile
+   GPUs/WebViews, rendering as the row's content flickering out instead of
+   the panel opening. */
+.ucx-faq .faq__row:active { transform: none; }
 
 .ucx-faq .faq__index {
   flex: none;
@@ -156,8 +163,12 @@
   min-width: 26px;
   transition: color 0.4s var(--ease-out);
 }
+/* --lite-green (#91F2B5) is a pale mint built for the dark-green surfaces
+   used elsewhere on the site — on this section's white background it has
+   too little contrast to read, making the question/index look like it
+   vanished rather than just changed color once opened/hovered. */
 .ucx-faq .faq__item.is-open .faq__index,
-.ucx-faq .faq__row:hover .faq__index { color: var(--lite-green-dim); }
+.ucx-faq .faq__row:hover .faq__index { color: var(--dark-green-soft); }
 
 .ucx-faq .faq__q {
   font-family: 'Atyp Display', sans-serif;
@@ -168,8 +179,8 @@
   transition: color 0.45s var(--ease-out), transform 0.45s var(--ease-out);
   flex: 1;
 }
-.ucx-faq .faq__row:hover .faq__q { color: var(--lite-green); transform: translateX(4px); }
-.ucx-faq .faq__item.is-open .faq__q { color: var(--lite-green); }
+.ucx-faq .faq__row:hover .faq__q { color: var(--dark-green-soft); transform: translateX(4px); }
+.ucx-faq .faq__item.is-open .faq__q { color: var(--dark-green-soft); }
 
 /* --- cinematic icon: a medallion that turns over, like a coin or a film reel --- */
 .ucx-faq .faq__icon { flex: none; position: relative; width: 46px; height: 46px; perspective: 340px; }

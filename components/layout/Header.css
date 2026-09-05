@@ -573,32 +573,26 @@
   .ucxnav.is-mobile-open .ucxnav__mobile { display: block; }
   body.ucxnav-lock { overflow: hidden; }
 
-  /* The full "Unconventional Collaboration" wordmark has no legible size
-     that leaves room for search + the hamburger on a phone/tablet bar —
-     it was pushing them past the edge instead of just looking cramped.
-     So mobile/tablet always shows the abbreviated "UCX" mark (the same
-     treatment desktop only switches to once scrolled), and the logo gets
-     a hard width ceiling + overflow:hidden as a second safety net so it
-     can never force those two controls out of view, however it's measured. */
-  /* excludes the interiors/SpayceX variant below, which is an <img> sized
-     by height, not this text lockup's width */
+  /* Mobile/tablet always shows just the abbreviated "UCX" mark, at one
+     fixed size regardless of scroll — no separate unscrolled/.is-scrolled
+     sizes to jump between (that read as the mark randomly changing size).
+     Desktop is untouched: full wordmark, collapsing to "UCX" on scroll. */
   .ucxnav__logo:not(.ucxnav__logo--interiors) { max-width: 90px; overflow: hidden; flex-shrink: 1; min-width: 0; }
   .ucxnav__logo-rest, .ucxnav__logo-rest--mint { max-width: 0; opacity: 0; }
-  .ucxnav__logo-letter { font-size: 16px; }
+  .ucxnav__logo-letter, .ucxnav.is-scrolled .ucxnav__logo-letter { font-size: 16px; }
   .ucxnav__logo-letter--mint { color: var(--ucx-white); }
   .ucxnav__logo-word2 { margin-left: 0; }
   .ucxnav__logo-word2-text { border-top: 2px solid var(--ucx-white); }
-  .ucxnav__logo-xletter { max-width: 16px; opacity: 1; margin-left: 2px; font-size: 16px; }
-  .ucxnav.is-scrolled .ucxnav__logo-letter { font-size: 14px; }
-  .ucxnav.is-scrolled .ucxnav__logo-xletter { max-width: 15px; font-size: 14px; }
-  .ucxnav.is-scrolled .ucxnav__logo-img { height: 18px; }
+  .ucxnav__logo-xletter, .ucxnav.is-scrolled .ucxnav__logo-xletter {
+    max-width: 16px; opacity: 1; margin-left: 2px; font-size: 16px;
+  }
+  .ucxnav__logo-img, .ucxnav.is-scrolled .ucxnav__logo-img { height: 20px; }
   /* the interiors/SpayceX mark is an <img>, not the text lockup above, and
      its own base + scrolled rules (near the top of this file) are more
-     specific than the two generic .ucxnav__logo-img rules — so those never
-     actually applied here, leaving this logo at its full 56px/44px sizing
-     on every mobile/tablet view regardless of scroll state. */
-  .ucxnav__logo--interiors .ucxnav__logo-img { height: 26px; }
-  .ucxnav.is-scrolled .ucxnav__logo--interiors .ucxnav__logo-img { height: 20px; }
+     specific than the generic .ucxnav__logo-img rule just above — so that
+     one never actually applied here. Same one-size-always treatment. */
+  .ucxnav__logo--interiors .ucxnav__logo-img,
+  .ucxnav.is-scrolled .ucxnav__logo--interiors .ucxnav__logo-img { height: 24px; }
 }
 
 @media (max-width: 640px) {
