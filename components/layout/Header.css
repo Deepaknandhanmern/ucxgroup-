@@ -566,36 +566,42 @@
      (logo pinned left, search+burger pinned together at the right) —
      justify-content:space-between on the row would instead spread all
      three items evenly, stranding search in the dead center. */
-  .ucx-search-trigger { margin-left: auto; }
+  .ucx-search-trigger { margin-left: auto; flex-shrink: 0; }
   .ucxnav__nav, .ucxnav__panels { display: none; }
   .ucxnav__cta { display: none; }
-  .ucxnav__burger { display: flex; }
+  .ucxnav__burger { display: flex; flex-shrink: 0; }
   .ucxnav.is-mobile-open .ucxnav__mobile { display: block; }
   body.ucxnav-lock { overflow: hidden; }
 
-  /* Cap the collapsed "UCX" mark to 60% of the bar's own WIDTH, not
-     height — a flex item's percentage max-width resolves against its flex
-     container (.ucxnav__inner), so this is a hard width ceiling regardless
-     of font metrics. Letter/X sizing stays a small fixed size; the
-     max-width is the actual constraint being asked for. */
-  .ucxnav.is-scrolled .ucxnav__logo { max-width: 60%; overflow: hidden; }
-  .ucxnav.is-scrolled .ucxnav__logo-letter { font-size: 15px; }
-  .ucxnav.is-scrolled .ucxnav__logo-xletter { max-width: 18px; font-size: 15px; }
-  .ucxnav.is-scrolled .ucxnav__logo-img { height: 20px; }
+  /* The full "Unconventional Collaboration" wordmark has no legible size
+     that leaves room for search + the hamburger on a phone/tablet bar —
+     it was pushing them past the edge instead of just looking cramped.
+     So mobile/tablet always shows the abbreviated "UCX" mark (the same
+     treatment desktop only switches to once scrolled), and the logo gets
+     a hard width ceiling + overflow:hidden as a second safety net so it
+     can never force those two controls out of view, however it's measured. */
+  /* excludes the interiors/SpayceX variant below, which is an <img> sized
+     by height, not this text lockup's width */
+  .ucxnav__logo:not(.ucxnav__logo--interiors) { max-width: 90px; overflow: hidden; flex-shrink: 1; min-width: 0; }
+  .ucxnav__logo-rest, .ucxnav__logo-rest--mint { max-width: 0; opacity: 0; }
+  .ucxnav__logo-letter { font-size: 16px; }
+  .ucxnav__logo-letter--mint { color: var(--ucx-white); }
+  .ucxnav__logo-word2 { margin-left: 0; }
+  .ucxnav__logo-word2-text { border-top: 2px solid var(--ucx-white); }
+  .ucxnav__logo-xletter { max-width: 16px; opacity: 1; margin-left: 2px; font-size: 16px; }
+  .ucxnav.is-scrolled .ucxnav__logo-letter { font-size: 14px; }
+  .ucxnav.is-scrolled .ucxnav__logo-xletter { max-width: 15px; font-size: 14px; }
+  .ucxnav.is-scrolled .ucxnav__logo-img { height: 18px; }
   /* the interiors/SpayceX mark is an <img>, not the text lockup above, and
      its own base + scrolled rules (near the top of this file) are more
      specific than the two generic .ucxnav__logo-img rules — so those never
      actually applied here, leaving this logo at its full 56px/44px sizing
      on every mobile/tablet view regardless of scroll state. */
-  .ucxnav__logo--interiors .ucxnav__logo-img { height: 30px; }
-  .ucxnav.is-scrolled .ucxnav__logo--interiors .ucxnav__logo-img { height: 22px; }
+  .ucxnav__logo--interiors .ucxnav__logo-img { height: 26px; }
+  .ucxnav.is-scrolled .ucxnav__logo--interiors .ucxnav__logo-img { height: 20px; }
 }
 
 @media (max-width: 640px) {
-  /* Full wordmark at the top, same as desktop — only collapse to the
-     abbreviated "UCX" mark once scrolled (.is-scrolled, defined above),
-     instead of forcing the abbreviated state unconditionally. */
-  .ucxnav__logo-letter { font-size: 19px; }
   :root { --ucx-bar-h: 66px; }
   .ucxnav { --ucx-bar-h: 66px; }
 }
