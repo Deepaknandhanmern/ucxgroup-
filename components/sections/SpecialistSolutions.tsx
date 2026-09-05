@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useSwipeableMarquee } from "@/components/ui/useSwipeableMarquee";
 
 interface Card {
   index: string;
@@ -36,6 +37,11 @@ function CardImage({ src, alt }: { src: string; alt: string }) {
 
 export default function SpecialistSolutions() {
   const sectRef = useRef<HTMLDivElement>(null);
+  const [activeDot, setActiveDot] = useState(0);
+  const trackRef = useSwipeableMarquee<HTMLDivElement>({
+    durationSec: 30,
+    onProgress: (fraction) => setActiveDot(Math.floor(fraction * CARDS.length) % CARDS.length),
+  });
 
   // cursor spotlight
   useEffect(() => {
@@ -89,7 +95,7 @@ export default function SpecialistSolutions() {
         </div>
 
         <div className="slider">
-          <div className="track">
+          <div className="track" ref={trackRef}>
             {[...CARDS, ...CARDS].map((c, i) => (
               <article className="card" key={`${c.index}-${i}`}>
                 <div className="card-image">
@@ -103,6 +109,12 @@ export default function SpecialistSolutions() {
               </article>
             ))}
           </div>
+        </div>
+
+        <div className="slider-dots" aria-hidden="true">
+          {CARDS.map((c, i) => (
+            <span key={c.index} className={`slider-dot${i === activeDot ? " is-active" : ""}`} />
+          ))}
         </div>
 
         <div className="closing">

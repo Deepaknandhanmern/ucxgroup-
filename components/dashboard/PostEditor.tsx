@@ -39,6 +39,7 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const galleryInputRef = useRef<HTMLInputElement>(null);
+  const bodyRef = useRef<HTMLTextAreaElement>(null);
 
   const [postId, setPostId] = useState<number | undefined>(post?.id);
   const [title, setTitle] = useState(post?.title ?? "");
@@ -112,6 +113,34 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
     if (uploaded.length > 0) setImages((prev) => [...prev, ...uploaded]);
     setGalleryUploading(false);
     if (galleryInputRef.current) galleryInputRef.current.value = "";
+  }
+
+  // Wraps (or replaces) the current textarea selection with markdown syntax,
+  // then restores focus and re-selects the wrapped text so the toolbar
+  // behaves like a normal rich-text bold/link button instead of just
+  // dumping the syntax at the end of the field.
+  function wrapSelection(before: string, after: string, placeholder: string) {
+    const el = bodyRef.current;
+    if (!el) return;
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+    const selected = el.value.slice(start, end) || placeholder;
+    const next = el.value.slice(0, start) + before + selected + after + el.value.slice(end);
+    setBodyMarkdown(next);
+    requestAnimationFrame(() => {
+      el.focus();
+      el.setSelectionRange(start + before.length, start + before.length + selected.length);
+    });
+  }
+
+  function applyBold() {
+    wrapSelection("**", "**", "bold text");
+  }
+
+  function applyLink() {
+    const url = window.prompt("Link URL", "https://");
+    if (!url) return;
+    wrapSelection("[", `](${url})`, "link text");
   }
 
   function removeGalleryImage(index: number) {
@@ -418,8 +447,27 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
 
       <div>
         <span className={labelClass}>Content (Markdown)</span>
+        <div className="mt-1.5 flex items-center gap-2">
+          <button
+            type="button"
+            onClick={applyBold}
+            title="Bold"
+            className="rounded-lg border border-neutral-300 px-3 py-1.5 text-sm font-bold text-neutral-700 hover:bg-neutral-50"
+          >
+            B
+          </button>
+          <button
+            type="button"
+            onClick={applyLink}
+            title="Insert link"
+            className="rounded-lg border border-neutral-300 px-3 py-1.5 text-sm font-medium text-neutral-700 underline hover:bg-neutral-50"
+          >
+            Link
+          </button>
+        </div>
         <div className="mt-1.5 grid grid-cols-2 gap-4">
           <textarea
+            ref={bodyRef}
             className={`${inputClass} mt-0 font-mono`}
             rows={20}
             value={bodyMarkdown}

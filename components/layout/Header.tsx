@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import SearchPalette from "@/components/ui/SearchPalette";
+import { tapHaptic } from "@/components/ui/haptics";
 
 type PanelKey = "capabilities" | "experience" | "lab" | "insights" | "company";
 
@@ -573,10 +574,12 @@ export default function Header() {
   }
 
   function toggleMobileItem(key: PanelKey) {
+    tapHaptic();
     setMobileOpenKey((prev) => (prev === key ? null : key));
   }
 
   function toggleMobileMenu() {
+    tapHaptic();
     setIsMobileMenuOpen((prev) => {
       const next = !prev;
       if (!next) closeAll();

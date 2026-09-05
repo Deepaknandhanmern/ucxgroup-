@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useSwipeableMarquee } from "@/components/ui/useSwipeableMarquee";
 
 const VALUES = [
   "Design & Interiors",
@@ -14,6 +15,7 @@ export default function InteriorsFooter() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const giantRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
+  const marqueeTrackRef = useSwipeableMarquee<HTMLDivElement>({ durationSec: 34 });
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -62,7 +64,7 @@ export default function InteriorsFooter() {
         </div>
 
         <div className="ifoot-marquee" aria-hidden="true">
-          <div className="ifoot-marquee-track">
+          <div className="ifoot-marquee-track" ref={marqueeTrackRef}>
             {[...VALUES, ...VALUES].map((v, i) => (
               <span key={i}>
                 {v} <i>&#10022;</i>

@@ -2,11 +2,18 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CAT_LABELS, FILTERS, INTERIOR_FILTERS, type Cat, type InteriorCat, type Project } from "@/lib/projects";
+import { attachGlintOnView } from "@/components/ui/glintOnView";
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const cardRef = useRef<HTMLAnchorElement>(null);
   const [imgOk, setImgOk] = useState(true);
   const pending = useRef(false);
+
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    return attachGlintOnView(el);
+  }, []);
 
   function onPointerMove(e: React.PointerEvent<HTMLAnchorElement>) {
     const el = cardRef.current;

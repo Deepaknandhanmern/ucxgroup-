@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { tapHaptic } from "@/components/ui/haptics";
 
 export interface FaqItem {
   q: string;
@@ -93,6 +94,7 @@ export default function FAQ({
   }, []);
 
   function handleToggle(i: number) {
+    tapHaptic();
     setOpenIndex((prev) => (prev === i ? null : i));
 
     setFlippingIndex(null);

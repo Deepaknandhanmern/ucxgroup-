@@ -40,3 +40,63 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* ---------------------------------------------------------------------
+   Site-wide tap/press feedback baseline.
+   Targets actual interactive HTML (links, buttons, form controls,
+   role="button") rather than guessing by class name — that way it never
+   fires on a purely decorative card or wrapper div that merely looks like
+   one. Any component that already sets its own :active transform (the
+   Lab promo CTA, footer socials, etc.) keeps that behavior: this is a low-
+   specificity fallback, so more specific rules elsewhere still win. Scale
+   only (no color/shadow) so it layers safely under whatever each component
+   already does on :hover. */
+a[href]:active,
+button:not(:disabled):active,
+[role="button"]:active,
+input[type="submit"]:not(:disabled):active,
+input[type="button"]:not(:disabled):active {
+  transform: scale(0.97);
+}
+/* split from the rule above: an unsupported :has() dropped from a shared
+   comma list can take the whole rule with it in stricter selector parsing,
+   so this stays isolated instead of risking the well-supported majority */
+label:has(> input[type="radio"]):active,
+label:has(> input[type="checkbox"]):active {
+  transform: scale(0.97);
+}
+a[href],
+button,
+[role="button"] {
+  transition: transform 0.15s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  a[href]:active,
+  button:active,
+  [role="button"]:active,
+  input[type="submit"]:active,
+  input[type="button"]:active {
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Site-wide cursor-glow touch revival.
+   Dozens of sections (Hero, Capabilities, Careers, Experience, testimonial
+   rows, etc.) share the same ".grid-glow"/".cursor-haze" radial-highlight
+   pattern: a pointermove listener sets --mx/--my and toggles an "is-hot"
+   class, and each section's own CSS hides the glow entirely below its
+   tablet/mobile breakpoint (it was built assuming a mouse). Pointer Events
+   already fire for touch (pointerenter on touchstart, pointermove while
+   dragging, pointerleave on lift-off) — the only thing stopping it on
+   mobile/tablet is that display:none, so undoing it here revives the
+   effect everywhere at once: a tap/drag now blooms a soft glow under the
+   finger instead of the section going flat. No component listens for
+   "!important" here, so this safely wins over every per-section rule. */
+@media (pointer: coarse) {
+  .grid-glow,
+  .cursor-haze,
+  .ucx-cursor-haze {
+    display: block !important;
+  }
+}

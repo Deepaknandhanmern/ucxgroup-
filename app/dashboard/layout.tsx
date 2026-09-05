@@ -27,19 +27,19 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="relative isolate min-h-screen bg-white font-atyp">
-      <header className="flex items-center justify-between border-b border-neutral-200 bg-white/80 px-6 py-4 backdrop-blur-sm">
-        <div className="flex items-center gap-8">
-          <Link href="/dashboard" className="font-getho text-sm font-bold tracking-wide text-[#00352d]">
+      <header className="sticky top-0 z-40 flex flex-wrap items-center justify-between gap-y-2 border-b border-neutral-200 bg-white/80 px-4 py-3 backdrop-blur-sm sm:px-6 sm:py-4">
+        <div className="flex min-w-0 items-center gap-4 sm:gap-8">
+          <Link href="/dashboard" className="shrink-0 font-getho text-sm font-bold tracking-wide text-[#00352d]">
             UCX DASHBOARD
           </Link>
-          <nav className="flex gap-1">
+          <nav className="flex min-w-0 gap-1 overflow-x-auto">
             {navItems.map((item) => {
               const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`rounded-md px-3 py-1.5 text-sm font-medium transition ${
+                  className={`shrink-0 whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium transition ${
                     active ? "bg-[#00352d] text-white" : "text-neutral-600 hover:bg-neutral-100"
                   }`}
                 >
@@ -49,7 +49,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             })}
           </nav>
         </div>
-        <div className="flex items-center gap-5">
+        <div className="flex shrink-0 items-center gap-5">
           <Link
             href="/dashboard/settings"
             className={`text-sm font-medium ${
@@ -67,7 +67,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </button>
         </div>
       </header>
-      <main className="mx-auto max-w-5xl px-6 py-8">{children}</main>
+      <main className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8">{children}</main>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { submitEnquiry } from "@/lib/save-enquiry";
 import InteriorsHero from "@/components/sections/InteriorsHero";
 import BeforeAfterSlider from "@/components/ui/BeforeAfterSlider";
 import PromoBanner from "@/components/sections/PromoBanner";
+import { useSwipeableMarquee } from "@/components/ui/useSwipeableMarquee";
 
 const SERVICES = [
   {
@@ -175,6 +176,9 @@ type LeadStatus = "idle" | "sending" | "sent" | "error";
 export default function Interiors() {
   const sectRef = useRef<HTMLDivElement>(null);
   const [leadStatus, setLeadStatus] = useState<LeadStatus>("idle");
+  const tmRowRef = useSwipeableMarquee<HTMLDivElement>({ durationSec: 36 });
+  const tmRowReverseRef = useSwipeableMarquee<HTMLDivElement>({ durationSec: 42, reverse: true });
+  const servicesMarqueeRef = useSwipeableMarquee<HTMLDivElement>({ durationSec: 32 });
 
   async function handleLeadSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -269,7 +273,7 @@ export default function Interiors() {
 
       {/* ---------- marquee: full-bleed scrolling strip, right under the hero ---------- */}
       <div className="marquee-strip" aria-hidden="true">
-        <div className="marquee-track">
+        <div className="marquee-track" ref={servicesMarqueeRef}>
           {[...SERVICES, ...SERVICES].map((s, i) => (
             <span key={i}>{s.name}</span>
           ))}
@@ -452,12 +456,12 @@ export default function Interiors() {
       </div>
 
       <div className="tm-marquee" data-reveal>
-        <div className="tm-row">
+        <div className="tm-row" ref={tmRowRef}>
           {[...TESTIMONIALS_ROW_1, ...TESTIMONIALS_ROW_1].map((t, i) => (
             <TestimonialCard t={t} key={`${t.name}-${i}`} />
           ))}
         </div>
-        <div className="tm-row tm-row--reverse">
+        <div className="tm-row tm-row--reverse" ref={tmRowReverseRef}>
           {[...TESTIMONIALS_ROW_2, ...TESTIMONIALS_ROW_2].map((t, i) => (
             <TestimonialCard t={t} key={`${t.name}-${i}`} />
           ))}

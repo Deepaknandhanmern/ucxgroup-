@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useMagnetic } from "@/components/ui/useMagnetic";
+import { useSwipeableMarquee } from "@/components/ui/useSwipeableMarquee";
 
 const WORDS = ["Designed.", "Connected.", "Delivered."];
 const RADAR_WORDS = ["Concept", "Design", "BIM", "Detailing", "Execution", "Handover"];
@@ -20,11 +21,13 @@ export default function Hero() {
   const rotorRef = useRef<HTMLSpanElement>(null);
   const clockRef = useRef<HTMLSpanElement>(null);
   const radarWrapRef = useRef<HTMLDivElement>(null);
+  const radarRingsRef = useRef<HTMLDivElement>(null);
   const blipsHostRef = useRef<HTMLDivElement>(null);
   const ticksHostRef = useRef<HTMLDivElement>(null);
   const linkRef = useRef<HTMLDivElement>(null);
   const readRef = useRef<HTMLElement>(null);
   const scrollBtnRef = useRef<HTMLButtonElement>(null);
+  const marqueeTrackRef = useSwipeableMarquee<HTMLDivElement>({ durationSec: 34 });
   const solidBtnRef = useMagnetic<HTMLAnchorElement>();
   const ghostBtnRef = useMagnetic<HTMLAnchorElement>();
 
@@ -359,6 +362,51 @@ export default function Hero() {
     };
   }, []);
 
+  // ============ gyroscope parallax (touch replacement for the mouse-driven
+  // radar tracking above, which onRadarMouseMove explicitly skips on touch) ============
+  useEffect(() => {
+    const rings = radarRingsRef.current;
+    if (!rings) return;
+    if (!window.matchMedia("(pointer: coarse)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (!("DeviceOrientationEvent" in window)) return;
+    // iOS 13+ gates this API behind an explicit permission prompt that can
+    // only be triggered from a user gesture — not worth trading a "Allow
+    // motion access?" dialog on first load for a decorative background
+    // tilt, so this only activates where the browser exposes it for free.
+    const needsPermission =
+      typeof (window as unknown as { DeviceOrientationEvent?: { requestPermission?: () => Promise<string> } })
+        .DeviceOrientationEvent?.requestPermission === "function";
+    if (needsPermission) return;
+
+    let targetX = 0;
+    let targetY = 0;
+    let curX = 0;
+    let curY = 0;
+    let raf = 0;
+
+    function onOrientation(e: DeviceOrientationEvent) {
+      const gamma = e.gamma ?? 0; // left-right tilt, roughly -90..90
+      const beta = e.beta ?? 0; // front-back tilt, roughly -180..180
+      targetX = Math.max(-1, Math.min(1, gamma / 28));
+      targetY = Math.max(-1, Math.min(1, (beta - 45) / 28));
+    }
+    window.addEventListener("deviceorientation", onOrientation);
+
+    function frame() {
+      curX += (targetX - curX) * 0.08;
+      curY += (targetY - curY) * 0.08;
+      rings!.style.transform = `translate(${(curX * 12).toFixed(1)}px, ${(curY * 12).toFixed(1)}px)`;
+      raf = requestAnimationFrame(frame);
+    }
+    raf = requestAnimationFrame(frame);
+
+    return () => {
+      window.removeEventListener("deviceorientation", onOrientation);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
   return (
     <div className="ucx-hero" id="hero" ref={heroRef}>
       <div className="grid-overlay"></div>
@@ -426,7 +474,7 @@ export default function Hero() {
         </div>
 
         <div className="field" ref={radarWrapRef} aria-hidden="true">
-          <div className="radar-rings">
+          <div className="radar-rings" ref={radarRingsRef}>
             <span className="ring r1"></span>
             <span className="ring r2"></span>
             <span className="ring r3"></span>
@@ -447,7 +495,7 @@ export default function Hero() {
       {/* ============ bottom bar ============ */}
       <div className="botbar">
         <div className="marquee" aria-hidden="true">
-          <div className="marquee-track">
+          <div className="marquee-track" ref={marqueeTrackRef}>
             {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
               <span key={i}>{item}</span>
             ))}

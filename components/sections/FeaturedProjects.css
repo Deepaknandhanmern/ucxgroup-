@@ -197,7 +197,16 @@
   .fp-bottom h3 { max-width: 100%; font-size: clamp(22px,7vw,34px); }
   .fp-bottom { flex-direction: column; align-items: flex-start; gap: 14px; }
   .fp-media { aspect-ratio: 4/5; min-height: 380px; }
-  .fp-cursor { display: none; }
+  /* the follow-the-cursor circle reads as empty space on touch (a
+     fingertip covers it while it's visible) — a static corner badge gives
+     the same "there's more here" cue without needing a cursor at all */
+  .fp-cursor {
+    top: 14px; left: auto; right: 14px; margin: 0;
+    width: auto; height: auto;
+    padding: 7px 16px;
+    border-radius: 999px;
+    opacity: 1; transform: none;
+  }
 }
 @media (max-width: 560px) {
   .fp-meta { gap: 18px; }

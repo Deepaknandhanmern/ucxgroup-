@@ -130,6 +130,30 @@
 }
 .ucx-special .card-flow { font-size: 13.5px; line-height: 1.6; color: var(--muted); }
 
+/* progress dots: only meaningful on the JS-driven touch drag path in
+   useSwipeableMarquee (desktop's plain CSS keyframe loop has no position to
+   report), so these stay hidden until a coarse pointer is detected */
+.ucx-special .slider-dots {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+}
+@media (pointer: coarse) {
+  .ucx-special .slider-dots { display: flex; }
+}
+.ucx-special .slider-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--line);
+  transition: background .3s var(--ease), transform .3s var(--ease);
+}
+.ucx-special .slider-dot.is-active {
+  background: var(--accent);
+  transform: scale(1.35);
+}
+
 .ucx-special .closing { margin-top: clamp(36px,4vw,48px); }
 
 /* ---- closing ---- */
