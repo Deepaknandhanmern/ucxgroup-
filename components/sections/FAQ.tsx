@@ -31,25 +31,6 @@ const DEFAULT_FAQ_ITEMS: FaqItem[] = [
   },
 ];
 
-function IconMedallion() {
-  return (
-    <span className="faq__icon-disc">
-      <span className="faq__icon-face faq__icon-face--front">
-        <span className="faq__icon-mark">
-          <span></span>
-          <span></span>
-        </span>
-      </span>
-      <span className="faq__icon-face faq__icon-face--back">
-        <span className="faq__icon-mark">
-          <span></span>
-          <span></span>
-        </span>
-      </span>
-    </span>
-  );
-}
-
 export default function FAQ({
   items = DEFAULT_FAQ_ITEMS,
   title = "Frequently asked questions",
@@ -60,8 +41,6 @@ export default function FAQ({
   sub?: string;
 }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
-  const [flippingIndex, setFlippingIndex] = useState<number | null>(null);
-  const flipTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rootRef = useRef<HTMLElement>(null);
   const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -114,13 +93,6 @@ export default function FAQ({
   function handleToggle(i: number) {
     tapHaptic();
     setOpenIndex((prev) => (prev === i ? null : i));
-
-    setFlippingIndex(null);
-    if (flipTimeout.current) clearTimeout(flipTimeout.current);
-    requestAnimationFrame(() => {
-      setFlippingIndex(i);
-      flipTimeout.current = setTimeout(() => setFlippingIndex(null), 900);
-    });
   }
 
   const faqJsonLd = {
@@ -157,9 +129,11 @@ export default function FAQ({
                 <button className="faq__row" aria-expanded={isOpen} onClick={() => handleToggle(i)}>
                   <span className="faq__index">{String(i + 1).padStart(2, "0")}</span>
                   <span className="faq__q">{item.q}</span>
-                  <span className={`faq__icon${flippingIndex === i ? " is-flipping" : ""}`}>
-                    <IconMedallion />
-                    <span className="faq__icon-sheen"></span>
+                  <span className="faq__icon" aria-hidden="true">
+                    <span className="faq__icon-mark">
+                      <span></span>
+                      <span></span>
+                    </span>
                   </span>
                 </button>
                 <div className="faq__panel" ref={(el) => { panelRefs.current[i] = el; }}>

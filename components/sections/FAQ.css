@@ -146,14 +146,6 @@
   color: var(--ink);
   -webkit-tap-highlight-color: transparent;
 }
-/* Overrides the site-wide button:active { transform: scale(.97) } baseline
-   — this row contains a 3D-flipping icon (perspective + preserve-3d +
-   backface-visibility below), and applying a live transform to its parent
-   at the same moment is a known compositing-glitch trigger on some mobile
-   GPUs/WebViews, rendering as the row's content flickering out instead of
-   the panel opening. */
-.ucx-faq .faq__row:active { transform: none; }
-
 .ucx-faq .faq__index {
   flex: none;
   font-variant-numeric: tabular-nums;
@@ -182,36 +174,22 @@
 .ucx-faq .faq__row:hover .faq__q { color: var(--dark-green-soft); transform: translateX(4px); }
 .ucx-faq .faq__item.is-open .faq__q { color: var(--dark-green-soft); }
 
-/* --- cinematic icon: a medallion that turns over, like a coin or a film reel --- */
-.ucx-faq .faq__icon { flex: none; position: relative; width: 46px; height: 46px; perspective: 340px; }
-.ucx-faq .faq__icon-disc {
-  position: relative;
-  width: 100%; height: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.85s cubic-bezier(.5,-0.05,.2,1.15);
-}
-.ucx-faq .faq__item:not(.is-open) .faq__row:hover .faq__icon-disc { transform: rotateY(24deg) rotateX(4deg); }
-.ucx-faq .faq__item.is-open .faq__icon-disc { transform: rotateY(180deg); }
-
-.ucx-faq .faq__icon-face {
-  position: absolute; inset: 0;
+/* --- plus/minus toggle: a plain 2D rotate (replaces an earlier 3D coin-flip
+   icon built with perspective + preserve-3d + backface-visibility, a
+   combination known to glitch on some mobile GPUs/WebViews) --- */
+.ucx-faq .faq__icon {
+  flex: none; position: relative; width: 46px; height: 46px;
   border-radius: 50%;
-  display: grid; place-items: center;
-  backface-visibility: hidden;
-}
-.ucx-faq .faq__icon-face--front {
   border: 1px solid var(--line);
-  background: rgba(246,255,250,0.02);
-  transition: border-color 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out);
+  background: transparent;
+  display: grid; place-items: center;
+  transition: border-color 0.4s var(--ease-out), background 0.4s var(--ease-out);
 }
-.ucx-faq .faq__item:not(.is-open) .faq__row:hover .faq__icon-face--front {
-  border-color: var(--lite-green-dim);
-  box-shadow: 0 0 0 6px rgba(145,242,181,0.07);
-}
-.ucx-faq .faq__icon-face--back {
-  transform: rotateY(180deg);
-  background: radial-gradient(circle at 50% 40%, #bbffd7 0%, var(--lite-green) 62%, #63d894 100%);
-  box-shadow: 0 10px 26px -8px rgba(145,242,181,0.55);
+.ucx-faq .faq__row:hover .faq__icon { border-color: var(--lite-green-dim); box-shadow: 0 0 0 6px rgba(145,242,181,0.07); }
+.ucx-faq .faq__item.is-open .faq__icon {
+  border-color: var(--dark-green-soft);
+  background: var(--dark-green-soft);
+  box-shadow: 0 10px 26px -8px rgba(5,75,63,0.45);
 }
 
 .ucx-faq .faq__icon-mark { position: relative; width: 14px; height: 14px; }
@@ -219,27 +197,13 @@
   position: absolute; top: 50%; left: 50%;
   width: 14px; height: 1.6px;
   border-radius: 2px;
+  background: var(--dark-green-soft);
   transform: translate(-50%, -50%);
+  transition: transform 0.4s var(--ease-out), background 0.3s ease;
 }
-.ucx-faq .faq__icon-face--front .faq__icon-mark span { background: var(--lite-green); }
-.ucx-faq .faq__icon-face--front .faq__icon-mark span:last-child { transform: translate(-50%, -50%) rotate(90deg); }
-.ucx-faq .faq__icon-face--back .faq__icon-mark span { background: var(--dark-green-deep); transform: translate(-50%, -50%) rotate(45deg); }
-.ucx-faq .faq__icon-face--back .faq__icon-mark span:last-child { transform: translate(-50%, -50%) rotate(135deg); }
-
-.ucx-faq .faq__icon-sheen {
-  position: absolute; inset: -6px;
-  border-radius: 50%;
-  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.85) 48%, transparent 66%);
-  opacity: 0;
-  pointer-events: none;
-  mix-blend-mode: overlay;
-}
-.ucx-faq .faq__icon.is-flipping .faq__icon-sheen { animation: ucxFaqGlint 0.85s ease forwards; }
-@keyframes ucxFaqGlint {
-  0% { opacity: 0; transform: translateX(-60%) rotate(6deg); }
-  45% { opacity: 0.9; }
-  100% { opacity: 0; transform: translateX(60%) rotate(6deg); }
-}
+.ucx-faq .faq__icon-mark span:last-child { transform: translate(-50%, -50%) rotate(90deg); }
+.ucx-faq .faq__item.is-open .faq__icon-mark span { background: #fff; }
+.ucx-faq .faq__item.is-open .faq__icon-mark span:last-child { transform: translate(-50%, -50%) rotate(0deg); }
 
 /* --- answer panel --- */
 .ucx-faq .faq__panel {
@@ -302,10 +266,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ucx-faq .faq__icon-disc, .ucx-faq .faq__panel, .ucx-faq .faq__a, .ucx-faq .faq__cta, .ucx-faq .faq__q, .ucx-faq .faq__icon-face--front, .ucx-faq [data-reveal] {
+  .ucx-faq .faq__icon, .ucx-faq .faq__icon-mark span, .ucx-faq .faq__panel, .ucx-faq .faq__a, .ucx-faq .faq__cta, .ucx-faq .faq__q, .ucx-faq [data-reveal] {
     transition-duration: 0.01ms !important;
   }
-  .ucx-faq .faq__icon-sheen { animation: none !important; }
 }
 
 /* --- tablet & mobile: a distinct card-accordion, not a shrunk desktop list --- */
