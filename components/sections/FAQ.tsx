@@ -63,6 +63,24 @@ export default function FAQ({
   const [flippingIndex, setFlippingIndex] = useState<number | null>(null);
   const flipTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rootRef = useRef<HTMLElement>(null);
+  const panelRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Measured-height expand instead of a CSS grid-template-rows animation —
+  // that trick has inconsistent/glitchy support on some mobile browsers
+  // (older Android WebViews, Samsung Internet), where it was collapsing the
+  // panel instead of growing it. Re-measures on resize too, since a fixed
+  // px max-height from an old layout would otherwise clip rewrapped text.
+  useEffect(() => {
+    function apply() {
+      panelRefs.current.forEach((panel, i) => {
+        if (!panel) return;
+        panel.style.maxHeight = i === openIndex ? panel.scrollHeight + "px" : "0px";
+      });
+    }
+    apply();
+    window.addEventListener("resize", apply);
+    return () => window.removeEventListener("resize", apply);
+  }, [openIndex]);
 
   // Scroll-reveal for the head, each question and the footer — the same
   // staggered fade-up used across the rest of the site (Experience, LabHero,
@@ -144,7 +162,7 @@ export default function FAQ({
                     <span className="faq__icon-sheen"></span>
                   </span>
                 </button>
-                <div className="faq__panel">
+                <div className="faq__panel" ref={(el) => { panelRefs.current[i] = el; }}>
                   <div className="faq__panel-inner">
                     <p className="faq__a">{item.a}</p>
                   </div>
