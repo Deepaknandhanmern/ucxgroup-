@@ -37,6 +37,19 @@ export function estimateReadTime(body: string, wordsPerMinute = 200): string {
   return `${minutes} min read`;
 }
 
+// Mirrors the slugify() in lib/blog-posts-db.ts (server-only, so it can't be
+// imported from the client editor) — kept here purely to preview what the
+// URL will look like before saving. The real slug is decided server-side
+// and may get a numeric suffix for uniqueness; this preview doesn't need to
+// predict that.
+export function slugify(title: string): string {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
 export type SeoLengthStatus = "empty" | "short" | "good" | "long";
 
 // Shared thresholds for the title/excerpt character-count hints in the

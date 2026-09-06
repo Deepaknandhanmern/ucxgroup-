@@ -17,6 +17,14 @@ export const metadata: Metadata = {
       "Every UCX blog post on BIM & digital engineering, design & delivery, and technology & AI — browse the full archive.",
     url: "https://ucx-group.com/blogs",
     type: "website",
+    images: ["/brand/social.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blogs | UCX Group",
+    description:
+      "Every UCX blog post on BIM & digital engineering, design & delivery, and technology & AI — browse the full archive.",
+    images: ["/brand/social.png"],
   },
 };
 

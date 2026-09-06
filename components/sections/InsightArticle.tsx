@@ -205,7 +205,7 @@ export default function InsightArticle({ post, more }: { post: Post; more: Post[
                 className={`art-hero-thumb${i === activeImage ? " is-active" : ""}`}
                 onClick={() => goToImage(i)}
               >
-                <img src={src} alt="" loading="lazy" />
+                <img src={src} alt={`${post.title} — image ${i + 1}`} loading="lazy" />
               </button>
             ))}
           </div>

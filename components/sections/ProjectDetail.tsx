@@ -77,7 +77,7 @@ export default function ProjectDetail({ project, more }: { project: Project; mor
                 className={`pd-hero-thumb${i === activeImage ? " is-active" : ""}`}
                 onClick={() => goToImage(i)}
               >
-                <img src={src} alt="" loading="lazy" />
+                <img src={src} alt={`${project.title} — image ${i + 1}`} loading="lazy" />
               </button>
             ))}
           </div>

@@ -18,6 +18,8 @@ function toProject(row: ProjectRow): Project {
     summary: row.summary,
     body: JSON.parse(row.body) as string[],
     scope: JSON.parse(row.scope) as string[],
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
   };
 }
 

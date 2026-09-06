@@ -17,6 +17,14 @@ export const metadata: Metadata = {
       "Guides, templates and reference material from UCX on BIM standards, digital delivery workflows and asset information requirements.",
     url: "https://ucx-group.com/resources",
     type: "website",
+    images: ["/brand/social.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Resources | UCX Group",
+    description:
+      "Guides, templates and reference material from UCX on BIM standards, digital delivery workflows and asset information requirements.",
+    images: ["/brand/social.png"],
   },
 };
 

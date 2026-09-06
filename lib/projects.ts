@@ -25,6 +25,9 @@ export interface Project {
   summary: string;
   body: string[];
   scope: string[];
+  /** ISO datetime strings, used for publishedTime/dateModified metadata. */
+  createdAt: string;
+  updatedAt: string;
 }
 
 export const FILTERS: { cat: Cat | "all"; label: string }[] = [

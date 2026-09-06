@@ -7,11 +7,27 @@ import BuildingEcosystem from "@/components/sections/BuildingEcosystem";
 import Workspace from "@/components/sections/Workspace";
 import SectionRail from "@/components/ui/SectionRail";
 
+const TITLE = "About Us";
+const DESCRIPTION =
+  "UCX is an engineering-led delivery ecosystem built around design, digital engineering, project delivery and asset information — meet the studio and the founders behind it.";
+
 export const metadata: Metadata = {
   alternates: { canonical: "/about-us" },
-  title: "About Us",
-  description:
-    "UCX is an engineering-led delivery ecosystem built around design, digital engineering, project delivery and asset information — meet the studio and the founders behind it.",
+  title: TITLE,
+  description: DESCRIPTION,
+  openGraph: {
+    title: `${TITLE} | UCX Group`,
+    description: DESCRIPTION,
+    url: "https://ucx-group.com/about-us",
+    type: "website",
+    images: ["/brand/social.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${TITLE} | UCX Group`,
+    description: DESCRIPTION,
+    images: ["/brand/social.png"],
+  },
 };
 
 const RAIL_SECTIONS = [

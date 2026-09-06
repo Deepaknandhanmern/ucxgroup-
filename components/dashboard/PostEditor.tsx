@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { BlogPostRow, PostStatus } from "@/lib/blog-posts-db";
-import { deriveExcerpt, estimateReadTime, seoLengthStatus } from "@/lib/seo";
+import { deriveExcerpt, estimateReadTime, seoLengthStatus, slugify } from "@/lib/seo";
 
 const AUTOSAVE_INTERVAL_MS = 20_000;
 
@@ -79,6 +79,9 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
 
   const titleLenStatus = seoLengthStatus(title.length, 20, 60);
   const excerptLenStatus = seoLengthStatus(excerpt.length, 70, 155);
+  // An existing post's slug is fixed once published (links to it must keep
+  // working) — only a brand-new post's URL still moves as the title is typed.
+  const slugPreview = post?.slug ?? slugify(title);
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -310,6 +313,22 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
           )}
         </div>
       </label>
+
+      <div>
+        <span className={labelClass}>Search result preview</span>
+        <p className="mt-1 text-xs text-neutral-400">How this post can look in a Google search result.</p>
+        <div className="mt-1.5 rounded-lg border border-neutral-200 bg-white p-3.5">
+          <p className="truncate text-xs text-[#006621]">
+            ucx-group.com › insights › {slugPreview || "your-post-title"}
+          </p>
+          <p className="truncate text-lg text-[#1a0dab]" style={{ fontFamily: "Arial, sans-serif" }}>
+            {title || "Your post title will appear here"}
+          </p>
+          <p className="mt-0.5 line-clamp-2 text-sm text-[#4d5156]" style={{ fontFamily: "Arial, sans-serif" }}>
+            {excerpt || "Your meta description will appear here once you start writing."}
+          </p>
+        </div>
+      </div>
 
       <div>
         <span className={labelClass}>Cover image</span>
