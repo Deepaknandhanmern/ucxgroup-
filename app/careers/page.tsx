@@ -19,6 +19,7 @@ export default function CareersPage() {
     department: row.department,
     location: row.location,
     type: row.type,
+    experience: row.experience,
     desc: row.description,
   }));
 

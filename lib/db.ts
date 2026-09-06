@@ -172,6 +172,7 @@ function runMigrations(conn: DatabaseSync) {
   // Additional gallery images shown as a carousel on the project detail
   // page, beyond the single required cover `image`. JSON array of URLs.
   ensureColumn(conn, "projects", "images", "images TEXT NOT NULL DEFAULT '[]'");
+  ensureColumn(conn, "job_openings", "experience", "experience TEXT NOT NULL DEFAULT ''");
 
   // One-time migration: seed the DB from the existing markdown posts the
   // first time this ever runs, so the switchover to DB-backed content

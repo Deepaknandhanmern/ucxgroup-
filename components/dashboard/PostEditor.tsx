@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { remark } from "remark";
-import remarkHtml from "remark-html";
 import type { BlogPostRow, PostStatus } from "@/lib/blog-posts-db";
 
 const AUTOSAVE_INTERVAL_MS = 20_000;
@@ -63,14 +61,6 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
   const [lastAutosaved, setLastAutosaved] = useState<Date | null>(null);
   const [autosaving, setAutosaving] = useState(false);
   const lastSavedSnapshot = useRef("");
-
-  const previewHtml = useMemo(() => {
-    try {
-      return remark().use(remarkHtml).processSync(bodyMarkdown).toString();
-    } catch {
-      return "<p><em>Couldn't render preview.</em></p>";
-    }
-  }, [bodyMarkdown]);
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -465,27 +455,15 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
             Link
           </button>
         </div>
-        <div className="mt-1.5 grid grid-cols-2 gap-4">
-          <textarea
-            ref={bodyRef}
-            className={`${inputClass} mt-0 font-mono`}
-            rows={20}
-            value={bodyMarkdown}
-            onChange={(e) => setBodyMarkdown(e.target.value)}
-            required
-            placeholder="Write the post body in Markdown — paragraphs, **bold**, *italic*, etc."
-          />
-          <div
-            className="space-y-3 overflow-y-auto rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-sm leading-relaxed text-neutral-800 [&_h1]:text-lg [&_h1]:font-bold [&_h2]:text-base [&_h2]:font-bold [&_strong]:font-semibold [&_a]:text-[#00352d] [&_a]:underline"
-            style={{ maxHeight: 420 }}
-          >
-            {bodyMarkdown.trim() ? (
-              <div dangerouslySetInnerHTML={{ __html: previewHtml }} />
-            ) : (
-              <span className="text-neutral-400">Preview will appear here as you type…</span>
-            )}
-          </div>
-        </div>
+        <textarea
+          ref={bodyRef}
+          className={`${inputClass} mt-1.5 font-mono`}
+          rows={20}
+          value={bodyMarkdown}
+          onChange={(e) => setBodyMarkdown(e.target.value)}
+          required
+          placeholder="Write the post body in Markdown — paragraphs, **bold**, *italic*, etc."
+        />
       </div>
 
       {error && <p className="text-sm text-red-600">{error}</p>}

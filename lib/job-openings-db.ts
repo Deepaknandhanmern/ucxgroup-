@@ -7,6 +7,7 @@ export interface JobOpeningRow {
   department: string;
   location: string;
   type: string;
+  experience: string;
   description: string;
   created_at: string;
   updated_at: string;
@@ -17,6 +18,7 @@ export interface JobOpeningInput {
   department: string;
   location: string;
   type: string;
+  experience: string;
   description: string;
 }
 
@@ -32,19 +34,19 @@ export function createJobOpening(input: JobOpeningInput): JobOpeningRow {
   const now = new Date().toISOString();
   const result = db
     .prepare(
-      `INSERT INTO job_openings (title, department, location, type, description, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO job_openings (title, department, location, type, experience, description, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
     )
-    .run(input.title, input.department, input.location, input.type, input.description, now, now);
+    .run(input.title, input.department, input.location, input.type, input.experience, input.description, now, now);
   return getJobOpeningById(Number(result.lastInsertRowid))!;
 }
 
 export function updateJobOpening(id: number, input: JobOpeningInput): JobOpeningRow | undefined {
   const now = new Date().toISOString();
   db.prepare(
-    `UPDATE job_openings SET title = ?, department = ?, location = ?, type = ?, description = ?, updated_at = ?
+    `UPDATE job_openings SET title = ?, department = ?, location = ?, type = ?, experience = ?, description = ?, updated_at = ?
      WHERE id = ?`
-  ).run(input.title, input.department, input.location, input.type, input.description, now, id);
+  ).run(input.title, input.department, input.location, input.type, input.experience, input.description, now, id);
   return getJobOpeningById(id);
 }
 

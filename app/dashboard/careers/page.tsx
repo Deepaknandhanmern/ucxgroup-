@@ -3,7 +3,14 @@
 import { useEffect, useState } from "react";
 import type { JobOpeningRow } from "@/lib/job-openings-db";
 
-const EMPTY = { title: "", department: "", location: "", type: "Full-time", description: "" };
+const EMPTY = { title: "", department: "", location: "", type: "Full-time", experience: "Entry Level (0-2 yrs)", description: "" };
+
+const EXPERIENCE_LEVELS = [
+  "Entry Level (0-2 yrs)",
+  "Mid Level (2-5 yrs)",
+  "Senior Level (5-8 yrs)",
+  "Lead / Principal (8+ yrs)",
+];
 
 export default function CareersDashboardPage() {
   const [jobs, setJobs] = useState<JobOpeningRow[] | null>(null);
@@ -32,6 +39,7 @@ export default function CareersDashboardPage() {
       department: job.department,
       location: job.location,
       type: job.type,
+      experience: job.experience || EXPERIENCE_LEVELS[0],
       description: job.description,
     });
     setEditingId(job.id);
@@ -123,6 +131,20 @@ export default function CareersDashboardPage() {
             </label>
           </div>
           <label className={labelClass}>
+            Experience level
+            <select
+              className={inputClass}
+              value={form.experience}
+              onChange={(e) => setForm({ ...form, experience: e.target.value })}
+            >
+              {EXPERIENCE_LEVELS.map((level) => (
+                <option key={level} value={level}>
+                  {level}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className={labelClass}>
             Description
             <textarea
               className={inputClass}
@@ -165,6 +187,7 @@ export default function CareersDashboardPage() {
                 <p className="font-medium text-neutral-900">{job.title}</p>
                 <p className="mt-0.5 text-sm text-neutral-500">
                   {job.department} · {job.location} · {job.type}
+                  {job.experience ? ` · ${job.experience}` : ""}
                 </p>
               </div>
               <div className="flex flex-none items-center gap-3">

@@ -15,6 +15,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     department: body.department ?? "",
     location: body.location ?? "",
     type: body.type ?? "Full-time",
+    experience: body.experience ?? "",
     description: body.description ?? "",
   });
   return NextResponse.json({ job });

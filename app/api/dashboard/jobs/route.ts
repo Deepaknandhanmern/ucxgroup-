@@ -15,6 +15,7 @@ export async function POST(req: Request) {
     department: body.department ?? "",
     location: body.location ?? "",
     type: body.type ?? "Full-time",
+    experience: body.experience ?? "",
     description: body.description ?? "",
   });
   return NextResponse.json({ job }, { status: 201 });

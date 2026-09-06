@@ -9,6 +9,7 @@ interface Position {
   department: string;
   location: string;
   type: string;
+  experience?: string;
   desc: string;
 }
 
@@ -152,6 +153,7 @@ export default function Careers({ positions }: { positions: Position[] }) {
                     <span>{p.department}</span>
                     <span>{p.location}</span>
                     <span>{p.type}</span>
+                    {p.experience && <span>{p.experience}</span>}
                   </div>
                   <p className="desc">{p.desc}</p>
                 </div>
