@@ -16,8 +16,24 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: post.title,
     description: post.excerpt,
+    keywords: post.tags,
     alternates: { canonical: `/insights/${post.slug}` },
-    openGraph: { title: post.title, description: post.excerpt, images: [post.image] },
+    openGraph: {
+      type: "article",
+      title: post.title,
+      description: post.excerpt,
+      images: [post.image],
+      publishedTime: post.date,
+      modifiedTime: post.updatedAt,
+      authors: [post.author.name],
+      tags: post.tags,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [post.image],
+    },
   };
 }
 
@@ -37,6 +53,9 @@ export default async function InsightArticlePage({ params }: { params: Promise<{
     description: post.excerpt,
     image: post.image,
     datePublished: post.date,
+    dateModified: post.updatedAt,
+    keywords: post.tags.join(", "),
+    mainEntityOfPage: { "@type": "WebPage", "@id": `https://ucx-group.com/insights/${post.slug}` },
     author: { "@type": "Person", name: post.author.name },
     publisher: { "@type": "Organization", name: "UCX Group", logo: { "@type": "ImageObject", url: "https://ucx-group.com/brand/logo.png" } },
   };

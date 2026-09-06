@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { BlogPostRow, PostStatus } from "@/lib/blog-posts-db";
+import { deriveExcerpt, estimateReadTime, seoLengthStatus } from "@/lib/seo";
 
 const AUTOSAVE_INTERVAL_MS = 20_000;
 
@@ -42,13 +43,18 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
   const [postId, setPostId] = useState<number | undefined>(post?.id);
   const [title, setTitle] = useState(post?.title ?? "");
   const [excerpt, setExcerpt] = useState(post?.excerpt ?? "");
+  // A new post's excerpt auto-fills from the body as the client writes (most
+  // people writing without an SEO background never touch it, so it should
+  // still come out as a usable meta description) — but the moment they edit
+  // it directly, or when opening an existing post that already has one, we
+  // stop overwriting their words.
+  const [excerptTouched, setExcerptTouched] = useState(!!post?.excerpt);
   const [image, setImage] = useState(post?.image ?? "");
   const [images, setImages] = useState<string[]>(post?.images ? (JSON.parse(post.images) as string[]) : []);
   const [galleryUploading, setGalleryUploading] = useState(false);
   const [team, setTeam] = useState(post?.team ?? "");
   const [category, setCategory] = useState(post?.category ?? "bim-digital");
   const [date, setDate] = useState(post?.date ?? new Date().toISOString().slice(0, 10));
-  const [readTime, setReadTime] = useState(post?.read_time ?? "5 min read");
   const [tags, setTags] = useState(post ? (JSON.parse(post.tags) as string[]).join(", ") : "");
   const [authorKey, setAuthorKey] = useState(post?.author_key ?? "shangeeth");
   const [bodyMarkdown, setBodyMarkdown] = useState(post?.body_markdown ?? "");
@@ -61,6 +67,18 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
   const [lastAutosaved, setLastAutosaved] = useState<Date | null>(null);
   const [autosaving, setAutosaving] = useState(false);
   const lastSavedSnapshot = useRef("");
+
+  // Read time is pure math off the word count — there's no "wrong" value for
+  // the client to accidentally type, so it's never a manual field.
+  const readTime = useMemo(() => estimateReadTime(bodyMarkdown), [bodyMarkdown]);
+
+  useEffect(() => {
+    if (excerptTouched) return;
+    setExcerpt(deriveExcerpt(bodyMarkdown));
+  }, [bodyMarkdown, excerptTouched]);
+
+  const titleLenStatus = seoLengthStatus(title.length, 20, 60);
+  const excerptLenStatus = seoLengthStatus(excerpt.length, 70, 155);
 
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -238,22 +256,59 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
     "mt-1.5 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm outline-none focus:border-[#00352d] focus:ring-1 focus:ring-[#00352d]";
   const labelClass = "block text-sm font-medium text-neutral-700";
 
+  const seoHintClass: Record<ReturnType<typeof seoLengthStatus>, string> = {
+    empty: "text-neutral-400",
+    short: "text-amber-600",
+    good: "text-emerald-600",
+    long: "text-red-600",
+  };
+  const seoHintCopy: Record<ReturnType<typeof seoLengthStatus>, string> = {
+    empty: "",
+    short: "a bit short for search results",
+    good: "good length for search results",
+    long: "may get cut off in search results",
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <label className={labelClass}>
         Title
         <input className={inputClass} value={title} onChange={(e) => setTitle(e.target.value)} required />
+        <span className={`mt-1 block text-xs ${seoHintClass[titleLenStatus]}`}>
+          {title.length} characters{seoHintCopy[titleLenStatus] ? ` — ${seoHintCopy[titleLenStatus]}` : ""}
+        </span>
       </label>
 
       <label className={labelClass}>
         Excerpt
+        <span className="ml-1.5 font-normal text-neutral-400">(this is your SEO meta description — filled in for you as you write)</span>
         <textarea
           className={inputClass}
           rows={2}
           value={excerpt}
-          onChange={(e) => setExcerpt(e.target.value)}
-          placeholder="One or two sentences shown on the blog card"
+          onChange={(e) => {
+            setExcerptTouched(true);
+            setExcerpt(e.target.value);
+          }}
+          placeholder="One or two sentences shown on the blog card and in search results"
         />
+        <div className="mt-1 flex items-center gap-3">
+          <span className={`text-xs ${seoHintClass[excerptLenStatus]}`}>
+            {excerpt.length} characters{seoHintCopy[excerptLenStatus] ? ` — ${seoHintCopy[excerptLenStatus]}` : ""}
+          </span>
+          {excerptTouched && (
+            <button
+              type="button"
+              onClick={() => {
+                setExcerptTouched(false);
+                setExcerpt(deriveExcerpt(bodyMarkdown));
+              }}
+              className="text-xs font-medium text-[#00352d] hover:underline"
+            >
+              Re-generate from content
+            </button>
+          )}
+        </div>
       </label>
 
       <div>
@@ -377,10 +432,13 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
           Date
           <input type="date" className={inputClass} value={date} onChange={(e) => setDate(e.target.value)} />
         </label>
-        <label className={labelClass}>
-          Read time
-          <input className={inputClass} value={readTime} onChange={(e) => setReadTime(e.target.value)} placeholder="5 min read" />
-        </label>
+        <div>
+          <span className={labelClass}>Read time</span>
+          <div className={`${inputClass} flex items-center text-neutral-600`}>
+            {readTime}
+            <span className="ml-1.5 text-xs text-neutral-400">(auto, from word count)</span>
+          </div>
+        </div>
         <label className={labelClass}>
           Team
           <input className={inputClass} value={team} onChange={(e) => setTeam(e.target.value)} placeholder="BIM & Digital Delivery" />

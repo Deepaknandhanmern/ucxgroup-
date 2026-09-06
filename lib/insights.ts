@@ -24,6 +24,8 @@ export interface Post {
   category: InsightCategory;
   /** ISO date string, e.g. "2026-08-16" */
   date: string;
+  /** ISO datetime string of the last edit, used for dateModified/OG metadata. */
+  updatedAt: string;
   readTime: string;
   tags: string[];
   author: Author;

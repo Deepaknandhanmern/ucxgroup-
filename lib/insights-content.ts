@@ -32,6 +32,7 @@ function toPost(row: BlogPostRow): Post {
     team: row.team,
     category: row.category as InsightCategory,
     date: row.date,
+    updatedAt: row.updated_at,
     readTime: row.read_time,
     tags: JSON.parse(row.tags) as string[],
     author,
