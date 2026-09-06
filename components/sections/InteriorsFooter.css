@@ -123,6 +123,13 @@
   padding-left: 10px; margin-left: 10px;
   border-left: 1px solid var(--line);
 }
+.ifoot-copy-credit a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 2px;
+}
+.ifoot-copy-credit a:hover { color: var(--cream); text-decoration-color: currentColor; }
 @media (max-width: 700px) {
   .ifoot-giant { font-size: 26vw; }
 }

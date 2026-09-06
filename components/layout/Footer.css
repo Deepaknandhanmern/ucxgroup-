@@ -245,6 +245,13 @@
   border-left: 1px solid var(--line);
   color: var(--muted);
 }
+.ucx-footer .copyright .credit a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 2px;
+}
+.ucx-footer .copyright .credit a:hover { color: var(--white); text-decoration-color: currentColor; }
 .ucx-footer .legal-links {
   display: flex;
   gap: 20px;

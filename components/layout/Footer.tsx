@@ -202,7 +202,13 @@ export default function Footer() {
 
       <div className="footer-bottom">
         <p className="copyright">
-          &copy; {new Date().getFullYear()} UCX. All rights reserved. <span className="credit">Designed &amp; Developed by Agape Works</span>
+          &copy; {new Date().getFullYear()} UCX. All rights reserved.{" "}
+          <span className="credit">
+            Designed &amp; Developed by{" "}
+            <a href="https://agapeworks.in/" target="_blank" rel="noopener noreferrer">
+              agapeworks.in
+            </a>
+          </span>
         </p>
         <ul className="legal-links">
           <li><a href="/privacy-policy">Privacy</a></li>

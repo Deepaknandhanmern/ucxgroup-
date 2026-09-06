@@ -125,7 +125,12 @@ export default function InteriorsFooter() {
         <div className="ifoot-bottom">
           <span className="ifoot-copy">
             &copy; {new Date().getFullYear()} SpayceX by UCX. All rights reserved.
-            <i className="ifoot-copy-credit">Designed &amp; Developed by Agape Works</i>
+            <i className="ifoot-copy-credit">
+              Designed &amp; Developed by{" "}
+              <a href="https://agapeworks.in/" target="_blank" rel="noopener noreferrer">
+                agapeworks.in
+              </a>
+            </i>
           </span>
         </div>
       </footer>
