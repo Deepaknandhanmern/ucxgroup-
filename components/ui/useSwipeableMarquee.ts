@@ -81,16 +81,24 @@ function showSwipeHint(track: HTMLElement) {
  * read back how far through one loop of the (non-duplicated) item set the
  * row currently is — e.g. to drive a page-position dots indicator.
  */
+export interface MarqueeControls {
+  /** Advance one card: 1 moves forward through the set, -1 goes back. */
+  step: (direction: 1 | -1) => void;
+}
+
 export function useSwipeableMarquee<T extends HTMLElement>(options: {
   durationSec: number;
   reverse?: boolean;
   snap?: boolean;
+  /** Handed a `step` control once running, for prev/next buttons on touch. */
+  onControls?: (controls: MarqueeControls | null) => void;
   onProgress?: (fraction: number) => void;
 }) {
   const ref = useRef<T>(null);
   const durationRef = useRef(options.durationSec);
   const reverseRef = useRef(!!options.reverse);
   const snapRef = useRef(!!options.snap);
+  const onControlsRef = useRef(options.onControls);
   const onProgressRef = useRef(options.onProgress);
 
   // Mirrors the latest option values into refs the mount-only effect below
@@ -100,6 +108,7 @@ export function useSwipeableMarquee<T extends HTMLElement>(options: {
     durationRef.current = options.durationSec;
     reverseRef.current = !!options.reverse;
     snapRef.current = !!options.snap;
+    onControlsRef.current = options.onControls;
     onProgressRef.current = options.onProgress;
   });
 
@@ -132,6 +141,9 @@ export function useSwipeableMarquee<T extends HTMLElement>(options: {
     const pitch = snapEnabled ? half / (el.children.length / 2) : 0;
     let draggedSinceSnap = false;
     let holdUntil = 0;
+    // when set, the frame loop eases pos onto this instead of drifting —
+    // shared by the post-swipe snap and the prev/next controls below
+    let snapTarget: number | null = null;
 
     el.style.animation = "none";
     el.style.touchAction = "pan-y";
@@ -155,8 +167,16 @@ export function useSwipeableMarquee<T extends HTMLElement>(options: {
     }
 
     function apply() {
-      if (pos <= -half) pos += half;
-      if (pos > 0) pos -= half;
+      // the target rides along with the wrap, so a step or snap in progress
+      // doesn't suddenly find itself a full set-width away
+      if (pos <= -half) {
+        pos += half;
+        if (snapTarget !== null) snapTarget += half;
+      }
+      if (pos > 0) {
+        pos -= half;
+        if (snapTarget !== null) snapTarget -= half;
+      }
       el!.style.transform = `translateX(${pos}px)`;
 
       if (onProgressRef.current) {
@@ -202,20 +222,24 @@ export function useSwipeableMarquee<T extends HTMLElement>(options: {
       const dt = now - lastFrame;
       lastFrame = now;
       if (!dragging) {
-        if (Math.abs(velocity) > 0.02) {
+        if (snapTarget === null && Math.abs(velocity) > 0.02) {
           pos += velocity * dt;
           velocity *= 0.94;
         } else {
           velocity = 0;
-          if (snapEnabled && draggedSinceSnap) {
-            // momentum has run out after a swipe — ease onto the nearest card
-            // boundary so it never comes to rest half-cut-off, then hold a
-            // beat before the ambient drift picks up again
-            const target = Math.round(pos / pitch) * pitch;
-            pos += (target - pos) * 0.18;
-            if (Math.abs(target - pos) < 0.5) {
-              pos = target;
-              draggedSinceSnap = false;
+          if (snapEnabled && snapTarget === null && draggedSinceSnap) {
+            // momentum has run out after a swipe — settle onto the nearest
+            // card boundary so it never rests half-cut-off
+            snapTarget = Math.round(pos / pitch) * pitch;
+            draggedSinceSnap = false;
+          }
+
+          if (snapTarget !== null) {
+            pos += (snapTarget - pos) * 0.18;
+            if (Math.abs(snapTarget - pos) < 0.5) {
+              pos = snapTarget;
+              snapTarget = null;
+              // hold a beat before the ambient drift picks up again
               holdUntil = now + 900;
             }
           } else if (now >= holdUntil && !reduceMotion) {
@@ -228,12 +252,26 @@ export function useSwipeableMarquee<T extends HTMLElement>(options: {
     }
     raf = requestAnimationFrame(frame);
 
+    onControlsRef.current?.({
+      step(direction) {
+        if (!pitch) return;
+        // moving forward through the set means shifting content left, so the
+        // target position decreases; anchored to the pitch grid from wherever
+        // it currently sits, including mid-drift
+        const from = snapTarget ?? pos;
+        snapTarget = (Math.round(from / pitch) - direction) * pitch;
+        velocity = 0;
+        draggedSinceSnap = false;
+      },
+    });
+
     return () => {
       cancelAnimationFrame(raf);
       el.removeEventListener("pointerdown", onPointerDown);
       el.removeEventListener("pointermove", onPointerMove);
       el.removeEventListener("pointerup", onPointerUp);
       el.removeEventListener("pointercancel", onPointerUp);
+      onControlsRef.current?.(null);
     };
   }, []);
 

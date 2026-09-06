@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useSwipeableMarquee } from "@/components/ui/useSwipeableMarquee";
+import { useSwipeableMarquee, type MarqueeControls } from "@/components/ui/useSwipeableMarquee";
+import { tapHaptic } from "@/components/ui/haptics";
 
 interface Card {
   index: string;
@@ -38,11 +39,20 @@ function CardImage({ src, alt }: { src: string; alt: string }) {
 export default function SpecialistSolutions() {
   const sectRef = useRef<HTMLDivElement>(null);
   const [activeDot, setActiveDot] = useState(0);
+  const controls = useRef<MarqueeControls | null>(null);
   const trackRef = useSwipeableMarquee<HTMLDivElement>({
     durationSec: 30,
     snap: true,
+    onControls: (c) => {
+      controls.current = c;
+    },
     onProgress: (fraction) => setActiveDot(Math.floor(fraction * CARDS.length) % CARDS.length),
   });
+
+  function step(direction: 1 | -1) {
+    tapHaptic();
+    controls.current?.step(direction);
+  }
 
   // cursor spotlight
   useEffect(() => {
@@ -112,10 +122,24 @@ export default function SpecialistSolutions() {
           </div>
         </div>
 
-        <div className="slider-dots" aria-hidden="true">
-          {CARDS.map((c, i) => (
-            <span key={c.index} className={`slider-dot${i === activeDot ? " is-active" : ""}`} />
-          ))}
+        <div className="slider-nav">
+          <button type="button" className="slider-arrow" onClick={() => step(-1)} aria-label="Previous card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H6M11 6l-6 6 6 6" />
+            </svg>
+          </button>
+
+          <div className="slider-dots" aria-hidden="true">
+            {CARDS.map((c, i) => (
+              <span key={c.index} className={`slider-dot${i === activeDot ? " is-active" : ""}`} />
+            ))}
+          </div>
+
+          <button type="button" className="slider-arrow" onClick={() => step(1)} aria-label="Next card">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h13M13 6l6 6-6 6" />
+            </svg>
+          </button>
         </div>
 
         <div className="closing">

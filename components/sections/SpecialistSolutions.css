@@ -130,18 +130,40 @@
 }
 .ucx-special .card-flow { font-size: 13.5px; line-height: 1.6; color: var(--muted); }
 
-/* progress dots: only meaningful on the JS-driven touch drag path in
+/* Arrows + progress dots: only meaningful on the JS-driven touch path in
    useSwipeableMarquee (desktop's plain CSS keyframe loop has no position to
-   report), so these stay hidden until a coarse pointer is detected */
-.ucx-special .slider-dots {
+   report and no step control), so the whole row stays hidden until a coarse
+   pointer is detected. */
+.ucx-special .slider-nav {
   display: none;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 14px;
   margin-top: 18px;
 }
 @media (pointer: coarse) {
-  .ucx-special .slider-dots { display: flex; }
+  .ucx-special .slider-nav { display: flex; }
+}
+.ucx-special .slider-arrow {
+  flex: none;
+  width: 40px; height: 40px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--dark);
+  cursor: pointer;
+  padding: 0;
+  transition: background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
+}
+.ucx-special .slider-arrow svg { width: 17px; height: 17px; }
+.ucx-special .slider-arrow:active { background: var(--dark); border-color: var(--dark); color: var(--accent); }
+
+.ucx-special .slider-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 .ucx-special .slider-dot {
   width: 6px; height: 6px;
