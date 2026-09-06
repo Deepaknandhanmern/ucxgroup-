@@ -4,16 +4,73 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
 const WHATSAPP_URL = "https://wa.me/918825827224";
+// Remembers that this visitor has already been nudged (or has used the
+// button), so the pulse is a one-time nudge rather than something that
+// greets them again on every page and every visit.
+const NUDGE_KEY = "ucx-wa-nudged";
+// far enough in that they're clearly reading, not just landing
+const NUDGE_AT = 0.45;
 
 export default function WhatsAppButton() {
   const pathname = usePathname();
   const [isInteriorsFilter, setIsInteriorsFilter] = useState(false);
+  const [nudging, setNudging] = useState(false);
 
   useEffect(() => {
     setIsInteriorsFilter(
       pathname === "/projects" && new URLSearchParams(window.location.search).get("filter") === "interiors"
     );
   }, [pathname]);
+
+  // The ring used to loop from page load, which reads as nagging. Instead it
+  // stays quiet until the visitor has scrolled a fair way down, then plays a
+  // short burst once — and never again once they've seen or used it.
+  useEffect(() => {
+    let seen = false;
+    try {
+      seen = localStorage.getItem(NUDGE_KEY) === "1";
+    } catch {
+      /* private mode / storage disabled — just skip the nudge */
+    }
+    if (seen) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let ticking = false;
+    function check() {
+      ticking = false;
+      const doc = document.documentElement;
+      const scrollable = doc.scrollHeight - window.innerHeight;
+      if (scrollable <= 0) return;
+      const progress = (window.scrollY || doc.scrollTop || 0) / scrollable;
+      if (progress < NUDGE_AT) return;
+
+      setNudging(true);
+      try {
+        localStorage.setItem(NUDGE_KEY, "1");
+      } catch {
+        /* ignore */
+      }
+      window.removeEventListener("scroll", onScroll);
+    }
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(check);
+      }
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  function markUsed() {
+    setNudging(false);
+    try {
+      localStorage.setItem(NUDGE_KEY, "1");
+    } catch {
+      /* ignore */
+    }
+  }
 
   const isInteriors = (pathname?.startsWith("/design-interiors") ?? false) || isInteriorsFilter;
 
@@ -25,7 +82,8 @@ export default function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with us on WhatsApp"
-      className="ucx-whatsapp"
+      className={`ucx-whatsapp${nudging ? " is-nudging" : ""}`}
+      onClick={markUsed}
     >
       <span className="ucx-whatsapp-ring" aria-hidden="true"></span>
       <span className="ucx-whatsapp-icon" aria-hidden="true">

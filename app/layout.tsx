@@ -7,6 +7,7 @@ import "@/components/shared/fonts.css";
 import "@/components/layout/Header.css";
 import "@/components/layout/BackToTop.css";
 import "@/components/ui/WhatsAppButton.css";
+import "@/components/ui/ScrollProgress.css";
 import "@/components/ui/BeforeAfterSlider.css";
 import "@/components/sections/Hero.css";
 import "@/components/sections/AboutUs.css";
@@ -78,6 +79,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import BackToTop from "@/components/layout/BackToTop";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
+import ScrollProgress from "@/components/ui/ScrollProgress";
 import TabTitleSwitcher from "@/components/ui/TabTitleSwitcher";
 import Preloader from "@/components/ui/Preloader";
 import Analytics from "@/components/shared/Analytics";
@@ -159,6 +161,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION_JSON_LD) }}
         />
         <TabTitleSwitcher />
+        <ScrollProgress />
         <Header />
         <main id="main-content">{children}</main>
         <Footer />
