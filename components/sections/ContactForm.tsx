@@ -10,6 +10,33 @@ import ContactMap from "./ContactMap";
 const CALENDLY_URL = "https://calendly.com/collaborate-ucx-group";
 const DAY_NAMES = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 const CONTACT_EMAIL = "collaborate@ucx-group.com";
+const CONTACT_NUMBERS = ["9626634366", "9626635366"];
+
+function PhoneCard({ numbers }: { numbers: string[] }) {
+  return (
+    <div className="email-card phone-card">
+      <div className="email-grid" aria-hidden="true"></div>
+      <div className="email-content">
+        <div className="email-top">
+          <svg className="email-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" />
+          </svg>
+          <span className="email-live">
+            <i></i>Call Us
+          </span>
+        </div>
+        <div className="email-bottom phone-bottom">
+          {numbers.map((n) => (
+            <a key={n} href={`tel:+91${n}`} className="phone-number">
+              +91 {n.slice(0, 5)} {n.slice(5)}
+            </a>
+          ))}
+          <span className="email-underline"></span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function EmailCard({ email }: { email: string }) {
   return (
@@ -386,6 +413,7 @@ export default function ContactForm() {
 
         <div className="office-strip">
           <EmailCard email={CONTACT_EMAIL} />
+          <PhoneCard numbers={CONTACT_NUMBERS} />
           <ContactMap />
         </div>
 

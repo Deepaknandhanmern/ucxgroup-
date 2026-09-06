@@ -106,6 +106,10 @@
 .ifoot-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
 .ifoot-pill--sm { padding: 9px 18px; font-size: 11px; letter-spacing: .06em; color: var(--accent-dim); border-color: var(--line); background: transparent; }
 .ifoot-pill--sm:hover { color: var(--cream); }
+/* the inherited .ifoot-pill:hover svg slide-right suits an arrow, not this
+   icon — scale in place instead so it doesn't look like it's trying to leave */
+.ifoot-pill--instagram svg { width: 14px; height: 14px; }
+.ifoot-pill--instagram:hover svg { transform: scale(1.12); }
 
 .ifoot-bottom {
   position: relative; z-index: 1;

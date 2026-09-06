@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-const WHATSAPP_URL = "https://wa.me/918825827224";
+const WHATSAPP_URL = "https://wa.me/919626635366";
 // Remembers that this visitor has already been nudged (or has used the
 // button), so the pulse is a one-time nudge rather than something that
 // greets them again on every page and every visit.
