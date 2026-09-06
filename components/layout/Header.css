@@ -545,6 +545,20 @@
 }
 .ucxnav__mobile-sub a:hover { color: var(--ucx-mint); }
 
+/* Current page: the drawer otherwise gives no sign of where you are. The
+   parent row carries a mint edge and label so the section reads at a glance
+   even while collapsed, and the exact page is marked inside it. */
+.ucxnav__mobile-item.is-current > .ucxnav__mobile-trigger {
+  color: var(--ucx-mint);
+  box-shadow: inset 3px 0 0 var(--ucx-mint);
+  padding-left: 12px;
+}
+.ucxnav__mobile-sub a.is-current {
+  color: var(--ucx-mint);
+  border-left-color: var(--ucx-mint);
+  font-weight: 600;
+}
+
 .ucxnav__mobile-cta {
   margin-top: 24px;
   display: flex; align-items: center; justify-content: center; gap: 8px;

@@ -578,6 +578,24 @@ export default function Header() {
     setMobileOpenKey((prev) => (prev === key ? null : key));
   }
 
+  // Which drawer entry corresponds to the page being viewed. Anchor links
+  // (/collaboration-lab#domains) never count as the active one, so a page
+  // lights up a single row rather than every anchor into it. The only
+  // query-bearing link in the nav is /projects?filter=interiors, which the
+  // header already tracks above — so bare /projects highlights only when that
+  // filter isn't applied, and the Interiors row only when it is.
+  function isLinkActive(href: string): boolean {
+    if (href.includes("#")) return false;
+    const path = href.split("?")[0];
+    if (path !== pathname) return false;
+    if (pathname === "/projects") return href.includes("?") ? isInteriorsFilter : !isInteriorsFilter;
+    return !href.includes("?");
+  }
+
+  function isGroupActive(item: MobileItem): boolean {
+    return item.links.some((link) => isLinkActive(link.href));
+  }
+
   function toggleMobileMenu() {
     tapHaptic();
     setIsMobileMenuOpen((prev) => {
@@ -798,7 +816,9 @@ export default function Header() {
             {MOBILE_ITEMS.map((item) => (
               <li
                 key={item.key}
-                className={`ucxnav__mobile-item${mobileOpenKey === item.key ? " is-open" : ""}`}
+                className={`ucxnav__mobile-item${mobileOpenKey === item.key ? " is-open" : ""}${
+                  isGroupActive(item) ? " is-current" : ""
+                }`}
               >
                 <button
                   className="ucxnav__mobile-trigger"
@@ -821,11 +841,20 @@ export default function Header() {
                   <Chevron />
                 </button>
                 <ul className="ucxnav__mobile-sub">
-                  {item.links.map((link) => (
-                    <li key={link.label}>
-                      <a href={link.href}>{link.label}</a>
-                    </li>
-                  ))}
+                  {item.links.map((link) => {
+                    const active = isLinkActive(link.href);
+                    return (
+                      <li key={link.label}>
+                        <a
+                          href={link.href}
+                          className={active ? "is-current" : undefined}
+                          aria-current={active ? "page" : undefined}
+                        >
+                          {link.label}
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ul>
               </li>
             ))}
