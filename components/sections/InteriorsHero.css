@@ -166,6 +166,20 @@
 }
 @media (max-width: 640px) {
   .ih-hero { min-height: calc(100svh - 66px); }
+
+  /* Kill the pin-and-expand scroll effect on mobile — it needs the 220vh
+     runway and position:fixed pinning to work, both of which read as janky
+     scroll-jacking on a phone rather than cinematic. `!important` here
+     wins over any position/top the scroll handler already set inline
+     before a resize crossed this breakpoint, so the hero always falls back
+     to plain normal-flow scrolling on small screens. */
+  .ih-hero-wrap { height: auto; }
+  .ih-hero {
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+  }
+  .ih-media { inset: 0 !important; border-radius: 0 !important; }
 }
 @media (max-width: 560px) {
   .ih-actions { flex-direction: column; align-items: flex-start; }

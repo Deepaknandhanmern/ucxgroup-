@@ -16,7 +16,15 @@ export default function InteriorsHero() {
     const media = mediaRef.current;
     if (!wrap || !hero || !media) return;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    // The pin-and-expand scroll effect needs real estate to work with (the
+    // wrapper is 220vh tall) and depends on toggling position:fixed as the
+    // user scrolls — on a phone that fights with the browser chrome
+    // showing/hiding and resizing the viewport mid-scroll, so it reads as
+    // janky rather than cinematic. Below the same 640px cutoff the rest of
+    // this component already treats as "mobile," skip it entirely and let
+    // the hero scroll normally in flow; CSS forces the matching normal-flow
+    // layout regardless of this early return (see InteriorsHero.css).
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || window.innerWidth <= 640) {
       media.style.setProperty("--expand", "1");
       return;
     }
