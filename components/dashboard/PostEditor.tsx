@@ -63,9 +63,11 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
 
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [justSaved, setJustSaved] = useState(false);
   const [error, setError] = useState("");
   const [lastAutosaved, setLastAutosaved] = useState<Date | null>(null);
   const [autosaving, setAutosaving] = useState(false);
+  const [leaveTarget, setLeaveTarget] = useState<string | null>(null);
   const lastSavedSnapshot = useRef("");
 
   // Read time is pure math off the word count — there's no "wrong" value for
@@ -168,7 +170,8 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
     });
   }
 
-  function buildPayload() {
+  function buildPayload(overrideStatus?: PostStatus) {
+    const effectiveStatus = overrideStatus ?? status;
     return {
       title,
       excerpt,
@@ -184,32 +187,71 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
         .filter(Boolean),
       authorKey,
       bodyMarkdown,
-      status,
-      publishAt: status === "scheduled" ? datetimeLocalToIso(publishAt) : null,
+      status: effectiveStatus,
+      publishAt: effectiveStatus === "scheduled" ? datetimeLocalToIso(publishAt) : null,
     };
+  }
+
+  // Shared by the main submit button and the "leaving with unsaved changes"
+  // card (Save as Draft / Publish) — both just need to persist the post
+  // under a given status and report whether it worked.
+  async function savePost(overrideStatus?: PostStatus): Promise<boolean> {
+    setSaving(true);
+    setError("");
+    try {
+      const payload = buildPayload(overrideStatus);
+      const res = await fetch(postId ? `/api/dashboard/posts/${postId}` : "/api/dashboard/posts", {
+        method: postId ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error ?? "Something went wrong saving this post.");
+        setSaving(false);
+        return false;
+      }
+
+      const data = await res.json();
+      if (!postId && data.post?.id) setPostId(data.post.id);
+      lastSavedSnapshot.current = JSON.stringify({ ...payload });
+      setSaving(false);
+      return true;
+    } catch {
+      // A thrown fetch (offline, dev server restart mid-request, etc.) used
+      // to leave the button stuck on "Saving…" forever with no feedback —
+      // this is very likely what read as "it's not saving" to the client.
+      setError("Couldn't reach the server — check your connection and try again.");
+      setSaving(false);
+      return false;
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setSaving(true);
-    setError("");
-
-    const payload = buildPayload();
-    const res = await fetch(postId ? `/api/dashboard/posts/${postId}` : "/api/dashboard/posts", {
-      method: postId ? "PUT" : "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    if (res.ok) {
+    const ok = await savePost();
+    if (ok) {
+      setJustSaved(true);
+      // router.refresh() right after router.push() can cancel the pending
+      // navigation in the App Router — and is redundant anyway, since
+      // /dashboard/posts is a client component that fetches its own data
+      // on mount. A brief pause also gives the "Saved" confirmation below
+      // a moment to actually be seen before the page changes.
+      await new Promise((r) => setTimeout(r, 400));
       router.push("/dashboard/posts");
-      router.refresh();
-    } else {
-      const data = await res.json().catch(() => ({}));
-      setError(data.error ?? "Something went wrong saving this post.");
-      setSaving(false);
     }
   }
+
+  // Baseline for the dirty-check below. Built from buildPayload() itself
+  // (not re-derived from the raw post row) so it's guaranteed to match what
+  // an unmodified save would produce — e.g. read time is always computed
+  // from the body now, so comparing against the stored read_time string
+  // would falsely flag an untouched post as dirty the moment it's opened.
+  useEffect(() => {
+    if (post) lastSavedSnapshot.current = JSON.stringify(buildPayload());
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally only ever runs once, on mount
+  }, []);
 
   // Kept in sync after every render (in an effect, not during render itself —
   // writing to a ref mid-render isn't safe) so the interval below always sees
@@ -218,6 +260,59 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
   useEffect(() => {
     latestRef.current = { postId, status, title, bodyMarkdown, buildPayload };
   });
+
+  // Whether there's anything to lose if the client navigates away right now
+  // — read fresh on every render so the effects below always see the
+  // current answer without re-subscribing every keystroke.
+  const isDirty = JSON.stringify(buildPayload()) !== lastSavedSnapshot.current;
+  const isDirtyRef = useRef(isDirty);
+  useEffect(() => {
+    isDirtyRef.current = isDirty;
+  });
+
+  // Covers closing the tab, refreshing, or typing a new URL — the one exit
+  // path that isn't a same-app navigation the click-intercept below can catch.
+  useEffect(() => {
+    function onBeforeUnload(e: BeforeUnloadEvent) {
+      if (!isDirtyRef.current) return;
+      e.preventDefault();
+      e.returnValue = "";
+    }
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, []);
+
+  // Covers every other way of leaving: the dashboard's own nav links, "Blog
+  // Posts" breadcrumbs, etc. — anything rendered as a normal <a href> (which
+  // is what next/link produces). Capturing at the document level means this
+  // one listener catches all of them without each nav link needing to know
+  // about this form. The Cancel button is a <button>, not a link, so it's
+  // handled separately below with the same card.
+  useEffect(() => {
+    function onDocumentClick(e: MouseEvent) {
+      if (!isDirtyRef.current) return;
+      const anchor = (e.target as HTMLElement).closest("a[href]") as HTMLAnchorElement | null;
+      if (!anchor) return;
+      const href = anchor.getAttribute("href") ?? "";
+      if (!href.startsWith("/")) return; // let external links, mailto:, etc. through
+      e.preventDefault();
+      e.stopPropagation();
+      setLeaveTarget(href);
+    }
+    document.addEventListener("click", onDocumentClick, true);
+    return () => document.removeEventListener("click", onDocumentClick, true);
+  }, []);
+
+  async function saveAndLeave(overrideStatus: PostStatus) {
+    const ok = await savePost(overrideStatus);
+    if (ok) router.push(leaveTarget ?? "/dashboard/posts");
+  }
+
+  function discardAndLeave() {
+    const target = leaveTarget ?? "/dashboard/posts";
+    setLeaveTarget(null);
+    router.push(target);
+  }
 
   // Autosave: only while working on a draft, and only if something actually
   // changed since the last save — so it never fires on an untouched post or
@@ -233,20 +328,25 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
       if (snapshot === lastSavedSnapshot.current) return;
 
       setAutosaving(true);
-      const res = await fetch(currentPostId ? `/api/dashboard/posts/${currentPostId}` : "/api/dashboard/posts", {
-        method: currentPostId ? "PUT" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: snapshot,
-      });
+      try {
+        const res = await fetch(currentPostId ? `/api/dashboard/posts/${currentPostId}` : "/api/dashboard/posts", {
+          method: currentPostId ? "PUT" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: snapshot,
+        });
 
-      if (res.ok) {
-        const data = await res.json();
-        if (!currentPostId) {
-          setPostId(data.post.id);
-          router.replace(`/dashboard/posts/${data.post.id}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (!currentPostId) {
+            setPostId(data.post.id);
+            router.replace(`/dashboard/posts/${data.post.id}`);
+          }
+          lastSavedSnapshot.current = snapshot;
+          setLastAutosaved(new Date());
         }
-        lastSavedSnapshot.current = snapshot;
-        setLastAutosaved(new Date());
+      } catch {
+        // Offline or the server hiccuped — just skip this cycle silently,
+        // the next interval tick will retry since the snapshot didn't change.
       }
       setAutosaving(false);
     }, AUTOSAVE_INTERVAL_MS);
@@ -561,17 +661,62 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
         </button>
         <button
           type="button"
-          onClick={() => router.push("/dashboard/posts")}
+          onClick={() => (isDirty ? setLeaveTarget("/dashboard/posts") : router.push("/dashboard/posts"))}
           className="rounded-lg px-5 py-2.5 text-sm font-medium text-neutral-500 hover:text-neutral-800"
         >
           Cancel
         </button>
-        {status === "draft" && (
+        {justSaved && !isDirty && <span className="text-sm font-medium text-emerald-600">Saved ✓</span>}
+        {status === "draft" && !(justSaved && !isDirty) && (
           <span className="text-xs text-neutral-400">
             {autosaving ? "Autosaving…" : lastAutosaved ? `Autosaved at ${lastAutosaved.toLocaleTimeString()}` : ""}
           </span>
         )}
       </div>
+
+      {leaveTarget !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+          <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow-xl">
+            <h2 className="font-getho text-lg font-bold text-neutral-900">You have unsaved changes</h2>
+            <p className="mt-1.5 text-sm text-neutral-500">Save this post before you go, or leave without saving.</p>
+            {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+            <div className="mt-5 flex flex-col gap-2">
+              <button
+                type="button"
+                disabled={saving}
+                onClick={() => saveAndLeave("draft")}
+                className="rounded-lg bg-[#00352d] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#00473d] disabled:opacity-60"
+              >
+                {saving ? "Saving…" : "Save as Draft"}
+              </button>
+              <button
+                type="button"
+                disabled={saving}
+                onClick={() => saveAndLeave("published")}
+                className="rounded-lg border border-[#00352d] px-4 py-2.5 text-sm font-semibold text-[#00352d] transition hover:bg-neutral-50 disabled:opacity-60"
+              >
+                {saving ? "Saving…" : "Publish"}
+              </button>
+              <button
+                type="button"
+                disabled={saving}
+                onClick={discardAndLeave}
+                className="rounded-lg px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 disabled:opacity-60"
+              >
+                Leave without saving
+              </button>
+              <button
+                type="button"
+                disabled={saving}
+                onClick={() => setLeaveTarget(null)}
+                className="mt-1 text-sm font-medium text-neutral-400 hover:text-neutral-700"
+              >
+                Keep editing
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </form>
   );
 }

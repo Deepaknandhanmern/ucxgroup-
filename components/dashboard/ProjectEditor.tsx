@@ -34,6 +34,9 @@ export default function ProjectEditor({ project }: { project?: ProjectRow }) {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
+  const interiorsEnabled = interiorCategory !== "";
+  const digitalEnabled = digitalCategory !== "";
+
   async function handleGalleryUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files ?? []);
     if (files.length === 0) return;
@@ -103,18 +106,27 @@ export default function ProjectEditor({ project }: { project?: ProjectRow }) {
         .filter(Boolean),
     };
 
-    const res = await fetch(project ? `/api/dashboard/projects/${project.id}` : "/api/dashboard/projects", {
-      method: project ? "PUT" : "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    try {
+      const res = await fetch(project ? `/api/dashboard/projects/${project.id}` : "/api/dashboard/projects", {
+        method: project ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    if (res.ok) {
-      router.push("/dashboard/projects");
-      router.refresh();
-    } else {
-      const data = await res.json().catch(() => ({}));
-      setError(data.error ?? "Something went wrong saving this project.");
+      if (res.ok) {
+        // No router.refresh() here — /dashboard/projects is a client
+        // component that fetches its own list on mount, and calling
+        // refresh() immediately after push() can cancel the pending
+        // navigation in the App Router, which is why this used to
+        // sometimes just sit on the form after a successful save.
+        router.push("/dashboard/projects");
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error ?? "Something went wrong saving this project.");
+        setSaving(false);
+      }
+    } catch {
+      setError("Couldn't reach the server — check your connection and try again.");
       setSaving(false);
     }
   }
@@ -194,42 +206,84 @@ export default function ProjectEditor({ project }: { project?: ProjectRow }) {
         {galleryError && <p className="mt-1 text-sm text-red-600">{galleryError}</p>}
       </div>
 
-      <div className="grid grid-cols-3 gap-5">
-        <label className={labelClass}>
-          Category
-          <select className={inputClass} value={cat} onChange={(e) => setCat(e.target.value as typeof cat)}>
-            {CATEGORIES.map((c) => (
-              <option key={c.cat} value={c.cat}>
-                {c.label}
-              </option>
-            ))}
-          </select>
-          <p className="mt-1 text-xs text-neutral-400">Controls where this project shows under Built Environment.</p>
-        </label>
-        <label className={labelClass}>
-          Interiors category (optional)
-          <select className={inputClass} value={interiorCategory} onChange={(e) => setInteriorCategory(e.target.value)}>
-            <option value="">Not an interiors project</option>
-            {INTERIOR_CATEGORIES.map((c) => (
-              <option key={c.cat} value={c.cat}>
-                {c.label}
-              </option>
-            ))}
-          </select>
-          <p className="mt-1 text-xs text-neutral-400">Set this too if it should also show under Interiors.</p>
-        </label>
-        <label className={labelClass}>
-          Digital experience category (optional)
-          <select className={inputClass} value={digitalCategory} onChange={(e) => setDigitalCategory(e.target.value)}>
-            <option value="">Not a digital experience project</option>
-            {DIGITAL_CATEGORIES.map((c) => (
-              <option key={c.cat} value={c.cat}>
-                {c.label}
-              </option>
-            ))}
-          </select>
-          <p className="mt-1 text-xs text-neutral-400">Set this too if it should also show under Digital Project Experience.</p>
-        </label>
+      <div>
+        <span className={labelClass}>Which pages should this project show on?</span>
+        <p className="mt-1 text-xs text-neutral-400">
+          Every project shows on Built Environment. Tick Interiors and/or Digital Project Experience too if it
+          belongs on those pages as well — a project can be on more than one.
+        </p>
+        <div className="mt-3 grid grid-cols-3 gap-4">
+          <div className="rounded-lg border border-neutral-200 p-4">
+            <div className="flex items-center gap-2">
+              <input type="checkbox" checked disabled className="h-4 w-4" />
+              <span className="text-sm font-semibold text-neutral-800">Built Environment</span>
+            </div>
+            <p className="mt-1 text-xs text-neutral-400">Always shown — every project needs a category here.</p>
+            <select
+              className={`${inputClass} mt-3`}
+              value={cat}
+              onChange={(e) => setCat(e.target.value as typeof cat)}
+            >
+              {CATEGORIES.map((c) => (
+                <option key={c.cat} value={c.cat}>
+                  {c.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="rounded-lg border border-neutral-200 p-4">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                className="h-4 w-4"
+                checked={interiorsEnabled}
+                onChange={(e) => setInteriorCategory(e.target.checked ? INTERIOR_CATEGORIES[0].cat : "")}
+              />
+              <span className="text-sm font-semibold text-neutral-800">Interiors</span>
+            </label>
+            <p className="mt-1 text-xs text-neutral-400">Also show this project on the Interiors page.</p>
+            {interiorsEnabled && (
+              <select
+                className={`${inputClass} mt-3`}
+                value={interiorCategory}
+                onChange={(e) => setInteriorCategory(e.target.value)}
+              >
+                {INTERIOR_CATEGORIES.map((c) => (
+                  <option key={c.cat} value={c.cat}>
+                    {c.label}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+
+          <div className="rounded-lg border border-neutral-200 p-4">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                className="h-4 w-4"
+                checked={digitalEnabled}
+                onChange={(e) => setDigitalCategory(e.target.checked ? DIGITAL_CATEGORIES[0].cat : "")}
+              />
+              <span className="text-sm font-semibold text-neutral-800">Digital Project Experience</span>
+            </label>
+            <p className="mt-1 text-xs text-neutral-400">Also show this project on the Digital Project Experience page.</p>
+            {digitalEnabled && (
+              <select
+                className={`${inputClass} mt-3`}
+                value={digitalCategory}
+                onChange={(e) => setDigitalCategory(e.target.value)}
+              >
+                {DIGITAL_CATEGORIES.map((c) => (
+                  <option key={c.cat} value={c.cat}>
+                    {c.label}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-3 gap-5">
