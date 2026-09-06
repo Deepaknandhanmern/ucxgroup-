@@ -1,10 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FILTERS, INTERIOR_FILTERS, DIGITAL_FILTERS } from "@/lib/projects";
 import type { ProjectRow } from "@/lib/projects-db";
 import UploadField from "@/components/dashboard/UploadField";
+import { useLeaveGuard } from "@/components/dashboard/useLeaveGuard";
+import UnsavedChangesCard from "@/components/dashboard/UnsavedChangesCard";
 
 const CATEGORIES = FILTERS.filter((f) => f.cat !== "all");
 const INTERIOR_CATEGORIES = INTERIOR_FILTERS.filter((f) => f.cat !== "all");
@@ -33,6 +35,7 @@ export default function ProjectEditor({ project }: { project?: ProjectRow }) {
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const lastSavedSnapshot = useRef("");
 
   const interiorsEnabled = interiorCategory !== "";
   const digitalEnabled = digitalCategory !== "";
@@ -76,12 +79,8 @@ export default function ProjectEditor({ project }: { project?: ProjectRow }) {
     });
   }
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setSaving(true);
-    setError("");
-
-    const payload = {
+  function buildPayload() {
+    return {
       title,
       image,
       images,
@@ -105,30 +104,66 @@ export default function ProjectEditor({ project }: { project?: ProjectRow }) {
         .map((s) => s.trim())
         .filter(Boolean),
     };
+  }
 
+  async function savePost(): Promise<boolean> {
+    setSaving(true);
+    setError("");
     try {
+      const payload = buildPayload();
       const res = await fetch(project ? `/api/dashboard/projects/${project.id}` : "/api/dashboard/projects", {
         method: project ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
-      if (res.ok) {
-        // No router.refresh() here — /dashboard/projects is a client
-        // component that fetches its own list on mount, and calling
-        // refresh() immediately after push() can cancel the pending
-        // navigation in the App Router, which is why this used to
-        // sometimes just sit on the form after a successful save.
-        router.push("/dashboard/projects");
-      } else {
+      if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         setError(data.error ?? "Something went wrong saving this project.");
         setSaving(false);
+        return false;
       }
+
+      lastSavedSnapshot.current = JSON.stringify(payload);
+      setSaving(false);
+      return true;
     } catch {
       setError("Couldn't reach the server — check your connection and try again.");
       setSaving(false);
+      return false;
     }
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const ok = await savePost();
+    // No router.refresh() here — /dashboard/projects is a client component
+    // that fetches its own list on mount, and calling refresh() immediately
+    // after push() can cancel the pending navigation in the App Router,
+    // which is why this used to sometimes just sit on the form after a
+    // successful save.
+    if (ok) router.push("/dashboard/projects");
+  }
+
+  // Baseline for the dirty-check, built from buildPayload() itself so it's
+  // guaranteed to match what an unmodified save would produce.
+  useEffect(() => {
+    if (project) lastSavedSnapshot.current = JSON.stringify(buildPayload());
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally only ever runs once, on mount
+  }, []);
+
+  const isDirty = JSON.stringify(buildPayload()) !== lastSavedSnapshot.current;
+  const { leaveTarget, setLeaveTarget } = useLeaveGuard(isDirty);
+
+  async function saveAndLeave() {
+    const ok = await savePost();
+    if (ok) router.push(leaveTarget ?? "/dashboard/projects");
+  }
+
+  function discardAndLeave() {
+    const target = leaveTarget ?? "/dashboard/projects";
+    setLeaveTarget(null);
+    router.push(target);
   }
 
   const inputClass =
@@ -346,12 +381,22 @@ export default function ProjectEditor({ project }: { project?: ProjectRow }) {
         </button>
         <button
           type="button"
-          onClick={() => router.push("/dashboard/projects")}
+          onClick={() => (isDirty ? setLeaveTarget("/dashboard/projects") : router.push("/dashboard/projects"))}
           className="rounded-lg px-5 py-2.5 text-sm font-medium text-neutral-500 hover:text-neutral-800"
         >
           Cancel
         </button>
       </div>
+
+      {leaveTarget !== null && (
+        <UnsavedChangesCard
+          saving={saving}
+          error={error}
+          actions={[{ label: "Save project", onClick: saveAndLeave }]}
+          onDiscard={discardAndLeave}
+          onKeepEditing={() => setLeaveTarget(null)}
+        />
+      )}
     </form>
   );
 }

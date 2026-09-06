@@ -1,7 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { JobOpeningRow } from "@/lib/job-openings-db";
+import { useLeaveGuard } from "@/components/dashboard/useLeaveGuard";
+import UnsavedChangesCard from "@/components/dashboard/UnsavedChangesCard";
+
+// Sentinel leaveTarget meaning "just close the inline form" rather than
+// navigate to a real URL — used when Cancel is clicked with unsaved changes.
+const CLOSE_FORM = "__close__";
 
 const EMPTY = { title: "", department: "", location: "", type: "Full-time", experience: "Entry Level (0-2 yrs)", description: "" };
 
@@ -13,11 +20,13 @@ const EXPERIENCE_LEVELS = [
 ];
 
 export default function CareersDashboardPage() {
+  const router = useRouter();
   const [jobs, setJobs] = useState<JobOpeningRow[] | null>(null);
   const [editingId, setEditingId] = useState<number | "new" | null>(null);
   const [form, setForm] = useState(EMPTY);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const savedFormRef = useRef<string | null>(null);
 
   function load() {
     fetch("/api/dashboard/jobs")
@@ -29,42 +38,80 @@ export default function CareersDashboardPage() {
 
   function startNew() {
     setForm(EMPTY);
+    savedFormRef.current = JSON.stringify(EMPTY);
     setEditingId("new");
     setError("");
   }
 
   function startEdit(job: JobOpeningRow) {
-    setForm({
+    const next = {
       title: job.title,
       department: job.department,
       location: job.location,
       type: job.type,
       experience: job.experience || EXPERIENCE_LEVELS[0],
       description: job.description,
-    });
+    };
+    setForm(next);
+    savedFormRef.current = JSON.stringify(next);
     setEditingId(job.id);
     setError("");
   }
 
-  async function handleSave(e: React.FormEvent) {
-    e.preventDefault();
+  async function saveJob(): Promise<boolean> {
     setSaving(true);
     setError("");
+    try {
+      const res = await fetch(editingId === "new" ? "/api/dashboard/jobs" : `/api/dashboard/jobs/${editingId}`, {
+        method: editingId === "new" ? "POST" : "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
 
-    const res = await fetch(editingId === "new" ? "/api/dashboard/jobs" : `/api/dashboard/jobs/${editingId}`, {
-      method: editingId === "new" ? "POST" : "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error ?? "Something went wrong.");
+        setSaving(false);
+        return false;
+      }
+      savedFormRef.current = JSON.stringify(form);
+      setSaving(false);
+      return true;
+    } catch {
+      setError("Couldn't reach the server — check your connection and try again.");
+      setSaving(false);
+      return false;
+    }
+  }
 
-    if (res.ok) {
+  async function handleSave(e: React.FormEvent) {
+    e.preventDefault();
+    const ok = await saveJob();
+    if (ok) {
       setEditingId(null);
       load();
-    } else {
-      const data = await res.json().catch(() => ({}));
-      setError(data.error ?? "Something went wrong.");
     }
-    setSaving(false);
+  }
+
+  const isDirty = editingId !== null && savedFormRef.current !== null && JSON.stringify(form) !== savedFormRef.current;
+  const { leaveTarget, setLeaveTarget } = useLeaveGuard(isDirty);
+
+  function closeOrNavigate(target: string) {
+    setLeaveTarget(null);
+    if (target === CLOSE_FORM) setEditingId(null);
+    else router.push(target);
+  }
+
+  async function saveAndLeave() {
+    const ok = await saveJob();
+    if (ok) {
+      load();
+      closeOrNavigate(leaveTarget ?? CLOSE_FORM);
+    }
+  }
+
+  function discardAndLeave() {
+    closeOrNavigate(leaveTarget ?? CLOSE_FORM);
   }
 
   async function handleDelete(id: number, title: string) {
@@ -166,13 +213,23 @@ export default function CareersDashboardPage() {
             </button>
             <button
               type="button"
-              onClick={() => setEditingId(null)}
+              onClick={() => (isDirty ? setLeaveTarget(CLOSE_FORM) : setEditingId(null))}
               className="text-sm font-medium text-neutral-500 hover:text-neutral-800"
             >
               Cancel
             </button>
           </div>
         </form>
+      )}
+
+      {leaveTarget !== null && (
+        <UnsavedChangesCard
+          saving={saving}
+          error={error}
+          actions={[{ label: "Save", onClick: saveAndLeave }]}
+          onDiscard={discardAndLeave}
+          onKeepEditing={() => setLeaveTarget(null)}
+        />
       )}
 
       {jobs === null ? (

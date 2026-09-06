@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { BlogPostRow, PostStatus } from "@/lib/blog-posts-db";
 import { deriveExcerpt, estimateReadTime, seoLengthStatus, slugify } from "@/lib/seo";
+import { useLeaveGuard } from "@/components/dashboard/useLeaveGuard";
+import UnsavedChangesCard from "@/components/dashboard/UnsavedChangesCard";
 
 const AUTOSAVE_INTERVAL_MS = 20_000;
 
@@ -67,7 +69,6 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
   const [error, setError] = useState("");
   const [lastAutosaved, setLastAutosaved] = useState<Date | null>(null);
   const [autosaving, setAutosaving] = useState(false);
-  const [leaveTarget, setLeaveTarget] = useState<string | null>(null);
   const lastSavedSnapshot = useRef("");
 
   // Read time is pure math off the word count — there's no "wrong" value for
@@ -262,46 +263,12 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
   });
 
   // Whether there's anything to lose if the client navigates away right now
-  // — read fresh on every render so the effects below always see the
-  // current answer without re-subscribing every keystroke.
+  // — read fresh on every render, and drives the tab-close/refresh prompt
+  // plus the in-app nav-link intercept (see useLeaveGuard). The Cancel
+  // button is a <button>, not a link, so it's handled separately below with
+  // the same card.
   const isDirty = JSON.stringify(buildPayload()) !== lastSavedSnapshot.current;
-  const isDirtyRef = useRef(isDirty);
-  useEffect(() => {
-    isDirtyRef.current = isDirty;
-  });
-
-  // Covers closing the tab, refreshing, or typing a new URL — the one exit
-  // path that isn't a same-app navigation the click-intercept below can catch.
-  useEffect(() => {
-    function onBeforeUnload(e: BeforeUnloadEvent) {
-      if (!isDirtyRef.current) return;
-      e.preventDefault();
-      e.returnValue = "";
-    }
-    window.addEventListener("beforeunload", onBeforeUnload);
-    return () => window.removeEventListener("beforeunload", onBeforeUnload);
-  }, []);
-
-  // Covers every other way of leaving: the dashboard's own nav links, "Blog
-  // Posts" breadcrumbs, etc. — anything rendered as a normal <a href> (which
-  // is what next/link produces). Capturing at the document level means this
-  // one listener catches all of them without each nav link needing to know
-  // about this form. The Cancel button is a <button>, not a link, so it's
-  // handled separately below with the same card.
-  useEffect(() => {
-    function onDocumentClick(e: MouseEvent) {
-      if (!isDirtyRef.current) return;
-      const anchor = (e.target as HTMLElement).closest("a[href]") as HTMLAnchorElement | null;
-      if (!anchor) return;
-      const href = anchor.getAttribute("href") ?? "";
-      if (!href.startsWith("/")) return; // let external links, mailto:, etc. through
-      e.preventDefault();
-      e.stopPropagation();
-      setLeaveTarget(href);
-    }
-    document.addEventListener("click", onDocumentClick, true);
-    return () => document.removeEventListener("click", onDocumentClick, true);
-  }, []);
+  const { leaveTarget, setLeaveTarget } = useLeaveGuard(isDirty);
 
   async function saveAndLeave(overrideStatus: PostStatus) {
     const ok = await savePost(overrideStatus);
@@ -675,47 +642,16 @@ export default function PostEditor({ post }: { post?: BlogPostRow }) {
       </div>
 
       {leaveTarget !== null && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-          <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow-xl">
-            <h2 className="font-getho text-lg font-bold text-neutral-900">You have unsaved changes</h2>
-            <p className="mt-1.5 text-sm text-neutral-500">Save this post before you go, or leave without saving.</p>
-            {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
-            <div className="mt-5 flex flex-col gap-2">
-              <button
-                type="button"
-                disabled={saving}
-                onClick={() => saveAndLeave("draft")}
-                className="rounded-lg bg-[#00352d] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#00473d] disabled:opacity-60"
-              >
-                {saving ? "Saving…" : "Save as Draft"}
-              </button>
-              <button
-                type="button"
-                disabled={saving}
-                onClick={() => saveAndLeave("published")}
-                className="rounded-lg border border-[#00352d] px-4 py-2.5 text-sm font-semibold text-[#00352d] transition hover:bg-neutral-50 disabled:opacity-60"
-              >
-                {saving ? "Saving…" : "Publish"}
-              </button>
-              <button
-                type="button"
-                disabled={saving}
-                onClick={discardAndLeave}
-                className="rounded-lg px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 disabled:opacity-60"
-              >
-                Leave without saving
-              </button>
-              <button
-                type="button"
-                disabled={saving}
-                onClick={() => setLeaveTarget(null)}
-                className="mt-1 text-sm font-medium text-neutral-400 hover:text-neutral-700"
-              >
-                Keep editing
-              </button>
-            </div>
-          </div>
-        </div>
+        <UnsavedChangesCard
+          saving={saving}
+          error={error}
+          actions={[
+            { label: "Save as Draft", onClick: () => saveAndLeave("draft") },
+            { label: "Publish", variant: "outline", onClick: () => saveAndLeave("published") },
+          ]}
+          onDiscard={discardAndLeave}
+          onKeepEditing={() => setLeaveTarget(null)}
+        />
       )}
     </form>
   );

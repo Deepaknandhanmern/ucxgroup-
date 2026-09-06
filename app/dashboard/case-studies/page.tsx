@@ -1,18 +1,27 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { CaseStudyRow } from "@/lib/case-studies-db";
 import UploadField from "@/components/dashboard/UploadField";
+import { useLeaveGuard } from "@/components/dashboard/useLeaveGuard";
+import UnsavedChangesCard from "@/components/dashboard/UnsavedChangesCard";
 
 const CATEGORIES = ["institutional", "infrastructural", "hospitality", "healthcare", "retail"];
 const EMPTY = { ref: "", cat: "institutional", pages: "", title: "", image: "", pdfUrl: "" };
 
+// Sentinel leaveTarget meaning "just close the inline form" rather than
+// navigate to a real URL — used when Cancel is clicked with unsaved changes.
+const CLOSE_FORM = "__close__";
+
 export default function CaseStudiesDashboardPage() {
+  const router = useRouter();
   const [items, setItems] = useState<CaseStudyRow[] | null>(null);
   const [editingId, setEditingId] = useState<number | "new" | null>(null);
   const [form, setForm] = useState(EMPTY);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const savedFormRef = useRef<string | null>(null);
 
   function load() {
     fetch("/api/dashboard/case-studies")
@@ -24,35 +33,73 @@ export default function CaseStudiesDashboardPage() {
 
   function startNew() {
     setForm(EMPTY);
+    savedFormRef.current = JSON.stringify(EMPTY);
     setEditingId("new");
     setError("");
   }
 
   function startEdit(item: CaseStudyRow) {
-    setForm({ ref: item.ref, cat: item.cat, pages: item.pages, title: item.title, image: item.image ?? "", pdfUrl: item.pdf_url ?? "" });
+    const next = { ref: item.ref, cat: item.cat, pages: item.pages, title: item.title, image: item.image ?? "", pdfUrl: item.pdf_url ?? "" };
+    setForm(next);
+    savedFormRef.current = JSON.stringify(next);
     setEditingId(item.id);
     setError("");
   }
 
-  async function handleSave(e: React.FormEvent) {
-    e.preventDefault();
+  async function saveItem(): Promise<boolean> {
     setSaving(true);
     setError("");
+    try {
+      const res = await fetch(editingId === "new" ? "/api/dashboard/case-studies" : `/api/dashboard/case-studies/${editingId}`, {
+        method: editingId === "new" ? "POST" : "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
 
-    const res = await fetch(editingId === "new" ? "/api/dashboard/case-studies" : `/api/dashboard/case-studies/${editingId}`, {
-      method: editingId === "new" ? "POST" : "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error ?? "Something went wrong.");
+        setSaving(false);
+        return false;
+      }
+      savedFormRef.current = JSON.stringify(form);
+      setSaving(false);
+      return true;
+    } catch {
+      setError("Couldn't reach the server — check your connection and try again.");
+      setSaving(false);
+      return false;
+    }
+  }
 
-    if (res.ok) {
+  async function handleSave(e: React.FormEvent) {
+    e.preventDefault();
+    const ok = await saveItem();
+    if (ok) {
       setEditingId(null);
       load();
-    } else {
-      const data = await res.json().catch(() => ({}));
-      setError(data.error ?? "Something went wrong.");
     }
-    setSaving(false);
+  }
+
+  const isDirty = editingId !== null && savedFormRef.current !== null && JSON.stringify(form) !== savedFormRef.current;
+  const { leaveTarget, setLeaveTarget } = useLeaveGuard(isDirty);
+
+  function closeOrNavigate(target: string) {
+    setLeaveTarget(null);
+    if (target === CLOSE_FORM) setEditingId(null);
+    else router.push(target);
+  }
+
+  async function saveAndLeave() {
+    const ok = await saveItem();
+    if (ok) {
+      load();
+      closeOrNavigate(leaveTarget ?? CLOSE_FORM);
+    }
+  }
+
+  function discardAndLeave() {
+    closeOrNavigate(leaveTarget ?? CLOSE_FORM);
   }
 
   async function handleDelete(id: number, title: string) {
@@ -122,11 +169,25 @@ export default function CaseStudiesDashboardPage() {
             >
               {saving ? "Saving…" : "Save"}
             </button>
-            <button type="button" onClick={() => setEditingId(null)} className="text-sm font-medium text-neutral-500 hover:text-neutral-800">
+            <button
+              type="button"
+              onClick={() => (isDirty ? setLeaveTarget(CLOSE_FORM) : setEditingId(null))}
+              className="text-sm font-medium text-neutral-500 hover:text-neutral-800"
+            >
               Cancel
             </button>
           </div>
         </form>
+      )}
+
+      {leaveTarget !== null && (
+        <UnsavedChangesCard
+          saving={saving}
+          error={error}
+          actions={[{ label: "Save", onClick: saveAndLeave }]}
+          onDiscard={discardAndLeave}
+          onKeepEditing={() => setLeaveTarget(null)}
+        />
       )}
 
       {items === null ? (
