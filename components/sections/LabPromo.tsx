@@ -2,15 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import CollabBuildingScene from "@/components/sections/CollabBuildingScene";
+import CountUp from "@/components/ui/CountUp";
 
 const TAGS = ["AI & Automation", "Digital Construction", "Prefabrication", "Smart Assets"];
 // Same verified figures as the Experience page's stats block — reused here
 // so this section backs up "next solution together" with real proof points
 // instead of just a claim.
 const TRUST_STATS = [
-  { value: "30+", label: "Projects Delivered" },
-  { value: "7+", label: "Disciplines Covered" },
-  { value: "3+", label: "Countries Served" },
+  { value: 30, suffix: "+", label: "Projects Delivered" },
+  { value: 7, suffix: "+", label: "Disciplines Covered" },
+  { value: 3, suffix: "+", label: "Countries Served" },
 ];
 
 export default function LabPromo() {
@@ -96,7 +97,9 @@ export default function LabPromo() {
           <div className="lp-trust">
             {TRUST_STATS.map((s) => (
               <div className="lp-trust-stat" key={s.label}>
-                <strong>{s.value}</strong>
+                <strong>
+                  <CountUp value={s.value} suffix={s.suffix} />
+                </strong>
                 <span>{s.label}</span>
               </div>
             ))}

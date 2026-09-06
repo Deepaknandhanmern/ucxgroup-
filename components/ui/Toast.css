@@ -23,6 +23,29 @@
 .ucx-toast--success .ucx-toast-icon { background: rgba(145,242,181,.16); color: #91F2B5; }
 .ucx-toast--error .ucx-toast-icon { background: rgba(255,120,120,.16); color: #ff9b9b; }
 
+/* Touch only: the success tick draws itself on, and the badge gives a single
+   soft pulse behind it — a moment of confirmation at the point a visitor has
+   just committed to sending something, where a phone gives no other feedback
+   (no cursor, no hover, often no visible page change behind the toast). */
+@media (pointer: coarse) {
+  .ucx-toast--success.is-visible .ucx-toast-icon svg path {
+    stroke-dasharray: 26;
+    stroke-dashoffset: 26;
+    animation: ucxToastTick .5s cubic-bezier(.65,0,.35,1) .12s forwards;
+  }
+  .ucx-toast--success.is-visible .ucx-toast-icon {
+    animation: ucxToastPop .6s cubic-bezier(.22,1.4,.36,1);
+  }
+}
+@keyframes ucxToastTick {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes ucxToastPop {
+  0% { transform: scale(.7); box-shadow: 0 0 0 0 rgba(145,242,181,.5); }
+  60% { transform: scale(1.08); box-shadow: 0 0 0 8px rgba(145,242,181,0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(145,242,181,0); }
+}
+
 .ucx-toast-msg { flex: 1; line-height: 1.4; }
 
 .ucx-toast-close {
@@ -34,4 +57,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ucx-toast { transition: opacity .2s ease; }
+  .ucx-toast--success.is-visible .ucx-toast-icon,
+  .ucx-toast--success.is-visible .ucx-toast-icon svg path { animation: none; stroke-dashoffset: 0; }
 }

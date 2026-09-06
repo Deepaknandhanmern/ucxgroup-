@@ -592,7 +592,7 @@
      specific than the generic .ucxnav__logo-img rule just above — so that
      one never actually applied here. Same one-size-always treatment. */
   .ucxnav__logo--interiors .ucxnav__logo-img,
-  .ucxnav.is-scrolled .ucxnav__logo--interiors .ucxnav__logo-img { height: 24px; }
+  .ucxnav.is-scrolled .ucxnav__logo--interiors .ucxnav__logo-img { height: 44px; }
 }
 
 @media (max-width: 640px) {

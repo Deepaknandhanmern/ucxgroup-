@@ -19,7 +19,31 @@
 .ucx-backtotop.is-visible { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
 .ucx-backtotop:hover { background: #91F2B5; color: #00352D; transform: translateY(-3px) scale(1.05); }
 .ucx-backtotop:active { transform: translateY(-1px) scale(.97); }
-.ucx-backtotop svg { width: 18px; height: 18px; }
+.ucx-backtotop-arrow { width: 18px; height: 18px; }
+
+/* Scroll-position ring, touch only: on desktop the top progress bar and the
+   browser's own scrollbar already answer "how far down am I", so this stays
+   a thumb-reach readout for phones/tablets. The circle is rotated so its
+   dash starts at 12 o'clock rather than 3. */
+.ucx-backtotop-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  pointer-events: none;
+  display: none;
+}
+.ucx-backtotop-ring circle {
+  stroke: currentColor;
+  opacity: .85;
+  transition: stroke-dashoffset .12s linear;
+}
+@media (pointer: coarse) {
+  .ucx-backtotop-ring { display: block; }
+  /* the ring becomes the button's edge, so the static border would double it */
+  .ucx-backtotop { border-color: transparent; }
+}
 
 .ucx-backtotop--interiors {
   background: #04162C; color: #74C6A2; border-color: rgba(116,198,162,.3);
@@ -31,5 +55,6 @@
 }
 @media (max-width: 640px) {
   .ucx-backtotop { width: 42px; height: 42px; }
-  .ucx-backtotop svg { width: 16px; height: 16px; }
+  /* only the arrow — the ring svg is sized 100% to track the button */
+  .ucx-backtotop-arrow { width: 16px; height: 16px; }
 }

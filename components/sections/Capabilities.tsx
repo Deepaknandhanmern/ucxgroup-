@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
 import SectionRail from "@/components/ui/SectionRail";
 import CardThumb from "@/components/ui/CardThumb";
+import CountUp from "@/components/ui/CountUp";
 import FAQ from "@/components/sections/FAQ";
 
 const RAIL_SECTIONS = [
@@ -109,9 +110,9 @@ const DELIVERY_MODELS: DeliveryModel[] = [
 ];
 
 const STATS = [
-  { value: "30+", label: "Projects Delivered" },
-  { value: "07+", label: "Disciplines Covered" },
-  { value: "03+", label: "Countries Served" },
+  { value: 30, suffix: "+", pad: 2, label: "Projects Delivered" },
+  { value: 7, suffix: "+", pad: 2, label: "Disciplines Covered" },
+  { value: 3, suffix: "+", pad: 2, label: "Countries Served" },
 ];
 
 const FAQS = [
@@ -319,7 +320,7 @@ export default function Capabilities() {
           <div className="stats">
             {STATS.map((s) => (
               <div className="stat" key={s.label}>
-                <span className="stat-value">{s.value}</span>
+                <CountUp className="stat-value" value={s.value} suffix={s.suffix} pad={s.pad} />
                 <span className="stat-label">{s.label}</span>
               </div>
             ))}

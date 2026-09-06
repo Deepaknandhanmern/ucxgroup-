@@ -8,6 +8,7 @@ import "@/components/layout/Header.css";
 import "@/components/layout/BackToTop.css";
 import "@/components/ui/WhatsAppButton.css";
 import "@/components/ui/ScrollProgress.css";
+import "@/components/ui/ImageLightbox.css";
 import "@/components/ui/BeforeAfterSlider.css";
 import "@/components/sections/Hero.css";
 import "@/components/sections/AboutUs.css";

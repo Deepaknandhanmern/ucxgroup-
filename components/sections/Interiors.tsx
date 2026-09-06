@@ -176,8 +176,8 @@ type LeadStatus = "idle" | "sending" | "sent" | "error";
 export default function Interiors() {
   const sectRef = useRef<HTMLDivElement>(null);
   const [leadStatus, setLeadStatus] = useState<LeadStatus>("idle");
-  const tmRowRef = useSwipeableMarquee<HTMLDivElement>({ durationSec: 36 });
-  const tmRowReverseRef = useSwipeableMarquee<HTMLDivElement>({ durationSec: 42, reverse: true });
+  const tmRowRef = useSwipeableMarquee<HTMLDivElement>({ durationSec: 36, snap: true });
+  const tmRowReverseRef = useSwipeableMarquee<HTMLDivElement>({ durationSec: 42, reverse: true, snap: true });
   const servicesMarqueeRef = useSwipeableMarquee<HTMLDivElement>({ durationSec: 32 });
 
   async function handleLeadSubmit(e: React.FormEvent<HTMLFormElement>) {

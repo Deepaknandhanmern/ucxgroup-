@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { tapHaptic } from "@/components/ui/haptics";
 
 export default function Toast({
   show,
@@ -15,9 +16,12 @@ export default function Toast({
 }) {
   useEffect(() => {
     if (!show) return;
+    // a light buzz alongside the tick animation, so a send is confirmed
+    // physically as well as visually (no-ops where the API isn't supported)
+    if (tone === "success") tapHaptic();
     const t = setTimeout(onDismiss, 4000);
     return () => clearTimeout(t);
-  }, [show, onDismiss]);
+  }, [show, onDismiss, tone]);
 
   return (
     <div className={`ucx-toast ucx-toast--${tone}${show ? " is-visible" : ""}`} role="status" aria-live="polite">

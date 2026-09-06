@@ -3,9 +3,18 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useCursorGlow } from "@/components/ui/useCursorGlow";
 import { attachGlintOnView } from "@/components/ui/glintOnView";
+import { useImageLightbox } from "@/components/ui/useImageLightbox";
 import { DIGITAL_FILTERS, type DigitalCat, type Project } from "@/lib/projects";
 
-function ProjectCard({ project, index }: { project: Project; index: number }) {
+function ProjectCard({
+  project,
+  index,
+  onZoom,
+}: {
+  project: Project;
+  index: number;
+  onZoom: (src: string, alt: string) => boolean;
+}) {
   const cardRef = useRef<HTMLAnchorElement>(null);
   const [imgOk, setImgOk] = useState(true);
   const pending = useRef(false);
@@ -15,6 +24,13 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     if (!el) return;
     return attachGlintOnView(el);
   }, []);
+
+  // On touch, tapping the image opens the pinch-zoom viewer instead of
+  // navigating; the "View project" tag still goes through to the page.
+  function handleMediaClick(e: React.MouseEvent) {
+    if (!imgOk) return;
+    if (onZoom(project.image, project.title)) e.preventDefault();
+  }
 
   function onPointerMove(e: React.PointerEvent<HTMLAnchorElement>) {
     const el = cardRef.current;
@@ -41,7 +57,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       style={{ transitionDelay: `${(index % 6) * 60}ms` }}
       onPointerMove={onPointerMove}
     >
-      <div className="dpe-media">
+      <div className="dpe-media" onClick={handleMediaClick}>
         {imgOk ? (
           <img src={project.image} alt={project.title} loading="lazy" onError={() => setImgOk(false)} />
         ) : (
@@ -76,6 +92,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 export default function DigitalProjectExperience({ projects }: { projects: Project[] }) {
   const sectRef = useRef<HTMLDivElement>(null);
   const bodyGlowRef = useCursorGlow<HTMLDivElement>();
+  const { open: openZoom, lightbox } = useImageLightbox();
   const [activeCat, setActiveCat] = useState<DigitalCat | "all">("all");
 
   const digitalProjects = useMemo(() => projects.filter((p) => p.digitalCategory), [projects]);
@@ -155,7 +172,7 @@ export default function DigitalProjectExperience({ projects }: { projects: Proje
 
           <div className="dpe-list">
             {filtered.length > 0 ? (
-              filtered.map((p, i) => <ProjectCard project={p} index={i} key={p.slug} />)
+              filtered.map((p, i) => <ProjectCard project={p} index={i} key={p.slug} onZoom={openZoom} />)
             ) : (
               <p className="dpe-empty" data-reveal>
                 No projects published in this category yet — check back soon, or{" "}
@@ -174,6 +191,7 @@ export default function DigitalProjectExperience({ projects }: { projects: Proje
           </div>
         </div>
       </div>
+      {lightbox}
     </div>
   );
 }

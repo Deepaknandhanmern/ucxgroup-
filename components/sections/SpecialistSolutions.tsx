@@ -40,6 +40,7 @@ export default function SpecialistSolutions() {
   const [activeDot, setActiveDot] = useState(0);
   const trackRef = useSwipeableMarquee<HTMLDivElement>({
     durationSec: 30,
+    snap: true,
     onProgress: (fraction) => setActiveDot(Math.floor(fraction * CARDS.length) % CARDS.length),
   });
 

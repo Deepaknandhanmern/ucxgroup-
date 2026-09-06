@@ -3,8 +3,17 @@
 import { useEffect, useRef, useState } from "react";
 import { CAT_LABELS, FILTERS, INTERIOR_FILTERS, type Cat, type InteriorCat, type Project } from "@/lib/projects";
 import { attachGlintOnView } from "@/components/ui/glintOnView";
+import { useImageLightbox } from "@/components/ui/useImageLightbox";
 
-function ProjectCard({ project, index }: { project: Project; index: number }) {
+function ProjectCard({
+  project,
+  index,
+  onZoom,
+}: {
+  project: Project;
+  index: number;
+  onZoom: (src: string, alt: string) => boolean;
+}) {
   const cardRef = useRef<HTMLAnchorElement>(null);
   const [imgOk, setImgOk] = useState(true);
   const pending = useRef(false);
@@ -14,6 +23,15 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     if (!el) return;
     return attachGlintOnView(el);
   }, []);
+
+  // On touch, tapping the image opens the pinch-zoom viewer rather than
+  // navigating — these are detailed renders and drawings that are hard to
+  // judge at card size. The "View project" tag below stays the way through
+  // to the project page, and desktop is untouched (onZoom returns false).
+  function handleMediaClick(e: React.MouseEvent) {
+    if (!imgOk) return;
+    if (onZoom(project.image, project.title)) e.preventDefault();
+  }
 
   function onPointerMove(e: React.PointerEvent<HTMLAnchorElement>) {
     const el = cardRef.current;
@@ -40,7 +58,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       style={{ transitionDelay: `${(index % 6) * 60}ms` }}
       onPointerMove={onPointerMove}
     >
-      <div className="fp-media">
+      <div className="fp-media" onClick={handleMediaClick}>
         {imgOk ? (
           <img src={project.image} alt={project.title} loading="lazy" onError={() => setImgOk(false)} />
         ) : (
@@ -81,6 +99,7 @@ export default function FeaturedProjects({ projects }: { projects: Project[] }) 
   const [activeInteriorCat, setActiveInteriorCat] = useState<InteriorCat | "all">("all");
   const [isInteriorsFilter, setIsInteriorsFilter] = useState(false);
   const sectRef = useRef<HTMLDivElement>(null);
+  const { open: openZoom, lightbox } = useImageLightbox();
 
   const interiorProjects = projects.filter((p) => p.interiorCategory);
   const list = isInteriorsFilter
@@ -183,7 +202,7 @@ export default function FeaturedProjects({ projects }: { projects: Project[] }) 
 
         <div className="fp-list">
           {list.length > 0 ? (
-            list.map((p, i) => <ProjectCard project={p} index={i} key={p.slug} />)
+            list.map((p, i) => <ProjectCard project={p} index={i} key={p.slug} onZoom={openZoom} />)
           ) : (
             <p className="fp-empty" data-reveal>
               No projects published in this category yet — check back soon, or{" "}
@@ -201,6 +220,7 @@ export default function FeaturedProjects({ projects }: { projects: Project[] }) 
           </a>
         </div>
       </div>
+      {lightbox}
     </div>
   );
 }

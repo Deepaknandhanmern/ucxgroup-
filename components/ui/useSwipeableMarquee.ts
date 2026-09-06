@@ -84,11 +84,13 @@ function showSwipeHint(track: HTMLElement) {
 export function useSwipeableMarquee<T extends HTMLElement>(options: {
   durationSec: number;
   reverse?: boolean;
+  snap?: boolean;
   onProgress?: (fraction: number) => void;
 }) {
   const ref = useRef<T>(null);
   const durationRef = useRef(options.durationSec);
   const reverseRef = useRef(!!options.reverse);
+  const snapRef = useRef(!!options.snap);
   const onProgressRef = useRef(options.onProgress);
 
   // Mirrors the latest option values into refs the mount-only effect below
@@ -97,6 +99,7 @@ export function useSwipeableMarquee<T extends HTMLElement>(options: {
   useEffect(() => {
     durationRef.current = options.durationSec;
     reverseRef.current = !!options.reverse;
+    snapRef.current = !!options.snap;
     onProgressRef.current = options.onProgress;
   });
 
@@ -120,6 +123,15 @@ export function useSwipeableMarquee<T extends HTMLElement>(options: {
     let lastT = performance.now();
     let raf = 0;
     let lastProgressReport = 0;
+
+    // Snap-to-card: the width of one item including its gap. The track holds
+    // the item set twice over, so half its scroll width divided by half its
+    // child count is one item's pitch — and since `half` is an exact multiple
+    // of that pitch, the wrap in apply() below keeps the grid aligned.
+    const snapEnabled = snapRef.current && el.children.length >= 2;
+    const pitch = snapEnabled ? half / (el.children.length / 2) : 0;
+    let draggedSinceSnap = false;
+    let holdUntil = 0;
 
     el.style.animation = "none";
     el.style.touchAction = "pan-y";
@@ -159,6 +171,7 @@ export function useSwipeableMarquee<T extends HTMLElement>(options: {
     function onPointerDown(e: PointerEvent) {
       dragging = true;
       velocity = 0;
+      draggedSinceSnap = true;
       lastX = e.clientX;
       lastT = performance.now();
       el!.setPointerCapture(e.pointerId);
@@ -194,7 +207,20 @@ export function useSwipeableMarquee<T extends HTMLElement>(options: {
           velocity *= 0.94;
         } else {
           velocity = 0;
-          if (!reduceMotion) pos += dir * speedPxPerSec * (dt / 1000);
+          if (snapEnabled && draggedSinceSnap) {
+            // momentum has run out after a swipe — ease onto the nearest card
+            // boundary so it never comes to rest half-cut-off, then hold a
+            // beat before the ambient drift picks up again
+            const target = Math.round(pos / pitch) * pitch;
+            pos += (target - pos) * 0.18;
+            if (Math.abs(target - pos) < 0.5) {
+              pos = target;
+              draggedSinceSnap = false;
+              holdUntil = now + 900;
+            }
+          } else if (now >= holdUntil && !reduceMotion) {
+            pos += dir * speedPxPerSec * (dt / 1000);
+          }
         }
         apply();
       }
